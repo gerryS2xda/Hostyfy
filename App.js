@@ -1,3 +1,5 @@
+//Spostare codice in "MainScreen.js" e aggiungere Navigator in questo file per navigare tra le schermate
+
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
