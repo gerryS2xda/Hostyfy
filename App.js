@@ -14,10 +14,7 @@ const navigator = createStackNavigator(
     RegistrationResidenzaData: RegResidenceData
   },
   {
-    initialRouteName: "Home",
-    defaultNavigationOptions: {
-      title: "Hostyfy"
-    }
+    initialRouteName: "Home"
   }
 );
 export default createAppContainer(navigator);
