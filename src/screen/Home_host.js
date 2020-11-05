@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
   topContainer: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     alignItems: 'center',
   },
 
@@ -78,9 +78,7 @@ const Bottone = (props) => {
   return(
     <TouchableOpacity
       style = {styles.bottone}
-      onPress={() => {
-           
-      }}>
+      onPress={props.func}>
       <Image
         style = {styles.immagineBottone}
         source = {props.path}
@@ -95,7 +93,7 @@ const Bottone = (props) => {
 
 
 
-const HomeHost = () => {
+const HomeHost = (props) => {
   return(
     <View style={styles.container}>
       <View style={styles.topContainer} >
@@ -105,9 +103,9 @@ const HomeHost = () => {
         <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
       </View>
       <View style={styles.centerContainer}>
-        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture'/>
-        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci preotazione'/>
-        <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni'/>
+        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'Inserisci'/>
+        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci preotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("Inserisci")}/>
+        <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni' navPage = 'Inserisci'/>
       </View>
       <View style={styles.bottomContainer}>
       <CalendarPicker 
