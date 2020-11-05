@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   }
 })
 
-const Login = () => {
+const Login = (props) => {
 
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
@@ -90,7 +90,7 @@ const [errore, setErrore] = useState('');
           style = {styles.input}
           placeholder = ' Password'
           onChangeText = {(password) => setPassword(password)}
-          secureTextEntry = 'True'
+          //secureTextEntry = 'True'
         />
         <Text>{errore}</Text>
         <TouchableOpacity
