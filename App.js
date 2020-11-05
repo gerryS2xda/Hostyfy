@@ -1,23 +1,23 @@
-//Spostare codice in "MainScreen.js" e aggiungere Navigator in questo file per navigare tra le schermate
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+import LoginScreen from "./src/screen/Login"
+import HomeHostScreen from "./src/screen/Home_host"
+import RegPersonalData from "./src/screen/RegistrazioneDatiPersonali"
+import RegResidenceData from "./src/screen/RegistrazioneDatiResidenza"
 
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hostyfy che bello!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const navigator = createStackNavigator(
+  {
+    Home: LoginScreen,
+    HomeHost: HomeHostScreen,
+    RegistrationPersonalData: RegPersonalData,
+    RegistrationResidenzaData: RegResidenceData
   },
-});
+  {
+    initialRouteName: "Home",
+    defaultNavigationOptions: {
+      title: "Hostyfy"
+    }
+  }
+);
+export default createAppContainer(navigator);
