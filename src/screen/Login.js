@@ -78,7 +78,7 @@ const [errore, setErrore] = useState('');
     <View>
       <View style={styles.container_1}>
         <Image
-          source = {require('./assets/HOSTYFY.png')}
+          source = {require('../../assets/HOSTYFY.png')}
           style = {styles.image} 
         />
         <TextInput

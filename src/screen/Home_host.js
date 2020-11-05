@@ -101,13 +101,13 @@ const HomeHost = () => {
       <View style={styles.topContainer} >
         <Image
           style = {styles.immagineLogo}  
-          source ={require('./assets/user.png')}/>
+          source ={require('../../assets/user.png')}/>
         <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
       </View>
       <View style={styles.centerContainer}>
-        <Bottone path={require('./assets/home.png')} nome= 'Le mie strutture'/>
-        <Bottone path={require('./assets/add.png')} nome= 'Inserisci preotazione'/>
-        <Bottone path={require('./assets/smile.png')} nome= 'Recensioni'/>
+        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture'/>
+        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci preotazione'/>
+        <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni'/>
       </View>
       <View style={styles.bottomContainer}>
       <CalendarPicker 
