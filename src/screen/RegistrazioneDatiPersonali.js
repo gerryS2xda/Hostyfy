@@ -113,7 +113,7 @@ const [confermaPassword, setConfermaPassword] = useState('');
               <View style={styles.buttonCustomizzato}>
                 <TouchableOpacity
                     style = {styles.bottoneAvanti}
-                    onPress={() => props.navigation.navigate('RegistrazioneDatiResidenza')}>    
+                    onPress={() => props.navigation.navigate('RegistrationResidenzaData')}>    
                                            <Text style={{color:'#ffffff'}}>Avanti</Text>
                 </TouchableOpacity> 
               </View>
