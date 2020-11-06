@@ -101,20 +101,26 @@ const [confermaPassword, setConfermaPassword] = useState('');
               />
               <TextInput
                 style = {styles.input}
-                placeholder = ' Luogo di Nascita'
-                onChangeText = {(lNascita) => setLuogoNascita(lNascita)}
+                placeholder = ' Email'
+                onChangeText = {(email) => setEmail(email)}
               />
               <TextInput
                 style = {styles.input}
-                placeholder = ' Data di Nascita'
-                onChangeText = {(dNascita) => setDataNascita(dNascita)}
+                placeholder = ' Password'
+                onChangeText = {(password) => setPassword(password)}
               />
+
+              <TextInput
+                style = {styles.input}
+                placeholder = ' Conferma Password'
+                onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
+              />        
 
               <View style={styles.buttonCustomizzato}>
                 <TouchableOpacity
                     style = {styles.bottoneAvanti}
-                    onPress={() => props.navigation.navigate('RegistrationResidenzaData')}>    
-                                           <Text style={{color:'#ffffff'}}>Avanti</Text>
+                    onPress={() => props.navigation.navigate('Registratione')}>    
+                                           <Text style={{color:'#ffffff'}}>Registrati</Text>
                 </TouchableOpacity> 
               </View>
           

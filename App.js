@@ -17,8 +17,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
-import RegPersonalData from "./src/screen/RegistrazioneDatiPersonali"
-import RegResidenceData from "./src/screen/RegistrazioneDatiResidenza"
+import Registrazione from "./src/screen/Registrazione"
 import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
 
 const Stack = createStackNavigator();
@@ -38,13 +37,8 @@ const App = () => {
            options={{ title: 'Home Host' }}
           />
           <Stack.Screen
-           name="RegistrationPersonalData"
+           name="Registratione"
            component={RegPersonalData}
-           options={{ title: 'Registrazione' }}
-          />
-          <Stack.Screen
-           name="RegistrationResidenzaData"
-           component={RegResidenceData}
            options={{ title: 'Registrazione' }}
           />
           <Stack.Screen

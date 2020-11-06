@@ -112,7 +112,7 @@ const [errore, setErrore] = useState('');
             <Text style={styles.nonReg}>Non hai un account?</Text>
             <TouchableOpacity
               style = {styles.bottoneRegistrati}
-              onPress={() => props.navigation.navigate('RegistrationPersonalData')}>
+              onPress={() => props.navigation.navigate('Registratione')}>
                 
               
               
