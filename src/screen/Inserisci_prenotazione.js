@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
 
-//npm install react-native-date-picker --save Per la scelta della data
+//npm install react-native-picker-select per la combo box
 
 const styles = StyleSheet.create({
 	container: {
