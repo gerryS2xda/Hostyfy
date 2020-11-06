@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity } from 'react-native'
+import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Picker } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
 
 //npm install react-native-picker-select per la combo box
@@ -77,9 +77,11 @@ const styles = StyleSheet.create({
 
 	  picker: {
 		borderWidth: 10,
-		backgroundColor:'#f2077d'
+		backgroundColor:'#f2077d',
+		width: 50,
 	  }
 })
+
 
 const Inserisci_prenotazione = (props) => {
 	const date = new Date();
@@ -87,6 +89,7 @@ const Inserisci_prenotazione = (props) => {
     <View style = {styles.container}>
         <View style = {styles.topContainer}>
 			<RNPickerSelect
+				style = {styles.picker}
 				onValueChange = {() => {}}
 				placeholder = {{
 					label: 'Struttura',
@@ -96,7 +99,8 @@ const Inserisci_prenotazione = (props) => {
              		{ label: 'Posillipo', value: 'Posillipo' },
                 	{ label: 'Margellina', value: 'Margellina' },
 				]}
-				style = {styles.picker}
+				
+				useNativeAndroidPickerStyle={false}
        		/>
 			<RNPickerSelect
 				onValueChange = {() => {}}
