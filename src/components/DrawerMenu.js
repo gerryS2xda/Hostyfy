@@ -6,44 +6,39 @@
 */
 
 import React from 'react'
-import { Button, View } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
+import LoginScreen from "./src/screen/Login"
+import HomeHostScreen from "./src/screen/Home_host"
+import Registrazione from "./src/screen/Registrazione"
+import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
+import LeMieStrutture from "./src/screen/LeMieStrutture"
 
 const Drawer = createDrawerNavigator();
 
 const DrawerMenu = () => {
     return(
-        <NavigationContainer>
             <Drawer.Navigator initialRouteName="Home">
-                <Drawer.Screen name="Home" component={HomeScreen} />
-                <Drawer.Screen name="Notifications" component={NotificationsScreen} />
+                <Drawer.Screen 
+                  name="Home" 
+                  component={LoginScreen} 
+                  options={{
+                    title: 'Home',
+                    drawerIcon: ({ focused, size }) => {
+                      <Image
+                        source={require('../../assets/home.png')}
+                        style={[focused ? styles.drawerActive : styles.drawerInActive, { height: size, width: size }]}
+                      />
+                  }}} 
+                />
+                <Drawer.Screen name="Area personale" component={NotificationsScreen} options={{ drawerLabel: 'Home' }} />
+                <Drawer.Screen name="Prenotazioni" component={NotificationsScreen} />
+                <Drawer.Screen name="Le mie chiavi digitali" component={NotificationsScreen} />
+                <Drawer.Screen name="Upgrade Host" component={NotificationsScreen} />
+                <Drawer.Screen name="Logout" component={NotificationsScreen} />
             </Drawer.Navigator>
-        </NavigationContainer>
     );
 }
 export default DrawerMenu;
 
-//function for shortcut
-function UserInfo({ navigation }) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          onPress={() => navigation.navigate('Notifications')}
-          title="Go to notifications"
-        />
-      </View>
-    );
-}
 
-function HomeScreen({ navigation }) {
-    return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Button
-          onPress={() => navigation.navigate('Notifications')}
-          title="Go to notifications"
-        />
-      </View>
-    );
-}
 

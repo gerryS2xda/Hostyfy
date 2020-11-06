@@ -15,6 +15,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import DrawerMenu from './src/components/DrawerMenu'
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
@@ -35,7 +36,16 @@ const App = () => {
           <Stack.Screen
            name="HomeHost"
            component={HomeHostScreen}
-           options={{ title: 'Home Host' }}
+           options={{ 
+             title: 'Home Host',
+             headerLeft: () => (
+              <Button
+                onPress={() => alert('This is a button!')}
+                title="Info"
+                color="#fff"
+              />
+            ) 
+          }}
           />
           <Stack.Screen
            name="Registratione"
@@ -53,6 +63,7 @@ const App = () => {
            options={{ title: 'Le mie Strutture' }}
           />
       </Stack.Navigator>
+      <DrawerMenu />
     </NavigationContainer>
   );
 };
