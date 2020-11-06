@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Picker } from 'react-native'
+import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Platform } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
 
 //npm install react-native-picker-select per la combo box
@@ -8,8 +8,13 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'stretch'
+		alignItems: 'center'
 	},
+
+	emptyContainer: {
+		flex: 0.5,
+	},
+
 
 	topContainer: {
 		flex: 2,
@@ -19,14 +24,14 @@ const styles = StyleSheet.create({
 	},
 
 	middleUpperContainer: {
-		flex: 0.5,
+		flex: 0.6,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 
 	middleLowerContainer: {
-		flex: 0.5,
+		flex: 0.3,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
@@ -53,7 +58,7 @@ const styles = StyleSheet.create({
 		borderColor: '#cc3881',
 		borderWidth: 1.4,
 		borderRadius: 8,
-		marginRight:37,
+		marginLeft:20,
 	  },
 
 	  leftTextInput: {
@@ -62,7 +67,7 @@ const styles = StyleSheet.create({
 		borderColor: '#cc3881',
 		borderWidth: 1.4,
 		borderRadius: 8,
-		marginLeft:38,
+		marginRight:20,
 	  },
 
 	  bottone : {
@@ -73,23 +78,40 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		borderRadius:8,
 		backgroundColor: '#f2077d',
+		marginTop:30
 	  },
-
-	  picker: {
-		borderWidth: 10,
-		backgroundColor:'#f2077d',
-		width: 50,
-	  }
 })
 
 
 const Inserisci_prenotazione = (props) => {
-	const date = new Date();
+	const pickerStyle = {
+		inputIOS: {
+			paddingHorizontal: 10,
+			borderRadius: 8,
+			borderWidth:1.4,
+			borderColor: '#cc3881',
+			height:40,
+			width:300,
+			alignItems: 'center',
+			
+		},
+		placeholder: {
+			
+		  },
+		inputAndroid: {
+			paddingHorizontal: 10,
+			backgroundColor: 'red',
+			borderRadius: 5,
+		},
+	};
   return(
     <View style = {styles.container}>
+		<View style = {styles.emptyContainer}>
+
+		</View>
         <View style = {styles.topContainer}>
 			<RNPickerSelect
-				style = {styles.picker}
+				style = {pickerStyle}
 				onValueChange = {() => {}}
 				placeholder = {{
 					label: 'Struttura',
@@ -103,6 +125,7 @@ const Inserisci_prenotazione = (props) => {
 				useNativeAndroidPickerStyle={false}
        		/>
 			<RNPickerSelect
+				style = {pickerStyle}
 				onValueChange = {() => {}}
 				placeholder = {{
 					label: 'Alloggio',
