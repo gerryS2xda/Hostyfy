@@ -38,7 +38,7 @@ const App = () => {
           />
           <Stack.Screen
            name="Registratione"
-           component={RegPersonalData}
+           component={Registrazione}
            options={{ title: 'Registrazione' }}
           />
           <Stack.Screen
