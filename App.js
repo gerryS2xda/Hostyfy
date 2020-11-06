@@ -18,7 +18,7 @@ import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
 
 const Stack = createStackNavigator();
 
-const App = () => {
+function App () {
   return (
     <NavigationContainer>
         <Stack.Navigator>
