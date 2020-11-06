@@ -19,6 +19,7 @@ import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
 import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
+import LeMieStrutture from "./src/screen/LeMieStrutture"
 
 const Stack = createStackNavigator();
 
@@ -45,6 +46,11 @@ const App = () => {
            name="Inserisci"
            component={Inserisci_prenotazione}
            options={{ title: 'Prenotazione' }}
+          />
+          <Stack.Screen
+           name="LeMieStrutture"
+           component={LeMieStrutture}
+           options={{ title: 'Le mie Strutture' }}
           />
       </Stack.Navigator>
     </NavigationContainer>

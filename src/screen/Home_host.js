@@ -103,8 +103,8 @@ const HomeHost = (props) => {
         <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
       </View>
       <View style={styles.centerContainer}>
-        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'Inserisci'/>
-        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci preotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("Inserisci")}/>
+        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
+        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("Inserisci")}/>
         <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni' navPage = 'Inserisci'/>
       </View>
       <View style={styles.bottomContainer}>
