@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView} from 'react-native'
+import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView, Alert} from 'react-native'
 
 const styles = StyleSheet.create({
    
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
 
 
-const RegistrazioneDatiPersonali = (props) => {
+const Registrazione = (props) => {
 
 
 const [nome, setNome] = useState('');
@@ -119,7 +119,8 @@ const [confermaPassword, setConfermaPassword] = useState('');
               <View style={styles.buttonCustomizzato}>
                 <TouchableOpacity
                     style = {styles.bottoneAvanti}
-                    onPress={() => props.navigation.navigate('Registratione')}>    
+                    onPress={() => Alert.alert (
+                      'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Vai al login', onPress: ()=> props.navigation.navigate('Home')}])}>    
                                            <Text style={{color:'#ffffff'}}>Registrati</Text>
                 </TouchableOpacity> 
               </View>
@@ -138,4 +139,4 @@ const [confermaPassword, setConfermaPassword] = useState('');
   );
 }
 
-export default RegistrazioneDatiPersonali;
+export default Registrazione;
