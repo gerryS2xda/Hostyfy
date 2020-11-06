@@ -19,10 +19,10 @@ const DrawerMenu = () => {
     return(
             <Drawer.Navigator initialRouteName="Home">
                 <Drawer.Screen 
-                  name="Home" 
+                  name="Home1" 
                   component={LoginScreen} 
                   options={{
-                    title: 'Home',
+                    title: 'Home1',
                     }} 
                 />
             </Drawer.Navigator>

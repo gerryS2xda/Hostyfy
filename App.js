@@ -44,7 +44,7 @@ const App = () => {
              headerLeft: () => (
               <Icon
                 style={{ paddingLeft: 10 }}
-                onPress={() => DrawerMenu.Navigator.openDrawer()}
+                onPress={() => DrawerMenu.openDrawer()}
                 name="md-menu"  
                 size={30}
               />
