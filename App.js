@@ -26,43 +26,44 @@ import LeMieStrutture from "./src/screen/LeMieStrutture"
 import HomeGuestScreen from "./src/screen/Home_guest"
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator>
-        <Drawer.Screen 
+      <Stack.Navigator screenOptions={{
+        headerShown: false
+      }}>
+        <Stack.Screen 
           name="Home" 
           component={LoginScreen} 
           options={{title: 'Home'}} 
         />
-        <Drawer.Screen 
+        <Stack.Screen 
           name="HomeHost" 
           component={HomeHostScreen} 
           options={{title: 'Home Host'}} 
         />
-        <Drawer.Screen 
+        <Stack.Screen 
           name="Registratione" 
           component={Registrazione} 
           options={{title: 'Registratione'}} 
         />
-        <Drawer.Screen 
+        <Stack.Screen 
           name="InserisciPrenotazione" 
           component={Inserisci_prenotazione} 
           options={{title: 'Prenotazione'}} 
         />
-        <Drawer.Screen 
+        <Stack.Screen 
           name="LeMieStrutture" 
           component={LeMieStrutture} 
           options={{title: 'Le mie strutture'}} 
         />
-        <Drawer.Screen 
+        <Stack.Screen 
           name="HomeGuest" 
           component={HomeGuestScreen} 
           options={{title: 'Home guest'}} 
         />
-      </Drawer.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
