@@ -7,9 +7,10 @@
     Swipe right to open
 */
 
-import { createAppContainer } from 'react-navigation';
+import React from 'react';
+import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from 'react-navigation-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import RegPersonalData from "./src/screen/RegistrazioneDatiPersonali"
@@ -18,7 +19,7 @@ import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
 
 const Stack = createStackNavigator();
 
-function App () {
+const App = () => {
   return (
     <NavigationContainer>
         <Stack.Navigator>
