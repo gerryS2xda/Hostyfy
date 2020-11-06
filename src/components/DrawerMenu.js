@@ -7,11 +7,11 @@
 
 import React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import LoginScreen from "./src/screen/Login"
-import HomeHostScreen from "./src/screen/Home_host"
-import Registrazione from "./src/screen/Registrazione"
-import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
-import LeMieStrutture from "./src/screen/LeMieStrutture"
+import LoginScreen from "../screen/Login"
+import HomeHostScreen from "../screen/Home_host"
+import Registrazione from "../screen/Registrazione"
+import Inserisci_prenotazione from "../screen/Inserisci_prenotazione"
+import LeMieStrutture from "../screen/LeMieStrutture"
 
 const Drawer = createDrawerNavigator();
 
