@@ -97,7 +97,9 @@ const [errore, setErrore] = useState('');
           style = {styles.bottone}
           onPress={() => {
             if(email == "admin@gmail.com") props.navigation.navigate('HomeHost');
-            else setErrore('');
+            else {
+             // props.navigation.navigate('HomeGuest');
+            } ;
           }}
           >
             <Text style={{color:'#ffffff'}}>Accedi</Text>

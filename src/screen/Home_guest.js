@@ -67,10 +67,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
 
-  calendario: {
-    width:100,
-    height:10,
-  }
+  bottoneEsci : {
+    borderWidth: 1,
+    width:300,
+    height:40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius:8,
+    backgroundColor: '#f2077d',
+    marginTop:30
+  },
+
 })
 
 
@@ -93,7 +100,7 @@ const Bottone = (props) => {
 
 
 
-const HomeHost = (props) => {
+const HomeGuest = (props) => {
   return(
     <View style={styles.container}>
       <View style={styles.topContainer} >
@@ -103,23 +110,19 @@ const HomeHost = (props) => {
         <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
       </View>
       <View style={styles.centerContainer}>
-        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
-        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("Inserisci")}/>
-        <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni' navPage = 'Inserisci'/>
+        <Bottone path={require('../../assets/edit.png')} nome= 'Modifica il tuo profilo'/>
+        <Bottone path={require('../../assets/briefcase.png')} nome= 'Prenotazioni'/>
+        <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni'/>
       </View>
       <View style={styles.bottomContainer}>
-      <CalendarPicker 
-        allowRangeSelection = 'True'
-        selectedDayColor = '#cc3881'
-        width = {350}
-        nextTitle = "Successivo"
-        previousTitle = "Precedente"
-        nextTitleStyle = {{color: '#cc3881'}}
-        previousTitleStyle = {{color: '#cc3881'}}
-      />
+      <TouchableOpacity 
+			style = {styles.bottoneEsci}
+		>
+            <Text style={{color:'#ffffff'}}>Esci</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
 }
 
-export default HomeHost
+export default HomeGuest
