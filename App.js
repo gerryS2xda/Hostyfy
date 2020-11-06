@@ -28,161 +28,43 @@ import HomeGuestScreen from "./src/screen/Home_guest"
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-/*
-  NOTA: Per usare il drawer navigator insieme allo stack navigator si e' reso necessario creare una 
-  funzione per ogni screen in modo tale da poter usare la header bar in ogni schermata, quindi
-  per ogni nuova schermata occorre aggiungere un <Drawer.Screen ...> element e settare la props 'component' 
-  con una funzione che restituisce <StackNavigator di tale schermata la cui prop 'component' =  {NomeScreen} 
-*/
-
 const App = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
         <Drawer.Screen 
           name="Home" 
-          component={stackNavigatorForHome} 
+          component={LoginScreen} 
           options={{title: 'Home'}} 
         />
         <Drawer.Screen 
           name="HomeHost" 
-          component={stackNavigatorForHomeHost} 
+          component={HomeHostScreen} 
           options={{title: 'Home Host'}} 
         />
         <Drawer.Screen 
           name="Registratione" 
-          component={stackNavigatorForRegistrazione} 
+          component={Registrazione} 
           options={{title: 'Registratione'}} 
         />
         <Drawer.Screen 
           name="InserisciPrenotazione" 
-          component={stackNavigatorForInsertPrenotazione} 
+          component={Inserisci_prenotazione} 
           options={{title: 'Prenotazione'}} 
         />
         <Drawer.Screen 
           name="LeMieStrutture" 
-          component={stackNavigatorForMieStrutture} 
+          component={LeMieStrutture} 
           options={{title: 'Le mie strutture'}} 
         />
         <Drawer.Screen 
           name="HomeGuest" 
-          component={stackNavigatorForHomeGuest} 
+          component={HomeGuestScreen} 
           options={{title: 'Home guest'}} 
         />
       </Drawer.Navigator>
     </NavigationContainer>
   );
 };
-
-//Functions for use Stack Navigator (now back button on header bar is disable)
-function stackNavigatorForHome(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: "#9AC4F8",
-      },
-      headerTintColor: "white",
-      headerBackTitle: "Back",
-    }}>
-      <Stack.Screen
-      name="Home1"
-      component={LoginScreen}
-      options={{ headerShown: false }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function stackNavigatorForHomeHost(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: "#9AC4F8",
-      },
-      headerTintColor: "white",
-      headerBackTitle: "Back",
-    }}>
-      <Stack.Screen
-      name="HomeHost1"
-      component={HomeHostScreen}
-      options={{ 
-        title: 'Home Host' 
-      }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function stackNavigatorForRegistrazione(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: "#9AC4F8",
-      },
-      headerTintColor: "white",
-      headerBackTitle: "Back",
-    }}>
-      <Stack.Screen
-      name="Registratione1"
-      component={Registrazione}
-      options={{ title: 'Registrazione' }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function stackNavigatorForInsertPrenotazione(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: "#9AC4F8",
-      },
-      headerTintColor: "white",
-      headerBackTitle: "Back",
-    }}>
-      <Stack.Screen
-      name="InserisciPrenotazione1"
-      component={Inserisci_prenotazione}
-      options={{ title: 'Prenotazione' }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function stackNavigatorForMieStrutture(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: "#9AC4F8",
-      },
-      headerTintColor: "white",
-      headerBackTitle: "Back",
-    }}>
-      <Stack.Screen
-      name="LeMieStrutture1"
-      component={LeMieStrutture}
-      options={{ title: 'Le mie Strutture' }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function stackNavigatorForHomeGuest(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerStyle: {
-        backgroundColor: "#9AC4F8",
-      },
-      headerTintColor: "white",
-      headerBackTitle: "Back",
-    }}>
-      <Stack.Screen
-      name="HomeGuest1"
-      component={HomeGuestScreen}
-      options={{ title: 'Home guest' }}
-      />
-    </Stack.Navigator>
-  );
-}
 
 export default App;
