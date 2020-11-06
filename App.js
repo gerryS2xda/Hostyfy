@@ -8,6 +8,7 @@
     6. npm install react native
     7. npm install react-native-picker-select
     8. npm install moment
+    9. npm install react-native-elements
     Swipe right to open
 */
 
@@ -15,7 +16,8 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import DrawerMenu from './src/components/DrawerMenu'
+import { Icon } from 'react-native-elements'
+import DrawerMenu from "./src/components/DrawerMenu"
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
@@ -40,10 +42,11 @@ const App = () => {
            options={{ 
              title: 'Home Host',
              headerLeft: () => (
-              <Button
-                onPress={() => alert('This is a button!')}
-                title="Info"
-                color="#fff"
+              <Icon
+                style={{ paddingLeft: 10 }}
+                onPress={() => DrawerMenu.Navigator.openDrawer()}
+                name="md-menu"  
+                size={30}
               />
             ) 
           }}
@@ -69,7 +72,6 @@ const App = () => {
            options={{ title: 'Home guest' }}
           />
       </Stack.Navigator>
-      <DrawerMenu />
     </NavigationContainer>
   );
 };

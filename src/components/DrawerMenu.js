@@ -23,18 +23,8 @@ const DrawerMenu = () => {
                   component={LoginScreen} 
                   options={{
                     title: 'Home',
-                    drawerIcon: ({ focused, size }) => {
-                      <Image
-                        source={require('../../assets/home.png')}
-                        style={[focused ? styles.drawerActive : styles.drawerInActive, { height: size, width: size }]}
-                      />
-                  }}} 
+                    }} 
                 />
-                <Drawer.Screen name="Area personale" />
-                <Drawer.Screen name="Prenotazioni" />
-                <Drawer.Screen name="Le mie chiavi digitali" />
-                <Drawer.Screen name="Upgrade Host" />
-                <Drawer.Screen name="Logout" />
             </Drawer.Navigator>
     );
 }
