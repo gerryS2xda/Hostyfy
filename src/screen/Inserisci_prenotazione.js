@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'stretch'
 	},
 
 	topContainer: {
@@ -19,14 +19,14 @@ const styles = StyleSheet.create({
 	},
 
 	middleUpperContainer: {
-		flex: 1,
+		flex: 0.5,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 
 	middleLowerContainer: {
-		flex: 1,
+		flex: 0.5,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
@@ -35,10 +35,50 @@ const styles = StyleSheet.create({
 	bottomContainer: {
 		flex: 2,
 		flexDirection: 'column',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
 		alignItems: 'center'
 	},
 
+	singleTextInput: {
+		height: 40,
+		width:300,
+		borderColor: '#cc3881',
+		borderWidth: 1.4,
+		borderRadius: 8,
+	  },
+
+	  rightTextInput: {
+		height: 40,
+		width:130,
+		borderColor: '#cc3881',
+		borderWidth: 1.4,
+		borderRadius: 8,
+		marginRight:37,
+	  },
+
+	  leftTextInput: {
+		height: 40,
+		width:130,
+		borderColor: '#cc3881',
+		borderWidth: 1.4,
+		borderRadius: 8,
+		marginLeft:38,
+	  },
+
+	  bottone : {
+		borderWidth: 1,
+		width:300,
+		height:40,
+		alignItems: 'center',
+		justifyContent: 'center',
+		borderRadius:8,
+		backgroundColor: '#f2077d',
+	  },
+
+	  picker: {
+		borderWidth: 10,
+		backgroundColor:'#f2077d'
+	  }
 })
 
 const Inserisci_prenotazione = (props) => {
@@ -55,7 +95,8 @@ const Inserisci_prenotazione = (props) => {
             	items={[
              		{ label: 'Posillipo', value: 'Posillipo' },
                 	{ label: 'Margellina', value: 'Margellina' },
-            	]}
+				]}
+				style = {styles.picker}
        		/>
 			<RNPickerSelect
 				onValueChange = {() => {}}
@@ -69,30 +110,38 @@ const Inserisci_prenotazione = (props) => {
             	]}
        		/>
 			<TextInput
+				style = {styles.singleTextInput}
 				placeholder = "Nome"
 			/>
 			<TextInput
+				style = {styles.singleTextInput}
 				placeholder = "Cognome"
 			/>
         </View>
         <View style = {styles.middleUpperContainer}>
 			<TextInput
+				style = {styles.leftTextInput}
 				placeholder = "Data inizio"
 			/>
 			<TextInput
+				style = {styles.rightTextInput}
 				placeholder = "Data fine"
 			/>
         </View>
         <View style = {styles.middleLowerContainer}>
 			<TextInput
+				style = {styles.leftTextInput}
 				placeholder = "Numero Persone"
 			/>
 			<TextInput
+				style = {styles.rightTextInput}
 				placeholder = "email"
 			/>
         </View>
         <View style = {styles.bottomContainer}>
-		<TouchableOpacity>
+		<TouchableOpacity 
+			style = {styles.bottone}
+		>
             <Text style={{color:'#ffffff'}}>Inserisci</Text>
         </TouchableOpacity>
         </View>
