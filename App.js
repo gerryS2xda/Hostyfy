@@ -1,9 +1,8 @@
 /* 
     install this dependency before run: 
-    1. npm install react-navigation
-    2. npm install @react-navigation/native 
-    3. npm install @react-navigation/drawer
-    4. npm install react-navigation-stack
+    1. npm install @react-navigation/native @react-navigation/stack 
+    2. npm install @react-navigation/drawer
+    . npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view
     Swipe right to open
 */
 
@@ -54,19 +53,3 @@ const App = () => {
 };
 
 export default App;
-
-/*
-const navigator = createStackNavigator(
-  {
-    Home: LoginScreen,
-    HomeHost: HomeHostScreen,
-    RegistrationPersonalData: RegPersonalData,
-    RegistrationResidenzaData: RegResidenceData,
-    Inserisci: Inserisci_prenotazione
-  },
-  {
-    initialRouteName: "Home"
-  }
-);
-export default createAppContainer(navigator);
-*/
