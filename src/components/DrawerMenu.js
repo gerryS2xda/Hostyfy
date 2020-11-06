@@ -30,11 +30,11 @@ const DrawerMenu = () => {
                       />
                   }}} 
                 />
-                <Drawer.Screen name="Area personale" component={NotificationsScreen} options={{ drawerLabel: 'Home' }} />
-                <Drawer.Screen name="Prenotazioni" component={NotificationsScreen} />
-                <Drawer.Screen name="Le mie chiavi digitali" component={NotificationsScreen} />
-                <Drawer.Screen name="Upgrade Host" component={NotificationsScreen} />
-                <Drawer.Screen name="Logout" component={NotificationsScreen} />
+                <Drawer.Screen name="Area personale" />
+                <Drawer.Screen name="Prenotazioni" />
+                <Drawer.Screen name="Le mie chiavi digitali" />
+                <Drawer.Screen name="Upgrade Host" />
+                <Drawer.Screen name="Logout" />
             </Drawer.Navigator>
     );
 }
