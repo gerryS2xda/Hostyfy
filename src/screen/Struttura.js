@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image, Button, } from 'react-native';
+import {Text, View, Image,ScrollView, TouchableOpacity } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 
@@ -44,17 +44,56 @@ export default class StrutturaScreen extends React.Component {
 
     render() {
         return (
-          <View style={{flex: 1, backgroundColor:'rebeccapurple', paddingTop: 50, }}>
-            <View style={{ flex: 1, flexDirection:'row', justifyContent: 'center', }}>
-                <Carousel
-                  layout={"default"}
-                  ref={ref => this.carousel = ref}
-                  data={this.state.carouselItems}
-                  sliderWidth={300}
-                  itemWidth={300}
-                  renderItem={this._renderItem}
-                  onSnapToItem = { index => this.setState({activeIndex:index}) } />
-            </View>
+            <View >
+                <ScrollView>
+                    <View >
+                        <Text>Le sirene</Text>
+                        <Carousel
+                        layout={"default"}
+                        ref={ref => this.carousel = ref}
+                        data={this.state.carouselItems}
+                        sliderWidth={300}
+                        itemWidth={300}
+                        renderItem={this._renderItem}
+                        onSnapToItem = { index => this.setState({activeIndex:index}) } />
+                        <Text>Le sirene</Text>
+                        <Text>Indirizzo</Text>
+                    </View>
+                    <View>
+                        <Text>Città</Text>
+                        <Text>Cap</Text>
+                    </View>
+                    <View>
+                        <Text>Nazione</Text>
+                        <Text>Tipologia</Text>
+                        <Text>Numero Alloggi</Text>
+                        <Text>Descrizione</Text>
+                    </View>
+                    <View>
+                        <TouchableOpacity 
+			                
+		                >
+                            <Text style={{color:'#ffffff'}}>Modifica Foto</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+			                
+		                >
+                            <Text style={{color:'#ffffff'}}>Modifica Video</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity 
+			               
+		                >
+                            <Text style={{color:'#ffffff'}}>Guida</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View>
+                        <TouchableOpacity 
+			                
+		                >
+                            <Text style={{color:'#ffffff'}}>Visualizza alloggi</Text>
+                        </TouchableOpacity>
+                    </View>
+            </ScrollView>
           </View>
         );
     }
