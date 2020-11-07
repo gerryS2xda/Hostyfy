@@ -24,6 +24,7 @@ import Registrazione from "./src/screen/Registrazione"
 import Inserisci_prenotazione from "./src/screen/Inserisci_prenotazione"
 import LeMieStrutture from "./src/screen/LeMieStrutture"
 import HomeGuestScreen from "./src/screen/Home_guest"
+import StrutturaScreen from "./src/screen/Struttura"
 import PrenotazioneDetailScreen from "./src/screen/PrenotazioneScreen"
 
 const Stack = createStackNavigator();
@@ -63,6 +64,11 @@ const App = () => {
           name="HomeGuest" 
           component={HomeGuestScreen} 
           options={{title: 'Home guest'}} 
+        />
+        <Stack.Screen 
+          name="VisualizzaStruttura" 
+          component={StrutturaScreen} 
+          options={{title: 'Struttura'}} 
         />
         <Stack.Screen 
           name="PrenotazioneDetail" 
