@@ -138,7 +138,9 @@ const Inserisci_prenotazione = (props) => {
             	items={[
              		{ label: 'Mare chiaro', value: 'Mare chiaro' },
                 	{ label: 'Vietri', value: 'Vietri' },
-            	]}
+				]}
+				
+				useNativeAndroidPickerStyle={false}
        		/>
 			<TextInput
 				style = {styles.singleTextInput}
