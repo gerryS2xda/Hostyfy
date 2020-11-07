@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, Text } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 import CustomRow from './CustomRow';
 
 const styles = StyleSheet.create({
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
 
 
 const CustomListView = ({ itemList }) => (
+
     <View style={styles.container}>
         <FlatList
                 data={itemList}
@@ -19,9 +21,10 @@ const CustomListView = ({ itemList }) => (
                     title={item.title}
                     image_url={item.image_url}
                     description = {item.description}
+                   
+                
                 />}
             />
-
     </View>
 );
 
