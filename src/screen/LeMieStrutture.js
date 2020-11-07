@@ -31,7 +31,6 @@ export default class LeMieStrutture extends Component {
   /* Return object for populate the list */
   getData() {
 
-    
     return [
       {
         key: 1, 
@@ -73,7 +72,7 @@ export default class LeMieStrutture extends Component {
           <Text style = {styles.title}>Le mie Strutture</Text>
         </View>
         <CustomListView
-          itemList={this.getData()}
+          itemList={this.getData(), }
         />
       </View>
     );
