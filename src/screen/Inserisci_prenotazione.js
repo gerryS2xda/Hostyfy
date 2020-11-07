@@ -84,6 +84,10 @@ const styles = StyleSheet.create({
 
 
 const Inserisci_prenotazione = (props) => {
+
+	const [struttura, setStruttura] = useState(null);
+	const [alloggio, setAlloggio] = useState('Alloggio');
+	
 	const pickerStyle = {
 		inputIOS: {
 			paddingHorizontal: 10,
@@ -106,6 +110,7 @@ const Inserisci_prenotazione = (props) => {
 			height:40,
 			width:300,
 			alignItems: 'center',
+			color:'#000000'
 		},
 	};
   return(
@@ -116,7 +121,8 @@ const Inserisci_prenotazione = (props) => {
         <View style = {styles.topContainer}>
 			<RNPickerSelect
 				style = {pickerStyle}
-				onValueChange = {() => {}}
+				onValueChange = {(struttura) => {setStruttura(struttura);console.log(struttura);}}
+				value={struttura}
 				placeholder = {{
 					label: 'Struttura',
 					value: "Struttura",
@@ -125,7 +131,6 @@ const Inserisci_prenotazione = (props) => {
              		{ label: 'Posillipo', value: 'Posillipo' },
                 	{ label: 'Margellina', value: 'Margellina' },
 				]}
-				
 				useNativeAndroidPickerStyle={false}
        		/>
 			<RNPickerSelect

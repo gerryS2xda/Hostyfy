@@ -109,7 +109,7 @@ const HomeHost = (props) => {
       </View>
       <View style={styles.bottomContainer}>
       <CalendarPicker 
-        allowRangeSelection = 'True'
+        allowRangeSelection = {true}
         selectedDayColor = '#cc3881'
         width = {350}
         nextTitle = "Successivo"
