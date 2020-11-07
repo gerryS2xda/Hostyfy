@@ -90,16 +90,15 @@ const [errore, setErrore] = useState('');
           style = {styles.input}
           placeholder = ' Password'
           onChangeText = {(password) => setPassword(password)}
-          //secureTextEntry = 'True'
+          secureTextEntry = {true}
         />
         <Text>{errore}</Text>
         <TouchableOpacity
           style = {styles.bottone}
           onPress={() => {
-            if(email == "admin@gmail.com") props.navigation.navigate('HomeHost');
-            else {
-             // props.navigation.navigate('HomeGuest');
-            } ;
+            if(email == "admin") props.navigation.navigate('HomeHost');
+            else props.navigation.navigate('HomeGuest');
+            
           }}
           >
             <Text style={{color:'#ffffff'}}>Accedi</Text>
