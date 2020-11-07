@@ -3,7 +3,7 @@ import {Text, View, Image, Button, } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 
-export default class App extends React.Component {
+export default class StrutturaScreen extends React.Component {
 
  
     constructor(props){
@@ -12,19 +12,19 @@ export default class App extends React.Component {
           activeIndex:0,
           carouselItems: [
           {
-              image:require('./assets/Struttura/struttura1.jpg'),
+              image:require('../../assets/Struttura/struttura1.jpg'),
           },
           {
-              image:require('./assets/Struttura/struttura2.jpg'),
+              image:require('../../assets/Struttura/struttura2.jpg'),
           },
           {
-              image:require('./assets/Struttura/struttura3.jpg'),
+              image:require('../../assets/Struttura/struttura3.jpg'),
           },
           {
-              image:require('./assets/Struttura/struttura4.jpg'),
+              image:require('../../assets/Struttura/struttura4.jpg'),
           },
           {
-              image:require('./assets/Struttura/struttura5.jpg'),
+              image:require('../../assets/Struttura/struttura5.jpg'),
           },
         ]
       }

@@ -55,7 +55,7 @@ return (
     style = {styles.opacity}
     onPress = {() => props.nav.navigate(props.newPage)}>
     <View style={styles.container}>
-        <Image source={{ uri: props.image_url }} style={styles.photo} />
+        <Image source={props.image_url} style={styles.photo} />
         <View style={styles.container_text}>
             <Text style={styles.title}>
                 {props.title}
