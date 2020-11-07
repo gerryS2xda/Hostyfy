@@ -12,19 +12,19 @@ export default class App extends React.Component {
           activeIndex:0,
           carouselItems: [
           {
-              image:require('./Struttura/asset/struttura1.jpg'),
+              image:require('./assets/Struttura/struttura1.jpg'),
           },
           {
-              image:require('./Struttura/asset/struttura1.jpg'),
+              image:require('./assets/Struttura/struttura2.jpg'),
           },
           {
-              image:require('./Struttura/asset/struttura1.jpg'),
+              image:require('./assets/Struttura/struttura3.jpg'),
           },
           {
-              image:require('./Struttura/asset/struttura1.jpg'),
+              image:require('./assets/Struttura/struttura4.jpg'),
           },
           {
-              image:require('./Struttura/asset/struttura1.jpg'),
+              image:require('./assets/Struttura/struttura5.jpg'),
           },
         ]
       }
