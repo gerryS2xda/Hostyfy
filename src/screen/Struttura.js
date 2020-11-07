@@ -1,10 +1,5 @@
-import * as React from 'react';
-import {
-  Text, 
-  View,
-  SafeAreaView ,
-  Image} from 'react-native';
-
+import React from 'react';
+import {Text, View, Image, Button, } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
 
@@ -17,19 +12,19 @@ export default class App extends React.Component {
           activeIndex:0,
           carouselItems: [
           {
-              image:require('./foto.jpg'),
+              image:require('./Struttura/asset/struttura1.jpg'),
           },
           {
-              image:require('./foto.jpg'),
+              image:require('./Struttura/asset/struttura1.jpg'),
           },
           {
-              image:require('./foto.jpg'),
+              image:require('./Struttura/asset/struttura1.jpg'),
           },
           {
-              image:require('./foto.jpg'),
+              image:require('./Struttura/asset/struttura1.jpg'),
           },
           {
-              image:require('./foto.jpg'),
+              image:require('./Struttura/asset/struttura1.jpg'),
           },
         ]
       }
