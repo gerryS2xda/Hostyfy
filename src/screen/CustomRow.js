@@ -48,21 +48,20 @@ const styles = StyleSheet.create({
 });
 
 
-const CustomRow = ({ title, image_url, description, newPage}) => (
+const CustomRow = (props) => {
 
-
+return (
 <TouchableOpacity 
     style = {styles.opacity}
-    onPress = {()=>Alert.alert('ciao')}>
-
+    onPress = {() => props.nav.navigate(props.newPage)}>
     <View style={styles.container}>
-        <Image source={{ uri: image_url }} style={styles.photo} />
+        <Image source={{ uri: props.image_url }} style={styles.photo} />
         <View style={styles.container_text}>
             <Text style={styles.title}>
-                {title}
+                {props.title}
             </Text>
             <Text style={styles.description}>
-                {description}
+                {props.description}
             </Text>
             <Image
                 source = {require('../../assets/arrow.png')}
@@ -73,5 +72,5 @@ const CustomRow = ({ title, image_url, description, newPage}) => (
 
 </TouchableOpacity>
 );
-
+}
 export default CustomRow;

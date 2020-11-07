@@ -11,21 +11,22 @@ const styles = StyleSheet.create({
 });
 
 
-const CustomListView = ({ itemList }) => (
-
+const CustomListView = (props) => {
+    const navigate = props.nav;
+return (
     <View style={styles.container}>
         <FlatList
-                data={itemList}
+                data={props.itemList}
                 renderItem={({ item }) => 
                 <CustomRow
                     title={item.title}
                     image_url={item.image_url}
                     description = {item.description}
-                   
-                
+                    newPage = {item.newPage}
+                    nav= {navigate}
                 />}
             />
     </View>
 );
-
+}
 export default CustomListView;
