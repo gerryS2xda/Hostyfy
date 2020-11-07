@@ -1,67 +1,81 @@
-import React, { useState } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { Component } from 'react';
+import CustomListView from './CustomListView'
+import {
+  StyleSheet,
+  Text,
+  View
+} from 'react-native';
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
-
-const Item = ({ item, onPress, style }) => (
-  <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-    <Text style={styles.title}>{item.title}</Text>
-  </TouchableOpacity>
-);
-
-const App = () => {
-  const [selectedId, setSelectedId] = useState(null);
-
-  const renderItem = ({ item }) => {
-    const backgroundColor = item.id === selectedId ? "#6e3b6e" : "#f9c2ff";
-
-    return (
-      <Item
-        item={item}
-        onPress={() => setSelectedId(item.id)}
-        style={{ backgroundColor }}
-      />
-    );
-  };
-
-  return (
-    <SafeAreaView style={styles.container}>
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-        extraData={selectedId}
-      />
-    </SafeAreaView>
-  );
-};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
+    backgroundColor: '#FCFCFC',
   },
-  item: {
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
+
+  intestazione:{
+    marginTop: 60,
+    marginBottom: -60
   },
-  title: {
-    fontSize: 32,
-  },
+
+  title:
+  {
+    fontSize: 25,
+    marginLeft: 20,
+  }
 });
 
-export default App;
+export default class LeMieStrutture extends Component {
+
+
+  /* Return object for populate the list */
+  getData() {
+    return [
+      {
+        key: 1, title: 'Le Sirene',
+        description: '"Fantastica"',
+        image_url: 'https://cf.bstatic.com/xdata/images/hotel/square200/4614108.webp?k=116fe6a3bca7b49e33e58b089246a611466f4382f84eba40b7d7cd834489eabf&o=',
+      },
+      {
+        key: 2,
+        title: 'Exe Majestic',
+        description: '"Esperienza meravigliosa"',
+        image_url: 'https://cf.bstatic.com/xdata/images/hotel/square200/267141706.webp?k=2dd18385764548528ea9dbef053d45eaf4eda19199adb2400c43c2d7748095b9&o=',
+      
+      },
+      {
+        key: 3,
+        title: 'Villa Domina',
+        description: '"Eccezionale"',
+        image_url: 'https://cf.bstatic.com/xdata/images/hotel/square200/44146554.webp?k=c418ab13d5c0ad2402cb939d157a20953f233ffbba42753b0f00c4195626a1c1&o=',
+      
+      },
+      {
+        key: 4,
+        title: 'Apartments Tudor',
+        description: '"Eccellente"',
+        image_url: 'https://cf.bstatic.com/xdata/images/hotel/square200/203411677.webp?k=147cdadb9a76948eb4d54dc326a80fe8cc8a270596b70957c2aef2aa87bdfcb7&o=',
+      
+      },
+    ]
+  }
+
+
+  render() {
+    return (
+      <View style={styles.container}>
+
+        <View style = {styles.intestazione}>
+          <Text style = {styles.title}>Le mie Strutture</Text>
+        </View>
+        <CustomListView
+          itemList={this.getData()}
+        />
+      </View>
+    );
+  }
+
+
+  
+}
+
