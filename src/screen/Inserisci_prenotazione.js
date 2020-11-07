@@ -100,8 +100,12 @@ const Inserisci_prenotazione = (props) => {
 		  },
 		inputAndroid: {
 			paddingHorizontal: 10,
-			backgroundColor: 'red',
-			borderRadius: 5,
+			borderRadius: 8,
+			borderWidth:1.4,
+			borderColor: '#cc3881',
+			height:40,
+			width:300,
+			alignItems: 'center',
 		},
 	};
   return(
