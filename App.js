@@ -27,6 +27,7 @@ import HomeGuestScreen from "./src/screen/Home_guest"
 import StrutturaScreen from "./src/screen/Struttura"
 import PrenotazioneDetailScreen from "./src/screen/PrenotazioneScreen"
 import DomoticaScreen from "./src/screen/DomoticaScreen"
+import ChiaveScreen from "./src/screen/ChiaveScreen"
 
 const Stack = createStackNavigator();
 
@@ -80,6 +81,11 @@ const App = () => {
           name="InfoCamera" 
           component={DomoticaScreen} 
           options={{title: 'Informazioni camera'}} 
+        />
+        <Stack.Screen 
+          name="LaMiaChiave" 
+          component={ChiaveScreen} 
+          options={{title: 'La mia chiave'}} 
         />
       </Stack.Navigator>
     </NavigationContainer>
