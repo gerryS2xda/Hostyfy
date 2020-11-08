@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-between',
       margin: 10,
-      marginBottom: 20,
+      marginBottom: 20
     },
     bottoneStyle : {
         borderWidth: 1,
