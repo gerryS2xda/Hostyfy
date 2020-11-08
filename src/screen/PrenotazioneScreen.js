@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import HeaderBar from '../components/CustomHeaderBar'
 
 const PrenotazioneScreen = ({navigation}) =>{
     const numeroPren = 10;
@@ -15,55 +16,56 @@ const PrenotazioneScreen = ({navigation}) =>{
     const infoPersone = "2 adulti";
 
     return(
-        <ScrollView style={styles.maincontainer}>
-          <View style={styles.bodycontent}>
-              <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
-              <View style={styles.infoStrutturacontainer}>
-                  <Image style={styles.strutturaImage} source={require("../../assets/hotelImage.png")}/>
-                  <Text style={styles.nameStruttura}>{nameStruttura}</Text>
-              </View>
-              <View style={styles.fieldSet}>
-                  <Text style={styles.legend}>Info prenotazione</Text>
-                  <View style={styles.fieldSetContent}>
-                    <View style={styles.checkInContainer}>
-                        <Text style={styles.categoryText}>Check in</Text>
-                        <Text style={styles.normalText}>{dataCheckOut}</Text>
-                        <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
+        <View style={styles.maincontainer}>
+            <HeaderBar title="Prenotazione" /> 
+            <ScrollView style={styles.bodyScrollcontainer}>
+                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
+                    <View style={styles.infoStrutturacontainer}>
+                        <Image style={styles.strutturaImage} source={require("../../assets/hotelImage.png")}/>
+                        <Text style={styles.nameStruttura}>{nameStruttura}</Text>
                     </View>
-                    <View style={styles.checkOutContainer}>
-                        <Text style={styles.categoryText}>Check out</Text>
-                        <Text style={styles.normalText}>{dataCheckIn}</Text>
-                        <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
+                    <View style={styles.fieldSet}>
+                        <Text style={styles.legend}>Info prenotazione</Text>
+                        <View style={styles.fieldSetContent}>
+                            <View style={styles.checkInContainer}>
+                                <Text style={styles.categoryText}>Check in</Text>
+                                <Text style={styles.normalText}>{dataCheckOut}</Text>
+                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
+                            </View>
+                            <View style={styles.checkOutContainer}>
+                                <Text style={styles.categoryText}>Check out</Text>
+                                <Text style={styles.normalText}>{dataCheckIn}</Text>
+                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
+                            </View>
+                            <View style={styles.costoTotContainer}>
+                                <Text style={styles.categoryText}>Costo totale: </Text>
+                                <Text style={styles.normalText}>{prezzo}€</Text>
+                            </View>
+                        </View>
                     </View>
-                    <View style={styles.costoTotContainer}>
-                        <Text style={styles.categoryText}>Costo totale: </Text>
-                        <Text style={styles.normalText}>{prezzo}€</Text>
+                    <View style={styles.fieldSet}>
+                        <Text style={styles.legend}>Informazioni sulla camera</Text>
+                        <View style={styles.fieldSetContent}>
+                            <View style={styles.horizontalViewInfoCamera}>
+                                <Text style={styles.categoryText}>Camera: </Text>
+                                <Text style={styles.normalText}>{cameraDetails}</Text>
+                            </View>
+                            <View style={styles.horizontalViewInfoCamera}>
+                                <Image style={styles.userIcon} source={require("../../assets/user.png")} />
+                                <Text style={styles.normalText}>{infoPersone}</Text>
+                            </View>
+                        </View>
                     </View>
-                  </View>
-              </View>
-              <View style={styles.fieldSet}>
-                  <Text style={styles.legend}>Informazioni sulla camera</Text>
-                  <View style={styles.fieldSetContent}>
-                    <View style={styles.horizontalViewInfoCamera}>
-                        <Text style={styles.categoryText}>Camera: </Text>
-                        <Text style={styles.normalText}>{cameraDetails}</Text>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('HomeHost'); }} >
+                            <Text style={{color:'#ffffff'}}>Chiave</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('InfoCamera'); }} >
+                            <Text style={{color:'#ffffff'}}>Servizi camera</Text>
+                        </TouchableOpacity>
                     </View>
-                    <View style={styles.horizontalViewInfoCamera}>
-                        <Image style={styles.userIcon} source={require("../../assets/user.png")} />
-                        <Text style={styles.normalText}>{infoPersone}</Text>
-                    </View>
-                  </View>
-              </View>
-              <View style={styles.buttonContainer}>
-                  <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('HomeHost'); }} >
-                      <Text style={{color:'#ffffff'}}>Chiave</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('InfoCamera'); }} >
-                      <Text style={{color:'#ffffff'}}>Servizi camera</Text>
-                  </TouchableOpacity>
-              </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -73,24 +75,22 @@ const styles = StyleSheet.create({
     maincontainer: {
       flex: 1,
       backgroundColor: '#fff',
+      alignItems: 'center',
+      justifyContent: 'center'
     },
-    bodycontent: {
-      flex: 1,
-      backgroundColor: '#fff',
-      margin: 48,
-      marginLeft: 32,
-      marginRight: 32
+    bodyScrollcontainer: {
+      paddingLeft: 32,
+      paddingRight: 32,
     },
     numprenotazionetxt: {
         textAlign: "left",
         fontSize: 18,
         color: "black",
         fontWeight: "bold",
+        marginTop: 16,
         marginBottom: 16,
     },
     infoStrutturacontainer:{
-      flex: 1,
-      backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
       marginBottom: 16
@@ -106,28 +106,20 @@ const styles = StyleSheet.create({
       marginTop: 4
     },
     checkInContainer: {
-      flex: 1,
-      backgroundColor: '#fff',
       marginTop: 16,
     },
     checkOutContainer: {
-        flex: 1,
-        backgroundColor: '#fff',
         marginTop: 16,
     },
     costoTotContainer: {
-      flex: 1,
       flexDirection: 'row', //imposta orientamento orizzontale degli elementi
       backgroundColor: '#fff',
       marginTop: 16,
-      marginBottom: 16,
     },
     horizontalView:{
-      flex: 1,
       flexDirection: 'row',
     },
     horizontalViewInfoCamera:{
-      flex: 1,
       flexDirection: 'row',
       marginTop: 16,
       marginBottom: 4,
@@ -154,6 +146,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         fontSize: 16,
         padding: 4,
+        color: '#f2077d',
     },
     fieldSetContent: {
         alignSelf: "baseline",
@@ -174,6 +167,7 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'space-between',
       margin: 10,
+      marginBottom: 20,
     },
     bottoneStyle : {
         borderWidth: 1,
