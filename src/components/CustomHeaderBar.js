@@ -5,6 +5,9 @@ const CustomHeaderBar = (props) => {
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
             <View style={styles.headerContent}>
+                <TouchableOpacity style={styles.drawerMenuButton} onPress={"onPress"}>
+                  <Image style={styles.drawerIcon} source={require("../../assets/drawerMenu_icon.png")}/>
+                </TouchableOpacity>
                 <Text style={styles.headertitle}>{props.title}</Text>
             </View>
         </View>
@@ -53,6 +56,17 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
+    drawerMenuButton: {
+        position: 'absolute',
+        top: 18,
+        left: 24,
+        bottom: 0,
+        right: 0,
+    }, 
+    drawerIcon: {
+      width: 24,
+      height: 24
+    }
 });

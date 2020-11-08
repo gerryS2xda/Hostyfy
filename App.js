@@ -18,6 +18,7 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
@@ -30,6 +31,7 @@ import DomoticaScreen from "./src/screen/DomoticaScreen"
 import ChiaveScreen from "./src/screen/ChiaveScreen"
 
 const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
