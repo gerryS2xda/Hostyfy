@@ -10,6 +10,7 @@
     8. npm install react-native-picker-select
     9. npm install moment
     10. npm install react-native-elements
+    11. npm install react-native-snap-carousel
     Swipe right to open
 */
 
@@ -17,7 +18,6 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
@@ -26,6 +26,7 @@ import LeMieStrutture from "./src/screen/LeMieStrutture"
 import HomeGuestScreen from "./src/screen/Home_guest"
 import StrutturaScreen from "./src/screen/Struttura"
 import PrenotazioneDetailScreen from "./src/screen/PrenotazioneScreen"
+import DomoticaScreen from "./src/screen/DomoticaScreen"
 
 const Stack = createStackNavigator();
 
@@ -74,6 +75,11 @@ const App = () => {
           name="PrenotazioneDetail" 
           component={PrenotazioneDetailScreen} 
           options={{title: 'Prenotazione'}} 
+        />
+        <Stack.Screen 
+          name="InfoCamera" 
+          component={DomoticaScreen} 
+          options={{title: 'Informazioni camera'}} 
         />
       </Stack.Navigator>
     </NavigationContainer>
