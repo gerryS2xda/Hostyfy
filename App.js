@@ -11,6 +11,7 @@
     9. npm install moment
     10. npm install react-native-elements
     11. npm install react-native-snap-carousel
+    12. npm install react-native-vector-icons
     Swipe right to open
 */
 
