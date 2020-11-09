@@ -30,6 +30,7 @@ import DomoticaScreen from "./src/screen/DomoticaScreen"
 import ChiaveScreen from "./src/screen/ChiaveScreen"
 import DrawerMenuSimple from "./src/components/DrawerMenuSimple"
 import ModificaProfiloScreen from "./src/screen/Modifica_profilo"
+import AlloggioScreen from "./src/screen/Alloggio"
 
 const Stack = createStackNavigator();
 
@@ -98,6 +99,11 @@ const App = () => {
           name="ModificaProfilo" 
           component={ModificaProfiloScreen} 
           options={{title: 'Profilo'}} 
+        />
+        <Stack.Screen 
+          name="Alloggio" 
+          component={AlloggioScreen} 
+          options={{title: 'Alloggio'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
