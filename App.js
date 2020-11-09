@@ -18,7 +18,6 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
@@ -29,90 +28,74 @@ import StrutturaScreen from "./src/screen/Struttura"
 import PrenotazioneDetailScreen from "./src/screen/PrenotazioneScreen"
 import DomoticaScreen from "./src/screen/DomoticaScreen"
 import ChiaveScreen from "./src/screen/ChiaveScreen"
+import DrawerMenuSimple from "./src/components/DrawerMenuSimple"
 
 const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Drawer.Navigator>
-        <Drawer.Screen name="Home" component={LoginScreen} options={{
-          title: 'Home', 
-          swipeEnabled: false, //disabila lo swipe per aprire la drawer bar in quella schermata
-          }} 
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+        <Stack.Screen 
+          name="DrawerMenuSimple" 
+          component={DrawerMenuSimple} 
+          options={{title: 'Home'}} 
         />
-        <Drawer.Screen name="HomeHost" component={HomeHostScreen} options={{title: 'Home host'}} />
-        <Drawer.Screen name="Registratione" component={Registrazione} options={{title: 'Registrazione'}} />
-        <Drawer.Screen name="InserisciPrenotazione" component={Inserisci_prenotazione} options={{title: 'Prenotazione'}} />
-        <Drawer.Screen name="LeMieStrutture" component={LeMieStrutture} options={{title: 'Le mie strutture'}} />
-        <Drawer.Screen name="HomeGuest" component={HomeGuestScreen} options={{title: 'Home guest'}} />
-        <Drawer.Screen name="VisualizzaStruttura" component={StrutturaScreen} options={{title: 'Struttura'}} />
-        <Drawer.Screen name="PrenotazioneDetail" component={PrenotazioneDetailScreen} options={{title: 'Prenotazione'}} />
-        <Drawer.Screen name="InfoCamera" component={DomoticaScreen} options={{title: 'Informazioni camera'}} />
-        <Drawer.Screen name="LaMiaChiave" component={ChiaveScreen} options={{title: 'La mia chiave'}} />
-      </Drawer.Navigator>
+        <Stack.Screen 
+          name="Home" 
+          component={LoginScreen} 
+          options={{title: 'Home'}} 
+        />
+        <Stack.Screen 
+          name="HomeHost" 
+          component={HomeHostScreen} 
+          options={{title: 'Home Host'}} 
+        />
+        <Stack.Screen 
+          name="Registratione" 
+          component={Registrazione} 
+          options={{title: 'Registrazione'}} 
+        />
+        <Stack.Screen 
+          name="InserisciPrenotazione" 
+          component={Inserisci_prenotazione} 
+          options={{title: 'Prenotazione'}} 
+        />
+        <Stack.Screen 
+          name="LeMieStrutture" 
+          component={LeMieStrutture} 
+          options={{title: 'Le mie strutture'}} 
+        />
+        <Stack.Screen 
+          name="HomeGuest" 
+          component={HomeGuestScreen} 
+          options={{title: 'Home guest'}} 
+        />
+        <Stack.Screen 
+          name="VisualizzaStruttura" 
+          component={StrutturaScreen} 
+          options={{title: 'Struttura'}} 
+        />
+        <Stack.Screen 
+          name="PrenotazioneDetail" 
+          component={PrenotazioneDetailScreen} 
+          options={{title: 'Prenotazione'}} 
+        />
+        <Stack.Screen 
+          name="InfoCamera" 
+          component={DomoticaScreen} 
+          options={{title: 'Informazioni camera'}} 
+        />
+        <Stack.Screen 
+          name="LaMiaChiave" 
+          component={ChiaveScreen} 
+          options={{title: 'La mia chiave'}} 
+        />
+      </Stack.Navigator>   
     </NavigationContainer>
   );
 };
 
 export default App;
-
-function loadStackNavigator(){
-  return(
-    <Stack.Navigator screenOptions={{
-      headerShown: false
-    }}>
-      <Stack.Screen 
-        name="Home" 
-        component={LoginScreen} 
-        options={{title: 'Home'}} 
-      />
-      <Stack.Screen 
-        name="HomeHost" 
-        component={HomeHostScreen} 
-        options={{title: 'Home Host'}} 
-      />
-      <Stack.Screen 
-        name="Registratione" 
-        component={Registrazione} 
-        options={{title: 'Registrazione'}} 
-      />
-      <Stack.Screen 
-        name="InserisciPrenotazione" 
-        component={Inserisci_prenotazione} 
-        options={{title: 'Prenotazione'}} 
-      />
-      <Stack.Screen 
-        name="LeMieStrutture" 
-        component={LeMieStrutture} 
-        options={{title: 'Le mie strutture'}} 
-      />
-      <Stack.Screen 
-        name="HomeGuest" 
-        component={HomeGuestScreen} 
-        options={{title: 'Home guest'}} 
-      />
-      <Stack.Screen 
-        name="VisualizzaStruttura" 
-        component={StrutturaScreen} 
-        options={{title: 'Struttura'}} 
-      />
-      <Stack.Screen 
-        name="PrenotazioneDetail" 
-        component={PrenotazioneDetailScreen} 
-        options={{title: 'Prenotazione'}} 
-      />
-      <Stack.Screen 
-        name="InfoCamera" 
-        component={DomoticaScreen} 
-        options={{title: 'Informazioni camera'}} 
-      />
-      <Stack.Screen 
-        name="LaMiaChiave" 
-        component={ChiaveScreen} 
-        options={{title: 'La mia chiave'}} 
-      />
-    </Stack.Navigator>
-  );
-}
