@@ -110,7 +110,7 @@ const HomeGuest = (props) => {
         <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
       </View>
       <View style={styles.centerContainer}>
-        <Bottone path={require('../../assets/edit.png')} nome= 'Modifica il tuo profilo'/>
+        <Bottone path={require('../../assets/edit.png')} nome= 'Modifica il tuo profilo' func ={() => props.navigation.navigate("ModificaProfilo")}/>
         <Bottone path={require('../../assets/briefcase.png')} nome= 'Prenotazioni'/>
         <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni'/>
       </View>

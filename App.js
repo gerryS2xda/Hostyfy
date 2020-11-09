@@ -29,6 +29,7 @@ import PrenotazioneDetailScreen from "./src/screen/PrenotazioneScreen"
 import DomoticaScreen from "./src/screen/DomoticaScreen"
 import ChiaveScreen from "./src/screen/ChiaveScreen"
 import DrawerMenuSimple from "./src/components/DrawerMenuSimple"
+import ModificaProfiloScreen from "./src/screen/Modifica_profilo"
 
 const Stack = createStackNavigator();
 
@@ -92,6 +93,11 @@ const App = () => {
           name="LaMiaChiave" 
           component={ChiaveScreen} 
           options={{title: 'La mia chiave'}} 
+        />
+        <Stack.Screen 
+          name="ModificaProfilo" 
+          component={ModificaProfiloScreen} 
+          options={{title: 'Profilo'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
