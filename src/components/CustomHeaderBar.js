@@ -1,11 +1,12 @@
 import React from'react'
-import { StyleSheet, Platform, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Platform, Text, View, Image, TouchableOpacity } from 'react-native';
+import { DrawerActions } from '@react-navigation/native';
 
 const CustomHeaderBar = (props) => {
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
             <View style={styles.headerContent}>
-                <TouchableOpacity style={styles.drawerMenuButton} onPress={"onPress"}>
+                <TouchableOpacity style={styles.drawerMenuButton} onPress={() => props.navigator.dispatch(DrawerActions.toggleDrawer())}>
                   <Image style={styles.drawerIcon} source={require("../../assets/drawerMenu_icon.png")}/>
                 </TouchableOpacity>
                 <Text style={styles.headertitle}>{props.title}</Text>

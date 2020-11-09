@@ -19,7 +19,7 @@ const PrenotazioneScreen = ({navigation}) =>{
 
     return(
         <View style={styles.maincontainer}>
-            <HeaderBar title="Prenotazione" /> 
+            <HeaderBar title="Prenotazione" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
                     <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
                     <View style={styles.infoStrutturacontainer}>
