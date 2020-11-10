@@ -32,6 +32,7 @@ import ChiaveScreen from "./src/screen/ChiaveScreen"
 import DrawerMenuSimple from "./src/components/DrawerMenuSimple"
 import ModificaProfiloScreen from "./src/screen/Modifica_profilo"
 import AlloggioScreen from "./src/screen/Alloggio"
+import InserisciStrutturaScreen from "./src/screen/Inserisci_struttura"
 
 const Stack = createStackNavigator();
 
@@ -105,6 +106,11 @@ const App = () => {
           name="Alloggio" 
           component={AlloggioScreen} 
           options={{title: 'Alloggio'}} 
+        />
+        <Stack.Screen 
+          name="Inserisci struttura" 
+          component={InserisciStrutturaScreen} 
+          options={{title: 'Inserisci struttura'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
