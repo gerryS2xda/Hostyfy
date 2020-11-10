@@ -36,6 +36,9 @@ import InserisciStrutturaScreen from "./src/screen/Inserisci_struttura"
 import CheckInScreen from "./src/screen/CheckInScreen"
 import VisualizzaAlloggi from "./src/screen/VisualizzaAlloggi"
 import InserisciAlloggio from "./src/screen/Inserisci_alloggio"
+import LeMieChiaviScreen from "./src/screen/LeMieChiavi"
+import VisualizzaPrenotazioniScreen from "./src/screen/VisualizzaPrenotazioni"
+import VisualizzaStoricoPrenScreen from "./src/screen/VisualizzaStoricoPrenotazioni"
 
 const Stack = createStackNavigator();
 
@@ -129,6 +132,21 @@ const App = () => {
           name="InserisciAlloggio" 
           component={InserisciAlloggio} 
           options={{title: 'Inserisci Alloggio'}} 
+        />
+        <Stack.Screen 
+          name="LeMieChiavi" 
+          component={LeMieChiaviScreen} 
+          options={{title: 'Le mie chiavi'}} 
+        />
+        <Stack.Screen 
+          name="VisualizzaPrenotazioni" 
+          component={VisualizzaPrenotazioniScreen} 
+          options={{title: 'Visualizza prenotazioni'}} 
+        />
+        <Stack.Screen 
+          name="StoricoPrenotazioni" 
+          component={VisualizzaStoricoPrenScreen} 
+          options={{title: 'Storico prenotazioni'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
