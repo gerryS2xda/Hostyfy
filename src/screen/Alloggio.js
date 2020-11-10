@@ -148,6 +148,9 @@ export default class AlloggioScreen extends React.Component {
     }
 
     render() {
+
+        const nameCamera = "Suite";
+        const myKey = "0123";
         return (
             
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -188,7 +191,7 @@ export default class AlloggioScreen extends React.Component {
                     <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
                             style = {styles.bottone}
-                            onPress={() => this.props.navigation.navigate('LaMiaChiave')}>
+                            onPress={() => {this.props.navigation.navigate('LaMiaChiave')}}>
 		                
                             <Text style={{color:'#ffffff'}}>Visualizza Chiave</Text>
                         </TouchableOpacity>

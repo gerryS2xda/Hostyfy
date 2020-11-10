@@ -50,56 +50,14 @@ const styles = StyleSheet.create({
 });
 
 
-const CustomRow = (props) => {
-    const [visible, setVisible] = useState(false)
-    const [value, setValue] = useState('');
-    const showDialog = () => setVisible(true);
-    const handleOk = () => setVisible(false);
-    const stato = props.OTP
+const CustomRowGeneral = (props) => {
+    
+    
 return (
 <TouchableOpacity 
     style = {styles.opacity}
-    onPress = {() =>
-        {
-            
-            if(stato == 'true')
-            {
-                props.nav.navigate(props.newPage)
-            }
-            else
-            {
-                setVisible(true)
-            }
-
-        }
-    }>
-        <Dialog.Container visible={visible}>
-          <Dialog.Title>Verifica la tua struttura</Dialog.Title>
-          <Dialog.Description>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
-          <Dialog.Input value={value} onChangeText={setValue} />
-          <Dialog.Button label="Annulla" onPress={handleOk} />
-          <Dialog.Button label="Verifica" onPress={
-
-            ()=>{
-              if(value=='1234')
-              {
-                handleOk
-                Alert.alert("Verifica Struttura", "La tua struttura è stata registrata con successo")
-                setVisible(false)
-                props.nav.navigate("VisualizzaStruttura")
-              }
-              else
-              {
-                handleOk
-                Alert.alert("Verifica Struttura", "Attenzione! Codice Errato, ritenta")
-              }
-            }
-
-            }
-            
-            
-          />
-      </Dialog.Container>
+    onPress = {()=> props.nav.navigate(props.newPage)}>
+           
 
     <View style={styles.container}>
         <Image source={props.image_url} style={styles.photo} />
@@ -120,4 +78,4 @@ return (
 
 );
 }
-export default CustomRow;
+export default CustomRowGeneral;

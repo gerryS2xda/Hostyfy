@@ -78,17 +78,24 @@ arrowExtra: {
   marginTop: -35
 },
 
-dialog:{
-  
-}
+bottone : {
+  borderWidth: 1,
+  width:300,
+  height:40,
+  alignItems: 'center',
+  justifyContent: 'center',
+  borderRadius:8,
+  backgroundColor: '#f2077d',
+},
+
 });
 
-const VisualizzaAlloggi = (props) => {  
+const VisualizzaPrenotazioni = (props) => {  
 
       return (
       <View style={styles.container}>
         <View style = {styles.intestazione}>
-          <Text style = {styles.title}>Alloggi della struttura "Le Sirene"</Text>
+          <Text style = {styles.title}>Prenotazioni</Text>
         </View>
         <CustomListViewGeneral
           nav = {props.navigation}
@@ -96,31 +103,31 @@ const VisualizzaAlloggi = (props) => {
             {
               key: 1, 
               title: 'Alloggio 1',
-              description: '"Fantastica"',
-              image_url: require('../../assets/Alloggio/Alloggio1.jpg'),
-              newPage: 'Alloggio',
+              description: '12/11/2020 - 18/11/2020',
+              image_url: require('../../assets/Struttura/struttura1.jpg'),
+              newPage: 'PrenotazioneScreen',
             },
             {
               key: 2,
               title: 'Alloggio 2',
-              description: '"Esperienza meravigliosa"',
-              image_url: require('../../assets/Alloggio/Alloggio2.jpg'),
-              newPage: 'Alloggio',  
+              description: '11/11/2020 - 17/11/2020',
+              image_url: require('../../assets/Struttura/struttura2.jpg'),
+              newPage: 'PrenotazioneScreen',  
             },
             {
               key: 3,
               title: 'Alloggio 3',
-              description: '"Eccezionale"',
-              image_url: require('../../assets/Alloggio/Alloggio3.jpg'),
-              newPage: 'Alloggio',
+              description: '10/11/2020 - 16/11/2020',
+              image_url: require('../../assets/Struttura/struttura3.jpg'),
+              newPage: 'PrenotazioneScreen',
               
             },
             {
               key: 4,
               title: 'Alloggio 4',
-              description: '"Eccellente"',
-              image_url: require('../../assets/Alloggio/Alloggio4.jpg'),
-              newPage: 'Alloggio',
+              description: '10/11/2020 - 15/11/2020',
+              image_url: require('../../assets/Struttura/struttura4.jpg'),
+              newPage: 'PrenotazioneScreen',
               
             }
             
@@ -129,16 +136,17 @@ const VisualizzaAlloggi = (props) => {
    
         }/>
 
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('InserisciAlloggio')}>
-          <View style = {styles.aggiungiStruttura}>
-            <Image
-                source = {require('../../assets/plus.png')}
-                style = {styles.image} 
-                
-            />
-            </View> 
-        </TouchableOpacity>
+
+          <TouchableOpacity 
+              style = {styles.bottone}
+              onPress={() => props.navigation.navigate('StoricoPrenotazioni')}>
+		
+              <Text style={{color:'#ffffff'}}>StoricoPrenotazioni</Text>
+          </TouchableOpacity>
+        
+          
+           
+        
 
 
         

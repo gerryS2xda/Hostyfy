@@ -35,6 +35,7 @@ import AlloggioScreen from "./src/screen/Alloggio"
 import InserisciStrutturaScreen from "./src/screen/Inserisci_struttura"
 import CheckInScreen from "./src/screen/CheckInScreen"
 import VisualizzaAlloggi from "./src/screen/VisualizzaAlloggi"
+import InserisciAlloggio from "./src/screen/Inserisci_alloggio"
 
 const Stack = createStackNavigator();
 
@@ -123,6 +124,11 @@ const App = () => {
           name="VisualizzaAlloggi" 
           component={VisualizzaAlloggi} 
           options={{title: 'Visualizza Alloggi'}} 
+        />
+        <Stack.Screen 
+          name="InserisciAlloggio" 
+          component={InserisciAlloggio} 
+          options={{title: 'Inserisci Alloggio'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
