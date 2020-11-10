@@ -1,3 +1,4 @@
+import { useLinkProps } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -54,6 +55,9 @@ return (
 <TouchableOpacity 
     style = {styles.opacity}
     onPress = {() => props.nav.navigate(props.newPage)}>
+   
+
+
     <View style={styles.container}>
         <Image source={props.image_url} style={styles.photo} />
         <View style={styles.container_text}>
@@ -69,8 +73,8 @@ return (
             />
         </View>
     </View>
-
 </TouchableOpacity>
+
 );
 }
 export default CustomRow;

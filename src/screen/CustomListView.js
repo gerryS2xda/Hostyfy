@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, Text } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { View, FlatList, StyleSheet, Text, Alert, Image} from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import CustomRow from './CustomRow';
 
 const styles = StyleSheet.create({
@@ -26,7 +26,11 @@ return (
                     nav= {navigate}
                 />}
             />
+
+       
     </View>
+
+    
 );
 }
 export default CustomListView;
