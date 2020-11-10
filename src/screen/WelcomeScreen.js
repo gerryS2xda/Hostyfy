@@ -5,7 +5,7 @@ const WelcomeScreen = () => {
     return(
         <View style={styles.container}>
             <View style={styles.containerLogoTitle}>
-                <Image style={styles.logo} source={require("./assets/HOSTYFY.png")} />
+                <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
                 <Text style={styles.welcometitle}>Benvenuto</Text>
             </View>
             <View style={styles.containerSwipe}>
