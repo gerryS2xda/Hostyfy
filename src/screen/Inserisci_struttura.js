@@ -1,6 +1,7 @@
 import React from 'react';
 import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
+import { TextInput } from 'react-native-gesture-handler';
+
 
 
 
@@ -12,17 +13,12 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
     },
 
-    carouselContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight:50,
-        marginTop:20,
-    },
-
     topContainer: {
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
+        marginTop:40
+
     },
 
     twoFieldContainer: {
@@ -63,7 +59,6 @@ const styles = StyleSheet.create({
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
-        paddingTop:9,
     },
 
     descrizioneField: {
@@ -73,7 +68,7 @@ const styles = StyleSheet.create({
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
-        paddingTop:9,
+        paddingBottom:160
     },
 
     leftField: {
@@ -86,7 +81,6 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         marginLeft: 38,
-        paddingTop:9,
     },
 
     rightField: {
@@ -99,7 +93,6 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         marginRight: 38,
-        paddingTop:9,
     },
 
     bottoneLeft : {
@@ -146,9 +139,6 @@ const styles = StyleSheet.create({
 
   })
 
-
-
-
 export default class InserisciStrutturaScreen extends React.Component {
 
  
@@ -190,55 +180,71 @@ export default class InserisciStrutturaScreen extends React.Component {
 
     render() {
         return (
-            
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <View style={styles.carouselContainer} >
-                        <Carousel
-                        style= {styles.carouselStyle}
-                        layout={"default"}
-                        ref={ref => this.carousel = ref}
-                        data={this.state.carouselItems}
-                        sliderWidth={300}
-                        itemWidth={300}
-                        renderItem={this._renderItem}
-                        onSnapToItem = { index => this.setState({activeIndex:index}) } />
-                    </View>
                     <View style={styles.topContainer}>
-                        <Text style={styles.singleField}>Le sirene</Text>
-                        <Text style={styles.singleField}>Indirizzo</Text>
+                        <TextInput 
+                            style={styles.singleField}
+                            placeholder='Denominazione struttura'
+                        />
+                        <TextInput 
+                            style={styles.singleField}
+                            placeholder='Indirizzo'
+                        />
                     </View>
                     <View style={styles.twoFieldContainer}>
-                        <Text style={styles.leftField}>Città</Text>
-                        <Text style={styles.rightField}>Cap</Text>
+                        <TextInput 
+                            style={styles.leftField}
+                            placeholder='Città'
+                        />
+                        <TextInput 
+                            style={styles.rightField}
+                            placeholder='CAP'
+                        />
                     </View>
                     <View style={styles.middleContainer}>
-                        <Text style={styles.singleField}>Nazione</Text>
-                        <Text style={styles.singleField}>Tipologia</Text>
-                        <Text style={styles.singleField}>Numero Alloggi</Text>
-                        <Text style={styles.descrizioneField}>Descrizione</Text>
+                        <TextInput 
+                            style={styles.singleField}
+                            placeholder='Nazione'
+                        />
+                        <TextInput 
+                            style={styles.singleField}
+                            placeholder='Tipologia'
+                        />
+                        <TextInput 
+                            style={styles.singleField}
+                            placeholder='Numero alloggi'
+                        />
+                        <TextInput 
+                            style={styles.descrizioneField}
+                            placeholder='Descrizione'
+                            width ={300} 
+                            height ={200} 
+                            multiline={true}
+                            numberOfLines={15}
+                        />
                     </View>
                     <View style={styles.threeButtonContainer}>
                         <TouchableOpacity 
 			                style = {styles.bottoneLeft}
 		                >
-                            <Text style={{color:'#ffffff'}}>Modifica Foto</Text>
+                            <Text style={{color:'#ffffff'}}>Inserisci Foto</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
 			               style = {styles.bottoneCenter} 
 		                >
-                            <Text style={{color:'#ffffff'}}>Modifica Video</Text>
+                            <Text style={{color:'#ffffff'}}>Inserisci Video</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
 			               style = {styles.bottoneRight}
 		                >
-                            <Text style={{color:'#ffffff'}}>Guida</Text>
+                            <Text style={{color:'#ffffff'}}>Inserisci Guida</Text>
                         </TouchableOpacity>
                     </View>
                     <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
 			                style = {styles.bottone}
 		                >
-                            <Text style={{color:'#ffffff'}}>Visualizza alloggi</Text>
+                            <Text style={{color:'#ffffff'}}>Aggiungi</Text>
                         </TouchableOpacity>
                     </View>
             </ScrollView>
