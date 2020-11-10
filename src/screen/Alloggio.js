@@ -19,18 +19,6 @@ const styles = StyleSheet.create({
         marginTop:20,
     },
 
-    topContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
-
-    twoFieldContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-    },
-
     middleContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
@@ -73,32 +61,6 @@ const styles = StyleSheet.create({
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
-        paddingTop:9,
-    },
-
-    leftField: {
-        height: 40,
-        width:150,
-        borderColor: '#cc3881',
-        borderWidth: 1.4,
-        marginTop:8,
-        borderRadius: 8,
-        justifyContent:'center',
-        alignItems:'center',
-        marginLeft: 38,
-        paddingTop:9,
-    },
-
-    rightField: {
-        height: 40,
-        width:130,
-        borderColor: '#cc3881',
-        borderWidth: 1.4,
-        marginTop:8,
-        borderRadius: 8,
-        justifyContent:'center',
-        alignItems:'center',
-        marginRight: 38,
         paddingTop:9,
     },
 
@@ -158,19 +120,16 @@ export default class AlloggioScreen extends React.Component {
           activeIndex:0,
           carouselItems: [
           {
-              image:require('../../assets/Struttura/struttura1.jpg'),
+              image:require('../../assets/Struttura/Alloggio4.jpg'),
           },
           {
-              image:require('../../assets/Struttura/struttura2.jpg'),
+              image:require('../../assets/Struttura/Alloggio4.jpg'),
           },
           {
-              image:require('../../assets/Struttura/struttura3.jpg'),
+              image:require('../../assets/Struttura/Alloggio4.jpg'),
           },
           {
-              image:require('../../assets/Struttura/struttura4.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura5.jpg'),
+              image:require('../../assets/Struttura/Alloggio4.jpg'),
           },
         ]
       }
@@ -203,18 +162,10 @@ export default class AlloggioScreen extends React.Component {
                         renderItem={this._renderItem}
                         onSnapToItem = { index => this.setState({activeIndex:index}) } />
                     </View>
-                    <View style={styles.topContainer}>
-                        <Text style={styles.singleField}>Camera 17</Text>
-                        <Text style={styles.singleField}>Indirizzo</Text>
-                    </View>
-                    <View style={styles.twoFieldContainer}>
-                        <Text style={styles.leftField}>Città</Text>
-                        <Text style={styles.rightField}>Cap</Text>
-                    </View>
                     <View style={styles.middleContainer}>
-                        <Text style={styles.singleField}>Nazione</Text>
-                        <Text style={styles.singleField}>Tipologia</Text>
-                        <Text style={styles.singleField}>Numero Alloggi</Text>
+                        <Text style={styles.singleField}>Camera 17</Text>
+                        <Text style={styles.singleField}>Disponibilità</Text>
+                        <Text style={styles.singleField}>Numero camere</Text>
                         <Text style={styles.descrizioneField}>Descrizione</Text>
                     </View>
                     <View style={styles.threeButtonContainer}>
