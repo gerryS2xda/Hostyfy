@@ -12,6 +12,15 @@ import StrutturaScreen from "../screen/Struttura"
 import PrenotazioneDetailScreen from "../screen/PrenotazioneScreen"
 import DomoticaScreen from "../screen/DomoticaScreen"
 import ChiaveScreen from "../screen/ChiaveScreen"
+import ModificaProfiloScreen from "../screen/Modifica_profilo"
+import AlloggioScreen from "../screen/Alloggio"
+import InserisciStrutturaScreen from "../screen/Inserisci_struttura"
+import CheckInScreen from "../screen/CheckInScreen"
+import VisualizzaAlloggi from "../screen/VisualizzaAlloggi"
+import InserisciAlloggio from "../screen/Inserisci_alloggio"
+import LeMieChiaviScreen from "../screen/LeMieChiavi"
+import VisualizzaPrenotazioniScreen from "../screen/VisualizzaPrenotazioni"
+import VisualizzaStoricoPrenScreen from "../screen/VisualizzaStoricoPrenotazioni"
 
 const Drawer = createDrawerNavigator();
 
@@ -32,6 +41,15 @@ const DrawerMenuSimple = (props) =>{
             <Drawer.Screen name="PrenotazioneDetail" component={PrenotazioneDetailScreen} options={{title: 'Prenotazione'}} />
             <Drawer.Screen name="InfoCamera" component={DomoticaScreen} options={{title: 'Informazioni camera'}} />
             <Drawer.Screen name="LaMiaChiave" component={ChiaveScreen} options={{title: 'La mia chiave'}} />
+            <Drawer.Screen name="ModificaProfilo" component={ModificaProfiloScreen} options={{title: 'Profilo'}} />
+            <Drawer.Screen name="Alloggio" component={AlloggioScreen} options={{title: 'Alloggio'}} />
+            <Drawer.Screen name="Inserisci struttura" component={InserisciStrutturaScreen} options={{title: 'Inserisci struttura'}} />
+            <Drawer.Screen name="EffettuaCheckIn" component={CheckInScreen} options={{title: 'Check-In'}} />
+            <Drawer.Screen name="VisualizzaAlloggi" component={VisualizzaAlloggi} options={{title: 'Visualizza Alloggi'}} />
+            <Drawer.Screen name="InserisciAlloggio" component={InserisciAlloggio} options={{title: 'Inserisci alloggio'}} />
+            <Drawer.Screen name="LeMieChiavi" component={LeMieChiaviScreen} options={{title: 'Le mie chiavi'}} />
+            <Drawer.Screen name="VisualizzaPrenotazioni" component={VisualizzaPrenotazioniScreen} options={{title: 'Visualizza prenotazioni'}} />
+            <Drawer.Screen name="StoricoPrenotazioni" component={VisualizzaStoricoPrenScreen} options={{title: 'Storico prenotazioni'}} />
         </Drawer.Navigator>
     );
 }
@@ -70,7 +88,7 @@ function DrawerContentCustom(props){
                                 />
                             )}
                             label="Area personale"
-                            onPress={() => {props.navigation.navigate('HomeHost')}}
+                            onPress={() => {props.navigation.navigate('ModificaProfilo')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
@@ -81,7 +99,7 @@ function DrawerContentCustom(props){
                                 />
                             )}
                             label="Prenotazioni"
-                            onPress={() => {props.navigation.navigate('PrenotazioneDetail')}}
+                            onPress={() => {props.navigation.navigate('VisualizzaPrenotazioni')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (
@@ -103,7 +121,7 @@ function DrawerContentCustom(props){
                                 />
                             )}
                             label="Upgrade Host"
-                            onPress={() => {props.navigation.navigate('LaMiaChiave')}}
+                            onPress={() => {props.navigation.navigate('LeMieChiavi')}}
                         />
                     </View>
                 </View>
