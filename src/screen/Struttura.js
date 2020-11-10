@@ -236,6 +236,7 @@ export default class StrutturaScreen extends React.Component {
                     </View>
                     <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
+                            onPress = {() => props.navigation.navigate("VisualizzaAlloggi")}
 			                style = {styles.bottone}
 		                >
                             <Text style={{color:'#ffffff'}}>Visualizza alloggi</Text>
