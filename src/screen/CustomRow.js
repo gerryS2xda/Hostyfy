@@ -2,6 +2,7 @@ import { useLinkProps } from '@react-navigation/native';
 import React from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Dialog from 'react-native-dialog';
 
 
 const styles = StyleSheet.create({
@@ -54,9 +55,21 @@ const CustomRow = (props) => {
 return (
 <TouchableOpacity 
     style = {styles.opacity}
-    onPress = {() => props.nav.navigate(props.newPage)}>
-   
+    stato = {props.OTP}
+    onPress = {() =>
+        {
+            if(stato == 'True')
+            {
+                props.nav.navigate(props.newPage)
+            }
+            else
+            {
 
+            }
+
+        }
+    }>
+        
 
     <View style={styles.container}>
         <Image source={props.image_url} style={styles.photo} />

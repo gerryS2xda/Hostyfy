@@ -156,7 +156,7 @@ const LeMieStrutture = (props) => {
         </TouchableOpacity>
 
         
-         <Dialog.Container visible={visible}>
+          <Dialog.Container visible={visible}>
           <Dialog.Title>Verifica la tua struttura</Dialog.Title>
           <Dialog.Description>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
           <Dialog.Input value={value} onChangeText={setValue} />

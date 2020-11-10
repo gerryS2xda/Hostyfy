@@ -23,8 +23,21 @@ return (
                     image_url={item.image_url}
                     description = {item.description}
                     newPage = {item.newPage}
-                    nav= {navigate}
-                />}
+                    nav= {navigate}/>
+            
+            
+                
+            
+            
+            
+            
+            
+            
+            }
+
+
+            
+            
             />
 
        
