@@ -33,7 +33,7 @@ const DrawerMenuSimple = (props) =>{
             }} 
             />
             <Drawer.Screen name="HomeHost" component={HomeHostScreen} options={{title: 'Home host'}} />
-            <Drawer.Screen name="Registratione" component={Registrazione} options={{title: 'Registrazione'}} />
+            <Drawer.Screen name="Registratione" component={Registrazione} options={{title: 'Registrazione', swipeEnabled: false}} />
             <Drawer.Screen name="InserisciPrenotazione" component={Inserisci_prenotazione} options={{title: 'Prenotazione'}} />
             <Drawer.Screen name="LeMieStrutture" component={LeMieStrutture} options={{title: 'Le mie strutture'}} />
             <Drawer.Screen name="HomeGuest" component={HomeGuestScreen} options={{title: 'Home guest'}} />
@@ -110,7 +110,7 @@ function DrawerContentCustom(props){
                                 />
                             )}
                             label="Le mie chiavi digitali"
-                            onPress={() => {props.navigation.navigate('LaMiaChiave')}}
+                            onPress={() => {props.navigation.navigate('LeMieChiavi')}}
                         />
                         <DrawerItem 
                             icon={({color, size}) => (

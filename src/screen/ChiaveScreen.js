@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 
-const ChiaveScreen = () =>{
+const ChiaveScreen = ({navigation}) =>{
     const idKey = "0123";
     const cameraName = "Suite Imperiale";
 
@@ -24,7 +24,7 @@ const ChiaveScreen = () =>{
 
     return(
         <View style={styles.maincontainer}>
-            <HeaderBar title="La mia chiave" />
+            <HeaderBar title="La mia chiave" navigator={navigation} />
             <View style={styles.bodyViewContent}>
                 <View style={styles.keyImageIDcontainer}>
                     <Image style={styles.keyImage} source={require("../../assets/electronicKeyHotel.png")}/>
