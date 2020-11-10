@@ -20,7 +20,7 @@ export default CustomHeaderBar;
 const styles = StyleSheet.create({
     headerHeight: Platform.select({    //NOTA: senza considerare la status bar del device
         ios: {
-          height:32, //44 se e' un iPad
+          height:56, //32 se e' un iPhone, 44 se e' un iPad
         },
         android: {
           height:56,
@@ -68,6 +68,6 @@ const styles = StyleSheet.create({
     }, 
     drawerIcon: {
       width: 24,
-      height: 24
+      height: 24,
     }
 });
