@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 
-const ChiaveScreen = ({route}) =>{
-    const { idKey, cameraName } = route.params;
+const ChiaveScreen = () =>{
+    const idKey = "0123";
+    const cameraName = "Suite Imperiale";
 
     const createTwoButtonAlert = () =>
     Alert.alert(
