@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'flex-start',
-      marginTop: "100px",
+      marginTop: 100,
     },
     logo:{
       width: 254,
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     },
     welcometitle:{
       textAlign: "center",
-      fontSize: "28px",
+      fontSize: 28,
       color: "black",
       fontWeight: "bold",
       marginTop: 24,
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      marginBottom: "100px",
+      marginBottom: 100,
       width:200,
     },
   });
