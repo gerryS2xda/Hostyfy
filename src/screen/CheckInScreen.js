@@ -27,7 +27,7 @@ const CheckInScreen = ({navigation}) =>{
 			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
-			width:300,
+			width:140,
 			alignItems: 'center',
 			color:'#000000'
 		},
@@ -67,12 +67,14 @@ const CheckInScreen = ({navigation}) =>{
                         <View style={styles.horizontalView}>
                             <Text style={styles.singleField}>23/11/1963</Text>
                             <Text style={styles.singleField}>M</Text>
-                            <Text style={styles.singleField}>Italiana</Text>
                         </View>
                         <View style={styles.horizontalView}>
                             <Text style={styles.singleField}>Via Mario Rossi, 2</Text>
                             <Text style={styles.singleField}>Avellino (AV)</Text>
+                        </View>
+                        <View style={styles.horizontalView}>
                             <Text style={styles.singleField}>83100</Text>
+                            <Text style={styles.singleField}>Italiana</Text>
                         </View>
                     </View>
                 </View>
@@ -127,8 +129,9 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     },
     bodyScrollcontainer: {
-        paddingLeft: 32,
-        paddingRight: 32,
+        paddingLeft: 24,
+        paddingRight: 24,
+        width: "100%", 
     },
     numprenotazionetxt: {
           textAlign: "left",
@@ -178,19 +181,23 @@ const styles = StyleSheet.create({
     },
     singleField: {
         height: 40,
-        width:100,
+        width:120,
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
         paddingTop:9,
+        marginRight: 12,
     },
     horizontalView: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 10,
+        marginBottom: 8
     },
     textFieldStyle: {
         height: 40,
-        width:150,
+        width:120,
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
