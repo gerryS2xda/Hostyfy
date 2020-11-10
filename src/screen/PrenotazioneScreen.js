@@ -15,7 +15,7 @@ const PrenotazioneScreen = ({navigation}) =>{
     const cameraDetails = "Doppia con letti singoli";
     const infoPersone = "2 adulti";
     const nameCamera = "Suite";
-    const myKey = "0123"
+    const myKey = "0123";
 
     return(
         <View style={styles.maincontainer}>
@@ -59,7 +59,7 @@ const PrenotazioneScreen = ({navigation}) =>{
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('LaMiaChiave', {idKey: myKey, cameraName: nameCamera}); }} >
+                        <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('LaMiaChiave'); }} >
                             <Text style={{color:'#ffffff'}}>Chiave</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('InfoCamera'); }} >
