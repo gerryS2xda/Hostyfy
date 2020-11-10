@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
 
   })
 
-export default class InserisciStrutturaScreen extends React.Component {
+export default class InserisciAlloggioScreen extends React.Component {
 
  
     constructor(props){
