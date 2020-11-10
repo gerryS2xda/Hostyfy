@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     middleContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 100,
     },
 
     threeButtonContainer: {
