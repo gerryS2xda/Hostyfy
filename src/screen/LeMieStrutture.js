@@ -131,58 +131,6 @@ const LeMieStrutture = (props) => {
 
    
         }/>
-
-          <TouchableOpacity
-            style = {styles.opacity}
-            onPress={() => setVisible(true)}>
-                            
-            <View style={styles.containerExtra}>
-                <Image 
-                source= {require('../../assets/Struttura/struttura5.jpg')}
-                style = {styles.photoExtra} />
-                <View style={styles.container_textExtra}>
-                    <Text style={styles.titleExtra}>
-                        Le camerelle
-                    </Text>
-                    <Text style={styles.descriptionExtra}>
-                        Spettacolare
-                    </Text>
-                    <Image
-                        source = {require('../../assets/arrow.png')}
-                        style = {styles.arrowExtra} 
-                    />
-                </View>
-            </View>
-        </TouchableOpacity>
-
-        
-          <Dialog.Container visible={visible}>
-          <Dialog.Title>Verifica la tua struttura</Dialog.Title>
-          <Dialog.Description>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
-          <Dialog.Input value={value} onChangeText={setValue} />
-          <Dialog.Button label="Annulla" onPress={handleOk} />
-          <Dialog.Button label="Verifica" onPress={
-
-            ()=>{
-              if(value=='1234')
-              {
-                handleOk
-                Alert.alert("Verifica Struttura", "La tua struttura è stata registrata con successo")
-                props.navigation.navigate("VisualizzaStruttura")
-              }
-              else
-              {
-                handleOk
-                Alert.alert("Verifica Struttura", "Attenzione! Codice Errato, ritenta")
-              }
-            }
-
-            }
-            
-            
-          />
-      </Dialog.Container>
-        
         <TouchableOpacity
           onPress={() => props.navigation.navigate('Inserisci struttura')}>
           <View style = {styles.aggiungiStruttura}>

@@ -23,27 +23,10 @@ return (
                     image_url={item.image_url}
                     description = {item.description}
                     newPage = {item.newPage}
-                    nav= {navigate}/>
-            
-            
-                
-            
-            
-            
-            
-            
-            
-            }
-
-
-            
-            
-            />
-
-       
-    </View>
-
-    
+                    nav= {navigate}
+                    OTP={item.OTP}/>
+            } />
+    </View>   
 );
 }
 export default CustomListView;
