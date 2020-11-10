@@ -90,33 +90,33 @@ bottone : {
 
 });
 
-const VisualizzaPrenotazioni = (props) => {  
+const VisualizzaStoricoPrenotazioni = (props) => {  
 
       return (
       <View style={styles.container}>
         <View style = {styles.intestazione}>
-          <Text style = {styles.title}>Prenotazioni In corso</Text>
+          <Text style = {styles.title}>Storico Prenotazioni</Text>
         </View>
         <CustomListViewGeneral
           nav = {props.navigation}
           itemList={[
             {
               key: 1, 
-              title: 'Alloggio 1',
-              description: '12/11/2020 - 18/11/2020',
+              title: 'Le Sirene',
+              description: '12/11/2019 - 18/11/2019',
               image_url: require('../../assets/Struttura/struttura1.jpg'),
               newPage: 'PrenotazioneScreen',
             },
             {
               key: 2,
-              title: 'Alloggio 2',
-              description: '11/11/2020 - 17/11/2020',
+              title: 'Exe Majestic',
+              description: '11/11/2019 - 17/11/2020',
               image_url: require('../../assets/Struttura/struttura2.jpg'),
               newPage: 'PrenotazioneScreen',  
             },
             {
               key: 3,
-              title: 'Alloggio 3',
+              title: 'Villa Domina',
               description: '10/11/2020 - 16/11/2020',
               image_url: require('../../assets/Struttura/struttura3.jpg'),
               newPage: 'PrenotazioneScreen',
@@ -124,7 +124,7 @@ const VisualizzaPrenotazioni = (props) => {
             },
             {
               key: 4,
-              title: 'Alloggio 4',
+              title: 'Apartments Tudor',
               description: '10/11/2020 - 15/11/2020',
               image_url: require('../../assets/Struttura/struttura4.jpg'),
               newPage: 'PrenotazioneScreen',
@@ -136,20 +136,6 @@ const VisualizzaPrenotazioni = (props) => {
    
         }/>
 
-
-          <TouchableOpacity 
-              style = {styles.bottone}
-              onPress={() => props.navigation.navigate('VisualizzaStoricoPrenotazioni')}>
-		
-              <Text style={{color:'#ffffff'}}>Storico Prenotazioni</Text>
-          </TouchableOpacity>
-        
-          
-           
-        
-
-
-        
       </View>
 
       
@@ -157,4 +143,4 @@ const VisualizzaPrenotazioni = (props) => {
     );
 }
 
-export default VisualizzaPrenotazioni
+export default VisualizzaStoricoPrenotazioni
