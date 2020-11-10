@@ -33,6 +33,7 @@ import DrawerMenuSimple from "./src/components/DrawerMenuSimple"
 import ModificaProfiloScreen from "./src/screen/Modifica_profilo"
 import AlloggioScreen from "./src/screen/Alloggio"
 import InserisciStrutturaScreen from "./src/screen/Inserisci_struttura"
+import CheckInScreen from "./src/screen/CheckInScreen"
 
 const Stack = createStackNavigator();
 
@@ -111,6 +112,11 @@ const App = () => {
           name="Inserisci struttura" 
           component={InserisciStrutturaScreen} 
           options={{title: 'Inserisci struttura'}} 
+        />
+        <Stack.Screen 
+          name="EffettuaCheckIn" 
+          component={CheckInScreen} 
+          options={{title: 'Check-In'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
