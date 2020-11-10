@@ -134,12 +134,7 @@ const LeMieChiavi = (props) => {
         }/>
 
 
-          <TouchableOpacity 
-              style = {styles.bottone}
-              onPress={() => props.navigation.navigate('VisualizzaStoricoPrenotazioni')}>
-		
-              <Text style={{color:'#ffffff'}}>Storico Prenotazioni</Text>
-          </TouchableOpacity>
+          
         
           
            
@@ -154,4 +149,4 @@ const LeMieChiavi = (props) => {
     );
 }
 
-export default VisualizzaAlloggi
+export default LeMieChiavi
