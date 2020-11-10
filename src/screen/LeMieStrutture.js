@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
@@ -49,7 +50,7 @@ containerExtra: {
   marginLeft:16,
   marginRight:16,
   marginTop: 8,
-  marginBottom: 130,
+  marginBottom: 125,
   borderRadius: 5,
   backgroundColor: '#FFF',
   elevation: 2,
@@ -133,11 +134,8 @@ const LeMieStrutture = (props) => {
 
           <TouchableOpacity
             style = {styles.opacity}
-            onPress={{showDialog}}>
-              
-             
-           
-                    
+            onPress={() => setVisible(true)}>
+                            
             <View style={styles.containerExtra}>
                 <Image 
                 source= {require('../../assets/Struttura/struttura5.jpg')}
@@ -157,11 +155,32 @@ const LeMieStrutture = (props) => {
             </View>
         </TouchableOpacity>
 
-        <Text>Input value: {value}</Text>
+        
          <Dialog.Container visible={visible}>
-          <Dialog.Title>Testing an input</Dialog.Title>
+          <Dialog.Title>Verifica la tua struttura</Dialog.Title>
+          <Dialog.Description>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
           <Dialog.Input value={value} onChangeText={setValue} />
-          <Dialog.Button label="OK" onPress={handleOk} />
+          <Dialog.Button label="Annulla" onPress={handleOk} />
+          <Dialog.Button label="Verifica" onPress={
+
+            ()=>{
+              if(value=='1234')
+              {
+                handleOk
+                Alert.alert("Verifica Struttura", "La tua struttura è stata registrata con successo")
+                props.navigation.navigate("VisualizzaStruttura")
+              }
+              else
+              {
+                handleOk
+                Alert.alert("Verifica Struttura", "Attenzione! Codice Errato, ritenta")
+              }
+            }
+
+            }
+            
+            
+          />
       </Dialog.Container>
         
         <TouchableOpacity

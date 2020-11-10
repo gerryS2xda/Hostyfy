@@ -120,16 +120,16 @@ export default class AlloggioScreen extends React.Component {
           activeIndex:0,
           carouselItems: [
           {
-              image:require('../../assets/Struttura/Alloggio4.jpg'),
+              image:require('../../assets/Alloggio/Alloggio1.jpg'),
           },
           {
-              image:require('../../assets/Struttura/Alloggio4.jpg'),
+              image:require('../../assets/Alloggio/Alloggio2.jpg'),
           },
           {
-              image:require('../../assets/Struttura/Alloggio4.jpg'),
+              image:require('../../assets/Alloggio/Alloggio3.jpg'),
           },
           {
-              image:require('../../assets/Struttura/Alloggio4.jpg'),
+              image:require('../../assets/Alloggio/Alloggio4.jpg'),
           },
         ]
       }
@@ -187,9 +187,10 @@ export default class AlloggioScreen extends React.Component {
                     </View>
                     <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
-			                style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Area domotica</Text>
+                            style = {styles.bottone}
+                            onPress={() => this.props.navigation.navigate('LaMiaChiave')}>
+		                
+                            <Text style={{color:'#ffffff'}}>Visualizza Chiave</Text>
                         </TouchableOpacity>
                     </View>
             </ScrollView>

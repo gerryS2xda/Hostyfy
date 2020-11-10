@@ -88,42 +88,40 @@ const VisualizzaAlloggi = (props) => {
       return (
       <View style={styles.container}>
         <View style = {styles.intestazione}>
-          <Text style = {styles.title}>Gli alloggi a dispo</Text>
+          <Text style = {styles.title}>Alloggi della struttura "Le Sirene"</Text>
         </View>
         <CustomListView
           nav= {props.navigation}
           itemList={[
             {
               key: 1, 
-              title: 'Le Sirene',
+              title: 'Alloggio 1',
               description: '"Fantastica"',
-              image_url: require('../../assets/Struttura/struttura1.jpg'),
-              newPage: 'VisualizzaStruttura',
-              OTP: 'true'
+              image_url: require('../../assets/Alloggio/Alloggio1.jpg'),
+              newPage: 'Alloggio',
             },
             {
               key: 2,
-              title: 'Exe Majestic',
+              title: 'Alloggio 2',
               description: '"Esperienza meravigliosa"',
-              image_url: require('../../assets/Struttura/struttura2.jpg'),
-              newPage: 'VisualizzaStruttura',
-              OTP: 'false'
+              image_url: require('../../assets/Alloggio/Alloggio2.jpg'),
+              newPage: 'Alloggio',  
             },
             {
               key: 3,
-              title: 'Villa Domina',
+              title: 'Alloggio 3',
               description: '"Eccezionale"',
-              image_url: require('../../assets/Struttura/struttura3.jpg'),
-              newPage: 'VisualizzaStruttura',
-              OTP: 'true'
+              image_url: require('../../assets/Alloggio/Alloggio3.jpg'),
+              newPage: 'Alloggio',
+              
             },
             {
               key: 4,
-              title: 'Apartments Tudor',
+              title: 'Alloggio 4',
               description: '"Eccellente"',
-              image_url: require('../../assets/Struttura/struttura4.jpg'),
-              newPage: 'VisualizzaStruttura',
-              OTP: 'true'
+              image_url: require('../../assets/Alloggio/Alloggio4.jpg'),
+              newPage: 'Alloggio',
+              
             }
             
           ]
@@ -131,10 +129,8 @@ const VisualizzaAlloggi = (props) => {
    
         }/>
 
-           
-        
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('Inserisci alloggio')}>
+          onPress={() => props.navigation.navigate('InserisciAlloggio')}>
           <View style = {styles.aggiungiStruttura}>
             <Image
                 source = {require('../../assets/plus.png')}
@@ -153,4 +149,4 @@ const VisualizzaAlloggi = (props) => {
     );
 }
 
-export default LeMieStrutture
+export default VisualizzaAlloggi

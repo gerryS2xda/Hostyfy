@@ -34,6 +34,7 @@ import ModificaProfiloScreen from "./src/screen/Modifica_profilo"
 import AlloggioScreen from "./src/screen/Alloggio"
 import InserisciStrutturaScreen from "./src/screen/Inserisci_struttura"
 import CheckInScreen from "./src/screen/CheckInScreen"
+import VisualizzaAlloggi from "./src/screen/VisualizzaAlloggi"
 
 const Stack = createStackNavigator();
 
@@ -117,6 +118,11 @@ const App = () => {
           name="EffettuaCheckIn" 
           component={CheckInScreen} 
           options={{title: 'Check-In'}} 
+        />
+        <Stack.Screen 
+          name="VisualizzaAlloggi" 
+          component={VisualizzaAlloggi} 
+          options={{title: 'Visualizza Alloggi'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
