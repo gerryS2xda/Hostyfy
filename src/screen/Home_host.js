@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker';
 import HeaderBar from '../components/CustomHeaderBar'
 
@@ -103,7 +103,7 @@ const HomeHost = (props) => {
   return(
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={props.navigation} />
-      <ScrollView contentContainerStyle={styles.container}>
+      <View contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
           <Image
             style = {styles.immagineLogo}  
@@ -126,7 +126,7 @@ const HomeHost = (props) => {
           previousTitleStyle = {{color: '#cc3881'}}
         />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 }

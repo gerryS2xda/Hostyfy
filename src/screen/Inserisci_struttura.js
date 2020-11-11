@@ -48,7 +48,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
         alignItems: 'center',
-        height:70,
+        height:100,
+        marginBottom:10
     },
 
     carouselStyle: {
