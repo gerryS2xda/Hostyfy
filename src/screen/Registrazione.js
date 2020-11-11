@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView, Alert} from 'react-native'
+import * as Font from "expo-font";
 
 const styles = StyleSheet.create({
    
@@ -45,17 +46,19 @@ const styles = StyleSheet.create({
     borderWidth: 1.4,
     marginTop:8,
     borderRadius: 8,
+    fontSize: 40,
   },
 
   bottoneAvanti : {
     borderWidth: 1,
     width:320,
-    height:40,
+    height:40,  
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius:8,
     backgroundColor: '#f2077d',
-    marginTop: 40
+    marginTop: 40,
+    fontSize: 10 
   },
 
 
@@ -65,10 +68,9 @@ const styles = StyleSheet.create({
 })
 
 
-
+// require in the font 
 
 const Registrazione = (props) => {
-
 
 const [nome, setNome] = useState('');
 const [cognome, setCognome] = useState('');
@@ -76,7 +78,6 @@ const [lNascita, setLuogoNascita] = useState('');
 const [dNascita, setDataNascita] = useState('');
 const [errore, setErrore] = useState('');
 const [confermaPassword, setConfermaPassword] = useState('');
-
 
   return(
 

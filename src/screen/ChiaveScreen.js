@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-na
 import HeaderBar from '../components/CustomHeaderBar'
 
 const ChiaveScreen = ({navigation}) =>{
-    const idKey = "0123";
     const cameraName = "Suite Imperiale";
 
     const createTwoButtonAlert = () =>
@@ -25,14 +24,13 @@ const ChiaveScreen = ({navigation}) =>{
     return(
         <View style={styles.maincontainer}>
             <HeaderBar title="La mia chiave" navigator={navigation} />
+            
+            
             <View style={styles.bodyViewContent}>
-                <View style={styles.keyImageIDcontainer}>
-                    <Image style={styles.keyImage} source={require("../../assets/electronicKeyHotel.png")}/>
-                    <Text style={styles.idkeyText}>ID: {idKey}</Text>
-                </View>
+
                 <View style={styles.buttonKeyContainer}>
-                    <TouchableOpacity style = {styles.bottoneStyle} onPress={createTwoButtonAlert} >
-                        <Text style={{color:'#ffffff'}}>Apri porta</Text>
+                    <TouchableOpacity onPress={createTwoButtonAlert} >
+                        <Image style={styles.keyImage} source={require("../../assets/electronicKeyHotel.png")}/>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -59,8 +57,8 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     keyImage: {
-        width: 128,
-        height: 128,
+        width: 250,
+        height: 250,
     },
     idkeyText: {
         fontSize: 16,
