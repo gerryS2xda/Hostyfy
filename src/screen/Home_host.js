@@ -17,21 +17,20 @@ const styles = StyleSheet.create({
   },
   
   topContainer: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    marginTop:10
   },
 
   centerContainer: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    height:180
   },
 
   bottomContainer: {
-    flex: 2,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
