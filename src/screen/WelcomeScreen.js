@@ -1,16 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-const WelcomeScreen = () => {
+const WelcomeScreen = ({navigation}) => {
     return(
         <View style={styles.container}>
-            <View style={styles.containerLogoTitle}>
-                <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
-                <Text style={styles.welcometitle}>Benvenuto</Text>
-            </View>
-            <View style={styles.containerSwipe}>
-                <Text>Slide right per continuare </Text>
-            </View>
+            <TouchableOpacity onPress={() => { navigation.navigate('Home'); }}>
+              <View style={styles.containerLogoTitle}>
+                  <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
+                  <Text style={styles.welcometitle}>Benvenuto</Text>
+              </View>
+              <View style={styles.containerSwipe}>
+                  <Text style={styles.suggestTxt}>Tocca sullo schermo per continuare </Text>
+              </View>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -25,19 +27,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     containerLogoTitle: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      marginTop: 100,
+      marginTop: 120,
     },
     logo:{
-      width: 254,
-      height: 105,
+      width: 300,
+      height: 150,
     },
     welcometitle:{
       textAlign: "center",
-      fontSize: 28,
+      fontSize: 32,
       color: "black",
       fontWeight: "bold",
       marginTop: 24,
@@ -53,7 +51,11 @@ const styles = StyleSheet.create({
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'flex-end',
-      marginBottom: 100,
-      width:200,
+      marginBottom: 60,
     },
+    suggestTxt: {
+      textAlign: 'center',
+      fontSize: 18,
+      color: 'black'
+    }
   });

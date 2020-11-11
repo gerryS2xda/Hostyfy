@@ -29,12 +29,13 @@ const Drawer = createDrawerNavigator();
 const DrawerMenuSimple = (props) =>{
     return( 
         <Drawer.Navigator drawerContent={props =>  <DrawerContentCustom {...props}/>}>
+            <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
             <Drawer.Screen name="Home" component={LoginScreen} options={{
-            title: 'Home', 
-            swipeEnabled: false, //disabila lo swipe per aprire la drawer bar in quella schermata
-            }} 
+                title: 'Home', 
+                swipeEnabled: false, //disabila lo swipe per aprire la drawer bar in quella schermata
+             }} 
             />
-            <Drawer.Screen name="HomeHost" component={HomeHostScreen} options={{title: 'Home host'}} />
+            <Drawer.Screen name="HomeHost" component={HomeHostScreen} options={{title: 'Home host', swipeEnabled: false}} />
             <Drawer.Screen name="Registratione" component={Registrazione} options={{title: 'Registrazione', swipeEnabled: false}} />
             <Drawer.Screen name="InserisciPrenotazione" component={Inserisci_prenotazione} options={{title: 'Prenotazione', swipeEnabled: false}} />
             <Drawer.Screen name="LeMieStrutture" component={LeMieStrutture} options={{title: 'Le mie strutture', swipeEnabled: false}} />
@@ -53,7 +54,6 @@ const DrawerMenuSimple = (props) =>{
             <Drawer.Screen name="VisualizzaPrenotazioni" component={VisualizzaPrenotazioniScreen} options={{title: 'Visualizza prenotazioni', swipeEnabled: false}} />
             <Drawer.Screen name="StoricoPrenotazioni" component={VisualizzaStoricoPrenScreen} options={{title: 'Storico prenotazioni', swipeEnabled: false}} />
             <Drawer.Screen name="UpgradeHost" component={UpgradeHostScreen} options={{title: 'Upgrade host', swipeEnabled: false}} />
-            <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
         </Drawer.Navigator>
     );
 }
