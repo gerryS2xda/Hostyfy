@@ -16,9 +16,10 @@ const CheckInScreen = ({navigation}) =>{
 			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
-			width:300,
+			width:120,
 			alignItems: 'center',
-			
+            marginTop: 8,
+            marginRight: 12,
 		},
 		placeholder: {},
 		inputAndroid: {
@@ -27,16 +28,18 @@ const CheckInScreen = ({navigation}) =>{
 			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
-			width:140,
+			width:120,
 			alignItems: 'center',
-			color:'#000000'
+            color:'#000000',
+            marginTop: 8,
+            marginRight: 12,
 		},
 	};
 
     const createAlertForWelcomeVideo = () =>
         Alert.alert(
         "Check-In",
-        "Benvenuto nella nostra struttura!! Accoglienza mediante video di presentazione nella prossima versione :)"
+        "Benvenuto nella nostra struttura!! Accoglienza mediante video di presentazione nella prossima versione :)",
         [
             {
             text: "Cancel",
@@ -54,7 +57,7 @@ const CheckInScreen = ({navigation}) =>{
             <ScrollView style={styles.bodyScrollcontainer}>
                 <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
                 <View style={styles.infoCheckIncontainer}>
-                    <Image style={styles.checkInImage} source={require("../../assets/hotelImage.png")}/>
+                    <Image style={styles.checkInImage} source={require("../../assets/hotelExampleStruttura.png")}/>
                     <Text style={styles.checkIntxt}>Check-In {nomeOsp}</Text>
                 </View>
                 <View style={styles.fieldSet}>
@@ -88,7 +91,7 @@ const CheckInScreen = ({navigation}) =>{
                                 value={typeDoc}
                                 placeholder = {{
                                     label: 'Tipo documento',
-                                    value: "Select tipo documento",
+                                    value: null,
                                 }}
                                 items={[
                                     { label: 'Carta d\'Identità', value: 'Carta d\'Identità' },
@@ -98,12 +101,12 @@ const CheckInScreen = ({navigation}) =>{
                             />
                             <TextInput
                                 style = {styles.textFieldStyle}
-                                placeholder = 'Numero documento'
+                                placeholder = 'N° documento'
                                 onChangeText = {(numeroDoc) => setNumeroDoc(numeroDoc)}
                             />
                         </View>
                         <TextInput
-                            style = {styles.textFieldStyle}
+                            style = {[styles.textFieldStyle, styles.textFieldStyleSingleRow]}
                             placeholder = 'Luogo di rilascio'
                             onChangeText = {(luogoRilascioDoc) => setLuogoRilascioDoc(luogoRilascioDoc)}
                         />
@@ -147,8 +150,8 @@ const styles = StyleSheet.create({
         marginBottom: 16
     },
     checkInImage:{
-          width: 128,
-          height: 128,
+          width: 192,
+          height: 192,
     },
     checkIntxt: {
         fontSize: 16,
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
     },
     fieldSetContent: {
         alignSelf: "baseline",
-        marginLeft: 16,
+        marginLeft: 8,
     },
     singleField: {
         height: 40,
@@ -195,6 +198,10 @@ const styles = StyleSheet.create({
         marginTop: 10,
         marginBottom: 8
     },
+    comboBoxStyle: {
+        marginTop: 8,
+        marginRight: 8,
+    },
     textFieldStyle: {
         height: 40,
         width:120,
@@ -202,6 +209,9 @@ const styles = StyleSheet.create({
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
+    },
+    textFieldStyleSingleRow: {
+        width: 250, //settare 100% per ottenere tutto lo spazio disponibile
     },
     buttonContainer:{
         flex: 1,
