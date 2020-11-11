@@ -1,44 +1,52 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Platform } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
+import HeaderBar from '../components/CustomHeaderBar'
+
 
 //npm install react-native-picker-select per la combo box
 
 const styles = StyleSheet.create({
+	maincontainer: {
+		backgroundColor: '#fff',
+		justifyContent: 'flex-start',
+		alignItems: 'center'
+	  },
+	  
 	container: {
-		flex: 1,
+		
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
 
 	emptyContainer: {
-		flex: 0.5,
+		height:100
 	},
 
 
 	topContainer: {
-		flex: 2,
+		height:200,
 		flexDirection: 'column',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 
 	middleUpperContainer: {
-		flex: 0.6,
+		height:60,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 
 	middleLowerContainer: {
-		flex: 0.3,
+		height:50,
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center'
 	},
 
 	bottomContainer: {
-		flex: 2,
+		height:300,
 		flexDirection: 'column',
 		justifyContent: 'flex-start',
 		alignItems: 'center'
@@ -114,76 +122,79 @@ const Inserisci_prenotazione = (props) => {
 		},
 	};
   return(
-    <View style = {styles.container}>
-		<View style = {styles.emptyContainer}>
+	<View style={styles.maincontainer}>
+		<HeaderBar title="Inserisci prenotazione" navigator={props.navigation} />
+		<View style = {styles.container}>
+			<View style = {styles.emptyContainer}>
 
+			</View>
+			<View style = {styles.topContainer}>
+				<RNPickerSelect
+					style = {pickerStyle}
+					onValueChange = {(struttura) => {setStruttura(struttura);console.log(struttura);}}
+					value={struttura}
+					placeholder = {{
+						label: 'Struttura',
+						value: "Struttura",
+					}}
+					items={[
+						{ label: 'Posillipo', value: 'Posillipo' },
+						{ label: 'Margellina', value: 'Margellina' },
+					]}
+					useNativeAndroidPickerStyle={false}
+				/>
+				<RNPickerSelect
+					style = {pickerStyle}
+					onValueChange = {() => {}}
+					placeholder = {{
+						label: 'Alloggio',
+						value: "Alloggio",
+					}}
+					items={[
+						{ label: 'Mare chiaro', value: 'Mare chiaro' },
+						{ label: 'Vietri', value: 'Vietri' },
+					]}
+					
+					useNativeAndroidPickerStyle={false}
+				/>
+				<TextInput
+					style = {styles.singleTextInput}
+					placeholder = "Nome"
+				/>
+				<TextInput
+					style = {styles.singleTextInput}
+					placeholder = "Cognome"
+				/>
+			</View>
+			<View style = {styles.middleUpperContainer}>
+				<TextInput
+					style = {styles.leftTextInput}
+					placeholder = "Data inizio"
+				/>
+				<TextInput
+					style = {styles.rightTextInput}
+					placeholder = "Data fine"
+				/>
+			</View>
+			<View style = {styles.middleLowerContainer}>
+				<TextInput
+					style = {styles.leftTextInput}
+					placeholder = "Numero Persone"
+				/>
+				<TextInput
+					style = {styles.rightTextInput}
+					placeholder = "email"
+				/>
+			</View>
+			<View style = {styles.bottomContainer}>
+			<TouchableOpacity 
+				style = {styles.bottone}
+			>
+				<Text style={{color:'#ffffff'}}>Inserisci</Text>
+			</TouchableOpacity>
+			</View>
 		</View>
-        <View style = {styles.topContainer}>
-			<RNPickerSelect
-				style = {pickerStyle}
-				onValueChange = {(struttura) => {setStruttura(struttura);console.log(struttura);}}
-				value={struttura}
-				placeholder = {{
-					label: 'Struttura',
-					value: "Struttura",
-				}}
-            	items={[
-             		{ label: 'Posillipo', value: 'Posillipo' },
-                	{ label: 'Margellina', value: 'Margellina' },
-				]}
-				useNativeAndroidPickerStyle={false}
-       		/>
-			<RNPickerSelect
-				style = {pickerStyle}
-				onValueChange = {() => {}}
-				placeholder = {{
-					label: 'Alloggio',
-					value: "Alloggio",
-				}}
-            	items={[
-             		{ label: 'Mare chiaro', value: 'Mare chiaro' },
-                	{ label: 'Vietri', value: 'Vietri' },
-				]}
-				
-				useNativeAndroidPickerStyle={false}
-       		/>
-			<TextInput
-				style = {styles.singleTextInput}
-				placeholder = "Nome"
-			/>
-			<TextInput
-				style = {styles.singleTextInput}
-				placeholder = "Cognome"
-			/>
-        </View>
-        <View style = {styles.middleUpperContainer}>
-			<TextInput
-				style = {styles.leftTextInput}
-				placeholder = "Data inizio"
-			/>
-			<TextInput
-				style = {styles.rightTextInput}
-				placeholder = "Data fine"
-			/>
-        </View>
-        <View style = {styles.middleLowerContainer}>
-			<TextInput
-				style = {styles.leftTextInput}
-				placeholder = "Numero Persone"
-			/>
-			<TextInput
-				style = {styles.rightTextInput}
-				placeholder = "email"
-			/>
-        </View>
-        <View style = {styles.bottomContainer}>
-		<TouchableOpacity 
-			style = {styles.bottone}
-		>
-            <Text style={{color:'#ffffff'}}>Inserisci</Text>
-        </TouchableOpacity>
-        </View>
-    </View>
+	</View>
   );
 }
 

@@ -4,47 +4,48 @@ import HeaderBar from '../components/CustomHeaderBar'
 
 const styles = StyleSheet.create({
   maincontainer: {
-    flex: 1,
     backgroundColor: '#fff',
   },
-  container: {
-    flex: 0.98,
+  container: {  
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
   
   topContainer: {
-    flex: 1,
+    height:100,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:15
   },
 
   upperMiddleContainer: {
-    flex: 1,
+    
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderWidth: 0.7,
     borderRadius: 10,
     width: 340,
+    height: 200,
+    marginTop:20
   },
 
   lowerMiddleContainer: {
-    flex: 0.8,
+    
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderWidth: 0.7,
     borderRadius: 10,
     width: 340,
-    height: 300,
+    height: 120,
     marginTop:20,
   },
 
   bottomContainer: {
-    flex: 0.7,
+    height:300,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',

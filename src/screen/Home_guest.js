@@ -6,33 +6,37 @@ const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   container: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
   },
   
   topContainer: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    marginTop:10
   },
 
   centerContainer: {
-    flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+    height:170,
+    marginTop:20
+
   },
 
   bottomContainer: {
-    flex: 2,
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:100,
   },
 
   bottone : {

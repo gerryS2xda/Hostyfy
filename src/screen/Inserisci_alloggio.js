@@ -7,7 +7,6 @@ import HeaderBar from '../components/CustomHeaderBar'
 
 const styles = StyleSheet.create({
     maincontainer: {
-        flex: 1,
         backgroundColor: '#fff',
       },
     scrollContainer: {
