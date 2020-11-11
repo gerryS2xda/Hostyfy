@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import Dialog from "react-native-dialog";
@@ -12,26 +12,25 @@ const UpgradeHostScreen = ({navigation}) =>{
     const [isVisibleThirdDialog, setThirdDialogVisible] = useState(false);
     const [valueEmail, setEmailValue] = useState('');
     const [valuePwd, setPwdValue] = useState('');
-    const prezzoUpgrade = 80;
+    const prezzoUpgrade = "80";
     const [valueNumCarta, setNumeroCartaValue] = useState('');
     const [valueDataScadenza, setDataScadenzaValue] = useState('');
+    const [valueCCVScadenza, setCCVValue] = useState('');
 
     return(
         <View style={styles.maincontainer}>
-            <HeaderBar title="Prenotazione" navigator={navigation} /> 
+            <HeaderBar title="Upgrade host" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
                 <Text style={styles.categoryTxt}>Servizi dedicati all'host</Text>
-                <Text style={styles.normalTxt}>
-                    1. Registrazione di una struttura; {"\n"}
-                    2. Gestione smart della propria struttura; {"\n"}
-                    3. Gestione calendario della struttura e alloggi; {"\n"}
-                    4. Visualizzazione alloggi disponibili; {"\n"}
-                    5. Visualizzazione prenotazioni attive e storico; {"\n"}
-                    6. Check-In {"&"} Check-out automatizzato; {"\n"}
-                    7. Gestione clean service; {"\n"}
-                    8. Visualizzazione recensioni; {"\n"}
-                    9. Servizi premium dedicati all'host (chat, shop online, etc.); {"\n"}
-                </Text>
+                    <Text style={styles.normalTxt}>1. Registrazione di una struttura; </Text>
+                    <Text style={styles.normalTxt}>2. Gestione smart della propria struttura; </Text>
+                    <Text style={styles.normalTxt}>3. Gestione calendario della struttura e alloggi; </Text>
+                    <Text style={styles.normalTxt}>4. Visualizzazione alloggi disponibili; </Text>
+                    <Text style={styles.normalTxt}>5. Visualizzazione prenotazioni attive e storico; </Text>
+                    <Text style={styles.normalTxt}>6. Check-In {"&"} Check-out automatizzato; </Text>
+                    <Text style={styles.normalTxt}>7. Gestione clean service; </Text>
+                    <Text style={styles.normalTxt}>8. Visualizzazione recensioni; </Text>
+                    <Text style={styles.normalTxt}>9. Servizi premium dedicati all'host (chat, shop online, etc.). </Text>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity style = {styles.bottoneStyle} onPress={()=>{
                         setFirstDialogVisible(true);
@@ -42,9 +41,9 @@ const UpgradeHostScreen = ({navigation}) =>{
                 <View>
                     <Dialog.Container visible={isVisibleFirstDialog}>
                         <Dialog.Title>Upgrade Host</Dialog.Title>
-                        <Dialog.Description> Inserire le proprie credenziale per continuare il processo </Dialog.Description>
-                        <Dialog.Input label="e-mail:" value={valueEmail} onChangeText={setEmailValue} />
-                        <Dialog.Input label="password:" value={valuePwd} onChangeText={setPwdValue} />
+                        <Dialog.Description>Inserire le proprie credenziale per continuare il processo </Dialog.Description>
+                        <Dialog.Input label="E-mail" value={valueEmail} onChangeText={setEmailValue} />
+                        <Dialog.Input label="Password" value={valuePwd} onChangeText={setPwdValue} />
                         <Dialog.Button label="Procedi" onPress={()=>{
                             setFirstDialogVisible(false);
                             setSecondDialogVisible(true);
@@ -57,7 +56,7 @@ const UpgradeHostScreen = ({navigation}) =>{
                 <View>
                     <Dialog.Container visible={isVisibleSecondDialog}>
                         <Dialog.Title>Upgrade Host</Dialog.Title>
-                        <Dialog.Description> Il costo per effettuare l'upgrade e' {prezzoUpgrade}€ </Dialog.Description>
+                        <Dialog.Description>Il costo per effettuare l'upgrade e' {prezzoUpgrade}€ </Dialog.Description>
                         <Dialog.Button label="Procedi con il pagamento" onPress={()=>{
                             setSecondDialogVisible(false);
                             setThirdDialogVisible(true);
@@ -70,14 +69,15 @@ const UpgradeHostScreen = ({navigation}) =>{
                 <View>
                     <Dialog.Container visible={isVisibleThirdDialog}>
                         <Dialog.Title>Upgrade Host</Dialog.Title>
-                        <Dialog.Description> Inserire le proprie credenziale per continuare il processo </Dialog.Description>
+                        <Dialog.Description>Inserire le informazioni della propria carta di credito </Dialog.Description>
                         <Dialog.Input label="Numero carta:" value={valueNumCarta} onChangeText={setNumeroCartaValue} />
                         <Dialog.Input label="Data scadenza:" value={valueDataScadenza} onChangeText={setDataScadenzaValue} />
+                        <Dialog.Input label="CCV:" value={valueCCVScadenza} onChangeText={setCCVValue} />
                         <Dialog.Button label="Conferma" onPress={()=>{
                             setThirdDialogVisible(false);
                             Alert.alert(
                                 "Upgrade Host",
-                                "Esito dell'operazione positivo! Congratulazione, ora sei un host!",
+                                "Esito dell'operazione positivo! Congratulazioni, ora sei un host!",
                                 [
                                   {
                                     text: "Cancel",
@@ -122,19 +122,21 @@ const styles = StyleSheet.create({
     },
     normalTxt: {
         fontSize: 16, 
-        color: 'black'
+        color: 'black',
+        marginTop: 4,
+        marginLeft: 16,
+        marginRight: 16,
     },
     buttonContainer:{
         flex: 1,
-        flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        margin: 10,
+        justifyContent: 'center',
+        marginTop: 32,
         marginBottom: 20
     },
     bottoneStyle : {
         borderWidth: 1,
-        width: 120,
+        width: 150,
         height: 32,
         alignItems: 'center',
         justifyContent: 'center',
