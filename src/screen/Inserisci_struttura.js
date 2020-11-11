@@ -101,34 +101,24 @@ const styles = StyleSheet.create({
 
     bottoneLeft : {
         borderWidth: 1,
-        width:100,
+        width:140,
         height:40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:8,
         backgroundColor: '#f2077d',
-        marginLeft:15,
-      },
-
-      bottoneCenter : {
-        borderWidth: 1,
-        width:120,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
+        marginLeft:38,
       },
 
       bottoneRight : {
         borderWidth: 1,
-        width:100,
+        width:140,
         height:40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:8,
         backgroundColor: '#f2077d',
-        marginRight:15,
+        marginRight:38,
       },
 
       bottone : {
@@ -139,6 +129,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius:8,
         backgroundColor: '#f2077d',
+        marginTop:10,
       },
 
   })
@@ -236,17 +227,17 @@ export default class InserisciStrutturaScreen extends React.Component {
                             <Text style={{color:'#ffffff'}}>Inserisci Foto</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-			               style = {styles.bottoneCenter} 
+			               style = {styles.bottoneRight} 
 		                >
                             <Text style={{color:'#ffffff'}}>Inserisci Video</Text>
                         </TouchableOpacity>
+                    </View>
+                    <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
-			               style = {styles.bottoneRight}
+			               style = {styles.bottone}
 		                >
                             <Text style={{color:'#ffffff'}}>Inserisci Guida</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
 			                style = {styles.bottone}
 		                >

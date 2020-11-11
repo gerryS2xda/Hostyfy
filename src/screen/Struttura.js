@@ -52,7 +52,8 @@ const styles = StyleSheet.create({
 		flexDirection: 'column',
 		justifyContent: 'center',
         alignItems: 'center',
-        height:70,
+        height:100,
+        marginBottom:10
     },
 
     carouselStyle: {
@@ -108,34 +109,24 @@ const styles = StyleSheet.create({
 
     bottoneLeft : {
         borderWidth: 1,
-        width:100,
+        width:140,
         height:40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:8,
         backgroundColor: '#f2077d',
-        marginLeft:15,
-      },
-
-      bottoneCenter : {
-        borderWidth: 1,
-        width:120,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
+        marginLeft:38,
       },
 
       bottoneRight : {
         borderWidth: 1,
-        width:100,
+        width:140,
         height:40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:8,
         backgroundColor: '#f2077d',
-        marginRight:15,
+        marginRight:38,
       },
 
       bottone : {
@@ -146,6 +137,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderRadius:8,
         backgroundColor: '#f2077d',
+        marginTop:10,
       },
 
   })
@@ -185,7 +177,7 @@ export default class StrutturaScreen extends React.Component {
           <View style={{ justifyContent:'center',
             marginLeft:50
               }}>
-           <Image style={{width:250, height:250}} source = {item.image} />
+           <Image style={{width:250, height:250, borderRadius:10}} source = {item.image} />
             <Text>{item.title}</Text>
           </View>
 
@@ -229,17 +221,18 @@ export default class StrutturaScreen extends React.Component {
                             <Text style={{color:'#ffffff'}}>Modifica Foto</Text>
                         </TouchableOpacity>
                         <TouchableOpacity 
-			               style = {styles.bottoneCenter} 
+			               style = {styles.bottoneRight} 
 		                >
                             <Text style={{color:'#ffffff'}}>Modifica Video</Text>
                         </TouchableOpacity>
+                    </View>
+                    <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
-			               style = {styles.bottoneRight}
+                            onPress = {() => this.props.navigation.navigate("VisualizzaAlloggi")}
+			                style = {styles.bottone}
 		                >
                             <Text style={{color:'#ffffff'}}>Guida</Text>
                         </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomButtonContainer}> 
                         <TouchableOpacity 
                             onPress = {() => this.props.navigation.navigate("VisualizzaAlloggi")}
 			                style = {styles.bottone}
