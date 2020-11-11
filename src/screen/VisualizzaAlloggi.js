@@ -27,13 +27,19 @@ const styles = StyleSheet.create({
     marginLeft: 20,
   },
 
-  image:{
-    
-  },
-
   aggiungiStruttura:{
-    marginLeft: 320,
-    marginBottom: 25
+
+    ...Platform.select({
+        ios: {
+          marginLeft: 310,
+          marginBottom: 50
+        },
+        android: 
+        {
+          marginLeft: 320,
+          marginBottom: 50
+        }
+    })
   },
 
   containerExtra: {

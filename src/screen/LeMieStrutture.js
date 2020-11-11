@@ -38,7 +38,7 @@ aggiungiStruttura:{
 
   ...Platform.select({
       ios: {
-        marginLeft: 150,
+        marginLeft: 310,
         marginBottom: 50
       },
       android: 
