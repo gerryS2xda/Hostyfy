@@ -47,13 +47,18 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator screenOptions={{
+        <Stack.Navigator initialRouteName= "Home" screenOptions={{
           headerShown: false
         }}>
         <Stack.Screen 
           name="DrawerMenuSimple" 
           component={DrawerMenuSimple} 
           options={{title: 'Home'}} 
+        />
+        <Stack.Screen 
+          name="WelcomePage" 
+          component={WelcomeScreen} 
+          options={{title: 'Welcome'}} 
         />
         <Stack.Screen 
           name="Home" 
@@ -154,11 +159,6 @@ const App = () => {
           name="UpgradeHost" 
           component={UpgradeHostScreen} 
           options={{title: 'Upgrade Host'}} 
-        />
-        <Stack.Screen 
-          name="WelcomePage" 
-          component={WelcomeScreen} 
-          options={{title: 'Welcome'}} 
         />
       </Stack.Navigator>   
     </NavigationContainer>
