@@ -62,13 +62,15 @@ const DrawerMenuSimple = (props) =>{
 export default DrawerMenuSimple;
 
 function DrawerContentCustom(props){
-    const [isHost, setIsHost] = useState(true);
+    //<Icon>
     const colorIcon = "black";
     const sizeIcon = 24;
-    const colorLabel = "black"; //colore delle label del <DrawerItem>
+    //gestione dello switch Guest<>Host
+    const [isHost, setIsHost] = useState(false); //NOTA: questi valori dovranno essere letti dal DB
     const toggleSwitchGuestHost = () => {
         setIsHost(previousState => !previousState);
     };
+    const [isUpgradePay, setIsUpgradePay] = useState(true); 
 
     const createNextRealeaseFeatureAlert = () =>
         Alert.alert(
@@ -97,6 +99,7 @@ function DrawerContentCustom(props){
             },
             { text: "OK", onPress: () =>{
                     setIsHost(false);
+                    setIsUpgradePay(false);
                 } 
             }
         ],
@@ -113,6 +116,18 @@ function DrawerContentCustom(props){
                             <View style={styles.horizontalView}>
                                 <Image style = {styles.avatarImage} source ={require('../../assets/user.png')}/>
                                 <Text style={styles.userInfo}>Tizio Caio</Text>
+                                <View style={styles.horizontalViewSwitch}>
+                                    <Text style={styles.labelSwitchTxt}>Guest</Text>
+                                    <Switch style={styles.switchStyle}
+                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                        thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
+                                        onValueChange={toggleSwitchGuestHost}
+                                        value={isHost}
+                                    />
+                                    <Text style={styles.labelSwitchTxt}>Host</Text>
+                                </View>
                             </View>
                         </View>
                         <View style={styles.drawerSection}>
@@ -140,7 +155,8 @@ function DrawerContentCustom(props){
                                 icon={() => (<Icon name="arrow-up-bold-circle" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Upgrade host</Text>)}
                                 onPress={() => {
-                                        setIsHost(true); //dovra' essere rimosso non appena si perfeziona implementazione    
+                                        setIsHost(true); //dovra' essere rimosso non appena si perfeziona implementazione
+                                        setIsUpgradePay(true); //per la demo (si dovra' gestire in altro modo questo)    
                                         props.navigation.navigate('UpgradeHost');
                                     }
                                 }
@@ -172,6 +188,7 @@ function DrawerContentCustom(props){
                                         trackColor={{ false: "#767577", true: "#81b0ff" }}
                                         thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
                                         ios_backgroundColor="#3e3e3e"
+                                        disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
                                         onValueChange={toggleSwitchGuestHost}
                                         value={isHost}
                                     />
@@ -265,12 +282,13 @@ const styles = StyleSheet.create({
     userInfo: {
         fontSize: 16,
         marginTop: 1,
-        fontWeight: 'bold',
-        color: 'black'
+        color: 'black',
+        fontFamily: 'Montserrant',
     },
     labelDrawerItemStyle: {
         fontSize: 14, 
         color: 'black',
+        fontFamily: 'Montserrant',
     },
     drawerSection: {
         marginTop: 8,
@@ -282,16 +300,16 @@ const styles = StyleSheet.create({
     },
     horizontalViewSwitch: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         marginLeft: 12,
     },
     labelSwitchTxt: {
         fontSize: 16,
         marginTop: 1,
-        color: 'black'
+        color: 'black',
+        fontFamily: 'Montserrant',
     },
     switchStyle: {
-        marginRight: 4,
+        marginRight: 2,
         marginTop: 0,
     }
 });
