@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker';
+import HeaderBar from '../components/CustomHeaderBar'
 
 const styles = StyleSheet.create({
+  maincontainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -95,28 +101,31 @@ const Bottone = (props) => {
 
 const HomeHost = (props) => {
   return(
-    <View style={styles.container}>
-      <View style={styles.topContainer} >
-        <Image
-          style = {styles.immagineLogo}  
-          source ={require('../../assets/user.png')}/>
-        <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
-      </View>
-      <View style={styles.centerContainer}>
-        <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
-        <Bottone path={require('../../assets/add.png')} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("InserisciPrenotazione")}/>
-        <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni' navPage = 'Inserisci'/>
-      </View>
-      <View style={styles.bottomContainer}>
-      <CalendarPicker 
-        allowRangeSelection = {true}
-        selectedDayColor = '#cc3881'
-        width = {350}
-        nextTitle = "Successivo"
-        previousTitle = "Precedente"
-        nextTitleStyle = {{color: '#cc3881'}}
-        previousTitleStyle = {{color: '#cc3881'}}
-      />
+    <View style={styles.maincontainer}>
+      <HeaderBar title="Home" navigator={props.navigation} />
+      <View style={styles.container}>
+        <View style={styles.topContainer} >
+          <Image
+            style = {styles.immagineLogo}  
+            source ={require('../../assets/user.png')}/>
+          <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
+        </View>
+        <View style={styles.centerContainer}>
+          <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
+          <Bottone path={require('../../assets/add.png')} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("InserisciPrenotazione")}/>
+          <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni' navPage = 'Inserisci'/>
+        </View>
+        <View style={styles.bottomContainer}>
+        <CalendarPicker 
+          allowRangeSelection = {true}
+          selectedDayColor = '#cc3881'
+          width = {350}
+          nextTitle = "Successivo"
+          previousTitle = "Precedente"
+          nextTitleStyle = {{color: '#cc3881'}}
+          previousTitleStyle = {{color: '#cc3881'}}
+        />
+        </View>
       </View>
     </View>
   );
