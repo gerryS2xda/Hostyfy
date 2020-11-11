@@ -1,8 +1,12 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity } from 'react-native'
-import CalendarPicker from 'react-native-calendar-picker';
+import HeaderBar from '../components/CustomHeaderBar'
 
 const styles = StyleSheet.create({
+  maincontainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   container: {
     flex: 0.98,
     flexDirection: 'column',
@@ -78,54 +82,57 @@ const styles = StyleSheet.create({
 
 const Modifica_profilo = (props) => {
   return(
-    <View style = {styles.container}>
-      <View style = {styles.topContainer}>
-        <Image
-          style = {styles.immagineLogo}  
-          source ={require('../../assets/user.png')}/>
-      </View>
-      <View style = {styles.upperMiddleContainer}>
-          <View>
+    <View style={styles.maincontainer}>
+      <HeaderBar title="Profilo" navigator={props.navigation} />
+      <View style = {styles.container}>
+        <View style = {styles.topContainer}>
+          <Image
+            style = {styles.immagineLogo}  
+            source ={require('../../assets/user.png')}/>
+        </View>
+        <View style = {styles.upperMiddleContainer}>
+            <View>
 
+            </View>
+          <TextInput
+              style = {styles.singleTextInput}
+              placeholder='Nome'
+          />
+          <TextInput
+              style = {styles.singleTextInput}
+              placeholder='Cognome'
+          />
+          <TextInput
+              style = {styles.singleTextInput}
+              placeholder='Email'
+          />
+          <View>
+                
           </View>
-        <TextInput
-            style = {styles.singleTextInput}
-            placeholder='Nome'
-        />
-         <TextInput
-            style = {styles.singleTextInput}
-            placeholder='Cognome'
-        />
-         <TextInput
-            style = {styles.singleTextInput}
-            placeholder='Email'
-        />
-        <View>
-              
         </View>
-      </View>
-      <View style = {styles.lowerMiddleContainer}>
-        <View>
-              
+        <View style = {styles.lowerMiddleContainer}>
+          <View>
+                
+          </View>
+          <TextInput
+              style = {styles.singleTextInput}
+              placeholder='Vecchia password'
+          />
+          <TextInput
+              style = {styles.singleTextInput}
+              placeholder='Nuova password'
+          />
+          <View>
+                
+          </View>
         </View>
-        <TextInput
-            style = {styles.singleTextInput}
-            placeholder='Vecchia password'
-        />
-         <TextInput
-            style = {styles.singleTextInput}
-            placeholder='Nuova password'
-        />
-        <View>
-              
+        <View style = {styles.bottomContainer}>
+          <TouchableOpacity 
+        style = {styles.bottone}
+      >
+              <Text style={{color:'#ffffff'}}>Salva modifiche</Text>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style = {styles.bottomContainer}>
-        <TouchableOpacity 
-			style = {styles.bottone}
-		>
-            <Text style={{color:'#ffffff'}}>Salva modifiche</Text>
-        </TouchableOpacity>
       </View>
     </View>
   );

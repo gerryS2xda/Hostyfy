@@ -1,11 +1,15 @@
 import React from 'react';
 import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
+import HeaderBar from '../components/CustomHeaderBar'
 
 
 
 const styles = StyleSheet.create({
-    
+    maincontainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+      },
     scrollContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
@@ -152,7 +156,8 @@ export default class AlloggioScreen extends React.Component {
         const nameCamera = "Suite";
         const myKey = "0123";
         return (
-            
+            <View style={styles.maincontainer}>
+                <HeaderBar title="Alloggi" navigator={this.props.navigation} />
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.carouselContainer} >
                         <Carousel
@@ -196,8 +201,8 @@ export default class AlloggioScreen extends React.Component {
                             <Text style={{color:'#ffffff'}}>Visualizza Chiave</Text>
                         </TouchableOpacity>
                     </View>
-            </ScrollView>
-         
+                </ScrollView>
+            </View>
         );
     }
 }

@@ -1,12 +1,15 @@
 import React from 'react';
 import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-
+import HeaderBar from '../components/CustomHeaderBar'
 
 
 
 const styles = StyleSheet.create({
-    
+    maincontainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+      },
     scrollContainer: {
         flexDirection: 'column',
         justifyContent: 'center',
@@ -143,6 +146,8 @@ export default class InserisciAlloggioScreen extends React.Component {
 
     render() {
         return (
+            <View style={styles.maincontainer}>
+                <HeaderBar title="Inserisci Alloggio" navigator={this.props.navigation} />
                 <ScrollView contentContainerStyle={styles.scrollContainer}>
                     <View style={styles.middleContainer}>
                         <TextInput 
@@ -186,8 +191,8 @@ export default class InserisciAlloggioScreen extends React.Component {
                             <Text style={{color:'#ffffff'}}>Aggiungi</Text>
                         </TouchableOpacity>
                     </View>
-            </ScrollView>
-         
+                </ScrollView>
+            </View>
         );
     }
 }
