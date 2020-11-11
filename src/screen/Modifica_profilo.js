@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
   },
 
   bottomContainer: {
-    height:300,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
