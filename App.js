@@ -47,7 +47,7 @@ const Stack = createStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName= "Home" screenOptions={{
+        <Stack.Navigator screenOptions={{
           headerShown: false
         }}>
         <Stack.Screen 
