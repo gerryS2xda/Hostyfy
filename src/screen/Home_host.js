@@ -7,12 +7,12 @@ const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
 
   container: {
-    flex: 1,
+    flex:1,
     flexDirection: 'column',
   },
   
@@ -20,20 +20,22 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop:10
+    marginTop:10,
   },
 
   centerContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height:180
+    height:170,
+    marginTop:20
   },
 
   bottomContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop:15
   },
 
   bottone : {
