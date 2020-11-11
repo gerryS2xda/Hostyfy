@@ -56,7 +56,7 @@ const UpgradeHostScreen = ({navigation}) =>{
                 <View>
                     <Dialog.Container visible={isVisibleSecondDialog}>
                         <Dialog.Title>Upgrade Host</Dialog.Title>
-                        <Dialog.Description>Il costo per effettuare l'upgrade e' {prezzoUpgrade}€ </Dialog.Description>
+                        <Dialog.Description>Il costo per effettuare l'upgrade e' 80€ </Dialog.Description>
                         <Dialog.Button label="Procedi con il pagamento" onPress={()=>{
                             setSecondDialogVisible(false);
                             setThirdDialogVisible(true);
