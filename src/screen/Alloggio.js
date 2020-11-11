@@ -38,9 +38,10 @@ const styles = StyleSheet.create({
 
     bottomButtonContainer: {
 		flexDirection: 'column',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
         alignItems: 'center',
-        height:70,
+        height:110,
+        marginBottom:10
     },
 
     carouselStyle: {

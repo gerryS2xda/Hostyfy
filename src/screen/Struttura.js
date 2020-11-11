@@ -50,9 +50,9 @@ const styles = StyleSheet.create({
 
     bottomButtonContainer: {
 		flexDirection: 'column',
-		justifyContent: 'center',
+		justifyContent: 'flex-start',
         alignItems: 'center',
-        height:100,
+        height:110,
         marginBottom:10
     },
 
