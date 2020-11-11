@@ -82,52 +82,115 @@ const styles = StyleSheet.create({
     },
 
     leftField: {
-        height: 40,
-        width:150,
-        borderColor: '#cc3881',
-        borderWidth: 1.4,
-        marginTop:8,
-        borderRadius: 8,
-        justifyContent:'center',
-        alignItems:'center',
-        marginLeft: 38,
-        paddingTop:9,
+        ...Platform.select({
+            ios: {
+                height: 40,
+                width:150,
+                borderColor: '#cc3881',
+                borderWidth: 1.4,
+                marginTop:8,
+                borderRadius: 8,
+                justifyContent:'center',
+                alignItems:'center',
+                marginLeft: 38,
+                paddingTop:9,
+           },
+           android: {
+                height: 40,
+                width:150,
+                borderColor: '#cc3881',
+                borderWidth: 1.4,
+                marginTop:8,
+                borderRadius: 8,
+                justifyContent:'center',
+                alignItems:'center',
+                marginLeft: 46,
+                paddingTop:9,
+           }
+       })
+        
     },
 
     rightField: {
-        height: 40,
-        width:130,
-        borderColor: '#cc3881',
-        borderWidth: 1.4,
-        marginTop:8,
-        borderRadius: 8,
-        justifyContent:'center',
-        alignItems:'center',
-        marginRight: 38,
-        paddingTop:9,
+        ...Platform.select({
+            ios: {
+                height: 40,
+                width:130,
+                borderColor: '#cc3881',
+                borderWidth: 1.4,
+                marginTop:8,
+                borderRadius: 8,
+                justifyContent:'center',
+                alignItems:'center',
+                marginRight: 38,
+                paddingTop:9,
+           },
+           android: {
+                height: 40,
+                width:130,
+                borderColor: '#cc3881',
+                borderWidth: 1.4,
+                marginTop:8,
+                borderRadius: 8,
+                justifyContent:'center',
+                alignItems:'center',
+                marginRight: 46,
+                paddingTop:9,
+           }
+       })
     },
 
     bottoneLeft : {
-        borderWidth: 1,
-        width:140,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginLeft:38,
-      },
-
-      bottoneRight : {
-        borderWidth: 1,
-        width:140,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginRight:38,
-      },
+        
+        ...Platform.select({
+            ios: {
+               borderWidth: 1,
+               width:140,
+               height:40,
+               alignItems: 'center',
+               justifyContent: 'center',
+               borderRadius:8,
+               backgroundColor: '#f2077d',
+               marginLeft:38,
+           },
+           android: {
+               borderWidth: 1,
+               width:140,
+               height:40,
+               alignItems: 'center',
+               justifyContent: 'center',
+               borderRadius:8,
+               backgroundColor: '#f2077d',
+               marginLeft:46,
+           }
+       })
+           
+         },
+   
+         bottoneRight : {
+           ...Platform.select({
+               ios: {
+                   borderWidth: 1,
+                   width:140,
+                   height:40,
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   borderRadius:8,
+                   backgroundColor: '#f2077d',
+                   marginRight:38,
+              },
+              android: {
+               borderWidth: 1,
+               width:140,
+               height:40,
+               alignItems: 'center',
+               justifyContent: 'center',
+               borderRadius:8,
+               backgroundColor: '#f2077d',
+               marginRight:46,
+              }
+          })
+         },
 
       bottone : {
         borderWidth: 1,

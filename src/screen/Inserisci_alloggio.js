@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet, Platform} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
 
@@ -7,6 +7,7 @@ import HeaderBar from '../components/CustomHeaderBar'
 
 const styles = StyleSheet.create({
     maincontainer: {
+        flex: 1,
         backgroundColor: '#fff',
       },
     scrollContainer: {
@@ -62,25 +63,55 @@ const styles = StyleSheet.create({
     },
 
     bottoneLeft : {
-        borderWidth: 1,
-        width:140,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginLeft:38,
+        
+     ...Platform.select({
+         ios: {
+            borderWidth: 1,
+            width:140,
+            height:40,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius:8,
+            backgroundColor: '#f2077d',
+            marginLeft:38,
+        },
+        android: {
+            borderWidth: 1,
+            width:140,
+            height:40,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius:8,
+            backgroundColor: '#f2077d',
+            marginLeft:46,
+        }
+    })
+        
       },
 
       bottoneRight : {
-        borderWidth: 1,
-        width:140,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginRight:38,
+        ...Platform.select({
+            ios: {
+                borderWidth: 1,
+                width:140,
+                height:40,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius:8,
+                backgroundColor: '#f2077d',
+                marginRight:38,
+           },
+           android: {
+            borderWidth: 1,
+            width:140,
+            height:40,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius:8,
+            backgroundColor: '#f2077d',
+            marginRight:46,
+           }
+       })
       },
 
       bottone : {

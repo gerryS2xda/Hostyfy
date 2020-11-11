@@ -1,15 +1,16 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar'
 
 const styles = StyleSheet.create({
   maincontainer: {
+    flex: 1,
     backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   container: {  
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   
   topContainer: {
@@ -85,7 +86,7 @@ const Modifica_profilo = (props) => {
   return(
     <View style={styles.maincontainer}>
       <HeaderBar title="Profilo" navigator={props.navigation} />
-      <View style = {styles.container}>
+      <ScrollView style = {styles.container}>
         <View style = {styles.topContainer}>
           <Image
             style = {styles.immagineLogo}  
@@ -134,7 +135,7 @@ const Modifica_profilo = (props) => {
               <Text style={{color:'#ffffff'}}>Salva modifiche</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
