@@ -27,18 +27,20 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     containerLogoTitle: {
+      marginLeft: 10,
+      marginRight: 10,
       marginTop: 120,
     },
     logo:{
-      width: 300,
-      height: 150,
+      width: 280,
+      height: 140,
     },
     welcometitle:{
       textAlign: "center",
       fontSize: 32,
-      color: "black",
+      color: "#f2077d",
       fontWeight: "bold",
-      marginTop: 24,
+      marginTop: 32,
       marginBottom: 16,
     },
     swipeIcon:{

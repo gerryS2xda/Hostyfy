@@ -25,7 +25,7 @@ const DomoticaScreen = () =>{
 
   return(
     <View style={styles.maincontainer}>
-      <HeaderBar title="Informazioni camera" />
+      <HeaderBar title="Informazioni camera" navigator={navigation} />
         <ScrollView style={styles.bodyScrollcontainer}>
             <View style={styles.infoAlloggiocontainer}>
                 <Image style={styles.alloggioImage} source={require("../../assets/hotel_room_design.png")}/>
