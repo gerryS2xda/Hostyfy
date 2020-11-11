@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import CustomListViewGeneral from './CustomListViewGeneral'
+import CustomListViewGeneral from '../components/CustomListViewGeneral'
 import {
   StyleSheet,
   Text,
@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
-
+import HeaderBar from '../components/CustomHeaderBar'
 
 
 const styles = StyleSheet.create({
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 
   image:{
     width: 50,
-    height:50
+    height:50,
   },
 
 aggiungiStruttura:{
@@ -78,14 +78,9 @@ arrowExtra: {
   marginTop: -35
 },
 
-bottone : {
-  borderWidth: 1,
-  width:300,
-  height:40,
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius:8,
-  backgroundColor: '#f2077d',
+maincontainer: {
+  flex: 1,
+  backgroundColor: '#fff',
 },
 
 });
@@ -93,49 +88,46 @@ bottone : {
 const VisualizzaStoricoPrenotazioni = (props) => {  
 
       return (
-      <View style={styles.container}>
-        <View style = {styles.intestazione}>
-          <Text style = {styles.title}>Storico Prenotazioni</Text>
+        <View style={styles.maincontainer}>
+        <HeaderBar title="Prenotazioni Passate" navigator={props.navigation} /> 
+        <View style={styles.container}>
+          <CustomListViewGeneral
+            nav = {props.navigation}
+            itemList={[
+              {
+                key: 1, 
+                title: 'Le Sirene',
+                description: '12/11/2019 - 18/11/2019',
+                image_url: require('../../assets/Struttura/struttura1.jpg'),
+                newPage: 'PrenotazioneDetail',
+              },
+              {
+                key: 2,
+                title: 'Exe Majestic',
+                description: '11/11/2019 - 17/11/2020',
+                image_url: require('../../assets/Struttura/struttura2.jpg'),
+                newPage: 'PrenotazioneDetail',  
+              },
+              {
+                key: 3,
+                title: 'Villa Domina',
+                description: '10/11/2019 - 16/11/2019',
+                image_url: require('../../assets/Struttura/struttura3.jpg'),
+                newPage: 'PrenotazioneDetail',
+                
+              },
+              {
+                key: 4,
+                title: 'Apartments Tudor',
+                description: '10/11/2020 - 15/11/2019',
+                image_url: require('../../assets/Struttura/struttura4.jpg'),
+                newPage: 'PrenotazioneDetail',
+                
+              }              
+            ]
+          }/>
+
         </View>
-        <CustomListViewGeneral
-          nav = {props.navigation}
-          itemList={[
-            {
-              key: 1, 
-              title: 'Le Sirene',
-              description: '12/11/2019 - 18/11/2019',
-              image_url: require('../../assets/Struttura/struttura1.jpg'),
-              newPage: 'PrenotazioneScreen',
-            },
-            {
-              key: 2,
-              title: 'Exe Majestic',
-              description: '11/11/2019 - 17/11/2020',
-              image_url: require('../../assets/Struttura/struttura2.jpg'),
-              newPage: 'PrenotazioneScreen',  
-            },
-            {
-              key: 3,
-              title: 'Villa Domina',
-              description: '10/11/2020 - 16/11/2020',
-              image_url: require('../../assets/Struttura/struttura3.jpg'),
-              newPage: 'PrenotazioneScreen',
-              
-            },
-            {
-              key: 4,
-              title: 'Apartments Tudor',
-              description: '10/11/2020 - 15/11/2020',
-              image_url: require('../../assets/Struttura/struttura4.jpg'),
-              newPage: 'PrenotazioneScreen',
-              
-            }
-            
-          ]
-
-   
-        }/>
-
       </View>
 
       

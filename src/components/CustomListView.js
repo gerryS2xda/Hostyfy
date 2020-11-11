@@ -1,32 +1,32 @@
 import React from 'react';
 import { View, FlatList, StyleSheet, Text, Alert, Image} from 'react-native';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import CustomRowGeneral from './CustomRowGeneral';
+import CustomRow from '../components/CustomRow';
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 100
+        marginTop: 20
     },
 });
 
 
-const CustomListViewGeneral = (props) => {
+const CustomListView = (props) => {
     const navigate = props.nav;
 return (
     <View style={styles.container}>
         <FlatList
                 data={props.itemList}
                 renderItem={({ item }) => 
-                <CustomRowGeneral
+                <CustomRow
                     title={item.title}
                     image_url={item.image_url}
                     description = {item.description}
                     newPage = {item.newPage}
                     nav= {navigate}
-                    />
+                    OTP={item.OTP}/>
             } />
     </View>   
 );
 }
-export default CustomListViewGeneral;
+export default CustomListView;

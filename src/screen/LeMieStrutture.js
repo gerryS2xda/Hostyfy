@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import CustomListView from './CustomListView'
+import CustomListView from '../components/CustomListView'
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,17 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
-
-
+import HeaderBar from '../components/CustomHeaderBar'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FCFCFC',
     borderWidth: 1,
-    borderRadius: 20, 
-    borderColor: '#d3d9e3',
+    borderColor: '#d3d9e3',    
   },
 
-  intestazione:{
-    marginTop: 100,
-    marginBottom: -60
-  },
 
   title:
   {
@@ -77,20 +72,18 @@ arrowExtra: {
   marginLeft: 250,
   marginTop: -35
 },
+maincontainer: {
+  flex: 1,
+  backgroundColor: '#fff',
+},
 });
 
 const LeMieStrutture = (props) => {  
 
-  const [visible, setVisible] = useState(false);
-  const [value, setValue] = useState('');
-  const showDialog = () => setVisible(true);
-  const handleOk = () => setVisible(false);
-
-    return (
+      return (
+      <View style={styles.maincontainer}>
+      <HeaderBar title="Le tue Strutture" navigator={props.navigation} /> 
       <View style={styles.container}>
-        <View style = {styles.intestazione}>
-          <Text style = {styles.title}>Le mie Strutture</Text>
-        </View>
         <CustomListView
           nav= {props.navigation}
           itemList={[
@@ -131,20 +124,26 @@ const LeMieStrutture = (props) => {
 
    
         }/>
-        <TouchableOpacity
-          onPress={() => props.navigation.navigate('Inserisci struttura')}>
+
           <View style = {styles.aggiungiStruttura}>
-            <Image
-                source = {require('../../assets/plus.png')}
-                style = {styles.image} 
-                
+           <TouchableOpacity 
+            onPress={() => props.navigation.navigate('Inserisci struttura')}>
+              <Icon
+              name = "plus-circle-outline"
+              color = {"#f2077d"}
+              size = {65}
             />
-            </View> 
-        </TouchableOpacity>
+               </TouchableOpacity>
+          </View>
+                
+            
+           
+       
 
 
         
       </View>
+    </View>
 
       
       

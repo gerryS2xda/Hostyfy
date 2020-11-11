@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import CustomListViewGeneral from './CustomListViewGeneral'
+import CustomListViewGeneral from '../components/CustomListViewGeneral'
 import {
   StyleSheet,
   Text,
@@ -9,6 +9,8 @@ import {
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
+import HeaderBar from '../components/CustomHeaderBar'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
@@ -17,15 +19,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FCFCFC',
     borderWidth: 1,
-    borderRadius: 20, 
     borderColor: '#d3d9e3',
   },
-
-  intestazione:{
-    marginTop: 100,
-    marginBottom: -60
-  },
-
   title:
   {
     fontSize: 25,
@@ -33,27 +28,24 @@ const styles = StyleSheet.create({
   },
 
   image:{
-    width: 50,
-    height:50
+    
   },
 
-aggiungiStruttura:{
-  marginLeft: 320,
-  marginBottom: 55
-},
+  aggiungiStruttura:{
+    marginLeft: 320,
+    marginBottom: 25
+  },
 
-
-containerExtra: {
-  flex: 0,
-  flexDirection: 'row',
-  padding: 10,
-  marginLeft:16,
-  marginRight:16,
-  marginTop: 8,
-  marginBottom: 125,
-  borderRadius: 5,
-  backgroundColor: '#FFF',
-  elevation: 2,
+  containerExtra: {
+    flex: 0,
+    flexDirection: 'row',
+    padding: 10,
+    marginLeft:16,
+    marginRight:16,
+    marginTop: 8,
+    borderRadius: 5,
+    backgroundColor: '#FFF',
+    elevation: 2,
 },
 titleExtra: {
   fontSize: 16,
@@ -78,18 +70,18 @@ arrowExtra: {
   marginTop: -35
 },
 
-dialog:{
-  
-}
+maincontainer: {
+  flex: 1,
+  backgroundColor: '#fff',
+},
 });
 
 const VisualizzaAlloggi = (props) => {  
 
       return (
+        <View style={styles.maincontainer}>
+      <HeaderBar title="Alloggi" navigator={props.navigation} /> 
       <View style={styles.container}>
-        <View style = {styles.intestazione}>
-          <Text style = {styles.title}>Alloggi della struttura "Le Sirene"</Text>
-        </View>
         <CustomListViewGeneral
           nav = {props.navigation}
           itemList={[
@@ -129,20 +121,21 @@ const VisualizzaAlloggi = (props) => {
    
         }/>
 
+    <View style = {styles.aggiungiStruttura}>
         <TouchableOpacity
+          style = {styles.image}
           onPress={() => props.navigation.navigate('InserisciAlloggio')}>
-          <View style = {styles.aggiungiStruttura}>
-            <Image
-                source = {require('../../assets/plus.png')}
-                style = {styles.image} 
-                
+            <Icon
+              name = "plus-circle-outline"
+              color = {"#f2077d"}
+              size = {65}
             />
-            </View> 
         </TouchableOpacity>
-
+    </View>
 
         
       </View>
+    </View>
 
       
       
