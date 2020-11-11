@@ -5,12 +5,14 @@ import {
   Text,
   View,
   Image,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
 import HeaderBar from '../components/CustomHeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -33,8 +35,22 @@ const styles = StyleSheet.create({
   },
 
 aggiungiStruttura:{
-  marginLeft: 320,
-  marginBottom: 50
+
+  ...Platform.select({
+      ios: {
+        marginLeft: 150,
+        marginBottom: 50
+      },
+      android: 
+      {
+        marginLeft: 320,
+        marginBottom: 50
+      }
+
+
+
+  })
+  
 },
 
 
@@ -122,7 +138,6 @@ const LeMieStrutture = (props) => {
             
           ]
 
-   
         }/>
 
           <View style = {styles.aggiungiStruttura}>
