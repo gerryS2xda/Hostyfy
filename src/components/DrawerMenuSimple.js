@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import React, {useState} from 'react';
+import { StyleSheet, Text, View, Image, Alert, Switch } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoginScreen from "../screen/Login"
@@ -27,6 +27,7 @@ import WelcomeScreen from "../screen/WelcomeScreen"
 const Drawer = createDrawerNavigator();
 
 const DrawerMenuSimple = (props) =>{
+
     return( 
         <Drawer.Navigator drawerContent={props =>  <DrawerContentCustom {...props}/>}>
             <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
@@ -61,90 +62,182 @@ const DrawerMenuSimple = (props) =>{
 export default DrawerMenuSimple;
 
 function DrawerContentCustom(props){
-    return(
-        <View style={styles.drawerContainer}>
-            <DrawerContentScrollView {...props}>
-                <View style={styles.drawerContent}>
-                    <View style={styles.userInfoSection}>
-                        <View style={styles.horizontalView}>
-                            <Image style = {styles.avatarImage} source ={require('../../assets/user.png')}/>
-                            <Text style={styles.userInfo}>Tizio Caio</Text>
+    const [isHost, setIsHost] = useState(true);
+    const colorIcon = "black";
+    const sizeIcon = 24;
+    const colorLabel = "black"; //colore delle label del <DrawerItem>
+    const toggleSwitchGuestHost = () => {
+        setIsHost(previousState => !previousState);
+    };
+
+    const createNextRealeaseFeatureAlert = () =>
+        Alert.alert(
+        "Funzionalità non disponibile",
+        "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+        [
+            {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+            },
+            { text: "OK", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+    );
+
+    const createDowngradeHostAlert = () =>
+        Alert.alert(
+        "Downgrade host",
+        "Procedendo si perdono tutti i servizi dedicati all'host e quindi si ritorna ad essere un guest. Premi Ok per continuare",
+        [
+            {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+            },
+            { text: "OK", onPress: () =>{
+                    setIsHost(false);
+                } 
+            }
+        ],
+        { cancelable: false }
+    );
+
+
+    if(!isHost){
+        return(
+            <View style={styles.drawerContainer}>
+                <DrawerContentScrollView {...props}>
+                    <View style={styles.drawerContent}>
+                        <View style={styles.userInfoSection}>
+                            <View style={styles.horizontalView}>
+                                <Image style = {styles.avatarImage} source ={require('../../assets/user.png')}/>
+                                <Text style={styles.userInfo}>Tizio Caio</Text>
+                            </View>
+                        </View>
+                        <View style={styles.drawerSection}>
+                            <DrawerItem 
+                                icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
+                                onPress={() => {props.navigation.navigate('HomeHost')}}
+                            />
+                            <DrawerItem 
+                                icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Area personale</Text>)}
+                                onPress={() => {props.navigation.navigate('ModificaProfilo')}}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
+                                onPress={() => {props.navigation.navigate('VisualizzaPrenotazioni')}}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
+                                onPress={() => {props.navigation.navigate('LeMieChiavi')}}
+                            />
+                            <DrawerItem 
+                                icon={() => (<Icon name="arrow-up-bold-circle" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Upgrade host</Text>)}
+                                onPress={() => {
+                                        setIsHost(true); //dovra' essere rimosso non appena si perfeziona implementazione    
+                                        props.navigation.navigate('UpgradeHost');
+                                    }
+                                }
+                            />
                         </View>
                     </View>
-                    <View style={styles.drawerSection}>
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="home-outline" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Home"
-                            onPress={() => {props.navigation.navigate('HomeHost')}}
-                        />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="account" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Area personale"
-                            onPress={() => {props.navigation.navigate('ModificaProfilo')}}
-                        />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="briefcase" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Prenotazioni"
-                            onPress={() => {props.navigation.navigate('VisualizzaPrenotazioni')}}
-                        />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="key-outline" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Le mie chiavi digitali"
-                            onPress={() => {props.navigation.navigate('LeMieChiavi')}}
-                        />
-                        <DrawerItem 
-                            icon={({color, size}) => (
-                                <Icon 
-                                name="arrow-up-bold-circle" 
-                                color={color}
-                                size={size}
-                                />
-                            )}
-                            label="Upgrade Host"
-                            onPress={() => {props.navigation.navigate('LeMieChiavi')}}
-                        />
-                    </View>
+                </DrawerContentScrollView>
+                <View style={styles.bottomDrawerSection}>
+                    <DrawerItem 
+                        icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
+                        label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
+                        onPress={() => {props.navigation.navigate('Home')}} 
+                    />
                 </View>
-            </DrawerContentScrollView>
-            <View style={styles.bottomDrawerSection}>
-                <DrawerItem 
-                    icon={({color, size}) => (
-                        <Icon 
-                        name="exit-to-app" 
-                        color={color}
-                        size={size}
-                        />
-                    )}
-                    label="Sign Out"
-                    onPress={() => {props.navigation.navigate('Home')}}
-                />
             </View>
-        </View>
-    );
+         );
+    }else{
+        return(
+            <View style={styles.drawerContainer}>
+                <DrawerContentScrollView {...props}>
+                    <View style={styles.drawerContent}>
+                        <View style={styles.userInfoSection}>
+                            <View style={styles.horizontalView}>
+                                <Image style = {styles.avatarImage} source ={require('../../assets/user.png')}/>
+                                <Text style={styles.userInfo}>Tizio Caio</Text>
+                                <View style={styles.horizontalViewSwitch}>
+                                    <Text style={styles.labelSwitchTxt}>Guest</Text>
+                                    <Switch style={styles.switchStyle}
+                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                        thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
+                                        ios_backgroundColor="#3e3e3e"
+                                        onValueChange={toggleSwitchGuestHost}
+                                        value={isHost}
+                                    />
+                                    <Text style={styles.labelSwitchTxt}>Host</Text>
+                                </View>
+                            </View>
+                        </View>
+                        <View style={styles.drawerSection}>
+                            <DrawerItem 
+                                icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
+                                onPress={() => {props.navigation.navigate('HomeHost')}}
+                            />
+                            <DrawerItem 
+                                icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Area personale</Text>)}
+                                onPress={() => {props.navigation.navigate('ModificaProfilo')}}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
+                                onPress={() => {props.navigation.navigate('VisualizzaPrenotazioni')}}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
+                                onPress={() => {props.navigation.navigate('LeMieChiavi')}}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="hospital-building" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie strutture</Text>)}
+                                onPress={() => {props.navigation.navigate('LeMieStrutture')}}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="calendar-month" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Calendario prenotazioni</Text>)}
+                                onPress={createNextRealeaseFeatureAlert}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="broom" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Clean service</Text>)}
+                                onPress={createNextRealeaseFeatureAlert}
+                            />
+                            <DrawerItem 
+                                icon={() => ( <Icon name="currency-usd" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Servizi premium</Text>)}
+                                onPress={createNextRealeaseFeatureAlert}
+                            />
+                            <DrawerItem 
+                                icon={() => (<Icon name="arrow-down-bold-circle" color={colorIcon} size={sizeIcon} /> )}
+                                label={()=>(<Text style={styles.labelDrawerItemStyle}>Downgrade host</Text>)}
+                                onPress={createDowngradeHostAlert}
+                            />
+                        </View>
+                    </View>
+                </DrawerContentScrollView>
+                <View style={styles.bottomDrawerSection}>
+                    <DrawerItem 
+                        icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
+                        label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
+                        onPress={() => {props.navigation.navigate('Home')}} 
+                    />
+                </View>
+            </View>
+        );
+    }
 }
 
 const styles = StyleSheet.create({
@@ -156,7 +249,7 @@ const styles = StyleSheet.create({
     },
     userInfoSection: {
       paddingLeft: 16,
-      borderBottomColor: 'black',
+      borderBottomColor: '#b2c2bf',
       borderBottomWidth: 1,
       paddingBottom: 6,
     },
@@ -165,23 +258,41 @@ const styles = StyleSheet.create({
         marginTop: 20,
     },
     avatarImage: {
-        width: 32,
-        height: 32,
-        marginRight: 16,
+        width: 24,
+        height: 24,
+        marginRight: 12,
     },
     userInfo: {
         fontSize: 16,
-        marginTop: 3,
+        marginTop: 1,
         fontWeight: 'bold',
         color: 'black'
+    },
+    labelDrawerItemStyle: {
+        fontSize: 14, 
+        color: 'black',
     },
     drawerSection: {
         marginTop: 8,
     },
     bottomDrawerSection: {
-        marginBottom: 15,
-        borderTopColor: '#f4f4f4',
-        borderTopWidth: 1
+        marginBottom: 8,
+        borderTopColor: '#b2c2bf',
+        borderTopWidth: 1,
     },
+    horizontalViewSwitch: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginLeft: 12,
+    },
+    labelSwitchTxt: {
+        fontSize: 16,
+        marginTop: 1,
+        color: 'black'
+    },
+    switchStyle: {
+        marginRight: 4,
+        marginTop: 0,
+    }
 });
 
