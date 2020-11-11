@@ -12,6 +12,8 @@
     10. npm install react-native-elements
     11. npm install react-native-snap-carousel
     12. npm install react-native-vector-icons
+    13. npm install react-native-dialog
+    14. npm install expo-font
     Swipe right to open
 */
 
@@ -19,6 +21,10 @@ import React from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+// import dedicati per utilizzare font personalizzati
+import { AppLoading } from 'expo';
+import { useFonts } from 'expo-font';
+// import dedicati per aggiungere schermate allo stack navigator 
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
 import Registrazione from "./src/screen/Registrazione"
@@ -45,124 +51,131 @@ import WelcomeScreen from "./src/screen/WelcomeScreen"
 const Stack = createStackNavigator();
 
 const App = () => {
-  return (
-    <NavigationContainer>
-        <Stack.Navigator screenOptions={{
-          headerShown: false
-        }}>
-        <Stack.Screen 
-          name="DrawerMenuSimple" 
-          component={DrawerMenuSimple} 
-          options={{title: 'Home'}} 
-        />
-        <Stack.Screen 
-          name="WelcomePage" 
-          component={WelcomeScreen} 
-          options={{title: 'Welcome'}} 
-        />
-        <Stack.Screen 
-          name="Home" 
-          component={LoginScreen} 
-          options={{title: 'Home'}} 
-        />
-        <Stack.Screen 
-          name="HomeHost" 
-          component={HomeHostScreen} 
-          options={{title: 'Home Host'}} 
-        />
-        <Stack.Screen 
-          name="Registratione" 
-          component={Registrazione} 
-          options={{title: 'Registrazione'}} 
-        />
-        <Stack.Screen 
-          name="InserisciPrenotazione" 
-          component={Inserisci_prenotazione} 
-          options={{title: 'Prenotazione'}} 
-        />
-        <Stack.Screen 
-          name="LeMieStrutture" 
-          component={LeMieStrutture} 
-          options={{title: 'Le mie strutture'}} 
-        />
-        <Stack.Screen 
-          name="HomeGuest" 
-          component={HomeGuestScreen} 
-          options={{title: 'Home guest'}} 
-        />
-        <Stack.Screen 
-          name="VisualizzaStruttura" 
-          component={StrutturaScreen} 
-          options={{title: 'Struttura'}} 
-        />
-        <Stack.Screen 
-          name="PrenotazioneDetail" 
-          component={PrenotazioneDetailScreen} 
-          options={{title: 'Prenotazione'}} 
-        />
-        <Stack.Screen 
-          name="InfoCamera" 
-          component={DomoticaScreen} 
-          options={{title: 'Informazioni camera'}} 
-        />
-        <Stack.Screen 
-          name="LaMiaChiave" 
-          component={ChiaveScreen} 
-          options={{title: 'La mia chiave'}} 
-        />
-        <Stack.Screen 
-          name="ModificaProfilo" 
-          component={ModificaProfiloScreen} 
-          options={{title: 'Profilo'}} 
-        />
-        <Stack.Screen 
-          name="Alloggio" 
-          component={AlloggioScreen} 
-          options={{title: 'Alloggio'}} 
-        />
-        <Stack.Screen 
-          name="Inserisci struttura" 
-          component={InserisciStrutturaScreen} 
-          options={{title: 'Inserisci struttura'}} 
-        />
-        <Stack.Screen 
-          name="EffettuaCheckIn" 
-          component={CheckInScreen} 
-          options={{title: 'Check-In'}} 
-        />
-        <Stack.Screen 
-          name="VisualizzaAlloggi" 
-          component={VisualizzaAlloggi} 
-          options={{title: 'Visualizza Alloggi'}} 
-        />
-        <Stack.Screen 
-          name="InserisciAlloggio" 
-          component={InserisciAlloggio} 
-          options={{title: 'Inserisci Alloggio'}} 
-        />
-        <Stack.Screen 
-          name="LeMieChiavi" 
-          component={LeMieChiaviScreen} 
-          options={{title: 'Le mie chiavi'}} 
-        />
-        <Stack.Screen 
-          name="VisualizzaPrenotazioni" 
-          component={VisualizzaPrenotazioniScreen} 
-          options={{title: 'Visualizza prenotazioni'}} 
-        />
-        <Stack.Screen 
-          name="StoricoPrenotazioni" 
-          component={VisualizzaStoricoPrenScreen} 
-          options={{title: 'Storico prenotazioni'}} 
-        />
-        <Stack.Screen 
-          name="UpgradeHost" 
-          component={UpgradeHostScreen} 
-          options={{title: 'Upgrade Host'}} 
-        />
-      </Stack.Navigator>   
-    </NavigationContainer>
-  );
+  let [fontsLoaded] = useFonts({
+    'Montserrant': require('./assets/fonts/montserrant.ttf'),
+  });
+  if (!fontsLoaded) { //se il font non e' stato caricato correttamente o semplicemente non e' pronto
+    return <AppLoading />; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>
+  } else {
+    return (
+      <NavigationContainer>
+          <Stack.Navigator screenOptions={{
+            headerShown: false
+          }}>
+          <Stack.Screen 
+            name="DrawerMenuSimple" 
+            component={DrawerMenuSimple} 
+            options={{title: 'Home'}} 
+          />
+          <Stack.Screen 
+            name="WelcomePage" 
+            component={WelcomeScreen} 
+            options={{title: 'Welcome'}} 
+          />
+          <Stack.Screen 
+            name="Home" 
+            component={LoginScreen} 
+            options={{title: 'Home'}} 
+          />
+          <Stack.Screen 
+            name="HomeHost" 
+            component={HomeHostScreen} 
+            options={{title: 'Home Host'}} 
+          />
+          <Stack.Screen 
+            name="Registratione" 
+            component={Registrazione} 
+            options={{title: 'Registrazione'}} 
+          />
+          <Stack.Screen 
+            name="InserisciPrenotazione" 
+            component={Inserisci_prenotazione} 
+            options={{title: 'Prenotazione'}} 
+          />
+          <Stack.Screen 
+            name="LeMieStrutture" 
+            component={LeMieStrutture} 
+            options={{title: 'Le mie strutture'}} 
+          />
+          <Stack.Screen 
+            name="HomeGuest" 
+            component={HomeGuestScreen} 
+            options={{title: 'Home guest'}} 
+          />
+          <Stack.Screen 
+            name="VisualizzaStruttura" 
+            component={StrutturaScreen} 
+            options={{title: 'Struttura'}} 
+          />
+          <Stack.Screen 
+            name="PrenotazioneDetail" 
+            component={PrenotazioneDetailScreen} 
+            options={{title: 'Prenotazione'}} 
+          />
+          <Stack.Screen 
+            name="InfoCamera" 
+            component={DomoticaScreen} 
+            options={{title: 'Informazioni camera'}} 
+          />
+          <Stack.Screen 
+            name="LaMiaChiave" 
+            component={ChiaveScreen} 
+            options={{title: 'La mia chiave'}} 
+          />
+          <Stack.Screen 
+            name="ModificaProfilo" 
+            component={ModificaProfiloScreen} 
+            options={{title: 'Profilo'}} 
+          />
+          <Stack.Screen 
+            name="Alloggio" 
+            component={AlloggioScreen} 
+            options={{title: 'Alloggio'}} 
+          />
+          <Stack.Screen 
+            name="Inserisci struttura" 
+            component={InserisciStrutturaScreen} 
+            options={{title: 'Inserisci struttura'}} 
+          />
+          <Stack.Screen 
+            name="EffettuaCheckIn" 
+            component={CheckInScreen} 
+            options={{title: 'Check-In'}} 
+          />
+          <Stack.Screen 
+            name="VisualizzaAlloggi" 
+            component={VisualizzaAlloggi} 
+            options={{title: 'Visualizza Alloggi'}} 
+          />
+          <Stack.Screen 
+            name="InserisciAlloggio" 
+            component={InserisciAlloggio} 
+            options={{title: 'Inserisci Alloggio'}} 
+          />
+          <Stack.Screen 
+            name="LeMieChiavi" 
+            component={LeMieChiaviScreen} 
+            options={{title: 'Le mie chiavi'}} 
+          />
+          <Stack.Screen 
+            name="VisualizzaPrenotazioni" 
+            component={VisualizzaPrenotazioniScreen} 
+            options={{title: 'Visualizza prenotazioni'}} 
+          />
+          <Stack.Screen 
+            name="StoricoPrenotazioni" 
+            component={VisualizzaStoricoPrenScreen} 
+            options={{title: 'Storico prenotazioni'}} 
+          />
+          <Stack.Screen 
+            name="UpgradeHost" 
+            component={UpgradeHostScreen} 
+            options={{title: 'Upgrade Host'}} 
+          />
+        </Stack.Navigator>   
+      </NavigationContainer>
+    );
+  }
 };
 
 export default App;
