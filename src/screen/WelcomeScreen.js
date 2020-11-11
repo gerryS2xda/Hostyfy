@@ -42,6 +42,7 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       marginTop: 32,
       marginBottom: 16,
+      fontFamily: "Montserrant",
     },
     swipeIcon:{
       width:32,
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     suggestTxt: {
       textAlign: 'center',
       fontSize: 18,
-      color: 'black'
+      color: 'black',
+      fontFamily: "Montserrant"
     }
   });

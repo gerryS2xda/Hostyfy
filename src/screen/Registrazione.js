@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView, Alert} from 'react-native'
-import * as Font from "expo-font";
 
 const styles = StyleSheet.create({
    
@@ -47,6 +46,7 @@ const styles = StyleSheet.create({
     marginTop:8,
     borderRadius: 8,
     fontSize: 40,
+    fontFamily: 'Montserrant',
   },
 
   bottoneAvanti : {
@@ -58,17 +58,11 @@ const styles = StyleSheet.create({
     borderRadius:8,
     backgroundColor: '#f2077d',
     marginTop: 40,
-    fontSize: 10 
+    fontSize: 10,
+    fontFamily: 'Montserrant', 
   },
+});
 
-
- 
-
-  
-})
-
-
-// require in the font 
 
 const Registrazione = (props) => {
 
