@@ -27,13 +27,13 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
     },
     containerLogoTitle: {
-      marginLeft: 10,
-      marginRight: 10,
       marginTop: 120,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     logo:{
-      width: 280,
-      height: 140,
+      width: 300,
+      height: 150,
     },
     welcometitle:{
       textAlign: "center",

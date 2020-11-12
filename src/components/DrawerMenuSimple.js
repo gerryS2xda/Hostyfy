@@ -134,7 +134,7 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
-                                onPress={() => {props.navigation.navigate('HomeHost')}}
+                                onPress={() => {props.navigation.navigate('HomeGuest')}}
                             />
                             <DrawerItem 
                                 icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}

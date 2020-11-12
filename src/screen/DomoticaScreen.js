@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, Switch } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 
-const DomoticaScreen = () =>{
+const DomoticaScreen = ({navigation}) =>{
   const infoAlloggio = "Nome / Numero camera";
   const listDispositivi = ["Condizionatore", "TV", "Luce 1", "Luce 2"];
   //NOTA: trovare il modo di rendere gli switch indipendenti
