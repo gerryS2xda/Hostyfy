@@ -40,13 +40,7 @@ const styles = StyleSheet.create({
         marginLeft: 250,
         marginTop: -35
     },
-    opacity:{
-
-        
-
-    }
-
-    
+   
 });
 
 

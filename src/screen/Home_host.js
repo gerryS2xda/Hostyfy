@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker';
+import { ScrollView } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -35,7 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:15
+    marginTop:30
   },
 
   bottone : {
@@ -47,6 +49,7 @@ const styles = StyleSheet.create({
     height:40,
     borderRadius:8,
     backgroundColor: '#f2077d',
+    fontFamily: "Montserrant"
   },
 
   immagineBottone : {
@@ -58,6 +61,7 @@ const styles = StyleSheet.create({
   testoBottone: {
     color:'#ffffff',
     marginLeft: 20,
+    fontFamily: "Montserrant"
   },
 
   immagineLogo : {
@@ -70,14 +74,16 @@ const styles = StyleSheet.create({
 
   testoLogo : {
     fontSize: 20,
-    color: '#cc3881',
+    color: '#000000',
     marginTop: 10,
+    fontFamily: "MontserrantSemiBold",
   },
 
   calendario: {
     width:100,
     height:10,
   }
+
 })
 
 
@@ -86,11 +92,7 @@ const Bottone = (props) => {
     <TouchableOpacity
       style = {styles.bottone}
       onPress={props.func}>
-      <Image
-        style = {styles.immagineBottone}
-        source = {props.path}
-      
-      />
+      <Icon name= {props.nameIcon} color={"#ffffff"} size={30} style={styles.immagineBottone}/>
       <Text style = {styles.testoBottone}>{props.nome}</Text>
     
     </TouchableOpacity>
@@ -101,24 +103,32 @@ const Bottone = (props) => {
 
 
 const HomeHost = (props) => {
+
+
+
+    const colorIcon = "black";
+    const sizeIcon = 100;
+
   return(
+  
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={props.navigation} />
+    <ScrollView>
       <View contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
-          <Image
-            style = {styles.immagineLogo}  
-            source ={require('../../assets/user.png')}/>
-          <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
+        <Icon name= "account-circle-outline" color={colorIcon} size={sizeIcon}/>
+
+          
+          <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
         </View>
         <View style={styles.centerContainer}>
-          <Bottone path={require('../../assets/home.png')} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
-          <Bottone path={require('../../assets/add.png')} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("InserisciPrenotazione")}/>
-          <Bottone path={require('../../assets/smile.png')} nome= 'Recensioni' navPage = 'Inserisci'/>
+          <Bottone nameIcon={"home-outline"} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
+          <Bottone nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("InserisciPrenotazione")}/>
+          <Bottone nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' navPage = 'Inserisci'/>
         </View>
         <View style={styles.bottomContainer}>
         <CalendarPicker 
-          allowRangeSelection = {true}
+         allowRangeSelection = {true}
           selectedDayColor = '#cc3881'
           width = {350}
           nextTitle = "Successivo"
@@ -128,6 +138,7 @@ const HomeHost = (props) => {
         />
         </View>
       </View>
+      </ScrollView>
     </View>
   );
 }

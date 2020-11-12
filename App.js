@@ -53,6 +53,8 @@ const Stack = createStackNavigator();
 const App = () => {
   let [fontsLoaded] = useFonts({
     'Montserrant': require('./assets/fonts/montserrant.ttf'),
+    'MontserrantSemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf')
+
   });
   if (!fontsLoaded) { //se il font non e' stato caricato correttamente o semplicemente non e' pronto
     return <AppLoading />; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>

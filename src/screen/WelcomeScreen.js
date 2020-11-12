@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       marginTop: 32,
       marginBottom: 16,
-      fontFamily: "Montserrant",
+      fontFamily: "MontserrantSemiBold",
     },
     swipeIcon:{
       width:32,

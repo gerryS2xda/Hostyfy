@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity } from 'react-native'
+import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +24,9 @@ const styles = StyleSheet.create({
     borderWidth: 1.4,
     marginTop:8,
     borderRadius: 8,
+    fontFamily: "MontserrantSemiBold",
+    paddingLeft: 5
+
   },
 
   bottone : {
@@ -34,6 +37,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius:8,
     backgroundColor: '#f2077d',
+    fontFamily: "MontserrantSemiBold",
   },
 
   bottoneRegistrati : {
@@ -44,6 +48,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius:8,
     backgroundColor: '#f2077d',
+    fontFamily: "MontserrantSemiBold",
     
     
   },
@@ -52,12 +57,14 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     color: '#cc3881',
     marginTop:5,
+    fontFamily: "MontserrantSemiBold",
   },
 
   nonReg: {
     alignContent: 'center',
     color: '#cc3881',
     marginBottom: 5,
+    fontFamily: "MontserrantSemiBold",
   },
 
   image : {
@@ -65,6 +72,11 @@ const styles = StyleSheet.create({
     height:100, 
     marginTop:90,
     marginBottom: 20,
+  },
+
+  testo:{
+    fontFamily: "MontserrantSemiBold",
+    color: "#ffffff"
   }
 })
 
@@ -76,7 +88,8 @@ const [errore, setErrore] = useState('');
 
 
   return(
-    <View>
+    
+    <ScrollView>
       <View style={styles.container_1}>
         <Image
           source = {require('../../assets/HOSTYFY.png')}
@@ -84,12 +97,12 @@ const [errore, setErrore] = useState('');
         />
         <TextInput
           style = {styles.input}
-          placeholder = ' Email'
+          placeholder = 'Email'
           onChangeText = {(email) => setEmail(email)}
         />
         <TextInput
           style = {styles.input}
-          placeholder = ' Password'
+          placeholder = 'Password'
           onChangeText = {(password) => setPassword(password)}
           secureTextEntry = {true}
         />
@@ -102,7 +115,7 @@ const [errore, setErrore] = useState('');
             
           }}
           >
-            <Text style={{color:'#ffffff'}}>Accedi</Text>
+            <Text style={styles.testo}>Accedi</Text>
           </TouchableOpacity> 
           <Text style={styles.paswordDimenticata}>Password dimenticata?</Text>  
         </View> 
@@ -110,19 +123,19 @@ const [errore, setErrore] = useState('');
           <View style={{height:100}} >
 
           </View>
-          <View style={styles.container_2}>
-            <Text style={styles.nonReg}>Non hai un account?</Text>
-            <TouchableOpacity
-              style = {styles.bottoneRegistrati}
-              onPress={() => props.navigation.navigate('Registratione')}>
-                
-              
-              
-                <Text style={{color:'#ffffff'}}>Registrati</Text>
-              </TouchableOpacity> 
+            <View style={styles.container_2}>
+              <Text style={styles.nonReg}>Non hai un account?</Text>
+              <TouchableOpacity
+                style = {styles.bottoneRegistrati}
+                onPress={() => props.navigation.navigate('Registratione')}>
+                  <Text style={styles.testo}>Registrati</Text>
+                </TouchableOpacity> 
             </View>
-        </View>
-    </View>
+          </View>
+       
+      </ScrollView>
+
+ 
    
   );
 }

@@ -40,17 +40,20 @@ const styles = StyleSheet.create({
           fontSize: 17,
           fontWeight: '600',
           color: 'white',
+          fontFamily: "MontserrantSemiBold",
         },
         android: {
           fontSize: 20,
           fontFamily: 'sans-serif-medium',
           fontWeight: 'normal',
           color: 'white',
+          fontFamily: "MontserrantSemiBold",
         },
         default: {
           fontSize: 18,
           fontWeight: '500',
           color: 'white',
+          fontFamily: "MontserrantSemiBold",
         },
     }),
     headerContent: {

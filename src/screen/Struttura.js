@@ -1,5 +1,6 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
+import { Directions } from 'react-native-gesture-handler';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar'
 
@@ -10,188 +11,64 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
       },
+
     scrollContainer: {
-        flexDirection: 'column',
+        marginTop: 20,  
+        alignItems: 'stretch'
+        
+    },
+    carouselContainer:{
         justifyContent: 'center',
-        alignItems: 'stretch',
-    },
-
-    carouselContainer: {
-        justifyContent: 'center',
         alignItems: 'center',
-        marginRight:50,
-        marginTop:20,
-    },
-
-    topContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-    },
-
-    twoFieldContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-		alignItems: 'center'
-    },
-
-    middleContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-
-    threeButtonContainer: {
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-        alignItems: 'center',
-        height:70,
-    },
-
-    bottomButtonContainer: {
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginBottom:10
-    },
-
-    carouselStyle: {
-        justifyContent:'center',
-        marginRight:50,
+        paddingLeft: 30
     },
 
     singleField: {
         height: 40,
-        width:300,
         borderColor: '#cc3881',
-        borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
         paddingTop:9,
+        paddingLeft: 8,
+        fontFamily: 'Montserrant',
+        borderBottomWidth: 1,
+        width:'85%',
     },
 
-    descrizioneField: {
-        height: 200,
-        width:300,
+    fieldContainerTop:{
+        alignItems: 'center',      
+    },
+
+    twoFieldContainer:{
+        flexDirection: 'row',
+        justifyContent: 'space-around',  
+        marginTop: 10       
+    },
+
+    fieldContainerBottom:{
+        alignItems: 'center',      
+    },
+
+    twoField: {
+        justifyContent: 'flex-end',
+        borderBottomWidth: 1,
         borderColor: '#cc3881',
-        borderWidth: 1.4,
+        width: "31%",
+        fontFamily: 'Montserrant'
+       },
+
+       descrizioneField: {
+        height: 150,
+        width:"85%",
+        borderColor: '#cc3881',
         marginTop:8,
-        borderRadius: 8,
-        paddingTop:9,
+        borderBottomWidth: 1,
+        backgroundColor: '#f5f5f2',
+        paddingLeft: "1%",
+        paddingRight: "1%",
     },
 
-    leftField: {
-        ...Platform.select({
-            ios: {
-                height: 40,
-                width:150,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginLeft: 38,
-                paddingTop:9,
-           },
-           android: {
-                height: 40,
-                width:150,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginLeft: 46,
-                paddingTop:9,
-           }
-       })
-        
-    },
-
-    rightField: {
-        ...Platform.select({
-            ios: {
-                height: 40,
-                width:130,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginRight: 38,
-                paddingTop:9,
-           },
-           android: {
-                height: 40,
-                width:130,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginRight: 46,
-                paddingTop:9,
-           }
-       })
-    },
-
-    bottoneLeft : {
-        
-        ...Platform.select({
-            ios: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginLeft:38,
-           },
-           android: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginLeft:46,
-           }
-       })
-           
-         },
-   
-         bottoneRight : {
-           ...Platform.select({
-               ios: {
-                   borderWidth: 1,
-                   width:140,
-                   height:40,
-                   alignItems: 'center',
-                   justifyContent: 'center',
-                   borderRadius:8,
-                   backgroundColor: '#f2077d',
-                   marginRight:38,
-              },
-              android: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginRight:46,
-              }
-          })
-         },
-
-      bottone : {
+    bottone : {
         borderWidth: 1,
         width:300,
         height:40,
@@ -201,6 +78,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#f2077d',
         marginTop:10,
       },
+
+      bottoneLeft : {
+        
+       
+       },
+           
+       
+   
+      bottoneRight : {
+           
+    },
+
+ 
+
+
+  
 
   })
 
@@ -236,10 +129,8 @@ export default class StrutturaScreen extends React.Component {
 
     _renderItem({item,index}){
         return (
-          <View style={{ justifyContent:'center',
-            marginLeft:50
-              }}>
-           <Image style={{width:250, height:250, borderRadius:10}} source = {item.image} />
+          <View>
+           <Image style={{width:270, height:270, borderRadius:5}} source = {item.image} />
             <Text>{item.title}</Text>
           </View>
 
@@ -262,20 +153,28 @@ export default class StrutturaScreen extends React.Component {
                         renderItem={this._renderItem}
                         onSnapToItem = { index => this.setState({activeIndex:index}) } />
                     </View>
-                    <View style={styles.topContainer}>
-                        <Text style={styles.singleField}>Le sirene</Text>
-                        <Text style={styles.singleField}>Indirizzo</Text>
-                    </View>
-                    <View style={styles.twoFieldContainer}>
-                        <Text style={styles.leftField}>Città</Text>
-                        <Text style={styles.rightField}>Cap</Text>
-                    </View>
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.singleField}>Nazione</Text>
-                        <Text style={styles.singleField}>Tipologia</Text>
-                        <Text style={styles.singleField}>Numero Alloggi</Text>
-                        <Text style={styles.descrizioneField}>Descrizione</Text>
-                    </View>
+
+                        <View style={styles.fieldContainerTop}>
+                            <TextInput style={styles.singleField}>Le sirene</TextInput>
+                            <TextInput style={styles.singleField}>Via Giovanni da Procida 18</TextInput>
+                            <TextInput style={styles.singleField}>Napoli</TextInput>
+                        </View>
+                        <View style={styles.twoFieldContainer}>
+                            <TextInput style={styles.twoField}>80100</TextInput>
+                            <TextInput style={styles.twoField}>Italia</TextInput>
+                        </View>
+                        <View style={styles.fieldContainerBottom}>
+                            <TextInput style={styles.singleField}>Hotel</TextInput>
+                            <TextInput style={styles.singleField}>123</TextInput>
+                            <TextInput style={styles.descrizioneField}
+                             width ={"85%"}
+                             height ={200}
+                             multiline={true}
+                             numberOfLines={15}
+
+                            >Bellissimo</TextInput>
+                        </View>
+
                     <View style={styles.threeButtonContainer}>
                         <TouchableOpacity 
 			                style = {styles.bottoneLeft}
