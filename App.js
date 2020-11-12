@@ -6,7 +6,7 @@
     4. npm install @react-navigation/stack 
     5. npm install @react-navigation/drawer
     6. npm install react-native-reanimated react-native-gesture-handler react-native-screens react-native-safe-area-context @react-native-community/masked-view
-    7. npm install react-native-calendar-picker
+    7. npm install --save react-native-calendar-picker
     8. npm install react-native-picker-select
     9. npm install moment
     10. npm install react-native-elements
@@ -53,8 +53,9 @@ const Stack = createStackNavigator();
 const App = () => {
   let [fontsLoaded] = useFonts({
     'Montserrant': require('./assets/fonts/montserrant.ttf'),
-    'MontserrantSemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf')
-
+    'MontserrantSemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf'),
+    'MontserrantBold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'MontserrantThin': require('./assets/fonts/Montserrat-Thin.ttf'),
   });
   if (!fontsLoaded) { //se il font non e' stato caricato correttamente o semplicemente non e' pronto
     return <AppLoading />; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>
