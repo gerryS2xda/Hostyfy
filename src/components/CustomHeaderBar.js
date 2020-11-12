@@ -1,13 +1,32 @@
 import React from'react'
-import { StyleSheet, Platform, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CustomHeaderBar = (props) => {
+    const createNextRealeaseFeatureAlert = () =>
+      Alert.alert(
+      "Funzionalità non disponibile",
+      "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+      [
+          {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
             <View style={styles.headerContent}>
                 <TouchableOpacity style={styles.drawerMenuButton} onPress={() => props.navigator.dispatch(DrawerActions.toggleDrawer())}>
                   <Image style={styles.drawerIcon} source={require("../../assets/drawerMenu_icon.png")}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.notificationButton} onPress={createNextRealeaseFeatureAlert}>
+                  <Icon name="bell" color={"white"} size={24} />
                 </TouchableOpacity>
                 <Text style={styles.headertitle}>{props.title}</Text>
             </View>
@@ -31,7 +50,6 @@ const styles = StyleSheet.create({
     }),
     headerContainer: {
         width: "100%",
-        justifyContent: 'flex-start',
         backgroundColor: '#f2077d',
         marginTop:20, //necessario conoscere altezza statusbar
     },
@@ -65,11 +83,26 @@ const styles = StyleSheet.create({
     drawerMenuButton: {
         position: 'absolute',
         top: 18,
-        left: 24,
+        left: "6%",
         bottom: 0,
         right: 0,
+        width: 24,
+        height: 24,
     }, 
     drawerIcon: {
+      width: 24,
+      height: 24,
+    },
+    notificationButton: {
+      position: 'absolute',
+      top: 18,
+      left: "86%",
+      bottom: 0,
+      right: 0,
+      width: 24,
+      height: 24,
+    }, 
+    notificationIcon: {
       width: 24,
       height: 24,
     }
