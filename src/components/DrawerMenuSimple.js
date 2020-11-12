@@ -113,9 +113,10 @@ function DrawerContentCustom(props){
                 <DrawerContentScrollView {...props}>
                     <View style={styles.drawerContent}>
                         <View style={styles.userInfoSection}>
-                            <View style={styles.horizontalView}>
-                                <Image style = {styles.avatarImage} source ={require('../../assets/user.png')}/>
+                            <View style={styles.avaterAndTxtContainer}>
+                                <Icon name= "account-circle-outline" color={"black"} size={32}/>
                                 <Text style={styles.userInfo}>Tizio Caio</Text>
+                            </View>
                                 <View style={styles.horizontalViewSwitch}>
                                     <Text style={styles.labelSwitchTxt}>Guest</Text>
                                     <Switch style={styles.switchStyle}
@@ -128,7 +129,6 @@ function DrawerContentCustom(props){
                                     />
                                     <Text style={styles.labelSwitchTxt}>Host</Text>
                                 </View>
-                            </View>
                         </View>
                         <View style={styles.drawerSection}>
                             <DrawerItem 
@@ -178,10 +178,11 @@ function DrawerContentCustom(props){
             <View style={styles.drawerContainer}>
                 <DrawerContentScrollView {...props}>
                     <View style={styles.drawerContent}>
-                        <View style={styles.userInfoSection}>
-                            <View style={styles.horizontalView}>
-                                <Image style = {styles.avatarImage} source ={require('../../assets/user.png')}/>
+                    <View style={styles.userInfoSection}>
+                            <View style={styles.avaterAndTxtContainer}>
+                                <Icon name= "account-circle-outline" color={"black"} size={32}/>
                                 <Text style={styles.userInfo}>Tizio Caio</Text>
+                            </View>
                                 <View style={styles.horizontalViewSwitch}>
                                     <Text style={styles.labelSwitchTxt}>Guest</Text>
                                     <Switch style={styles.switchStyle}
@@ -194,7 +195,6 @@ function DrawerContentCustom(props){
                                     />
                                     <Text style={styles.labelSwitchTxt}>Host</Text>
                                 </View>
-                            </View>
                         </View>
                         <View style={styles.drawerSection}>
                             <DrawerItem 
@@ -265,19 +265,16 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     userInfoSection: {
+      flexDirection: 'row',
       paddingLeft: 16,
       borderBottomColor: '#b2c2bf',
       borderBottomWidth: 1,
       paddingBottom: 6,
     },
-    horizontalView: {
-        flexDirection: 'row',
-        marginTop: 20,
-    },
-    avatarImage: {
-        width: 24,
-        height: 24,
-        marginRight: 12,
+    avaterAndTxtContainer: {
+        alignItems: 'center',
+        marginTop: 2,
+        marginRight: 8,
     },
     userInfo: {
         fontSize: 16,
@@ -289,6 +286,8 @@ const styles = StyleSheet.create({
         fontSize: 14, 
         color: 'black',
         fontFamily: 'Montserrant',
+        marginLeft: -10,
+        width: "120%"
     },
     drawerSection: {
         marginTop: 8,
@@ -301,16 +300,17 @@ const styles = StyleSheet.create({
     horizontalViewSwitch: {
         flexDirection: 'row',
         marginLeft: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 2,
     },
     labelSwitchTxt: {
         fontSize: 16,
-        marginTop: 1,
         color: 'black',
         fontFamily: 'Montserrant',
     },
     switchStyle: {
-        marginRight: 2,
-        marginTop: 0,
+        marginLeft: 2,
     }
 });
 
