@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
+import CustomButton from "../components/CustomButton"
 
 const styles = StyleSheet.create({
   container: {
@@ -29,30 +30,6 @@ const styles = StyleSheet.create({
 
   },
 
-  bottone : {
-    borderWidth: 1,
-    width:300,
-    height:40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius:8,
-    backgroundColor: '#f2077d',
-    fontFamily: "MontserrantSemiBold",
-  },
-
-  bottoneRegistrati : {
-    borderWidth: 1,
-    width:300,
-    height:40,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius:8,
-    backgroundColor: '#f2077d',
-    fontFamily: "MontserrantSemiBold",
-    
-    
-  },
-
   paswordDimenticata: {
     alignContent: 'center',
     color: '#cc3881',
@@ -73,11 +50,6 @@ const styles = StyleSheet.create({
     marginTop:90,
     marginBottom: 20,
   },
-
-  testo:{
-    fontFamily: "MontserrantSemiBold",
-    color: "#ffffff"
-  }
 })
 
 const Login = (props) => {
@@ -107,29 +79,18 @@ const [errore, setErrore] = useState('');
           secureTextEntry = {true}
         />
         <Text>{errore}</Text>
-        <TouchableOpacity
-          style = {styles.bottone}
-          onPress={() => {
+        <CustomButton nome="Accedi" onPress={() => {
             if(email == "admin") props.navigation.navigate('HomeHost');
             else props.navigation.navigate('HomeGuest');
-            
-          }}
-          >
-            <Text style={styles.testo}>Accedi</Text>
-          </TouchableOpacity> 
+          }} />
           <Text style={styles.paswordDimenticata}>Password dimenticata?</Text>  
         </View> 
         <View style={styles.container_2}>
           <View style={{height:100}} >
-
           </View>
             <View style={styles.container_2}>
               <Text style={styles.nonReg}>Non hai un account?</Text>
-              <TouchableOpacity
-                style = {styles.bottoneRegistrati}
-                onPress={() => props.navigation.navigate('Registratione')}>
-                  <Text style={styles.testo}>Registrati</Text>
-                </TouchableOpacity> 
+              <CustomButton nome = "Registrati" onPress={() => props.navigation.navigate('Registratione')} />
             </View>
           </View>
        

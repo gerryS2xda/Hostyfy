@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity } from 'react-native'
+import {View, Text, StyleSheet, Alert } from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomImageButton from "../components/CustomImageButton";
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -40,41 +41,9 @@ const styles = StyleSheet.create({
     marginTop:30
   },
 
-  bottone : {
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    borderWidth: 1,
-    width:300,
-    height:40,
-    borderRadius:8,
-    backgroundColor: '#f2077d',
-    fontFamily: "Montserrant"
-  },
-
-  immagineBottone : {
-    width:30,
-    height:30,
-    marginLeft: 5,
-  },
-
-  testoBottone: {
-    color:'#ffffff',
-    marginLeft: 20,
-    fontFamily: "Montserrant"
-  },
-
-  immagineLogo : {
-    width:80,
-    height:80,
-    borderWidth:2,
-    borderRadius: 200,
-    borderColor: '#cc3881',
-  },
-
   testoLogo : {
     fontSize: 20,
-    color: '#000000',
+    color: '#cc3881',
     marginTop: 10,
     fontFamily: "MontserrantSemiBold",
   },
@@ -86,55 +55,64 @@ const styles = StyleSheet.create({
 
 })
 
-
-const Bottone = (props) => {
-  return(
-    <TouchableOpacity
-      style = {styles.bottone}
-      onPress={props.func}>
-      <Icon name= {props.nameIcon} color={"#ffffff"} size={30} style={styles.immagineBottone}/>
-      <Text style = {styles.testoBottone}>{props.nome}</Text>
-    
-    </TouchableOpacity>
-  );
-}
-
-
-
-
 const HomeHost = (props) => {
+  //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
+  const minDate = new Date(); // Today
+  const maxDate = new Date(2017, 6, 3);
+  const startDate  =  selectedStartDate ? selectedStartDate.toString() : '';
+  const endDate = selectedEndDate ? selectedEndDate.toString() : '';
+  const onDateChange = (date, type) => {
+    if (type === 'END_DATE') {
+      setSelectedEndDate(date);
+    } else {
+      setSelectedStartDate(date);
+      setSelectedEndDate(null);
+    }
+  }
 
-
-
-    const colorIcon = "black";
-    const sizeIcon = 100;
+  //Altro codice
+  const createNextRealeaseFeatureAlert = () =>
+      Alert.alert(
+      "Funzionalità non disponibile",
+      "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+      [
+          {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
 
   return(
-  
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={props.navigation} />
     <ScrollView>
       <View contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
-        <Icon name= "account-circle-outline" color={colorIcon} size={sizeIcon}/>
-
-          
+          <Icon name= "account-circle-outline" color={"#cc3881"} size={100}/>
           <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
         </View>
         <View style={styles.centerContainer}>
-          <Bottone nameIcon={"home-outline"} nome= 'Le mie strutture' navPage = 'LeMieStruttre' func ={() => props.navigation.navigate("LeMieStrutture")}/>
-          <Bottone nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' navPage = 'Inserisci' func ={() => props.navigation.navigate("InserisciPrenotazione")}/>
-          <Bottone nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' navPage = 'Inserisci'/>
+          <CustomImageButton nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => props.navigation.navigate("LeMieStrutture")} />
+          <CustomImageButton nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => props.navigation.navigate("InserisciPrenotazione")} />
+          <CustomImageButton nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
         <CalendarPicker 
-         allowRangeSelection = {true}
+          allowRangeSelection = {true}
+          minDate={minDate}
           selectedDayColor = '#cc3881'
           width = {350}
           nextTitle = "Successivo"
           previousTitle = "Precedente"
           nextTitleStyle = {{color: '#cc3881'}}
           previousTitleStyle = {{color: '#cc3881'}}
+          onDateChange={onDateChange}
         />
         </View>
       </View>
@@ -143,4 +121,4 @@ const HomeHost = (props) => {
   );
 }
 
-export default HomeHost
+export default HomeHost;

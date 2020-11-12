@@ -37,12 +37,11 @@ const styles = StyleSheet.create({
     },
     welcometitle:{
       textAlign: "center",
-      fontSize: 32,
+      fontSize: 28,
       color: "#f2077d",
-      fontWeight: "bold",
       marginTop: 32,
       marginBottom: 16,
-      fontFamily: "MontserrantSemiBold",
+      fontFamily: "MontserrantBold",
     },
     swipeIcon:{
       width:32,
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
     },
     suggestTxt: {
       textAlign: 'center',
-      fontSize: 18,
+      fontSize: 16,
       color: 'black',
       fontFamily: "Montserrant"
     }
