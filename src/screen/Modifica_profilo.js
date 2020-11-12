@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
-import HeaderBar from '../components/CustomHeaderBar'
+import HeaderBar from '../components/CustomHeaderBar';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomButton from "../components/CustomButton"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -10,9 +12,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   container: {  
-    flexDirection: 'column',
+    flexDirection: 'column', 
+    width: "100%",
   },
-  
+  scrollContent: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   topContainer: {
     height:100,
     flexDirection: 'column',
@@ -57,82 +63,66 @@ const styles = StyleSheet.create({
     borderColor: '#cc3881',
     borderWidth: 1.4,
     borderRadius: 8,
-  },
-
-  bottone : {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 1,
-    width:300,
-    height:40,
-    borderRadius:8,
-    backgroundColor: '#f2077d',
-    marginTop:40,
-  },
-
-  immagineLogo : {
-    width:80,
-    height:80,
-    borderWidth:2,
-    borderRadius: 200,
-    borderColor: '#cc3881',
+    paddingLeft: 5,
+    fontFamily: "MontserrantSemiBold",
   },
 })
 
 
 const Modifica_profilo = (props) => {
+  const createPositiveAlert = () =>
+      Alert.alert(
+      "Salva modifiche",
+      "Le modifiche sono state memorizzate con successo!",
+      [
+          {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+    );
+
   return(
     <View style={styles.maincontainer}>
-      <HeaderBar title="Profilo" navigator={props.navigation} />
+      <HeaderBar title="Il mio profilo" navigator={props.navigation} />
       <ScrollView style = {styles.container}>
-        <View style = {styles.topContainer}>
-          <Image
-            style = {styles.immagineLogo}  
-            source ={require('../../assets/user.png')}/>
-        </View>
-        <View style = {styles.upperMiddleContainer}>
-            <View>
-
-            </View>
-          <TextInput
-              style = {styles.singleTextInput}
-              placeholder='Nome'
-          />
-          <TextInput
-              style = {styles.singleTextInput}
-              placeholder='Cognome'
-          />
-          <TextInput
-              style = {styles.singleTextInput}
-              placeholder='Email'
-          />
-          <View>
-                
+        <View style={styles.scrollContent}> 
+          <View style = {styles.topContainer}>
+            <Icon name= "account-circle-outline" color={"#cc3881"} size={100}/>
           </View>
-        </View>
-        <View style = {styles.lowerMiddleContainer}>
-          <View>
-                
+          <View style = {styles.upperMiddleContainer}>
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Nome'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Cognome'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Email'
+            />
           </View>
-          <TextInput
-              style = {styles.singleTextInput}
-              placeholder='Vecchia password'
-          />
-          <TextInput
-              style = {styles.singleTextInput}
-              placeholder='Nuova password'
-          />
-          <View>
-                
+          <View style = {styles.lowerMiddleContainer}>
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Vecchia password'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Nuova password'
+            />
           </View>
-        </View>
-        <View style = {styles.bottomContainer}>
-          <TouchableOpacity 
-        style = {styles.bottone}
-      >
-              <Text style={{color:'#ffffff'}}>Salva modifiche</Text>
-          </TouchableOpacity>
+          <View style = {styles.bottomContainer}>
+            <CustomButton styleBtn={{marginTop:40, marginBottom: 40}} 
+              nome="Salva modifiche" 
+              onPress={createPositiveAlert} 
+            />
+          </View>
         </View>
       </ScrollView>
     </View>

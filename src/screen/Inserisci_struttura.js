@@ -1,204 +1,83 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, Image,ScrollView, Alert, StyleSheet} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import HeaderBar from '../components/CustomHeaderBar'
-
-
-
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from '../components/CustomButton';
 
 const styles = StyleSheet.create({
     maincontainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-      },
-    scrollContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'stretch',
+		flex: 1,
+		backgroundColor: '#fff',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	bodyScrollcontainer: {
+		width: "100%",
+	},
+	scrollContent: {
+        marginLeft:32,
+        marginRight:32,
     },
-
-    topContainer: {
-        flexDirection: 'column',
-        justifyContent: 'space-around',
-        alignItems: 'center',
-        marginTop:40
-
-    },
+	topContainer: {
+		width: "100%",
+		marginTop: 32,
+	},
 
     twoFieldContainer: {
+		marginTop: 16, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
-    },
-
-    middleContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
     },
 
     threeButtonContainer: {
+		marginTop: 16, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-        alignItems: 'center',
-        height:70,
     },
 
     bottomButtonContainer: {
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginBottom:10
-    },
-
-    carouselStyle: {
-        justifyContent:'center',
-        marginRight:50,
+        marginBottom:20,
     },
 
     singleField: {
         height: 40,
-        width:300,
+        width:"100%",
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
+        marginTop: 16,
     },
 
     descrizioneField: {
         height: 200,
-        width:300,
+        width:"100%",
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
-        paddingBottom:160
+        paddingBottom:160,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
+        marginTop: 16,
     },
 
-    leftField: {
-        ...Platform.select({
-            ios: {
-                height: 40,
-                width:150,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginLeft: 38,
-                paddingTop:9,
-           },
-           android: {
-                height: 40,
-                width:150,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginLeft: 46,
-                paddingTop:9,
-           }
-       })
-        
-    },
-
-    rightField: {
-        ...Platform.select({
-            ios: {
-                height: 40,
-                width:130,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginRight: 38,
-                paddingTop:9,
-           },
-           android: {
-                height: 40,
-                width:130,
-                borderColor: '#cc3881',
-                borderWidth: 1.4,
-                marginTop:8,
-                borderRadius: 8,
-                justifyContent:'center',
-                alignItems:'center',
-                marginRight: 46,
-                paddingTop:9,
-           }
-       })
-    },
-
-
-    bottoneLeft : {
-        
-        ...Platform.select({
-            ios: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginLeft:38,
-           },
-           android: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginLeft:46,
-           }
-       })
-           
-         },
-   
-         bottoneRight : {
-           ...Platform.select({
-               ios: {
-                   borderWidth: 1,
-                   width:140,
-                   height:40,
-                   alignItems: 'center',
-                   justifyContent: 'center',
-                   borderRadius:8,
-                   backgroundColor: '#f2077d',
-                   marginRight:38,
-              },
-              android: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginRight:46,
-              }
-          })
-         },
-
-      bottone : {
-        borderWidth: 1,
-        width:300,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginTop:10,
+    middleTextInput: {
+		height: 40,
+		width:"45%",
+		borderColor: '#cc3881',
+		borderWidth: 1.4,
+		borderRadius: 8,
+		fontFamily: "MontserrantSemiBold",
+    	paddingLeft: 5
       },
-
-  })
+      carouselStyle: {
+        justifyContent:'center',
+        marginRight:50,
+    },
+  });
 
 export default class InserisciStrutturaScreen extends React.Component {
 
@@ -243,72 +122,81 @@ export default class InserisciStrutturaScreen extends React.Component {
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Inserisci struttura" navigator={this.props.navigation} />
-                <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <View style={styles.topContainer}>
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Denominazione struttura'
-                        />
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Indirizzo'
-                        />
-                    </View>
-                    <View style={styles.twoFieldContainer}>
-                        <TextInput 
-                            style={styles.leftField}
-                            placeholder='Città'
-                        />
-                        <TextInput 
-                            style={styles.rightField}
-                            placeholder='CAP'
-                        />
-                    </View>
-                    <View style={styles.middleContainer}>
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Nazione'
-                        />
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Tipologia'
-                        />
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Numero alloggi'
-                        />
-                        <TextInput 
-                            style={styles.descrizioneField}
-                            placeholder='Descrizione'
-                            width ={300} 
-                            height ={200} 
-                            multiline={true}
-                            numberOfLines={15}
-                        />
-                    </View>
-                    <View style={styles.threeButtonContainer}>
-                        <TouchableOpacity 
-			                style = {styles.bottoneLeft}
-		                >
-                            <Text style={{color:'#ffffff'}}>Inserisci Foto</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-			               style = {styles.bottoneRight} 
-		                >
-                            <Text style={{color:'#ffffff'}}>Inserisci Video</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomButtonContainer}> 
-                        <TouchableOpacity 
-			               style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Inserisci Guida</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-			                style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Aggiungi</Text>
-                        </TouchableOpacity>
+                <ScrollView style={styles.bodyScrollcontainer}>
+                    <View style={styles.scrollContent}> 
+                        <View style={styles.topContainer}>
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Denominazione struttura'
+                            />
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Indirizzo'
+                            />
+                        </View>
+                        <View style={styles.twoFieldContainer}>
+                            <TextInput 
+                                style={styles.middleTextInput}
+                                placeholder='Città'
+                            />
+                            <TextInput 
+                                style={styles.middleTextInput}
+                                placeholder='CAP'
+                            />
+                        </View>
+                        <View style={styles.middleContainer}>
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Nazione'
+                            />
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Tipologia'
+                            />
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Numero alloggi'
+                            />
+                            <TextInput 
+                                style={styles.descrizioneField}
+                                placeholder='Descrizione'
+                                width ={300} 
+                                height ={200} 
+                                multiline={true}
+                                numberOfLines={15}
+                            />
+                        </View>
+                        <View style={styles.threeButtonContainer}>
+                            <CustomButton 
+                                styleBtn={{width: "45%"}} 
+                                nome="Inserisci Foto"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} /> 
+                            <CustomButton 
+                                styleBtn={{width: "45%"}}  
+                                nome="Inserisci Video"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                        </View>
+                        <View style={styles.bottomButtonContainer}>
+                            <CustomButton styleBtn={{marginTop: 10}} nome="Inserisci guida" onPress={()=> Alert.alert(
+                                "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                { cancelable: false })} /> 
+                            <CustomButton styleBtn={{marginTop: 10}} nome="Aggiungi" onPress={()=> Alert.alert(
+                                "Inserisci struttura", "La nuova struttura e' stata memorizzata con successo!",
+                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                { cancelable: false })} />
+                        </View>
                     </View>
                 </ScrollView>
             </View>

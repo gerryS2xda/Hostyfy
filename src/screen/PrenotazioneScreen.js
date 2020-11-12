@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import HeaderBar from '../components/CustomHeaderBar'
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from "../components/CustomButton";
 
 const PrenotazioneScreen = ({navigation}) =>{
     const numeroPren = 10;
@@ -21,9 +22,10 @@ const PrenotazioneScreen = ({navigation}) =>{
         <View style={styles.maincontainer}>
             <HeaderBar title="Prenotazione" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
+                <View style={styles.scrollContent}> 
                     <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
                     <View style={styles.infoStrutturacontainer}>
-                        <Image style={styles.strutturaImage} source={require("../../assets/hotelImage.png")}/>
+                        <Image style={styles.strutturaImage} source={require("../../assets/hotelExampleStruttura.png")}/>
                         <Text style={styles.nameStruttura}>{nameStruttura}</Text>
                     </View>
                     <View style={styles.fieldSet}>
@@ -59,13 +61,10 @@ const PrenotazioneScreen = ({navigation}) =>{
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('LaMiaChiave'); }} >
-                            <Text style={{color:'#ffffff'}}>Chiave</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style = {styles.bottoneStyle} onPress={() => { navigation.navigate('InfoCamera'); }} >
-                            <Text style={{color:'#ffffff'}}>Servizi camera</Text>
-                        </TouchableOpacity>
+                        <CustomButton nome="Chiave" styleBtn={{width: 130}} onPress={() => { navigation.navigate('LaMiaChiave'); }} />
+                        <CustomButton nome="Servizi camera" styleBtn={{width: 130}} onPress={() => { navigation.navigate('InfoCamera'); }} />
                     </View>
+                </View>
             </ScrollView>
         </View>
     );
@@ -81,16 +80,15 @@ const styles = StyleSheet.create({
       justifyContent: 'center'
     },
     bodyScrollcontainer: {
-      paddingLeft: 32,
-      paddingRight: 32,
+      width: "100%",
     },
     numprenotazionetxt: {
         textAlign: "left",
-        fontSize: 18,
+        fontSize: 16,
         color: "black",
-        fontWeight: "bold",
         marginTop: 16,
         marginBottom: 16,
+        fontFamily: "MontserrantSemiBold",
     },
     infoStrutturacontainer:{
       alignItems: 'center',
@@ -98,14 +96,15 @@ const styles = StyleSheet.create({
       marginBottom: 16
     },
     strutturaImage:{
-        width: 128,
-        height: 128,
+        width: 192,
+        height: 192,
     },
     nameStruttura: {
       fontSize: 16,
       color: "black",
       textAlign: "center",
-      marginTop: 4
+      marginTop: 4,
+      fontFamily: "MontserrantSemiBold",
     },
     checkInContainer: {
       marginTop: 16,
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -16,
         left: 10,
-        fontWeight: 'bold',
+        fontFamily: "MontserrantSemiBold",
         backgroundColor: '#FFFFFF',
         fontSize: 16,
         padding: 4,
@@ -157,11 +156,12 @@ const styles = StyleSheet.create({
     categoryText: {
         fontSize: 16,
         color: "black",
-        fontWeight: "bold"
+        fontFamily: "MontserrantBold",
     },
     normalText: {
         fontSize: 16,
-        color: "black"
+        color: "black",
+        fontFamily: "Montserrant",
     },
     buttonContainer:{
       flex: 1,
@@ -171,14 +171,9 @@ const styles = StyleSheet.create({
       margin: 10,
       marginBottom: 20
     },
-    bottoneStyle : {
-        borderWidth: 1,
-        width: 120,
-        height: 32,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
+    scrollContent: {
+        marginLeft:16,
+        marginRight:16,
     },
 });
 

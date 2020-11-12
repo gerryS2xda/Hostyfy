@@ -1,92 +1,66 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Platform } from 'react-native'
+import {View, Text, TextInput, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
 import RNPickerSelect from 'react-native-picker-select';
-import HeaderBar from '../components/CustomHeaderBar'
-
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from "../components/CustomButton";
 
 //npm install react-native-picker-select per la combo box
 
 const styles = StyleSheet.create({
 	maincontainer: {
+		flex: 1,
 		backgroundColor: '#fff',
-		justifyContent: 'flex-start',
-		alignItems: 'center'
-	  },
-	  
-	container: {
-		
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-
-	emptyContainer: {
-		height:100
+	bodyScrollcontainer: {
+		width: "100%",
 	},
-
-
+	scrollContent: {
+        marginLeft:32,
+        marginRight:32,
+    },
 	topContainer: {
-		height:200,
-		flexDirection: 'column',
-		justifyContent: 'space-between',
-		alignItems: 'center'
+		width: "100%",
+		marginTop: 32,
 	},
 
 	middleUpperContainer: {
-		height:60,
+		marginTop: 16, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
 	},
 
 	middleLowerContainer: {
-		height:50,
+		marginTop: 16, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-		alignItems: 'center'
 	},
 
 	bottomContainer: {
-		height:300,
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
-		alignItems: 'center'
+		marginTop: 30,
+		marginBottom: 30,
 	},
 
 	singleTextInput: {
 		height: 40,
-		width:300,
+		width:"100%",
 		borderColor: '#cc3881',
 		borderWidth: 1.4,
 		borderRadius: 8,
+		marginTop: 16,
+		fontFamily: "MontserrantSemiBold",
+    	paddingLeft: 5
 	  },
 
-	  rightTextInput: {
+	  middleTextInput: {
 		height: 40,
-		width:130,
+		width:"45%",
 		borderColor: '#cc3881',
 		borderWidth: 1.4,
 		borderRadius: 8,
-		marginLeft:20,
-	  },
-
-	  leftTextInput: {
-		height: 40,
-		width:130,
-		borderColor: '#cc3881',
-		borderWidth: 1.4,
-		borderRadius: 8,
-		marginRight:20,
-	  },
-
-	  bottone : {
-		borderWidth: 1,
-		width:300,
-		height:40,
-		alignItems: 'center',
-		justifyContent: 'center',
-		borderRadius:8,
-		backgroundColor: '#f2077d',
-		marginTop:30
+		fontFamily: "MontserrantSemiBold",
+    	paddingLeft: 5
 	  },
 })
 
@@ -103,9 +77,10 @@ const Inserisci_prenotazione = (props) => {
 			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
-			width:300,
+			width:"100%",
 			alignItems: 'center',
-			
+			marginTop: 16,
+			fontFamily: "MontserrantSemiBold",
 		},
 		placeholder: {
 			
@@ -116,84 +91,101 @@ const Inserisci_prenotazione = (props) => {
 			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
-			width:300,
+			width:"100%",
 			alignItems: 'center',
-			color:'#000000'
+			color:'#000000',
+			marginTop: 16,
+			fontFamily: "MontserrantSemiBold",
 		},
 	};
-  return(
+
+	const createPositiveAlert = () =>
+      Alert.alert(
+      "Inserisci prenotazione",
+      "La nuova prenotazione e' stata memorizzata con successo!",
+      [
+          {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") }
+      ],
+      { cancelable: false }
+	);
+	
+  	return(
 	<View style={styles.maincontainer}>
 		<HeaderBar title="Inserisci prenotazione" navigator={props.navigation} />
-		<View style = {styles.container}>
-			<View style = {styles.emptyContainer}>
-
+		<ScrollView style={styles.bodyScrollcontainer}>
+            <View style={styles.scrollContent}> 
+				<View style = {styles.topContainer}>
+					<RNPickerSelect
+						style = {pickerStyle}
+						onValueChange = {(struttura) => {setStruttura(struttura);console.log(struttura);}}
+						value={struttura}
+						placeholder = {{
+							label: 'Struttura',
+							value: "Struttura",
+						}}
+						items={[
+							{ label: 'Posillipo', value: 'Posillipo' },
+							{ label: 'Margellina', value: 'Margellina' },
+						]}
+						useNativeAndroidPickerStyle={false}
+					/>
+					<RNPickerSelect
+						style = {pickerStyle}
+						onValueChange = {() => {}}
+						placeholder = {{
+							label: 'Alloggio',
+							value: "Alloggio",
+						}}
+						items={[
+							{ label: 'Mare chiaro', value: 'Mare chiaro' },
+							{ label: 'Vietri', value: 'Vietri' },
+						]}
+						
+						useNativeAndroidPickerStyle={false}
+					/>
+					<TextInput
+						style = {styles.singleTextInput}
+						placeholder = "Nome"
+					/>
+					<TextInput
+						style = {styles.singleTextInput}
+						placeholder = "Cognome"
+					/>
+				</View>
+				<View style = {styles.middleUpperContainer}>
+					<TextInput
+						style = {styles.middleTextInput}
+						placeholder = "Data inizio"
+					/>
+					<TextInput
+						style = {styles.middleTextInput}
+						placeholder = "Data fine"
+					/>
+				</View>
+				<View style = {styles.middleLowerContainer}>
+					<TextInput
+						style = {styles.middleTextInput}
+						placeholder = "Numero Persone"
+					/>
+					<TextInput
+						style = {styles.middleTextInput}
+						placeholder = "email"
+					/>
+				</View>
+				<View style = {styles.bottomContainer}>
+					<CustomButton 
+						nome="Inserisci" 
+						styleBtn={{width: "100%"}}
+						onPress={createPositiveAlert} 
+					/>
+				</View>
 			</View>
-			<View style = {styles.topContainer}>
-				<RNPickerSelect
-					style = {pickerStyle}
-					onValueChange = {(struttura) => {setStruttura(struttura);console.log(struttura);}}
-					value={struttura}
-					placeholder = {{
-						label: 'Struttura',
-						value: "Struttura",
-					}}
-					items={[
-						{ label: 'Posillipo', value: 'Posillipo' },
-						{ label: 'Margellina', value: 'Margellina' },
-					]}
-					useNativeAndroidPickerStyle={false}
-				/>
-				<RNPickerSelect
-					style = {pickerStyle}
-					onValueChange = {() => {}}
-					placeholder = {{
-						label: 'Alloggio',
-						value: "Alloggio",
-					}}
-					items={[
-						{ label: 'Mare chiaro', value: 'Mare chiaro' },
-						{ label: 'Vietri', value: 'Vietri' },
-					]}
-					
-					useNativeAndroidPickerStyle={false}
-				/>
-				<TextInput
-					style = {styles.singleTextInput}
-					placeholder = "Nome"
-				/>
-				<TextInput
-					style = {styles.singleTextInput}
-					placeholder = "Cognome"
-				/>
-			</View>
-			<View style = {styles.middleUpperContainer}>
-				<TextInput
-					style = {styles.leftTextInput}
-					placeholder = "Data inizio"
-				/>
-				<TextInput
-					style = {styles.rightTextInput}
-					placeholder = "Data fine"
-				/>
-			</View>
-			<View style = {styles.middleLowerContainer}>
-				<TextInput
-					style = {styles.leftTextInput}
-					placeholder = "Numero Persone"
-				/>
-				<TextInput
-					style = {styles.rightTextInput}
-					placeholder = "email"
-				/>
-			</View>
-			<View style = {styles.bottomContainer}>
-			<TouchableOpacity 
-				style = {styles.bottone}
-			>
-				<Text style={{color:'#ffffff'}}>Inserisci</Text>
-			</TouchableOpacity>
-			</View>
-		</View>
+		</ScrollView>
 	</View>
   );
 }

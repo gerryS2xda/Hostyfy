@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView, Alert} from 'react-native'
+import CustomButton from '../components/CustomButton'
 
 const styles = StyleSheet.create({
    
@@ -45,21 +46,14 @@ const styles = StyleSheet.create({
     borderWidth: 1.4,
     marginTop:8,
     borderRadius: 8,
-    fontSize: 40,
+    fontSize: 24,
     fontFamily: 'Montserrant',
+    paddingLeft: 10
   },
 
   bottoneAvanti : {
-    borderWidth: 1,
     width:320,
-    height:40,  
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius:8,
-    backgroundColor: '#f2077d',
     marginTop: 40,
-    fontSize: 10,
-    fontFamily: 'Montserrant', 
   },
 });
 
@@ -86,51 +80,40 @@ const [confermaPassword, setConfermaPassword] = useState('');
           <View style={styles.InformazioniPersonali}>
               <TextInput
                 style = {styles.input}
-                placeholder = ' Nome'
+                placeholder = 'Nome'
                 onChangeText = {(nome) => setNome(nome)}
               />
               <TextInput
                 style = {styles.input}
-                placeholder = ' Cognome'
+                placeholder = 'Cognome'
                 onChangeText = {(cognome) => setCognome(cognome)}
               />
               <TextInput
                 style = {styles.input}
-                placeholder = ' Email'
+                placeholder = 'Email'
                 onChangeText = {(email) => setEmail(email)}
               />
               <TextInput
                 style = {styles.input}
-                placeholder = ' Password'
+                placeholder = 'Password'
                 onChangeText = {(password) => setPassword(password)}
               />
 
               <TextInput
                 style = {styles.input}
-                placeholder = ' Conferma Password'
+                placeholder = 'Conferma Password'
                 onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
               />        
 
               <View style={styles.buttonCustomizzato}>
-                <TouchableOpacity
-                    style = {styles.bottoneAvanti}
-                    onPress={() => Alert.alert (
-                      'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Vai al login', onPress: ()=> props.navigation.navigate('Home')}])}>    
-                                           <Text style={{color:'#ffffff'}}>Registrati</Text>
-                </TouchableOpacity> 
+                <CustomButton nome="Registrati" styleBtn={styles.bottoneAvanti} onPress={() => Alert.alert (
+                      'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Vai al login', onPress: ()=> props.navigation.navigate('Home')}])} 
+                />
               </View>
           
           </View>
-          
-      
-      
-
-
-     
-    
-  </View>
+    </View>
   </ScrollView>
-   
   );
 }
 

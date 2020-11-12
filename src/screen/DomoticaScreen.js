@@ -25,54 +25,56 @@ const DomoticaScreen = ({navigation}) =>{
 
   return(
     <View style={styles.maincontainer}>
-      <HeaderBar title="Informazioni camera" navigator={navigation} />
-        <ScrollView style={styles.bodyScrollcontainer}>
-            <View style={styles.infoAlloggiocontainer}>
-                <Image style={styles.alloggioImage} source={require("../../assets/hotel_room_design.png")}/>
-                <Text style={styles.nameAlloggio}>{infoAlloggio}</Text>
-            </View>
-            <View style={styles.fieldSet}>
-                <Text style={styles.legend}>Servizi domotica</Text>
-                <View style={styles.fieldSetContent}>
-                    <View style={styles.horizontalView}>
-                        <Text style={styles.normalText}>Condizionatore</Text>
-                        <Switch style={styles.switchStyle}
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitch}
-                            value={isEnabled}
-                            />
-                    </View>
-                    <View style={styles.horizontalView}>
-                        <Text style={styles.normalText}>TV</Text>
-                        <Switch style={styles.switchStyle}
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isEnabledsw1 ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitchsw1}
-                            value={isEnabledsw1}
-                            />
-                    </View>
-                    <View style={styles.horizontalView}>
-                        <Text style={styles.normalText}>Luce 1</Text>
-                        <Switch style={styles.switchStyle}
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isEnabledsw2 ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitchsw2}
-                            value={isEnabledsw2}
-                            />
-                    </View>
-                    <View style={styles.horizontalView}>
-                        <Text style={styles.normalText}>Luce 2</Text>
-                        <Switch style={styles.switchStyle}
-                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                            thumbColor={isEnabledsw3 ? "#f5dd4b" : "#f4f3f4"}
-                            ios_backgroundColor="#3e3e3e"
-                            onValueChange={toggleSwitchsw3}
-                            value={isEnabledsw3}
-                            />
+       <HeaderBar title="Informazioni camera" navigator={navigation} />
+       <ScrollView style={styles.bodyScrollcontainer}>
+            <View style={styles.scrollContent}> 
+                <View style={styles.infoAlloggiocontainer}>
+                    <Image style={styles.alloggioImage} source={require("../../assets/hotel_room_design.png")}/>
+                    <Text style={styles.nameAlloggio}>{infoAlloggio}</Text>
+                </View>
+                <View style={styles.fieldSet}>
+                    <Text style={styles.legend}>Servizi domotica</Text>
+                    <View style={styles.fieldSetContent}>
+                        <View style={styles.horizontalView}>
+                            <Text style={styles.normalText}>Condizionatore</Text>
+                            <Switch style={styles.switchStyle}
+                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitch}
+                                value={isEnabled}
+                                />
+                        </View>
+                        <View style={styles.horizontalView}>
+                            <Text style={styles.normalText}>TV</Text>
+                            <Switch style={styles.switchStyle}
+                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                thumbColor={isEnabledsw1 ? "#f5dd4b" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitchsw1}
+                                value={isEnabledsw1}
+                                />
+                        </View>
+                        <View style={styles.horizontalView}>
+                            <Text style={styles.normalText}>Luce 1</Text>
+                            <Switch style={styles.switchStyle}
+                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                thumbColor={isEnabledsw2 ? "#f5dd4b" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitchsw2}
+                                value={isEnabledsw2}
+                                />
+                        </View>
+                        <View style={styles.horizontalView}>
+                            <Text style={styles.normalText}>Luce 2</Text>
+                            <Switch style={styles.switchStyle}
+                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                thumbColor={isEnabledsw3 ? "#f5dd4b" : "#f4f3f4"}
+                                ios_backgroundColor="#3e3e3e"
+                                onValueChange={toggleSwitchsw3}
+                                value={isEnabledsw3}
+                                />
+                        </View>
                     </View>
                 </View>
             </View>
@@ -91,10 +93,12 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     bodyScrollcontainer: {
-        backgroundColor: '#fff',
-        paddingLeft: 32,
-        paddingRight: 32,
+        width: "100%",
         marginTop: 16,
+    },
+    scrollContent: {
+        marginLeft:16,
+        marginRight:16,
     },
   infoAlloggiocontainer:{
       flex: 1,
@@ -112,16 +116,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "black",
     textAlign: "center",
-    marginTop: 4
-  },
-  centerText: {
-      textAlign: "center",
-      fontSize: 16,
-      color: '#f2077d'
+    marginTop: 4,
+    fontFamily: "MontserrantSemiBold",
   },
   normalText: {
       fontSize: 16,
-      color: "black"
+      color: "black",
+      fontFamily: "Montserrant",
   },
   horizontalView:{
       flexDirection: 'row',
@@ -142,11 +143,11 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -16,
         left: 10,
-        fontWeight: 'bold',
         backgroundColor: '#FFFFFF',
         fontSize: 16,
         padding: 4,
-        color: '#f2077d'
+        color: '#f2077d',
+        fontFamily: "MontserrantBold",
     },
     fieldSetContent: {
         alignSelf: "baseline",

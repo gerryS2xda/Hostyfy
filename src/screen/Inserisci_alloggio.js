@@ -1,40 +1,37 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet, Platform} from 'react-native';
+import {Text, View, Image,ScrollView, StyleSheet, Alert} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
-import HeaderBar from '../components/CustomHeaderBar'
-
-
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from '../components/CustomButton';
 
 const styles = StyleSheet.create({
     maincontainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-      },
-    scrollContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'stretch',
+		flex: 1,
+		backgroundColor: '#fff',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	bodyScrollcontainer: {
+		width: "100%",
+	},
+	scrollContent: {
+        marginLeft:32,
+        marginRight:32,
     },
 
     middleContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 100,
+        width: "100%",
+		marginTop: 32,
     },
 
     threeButtonContainer: {
+		marginTop: 16, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-        alignItems: 'center',
-        height:70,
     },
 
     bottomButtonContainer: {
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginBottom:10
+        marginBottom:20,
     },
 
     carouselStyle: {
@@ -44,87 +41,30 @@ const styles = StyleSheet.create({
 
     singleField: {
         height: 40,
-        width:300,
+        width:"100%",
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
+        marginTop: 16,
     },
 
     descrizioneField: {
         height: 200,
-        width:300,
+        width:"100%",
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
-        paddingBottom:160
+        paddingBottom:160,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
+        marginTop: 16,
     },
 
-    bottoneLeft : {
-        
-     ...Platform.select({
-         ios: {
-            borderWidth: 1,
-            width:140,
-            height:40,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius:8,
-            backgroundColor: '#f2077d',
-            marginLeft:38,
-        },
-        android: {
-            borderWidth: 1,
-            width:140,
-            height:40,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius:8,
-            backgroundColor: '#f2077d',
-            marginLeft:46,
-        }
-    })
-        
-      },
-
-      bottoneRight : {
-        ...Platform.select({
-            ios: {
-                borderWidth: 1,
-                width:140,
-                height:40,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius:8,
-                backgroundColor: '#f2077d',
-                marginRight:38,
-           },
-           android: {
-            borderWidth: 1,
-            width:140,
-            height:40,
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderRadius:8,
-            backgroundColor: '#f2077d',
-            marginRight:46,
-           }
-       })
-      },
-
-      bottone : {
-        borderWidth: 1,
-        width:300,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginTop:10,
-      },
-
-  })
+  });
 
 export default class InserisciAlloggioScreen extends React.Component {
 
@@ -169,48 +109,57 @@ export default class InserisciAlloggioScreen extends React.Component {
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Inserisci Alloggio" navigator={this.props.navigation} />
-                <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <View style={styles.middleContainer}>
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Nome alloggio'
-                        />
-                        <TextInput 
-                            style={styles.singleField}
-                            placeholder='Numero camere'
-                        />
-                        <TextInput 
-                            style={styles.descrizioneField}
-                            placeholder='Descrizione'
-                            width ={300} 
-                            height ={200} 
-                            multiline={true}
-                            numberOfLines={15}
-                        />
-                    </View>
-                    <View style={styles.threeButtonContainer}>
-                        <TouchableOpacity 
-			                style = {styles.bottoneLeft}
-		                >
-                            <Text style={{color:'#ffffff'}}>Inserisci Foto</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-			               style = {styles.bottoneRight} 
-		                >
-                            <Text style={{color:'#ffffff'}}>Inserisci Video</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomButtonContainer}> 
-                        <TouchableOpacity 
-			               style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Inserisci Guida</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-			                style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Aggiungi</Text>
-                        </TouchableOpacity>
+                <ScrollView style={styles.bodyScrollcontainer}>
+                    <View style={styles.scrollContent}> 
+                        <View style={styles.middleContainer}>
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Nome alloggio'
+                            />
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Numero camere'
+                            />
+                            <TextInput 
+                                style={styles.descrizioneField}
+                                placeholder='Descrizione'
+                                width ={300} 
+                                height ={200} 
+                                multiline={true}
+                                numberOfLines={15}
+                            />
+                        </View>
+                        <View style={styles.threeButtonContainer}>
+                                <CustomButton 
+                                    styleBtn={{width: "45%"}} 
+                                    nome="Inserisci Foto"  
+                                    onPress={()=> Alert.alert(
+                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                        { cancelable: false })} /> 
+                                <CustomButton 
+                                    styleBtn={{width: "45%"}}  
+                                    nome="Inserisci Video"  
+                                    onPress={()=> Alert.alert(
+                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                        { cancelable: false })} 
+                                /> 
+                            </View>
+                        <View style={styles.bottomButtonContainer}> 
+                            <CustomButton styleBtn={{marginTop: 10}} nome="Inserisci guida" onPress={()=> Alert.alert(
+                                "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                { cancelable: false })} />
+                            <CustomButton styleBtn={{marginTop: 10}} nome="Aggiungi" onPress={()=> Alert.alert(
+                                "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
+                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                { cancelable: false })} />
+                        </View>
                     </View>
                 </ScrollView>
             </View>

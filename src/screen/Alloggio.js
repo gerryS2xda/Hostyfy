@@ -1,21 +1,24 @@
 import React from 'react';
 import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-import HeaderBar from '../components/CustomHeaderBar'
-
-
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from '../components/CustomButton';
 
 const styles = StyleSheet.create({
     maincontainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-      },
-    scrollContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'stretch',
+		flex: 1,
+		backgroundColor: '#fff',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	bodyScrollcontainer: {
+		width: "100%",
+	},
+	scrollContent: {
+        marginLeft:32,
+        marginRight:32,
     },
-
+	
     carouselContainer: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -24,23 +27,17 @@ const styles = StyleSheet.create({
     },
 
     middleContainer: {
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        width: "100%",
     },
 
     threeButtonContainer: {
+		marginTop: 20, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
-        alignItems: 'center',
-        height:70,
     },
 
     bottomButtonContainer: {
-		flexDirection: 'column',
-		justifyContent: 'flex-start',
-        alignItems: 'center',
-        marginBottom:10
+		marginBottom:20,
     },
 
     carouselStyle: {
@@ -50,87 +47,27 @@ const styles = StyleSheet.create({
 
     singleField: {
         height: 40,
-        width:300,
+        width:"100%",
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
         paddingTop:9,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
     },
 
     descrizioneField: {
         height: 200,
-        width:300,
+        width:"100%",
         borderColor: '#cc3881',
         borderWidth: 1.4,
         marginTop:8,
         borderRadius: 8,
         paddingTop:9,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
     },
-
-    bottoneLeft : {
-        
-        ...Platform.select({
-            ios: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginLeft:38,
-           },
-           android: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginLeft:46,
-           }
-       })
-           
-         },
-   
-         bottoneRight : {
-           ...Platform.select({
-               ios: {
-                   borderWidth: 1,
-                   width:140,
-                   height:40,
-                   alignItems: 'center',
-                   justifyContent: 'center',
-                   borderRadius:8,
-                   backgroundColor: '#f2077d',
-                   marginRight:38,
-              },
-              android: {
-               borderWidth: 1,
-               width:140,
-               height:40,
-               alignItems: 'center',
-               justifyContent: 'center',
-               borderRadius:8,
-               backgroundColor: '#f2077d',
-               marginRight:46,
-              }
-          })
-         },
-
-      bottone : {
-        borderWidth: 1,
-        width:300,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginTop:10,
-      },
-
   })
 
 
@@ -179,48 +116,61 @@ export default class AlloggioScreen extends React.Component {
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Alloggi" navigator={this.props.navigation} />
-                <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <View style={styles.carouselContainer} >
-                        <Carousel
-                        style= {styles.carouselStyle}
-                        layout={"default"}
-                        ref={ref => this.carousel = ref}
-                        data={this.state.carouselItems}
-                        sliderWidth={300}
-                        itemWidth={300}
-                        renderItem={this._renderItem}
-                        onSnapToItem = { index => this.setState({activeIndex:index}) } />
-                    </View>
-                    <View style={styles.middleContainer}>
-                        <Text style={styles.singleField}>Camera 17</Text>
-                        <Text style={styles.singleField}>Disponibilità</Text>
-                        <Text style={styles.singleField}>Numero camere</Text>
-                        <Text style={styles.descrizioneField}>Descrizione</Text>
-                    </View>
-                    <View style={styles.threeButtonContainer}>
-                        <TouchableOpacity 
-			                style = {styles.bottoneLeft}
-		                >
-                            <Text style={{color:'#ffffff'}}>Modifica Foto</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-			               style = {styles.bottoneRight} 
-		                >
-                            <Text style={{color:'#ffffff'}}>Modifica Video</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomButtonContainer}> 
-                        <TouchableOpacity 
-			               style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Guida</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            style = {styles.bottone}
-                            onPress={() => {this.props.navigation.navigate('LaMiaChiave')}}>
-		                
-                            <Text style={{color:'#ffffff'}}>Visualizza Chiave</Text>
-                        </TouchableOpacity>
+                <ScrollView style={styles.bodyScrollcontainer}>
+                    <View style={styles.scrollContent}> 
+                        <View style={styles.carouselContainer} >
+                            <Carousel
+                            style= {styles.carouselStyle}
+                            layout={"default"}
+                            ref={ref => this.carousel = ref}
+                            data={this.state.carouselItems}
+                            sliderWidth={300}
+                            itemWidth={300}
+                            renderItem={this._renderItem}
+                            onSnapToItem = { index => this.setState({activeIndex:index}) } />
+                        </View>
+                        <View style={styles.middleContainer}>
+                            <Text style={styles.singleField}>Camera 17</Text>
+                            <Text style={styles.singleField}>Disponibilità</Text>
+                            <Text style={styles.singleField}>Numero camere</Text>
+                            <Text style={styles.descrizioneField}>Descrizione</Text>
+                        </View>
+                        <View style={styles.threeButtonContainer}>
+                            <CustomButton 
+                                styleBtn={{width: "45%"}} 
+                                nome="Modifica foto"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                            <CustomButton 
+                                styleBtn={{width: "45%"}} 
+                                nome="Modifica video"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                        </View>
+                        <View style={styles.bottomButtonContainer}> 
+                            <CustomButton 
+                                styleBtn={{marginTop: 10, width:"100%"}} 
+                                nome="Guida"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                            <CustomButton 
+                                styleBtn={{marginTop: 10, width:"100%"}}
+                                nome= "Visualizza chiave"
+                                onPress={() => {this.props.navigation.navigate('LaMiaChiave')}}
+                            />
+                        </View>
                     </View>
                 </ScrollView>
             </View>

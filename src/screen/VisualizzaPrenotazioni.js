@@ -8,8 +8,8 @@ import {
   Alert
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import Dialog from 'react-native-dialog';
-import HeaderBar from '../components/CustomHeaderBar'
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from '../components/CustomButton';
 
 
 const styles = StyleSheet.create({
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 20, 
     borderColor: '#d3d9e3',
+    width: "100%"
   },
 
   intestazione:{
@@ -78,21 +79,12 @@ arrowExtra: {
   marginTop: -35
 },
 
-bottone : {
-  borderWidth: 1,
-  width:340,
-  height:40,
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius:8,
-  backgroundColor: '#f2077d',
-  marginBottom: 30,
-  marginLeft: 35
-},
-
 maincontainer: {
   flex: 1,
   backgroundColor: '#fff',
+  alignItems: 'center',
+  justifyContent: 'center',
+  width: "100%",
 },
 
 });
@@ -137,22 +129,11 @@ const VisualizzaPrenotazioni = (props) => {
               }
             ]
           }/>
-
-          
-
-
-          <TouchableOpacity 
-              style = {styles.bottone}
-              onPress={() => props.navigation.navigate('StoricoPrenotazioni')}>
-              <Text style={{color:'#ffffff'}}>Storico Prenotazioni</Text>
-          </TouchableOpacity>
-        
-          
-           
-        
-
-
-        
+          <CustomButton
+              styleBtn={{width: 340, marginBottom: 30, alignSelf: 'center'}} 
+              nome="Storico prenotazioni" 
+              onPress={() => props.navigation.navigate('StoricoPrenotazioni')} 
+            />
       </View>
 </View>
       

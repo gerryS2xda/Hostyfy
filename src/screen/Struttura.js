@@ -1,26 +1,30 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
+import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet, TextInput, Alert} from 'react-native';
 import { Directions } from 'react-native-gesture-handler';
 import Carousel from 'react-native-snap-carousel';
-import HeaderBar from '../components/CustomHeaderBar'
-
-
+import HeaderBar from '../components/CustomHeaderBar';
+import CustomButton from '../components/CustomButton';
 
 const styles = StyleSheet.create({
     maincontainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-      },
-
-    scrollContainer: {
-        marginTop: 20,  
-        alignItems: 'stretch'
-        
+		flex: 1,
+		backgroundColor: '#fff',
+		justifyContent: 'center',
+		alignItems: 'center'
+	},
+	bodyScrollcontainer: {
+		width: "100%",
+	},
+	scrollContent: {
+        marginLeft:32,
+        marginRight:32,
     },
+
     carouselContainer:{
         justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft: 30
+        paddingLeft: 30,
+        marginTop: 50,
     },
 
     singleField: {
@@ -32,76 +36,59 @@ const styles = StyleSheet.create({
         paddingLeft: 8,
         fontFamily: 'Montserrant',
         borderBottomWidth: 1,
-        width:'85%',
+        width:'100%', //85 vecchio valore
     },
 
     fieldContainerTop:{
-        alignItems: 'center',      
+        width:"100%",
+        alignItems: 'center'      
     },
 
     twoFieldContainer:{
         flexDirection: 'row',
-        justifyContent: 'space-around',  
-        marginTop: 10       
+        justifyContent: 'space-between', 
+        marginTop: 16,       
     },
 
     fieldContainerBottom:{
-        alignItems: 'center',      
+        width:"100%",
+        alignItems: 'center'        
     },
 
-    twoField: {
-        justifyContent: 'flex-end',
+    twoField: { //da sistemare (non appare centrato)
         borderBottomWidth: 1,
         borderColor: '#cc3881',
-        width: "31%",
-        fontFamily: 'Montserrant'
+        width: "30%",
+        fontFamily: 'Montserrant',
+        paddingLeft: 5,
+        marginLeft: "2%",
+        marginRight: "2%",
        },
 
        descrizioneField: {
         height: 150,
-        width:"85%",
+        width:"100%",
         borderColor: '#cc3881',
         marginTop:8,
         borderBottomWidth: 1,
         backgroundColor: '#f5f5f2',
         paddingLeft: "1%",
         paddingRight: "1%",
+        marginTop: 16,
+    },
+    threeButtonContainer: {
+		marginTop: 20, 
+		flexDirection: 'row',
+		justifyContent: 'space-between',
     },
 
-    bottone : {
-        borderWidth: 1,
-        width:300,
-        height:40,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-        marginTop:10,
-      },
-
-      bottoneLeft : {
-        
-       
-       },
-           
-       
-   
-      bottoneRight : {
-           
+    bottomButtonContainer: {
+		marginBottom:20,
     },
 
- 
-
-
-  
-
-  })
-
-
-
+});
 
 export default class StrutturaScreen extends React.Component {
-
  
     constructor(props){
         super(props);
@@ -141,65 +128,75 @@ export default class StrutturaScreen extends React.Component {
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Struttura" navigator={this.props.navigation} />
-                <ScrollView contentContainerStyle={styles.scrollContainer}>
-                    <View style={styles.carouselContainer} >
-                        <Carousel
-                        style= {styles.carouselStyle}
-                        layout={"default"}
-                        ref={ref => this.carousel = ref}
-                        data={this.state.carouselItems}
-                        sliderWidth={300}
-                        itemWidth={300}
-                        renderItem={this._renderItem}
-                        onSnapToItem = { index => this.setState({activeIndex:index}) } />
-                    </View>
-
-                        <View style={styles.fieldContainerTop}>
-                            <TextInput style={styles.singleField}>Le sirene</TextInput>
-                            <TextInput style={styles.singleField}>Via Giovanni da Procida 18</TextInput>
-                            <TextInput style={styles.singleField}>Napoli</TextInput>
-                        </View>
-                        <View style={styles.twoFieldContainer}>
-                            <TextInput style={styles.twoField}>80100</TextInput>
-                            <TextInput style={styles.twoField}>Italia</TextInput>
-                        </View>
-                        <View style={styles.fieldContainerBottom}>
-                            <TextInput style={styles.singleField}>Hotel</TextInput>
-                            <TextInput style={styles.singleField}>123</TextInput>
-                            <TextInput style={styles.descrizioneField}
-                             width ={"85%"}
-                             height ={200}
-                             multiline={true}
-                             numberOfLines={15}
-
-                            >Bellissimo</TextInput>
+                <ScrollView style={styles.bodyScrollcontainer}>
+                    <View style={styles.scrollContent}>
+                        <View style={styles.carouselContainer} >
+                            <Carousel
+                            style= {styles.carouselStyle}
+                            layout={"default"}
+                            ref={ref => this.carousel = ref}
+                            data={this.state.carouselItems}
+                            sliderWidth={300}
+                            itemWidth={300}
+                            renderItem={this._renderItem}
+                            onSnapToItem = { index => this.setState({activeIndex:index}) } />
                         </View>
 
-                    <View style={styles.threeButtonContainer}>
-                        <TouchableOpacity 
-			                style = {styles.bottoneLeft}
-		                >
-                            <Text style={{color:'#ffffff'}}>Modifica Foto</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-			               style = {styles.bottoneRight} 
-		                >
-                            <Text style={{color:'#ffffff'}}>Modifica Video</Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={styles.bottomButtonContainer}> 
-                        <TouchableOpacity 
-                            onPress = {() => this.props.navigation.navigate("VisualizzaAlloggi")}
-			                style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Guida</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity 
-                            onPress = {() => this.props.navigation.navigate("VisualizzaAlloggi")}
-			                style = {styles.bottone}
-		                >
-                            <Text style={{color:'#ffffff'}}>Visualizza alloggi</Text>
-                        </TouchableOpacity>
+                            <View style={styles.fieldContainerTop}>
+                                <TextInput style={styles.singleField}>Le sirene</TextInput>
+                                <TextInput style={styles.singleField}>Via Giovanni da Procida 18</TextInput>
+                                <TextInput style={styles.singleField}>Napoli</TextInput>
+                            </View>
+                            <View style={styles.twoFieldContainer}>
+                                <TextInput style={styles.twoField}>80100</TextInput>
+                                <TextInput style={styles.twoField}>Italia</TextInput>
+                            </View>
+                            <View style={styles.fieldContainerBottom}>
+                                <TextInput style={styles.singleField}>Hotel</TextInput>
+                                <TextInput style={styles.singleField}>123</TextInput>
+                                <TextInput style={styles.descrizioneField}
+                                multiline={true}
+                                numberOfLines={15}
+
+                                >Bellissimo</TextInput>
+                            </View>
+
+                        <View style={styles.threeButtonContainer}>
+                            <CustomButton 
+                                styleBtn={{width: "45%"}} 
+                                nome="Modifica foto"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                            <CustomButton 
+                                styleBtn={{width: "45%"}} 
+                                nome="Modifica video"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                        </View>
+                        <View style={styles.bottomButtonContainer}> 
+                            <CustomButton 
+                                styleBtn={{marginTop: 10, width:"100%"}} 
+                                nome="Guida"  
+                                onPress={()=> Alert.alert(
+                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                    { cancelable: false })} 
+                            /> 
+                            <CustomButton 
+                                styleBtn={{marginTop: 10, width:"100%"}}
+                                nome= "Visualizza alloggi"
+                                onPress={() => {this.props.navigation.navigate('VisualizzaAlloggi')}}
+                            />
+                        </View>
                     </View>
                 </ScrollView>
             </View>
