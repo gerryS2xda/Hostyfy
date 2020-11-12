@@ -1,1 +1,0 @@
-/* Contiene codice di una component personalizzata che sara' usata nell'app */
