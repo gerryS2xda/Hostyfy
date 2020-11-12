@@ -1,18 +1,28 @@
 import React from 'react';
 import { StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const CustomImageButton = (props) => {
-    return(
-        <TouchableOpacity
-            style = {[styles.bottoneStyle, props.style]}
-            onPress={props.onPress}>
-            <Image
-                style = {styles.immagineBottone}
-                source = {props.path}
-            />
-            <Text style = {styles.testoBottone}>{props.nome}</Text>
-        </TouchableOpacity>
-    );
+    if(props.nameIcon !== ''){
+        return(
+            <TouchableOpacity style = {[styles.bottoneStyle, props.style]} onPress={props.onPress}>
+                <Icon name= {props.nameIcon} color={"#ffffff"} size={30} style={styles.immagineBottone}/>
+               <Text style = {styles.testoBottone}>{props.nome}</Text>
+             </TouchableOpacity>
+        );
+    }else{
+        return(
+            <TouchableOpacity 
+                style = {[styles.bottoneStyle, props.style]}
+                onPress={props.onPress}>
+                <Image
+                    style = {styles.immagineBottone}
+                    source = {props.path}
+                />
+                <Text style = {styles.testoBottone}>{props.nome}</Text>
+            </TouchableOpacity>
+        );
+    }
 }
 
 export default CustomImageButton;
@@ -37,5 +47,6 @@ const styles = StyleSheet.create({
     testoBottone: {
         color:'#ffffff',
         marginLeft: 20,
+        fontFamily: "MontserrantSemiBold",
     },
 });
