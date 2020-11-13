@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   image : {
     width:200,
     height:100, 
-    marginTop:60,
+    marginTop:70,
     marginBottom: 30,
 
   },
@@ -43,10 +43,10 @@ const styles = StyleSheet.create({
     height: 50,
     width:320,
     borderColor: '#cc3881',
-    borderWidth: 1.4,
+    borderBottomWidth: 1,
     marginTop:8,
     borderRadius: 8,
-    fontSize: 24,
+    fontSize: 15,
     fontFamily: 'Montserrant',
     paddingLeft: 10
   },
