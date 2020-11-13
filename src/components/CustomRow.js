@@ -7,20 +7,20 @@ import Dialog from 'react-native-dialog';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'row',
         padding: 10,
-        marginLeft:16,
-        marginRight:16,
-        marginTop: 8,
-        marginBottom: 8,
+        marginLeft:"4%", //oldvalue: 16
+        marginRight:"4%", //oldvalue: 16
+        marginTop: "3%", //oldvalue: 8
+        marginBottom: "3%", //oldvalue: 8
         borderRadius: 5,
-        backgroundColor: '#FFF',
         elevation: 2,
+        width: "96%",
     },
     title: {
         fontSize: 16,
         color: '#000',
+        fontFamily: 'MontserrantSemiBold'
     },
     container_text: {
         flex: 1,
@@ -29,16 +29,16 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     description: {
-        fontSize: 11,
-        fontStyle: 'italic',
+        fontSize: 12,
+        fontFamily: 'MontserrantItalic',
     },
     photo: {
         height: 50,
         width: 50,
+        borderRadius: 4,
     },
     arrow: {
-        marginLeft: 250,
-        marginTop: -35
+        alignSelf: 'center',
     },
     styleDialogTitle: {
         fontFamily: "MontserrantBold",
@@ -82,7 +82,7 @@ return (
         <Dialog.Container visible={visible}>
           <Dialog.Title style={styles.styleDialogTitle}>Verifica la tua struttura</Dialog.Title>
           <Dialog.Description style={styles.styleDialogDescription}>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
-          <Dialog.Input style={styles.styleDialogInput} value={value} onChangeText={setValue} />
+          <Dialog.Input style={styles.styleDialogInput} placeholder="1sd34d" value={value} onChangeText={setValue} />
           <Dialog.Button style={styles.styleDialogBtnTxt} label="Annulla" onPress={handleOk} />
           <Dialog.Button style={styles.styleDialogBtnTxt} label="Verifica" onPress={
 
@@ -116,11 +116,11 @@ return (
             <Text style={styles.description}>
                 {props.description}
             </Text>
-            <Image
+        </View>
+        <Image
                 source = {require('../../assets/arrow.png')}
                 style = {styles.arrow} 
             />
-        </View>
     </View>
 </TouchableOpacity>
 

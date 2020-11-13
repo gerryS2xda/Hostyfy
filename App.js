@@ -56,6 +56,7 @@ const App = () => {
     'MontserrantSemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf'),
     'MontserrantBold': require('./assets/fonts/Montserrat-Bold.ttf'),
     'MontserrantThin': require('./assets/fonts/Montserrat-Thin.ttf'),
+    'MontserrantItalic': require('./assets/fonts/Montserrat-Italic.ttf'),
   });
   if (!fontsLoaded) { //se il font non e' stato caricato correttamente o semplicemente non e' pronto
     return <AppLoading />; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>

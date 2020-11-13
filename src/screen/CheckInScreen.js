@@ -12,20 +12,18 @@ const CheckInScreen = ({navigation}) =>{
     const pickerStyle = {
 		inputIOS: {
 			paddingHorizontal: 10,
-			borderRadius: 8,
-			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
 			width:120,
 			alignItems: 'center',
             marginTop: 8,
             marginRight: 12,
+            fontFamily: 'Montserrant',
+            borderBottomWidth: 1,
 		},
 		placeholder: {},
 		inputAndroid: {
 			paddingHorizontal: 10,
-			borderRadius: 8,
-			borderWidth:1.4,
 			borderColor: '#cc3881',
 			height:40,
 			width:120,
@@ -33,6 +31,8 @@ const CheckInScreen = ({navigation}) =>{
             color:'#000000',
             marginTop: 8,
             marginRight: 12,
+            fontFamily: 'Montserrant',
+            borderBottomWidth: 1,
 		},
 	};
 
@@ -72,7 +72,7 @@ const CheckInScreen = ({navigation}) =>{
                             <Text style={styles.singleField}>M</Text>
                         </View>
                         <View style={styles.horizontalView}>
-                            <Text style={styles.singleField}>Via Mario Rossi, 2</Text>
+                            <Text style={styles.singleField}>Via Mario Rossi</Text>
                             <Text style={styles.singleField}>Avellino (AV)</Text>
                         </View>
                         <View style={styles.horizontalView}>
@@ -186,11 +186,12 @@ const styles = StyleSheet.create({
         height: 40,
         width:120,
         borderColor: '#cc3881',
-        borderWidth: 1.4,
         marginTop:8,
-        borderRadius: 8,
         paddingTop:9,
         marginRight: 12,
+        paddingLeft: 8,
+        fontFamily: 'Montserrant',
+        borderBottomWidth: 1,
     },
     horizontalView: {
         flexDirection: 'row',
@@ -206,9 +207,10 @@ const styles = StyleSheet.create({
         height: 40,
         width:120,
         borderColor: '#cc3881',
-        borderWidth: 1.4,
         marginTop:8,
-        borderRadius: 8,
+        paddingLeft: 8,
+        fontFamily: 'Montserrant',
+        borderBottomWidth: 1,
     },
     textFieldStyleSingleRow: {
         width: 250, //settare 100% per ottenere tutto lo spazio disponibile

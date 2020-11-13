@@ -7,20 +7,20 @@ import Dialog from 'react-native-dialog';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: 'row',
         padding: 10,
-        marginLeft:16,
-        marginRight:16,
-        marginTop: 8,
-        marginBottom: 8,
+        marginLeft:"4%", //oldvalue: 16
+        marginRight:"4%", //oldvalue: 16
+        marginTop: "3%", //oldvalue: 8
+        marginBottom: "3%", //oldvalue: 8
         borderRadius: 5,
-        backgroundColor: '#FFF',
         elevation: 2,
+        width: "96%",
     },
     title: {
         fontSize: 16,
         color: '#000',
+        fontFamily: 'MontserrantSemiBold'
     },
     container_text: {
         flex: 1,
@@ -29,24 +29,17 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     description: {
-        fontSize: 11,
-        fontStyle: 'italic',
+        fontSize: 12,
+        fontFamily: 'MontserrantItalic',
     },
     photo: {
         height: 50,
         width: 50,
+        borderRadius: 4,
     },
     arrow: {
-        marginLeft: 250,
-        marginTop: -35
+        alignSelf: 'center',
     },
-    opacity:{
-
-        
-
-    }
-
-    
 });
 
 
@@ -55,10 +48,8 @@ const CustomRowGeneral = (props) => {
     
 return (
 <TouchableOpacity 
-    style = {styles.opacity}
     onPress = {()=> props.nav.navigate(props.newPage)}>
            
-
     <View style={styles.container}>
         <Image source={props.image_url} style={styles.photo} />
         <View style={styles.container_text}>
@@ -68,11 +59,11 @@ return (
             <Text style={styles.description}>
                 {props.description}
             </Text>
-            <Image
+        </View>
+        <Image
                 source = {require('../../assets/arrow.png')}
                 style = {styles.arrow} 
             />
-        </View>
     </View>
 </TouchableOpacity>
 
