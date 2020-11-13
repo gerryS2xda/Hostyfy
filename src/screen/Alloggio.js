@@ -1,5 +1,5 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet} from 'react-native';
+import {Text, View, Image,ScrollView, Alert, StyleSheet} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
@@ -115,7 +115,7 @@ export default class AlloggioScreen extends React.Component {
         const myKey = "0123";
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title="Alloggi" navigator={this.props.navigation} />
+                <HeaderBar title="Alloggio" navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.carouselContainer} >

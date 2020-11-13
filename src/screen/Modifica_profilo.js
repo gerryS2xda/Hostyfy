@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet, Alert, ScrollView } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "../components/CustomButton"

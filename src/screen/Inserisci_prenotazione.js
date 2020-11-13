@@ -24,7 +24,9 @@ const styles = StyleSheet.create({
 		width: "100%",
 		marginTop: 32,
 	},
-
+	normalContainer: {
+		width: "100%",
+	},
 	middleUpperContainer: {
 		marginTop: 16, 
 		flexDirection: 'row',
@@ -83,7 +85,7 @@ const Inserisci_prenotazione = (props) => {
 			fontFamily: "MontserrantSemiBold",
 		},
 		placeholder: {
-			
+			fontFamily: "MontserrantSemiBold",
 		  },
 		inputAndroid: {
 			paddingHorizontal: 10,
@@ -169,12 +171,18 @@ const Inserisci_prenotazione = (props) => {
 				</View>
 				<View style = {styles.middleLowerContainer}>
 					<TextInput
-						style = {styles.middleTextInput}
-						placeholder = "Numero Persone"
+						style = {[styles.middleTextInput, {width: "30%"}]}
+						placeholder = "N. persone"
 					/>
 					<TextInput
-						style = {styles.middleTextInput}
-						placeholder = "email"
+						style = {[styles.middleTextInput, {width: "60%"}]}
+						placeholder = "N. telefono"
+					/>
+				</View>
+				<View style={styles.normalContainer}>
+					<TextInput
+						style = {styles.singleTextInput}
+						placeholder = "Email"
 					/>
 				</View>
 				<View style = {styles.bottomContainer}>
