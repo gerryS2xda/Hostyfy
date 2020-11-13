@@ -3,28 +3,39 @@ import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Scrol
 import CustomButton from '../components/CustomButton'
 
 const styles = StyleSheet.create({
-   
+  maincontainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  bodyScrollcontainer: {
+    width: "100%",
+  },
 
   first:{
     justifyContent: 'center',
     alignItems: 'center',
+    width: "100%",
+    marginBottom: "10%",
   },
 
   top:{
     justifyContent: 'center',
     alignItems: 'center',
+    width: "100%",
   },
 
   image : {
-    width:200,
-    height:100, 
-    marginTop:70,
-    marginBottom: 30,
+    width:"60%",
+    height:120, 
+    marginTop:"25%",
+    marginBottom: "4%",  
 
   },
 
-  InformazioniPersonali: {
-    width: 350,
+  informazioniPersonali: {
+    width: "90%",
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
@@ -33,28 +44,22 @@ const styles = StyleSheet.create({
     borderColor: '#d3d9e3',
     
   },
-
-  container_2: {
-    justifyContent: "flex-end",
-    alignItems: 'center',
-  },
-
   input: {
-    height: 50,
-    width:320,
+    height: 40,
+    width: "85%",
     borderColor: '#cc3881',
     borderBottomWidth: 1,
-    marginTop:8,
-    borderRadius: 8,
-    fontSize: 15,
-    fontFamily: 'Montserrant',
-    paddingLeft: 10
+    fontFamily: 'MontserrantSemiBold',
+    paddingLeft: 5,
+    marginTop: "4%"
   },
-
-  bottoneAvanti : {
-    width:320,
-    marginTop: 40,
-  },
+  buttonCustomizzato:{
+    width: "100%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: "10%",
+    marginBottom: "5%",
+  }
 });
 
 
@@ -69,51 +74,58 @@ const [confermaPassword, setConfermaPassword] = useState('');
 
   return(
 
-    <ScrollView>
-      <View style={styles.first}>
-          <View style={styles.top}>
-                  <Image
+    <View style={styles.maincontainer}>
+      <ScrollView style={styles.bodyScrollcontainer}>
+        <View style={styles.scrollContent}>
+          <View style={styles.first}>
+              <View style={styles.top}>
+                <Image
                     source = {require('../../assets/HOSTYFY.png')}
                     style = {styles.image} 
-                  />
-          </View>
-          <View style={styles.InformazioniPersonali}>
-              <TextInput
-                style = {styles.input}
-                placeholder = 'Nome'
-                onChangeText = {(nome) => setNome(nome)}
-              />
-              <TextInput
-                style = {styles.input}
-                placeholder = 'Cognome'
-                onChangeText = {(cognome) => setCognome(cognome)}
-              />
-              <TextInput
-                style = {styles.input}
-                placeholder = 'Email'
-                onChangeText = {(email) => setEmail(email)}
-              />
-              <TextInput
-                style = {styles.input}
-                placeholder = 'Password'
-                onChangeText = {(password) => setPassword(password)}
-              />
-
-              <TextInput
-                style = {styles.input}
-                placeholder = 'Conferma Password'
-                onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
-              />        
-
-              <View style={styles.buttonCustomizzato}>
-                <CustomButton nome="Registrati" styleBtn={styles.bottoneAvanti} onPress={() => Alert.alert (
-                      'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Vai al login', onPress: ()=> props.navigation.navigate('Home')}])} 
                 />
               </View>
-          
+              <View style={styles.informazioniPersonali}>
+                  <TextInput
+                    style = {styles.input}
+                    placeholder = 'Nome'
+                    onChangeText = {(nome) => setNome(nome)}
+                  />
+                  <TextInput
+                    style = {styles.input}
+                    placeholder = 'Cognome'
+                    onChangeText = {(cognome) => setCognome(cognome)}
+                  />
+                  <TextInput
+                    style = {styles.input}
+                    placeholder = 'Email'
+                    onChangeText = {(email) => setEmail(email)}
+                  />
+                  <TextInput
+                    style = {styles.input}
+                    placeholder = 'Password'
+                    onChangeText = {(password) => setPassword(password)}
+                  />
+
+                  <TextInput
+                    style = {styles.input}
+                    placeholder = 'Conferma Password'
+                    onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
+                  />        
+
+                  <View style={styles.buttonCustomizzato}>
+                    <CustomButton 
+                      nome="Registrati" 
+                      styleBtn={{width: "85%"}}
+                      onPress={() => Alert.alert (
+                        'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Vai al login', onPress: ()=> props.navigation.navigate('Home')}])} 
+                    />
+                  </View>
+              
+              </View>
           </View>
-    </View>
-  </ScrollView>
+       </View>
+    </ScrollView>
+  </View>
   );
 }
 

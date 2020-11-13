@@ -98,9 +98,9 @@ const HomeHost = (props) => {
           <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => props.navigation.navigate("LeMieStrutture")} />
-          <CustomImageButton nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => props.navigation.navigate("InserisciPrenotazione")} />
-          <CustomImageButton nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => props.navigation.navigate("LeMieStrutture")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => props.navigation.navigate("InserisciPrenotazione")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
         <CalendarPicker 

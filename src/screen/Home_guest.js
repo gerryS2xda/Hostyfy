@@ -75,12 +75,12 @@ const HomeGuest = (props) => {
           <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton nameIcon={"pencil"} nome= 'Modifica il tuo profilo' onPress={() => props.navigation.navigate("ModificaProfilo")} />
-          <CustomImageButton nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => props.navigation.navigate("VisualizzaPrenotazioni")} />
-          <CustomImageButton nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
+          <CustomImageButton styleBtn={{width:300}}nameIcon={"pencil"} nome= 'Modifica il tuo profilo' onPress={() => props.navigation.navigate("ModificaProfilo")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => props.navigation.navigate("VisualizzaPrenotazioni")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
-          <CustomButton nome="Esci" onPress={() => { props.navigation.navigate('Home'); }} />
+          <CustomButton styleBtn={{width:300}} nome="Esci" onPress={() => { props.navigation.navigate('Home'); }} />
         </View>
       </View>
     </View>

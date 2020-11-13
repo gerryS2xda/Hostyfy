@@ -48,21 +48,19 @@ const styles = StyleSheet.create({
 		height: 40,
 		width:"100%",
 		borderColor: '#cc3881',
-		borderWidth: 1.4,
-		borderRadius: 8,
+		borderBottomWidth: 1,
 		marginTop: 16,
 		fontFamily: "MontserrantSemiBold",
-    	paddingLeft: 5
+		paddingLeft: 9
 	  },
 
 	  middleTextInput: {
 		height: 40,
 		width:"45%",
 		borderColor: '#cc3881',
-		borderWidth: 1.4,
-		borderRadius: 8,
+		borderBottomWidth: 1,
 		fontFamily: "MontserrantSemiBold",
-    	paddingLeft: 5
+    	paddingLeft: 9
 	  },
 })
 
@@ -75,22 +73,22 @@ const Inserisci_prenotazione = (props) => {
 	const pickerStyle = {
 		inputIOS: {
 			paddingHorizontal: 10,
-			borderRadius: 8,
-			borderWidth:1.4,
+			borderBottomWidth: 1,
 			borderColor: '#cc3881',
 			height:40,
 			width:"100%",
 			alignItems: 'center',
 			marginTop: 16,
 			fontFamily: "MontserrantSemiBold",
+			paddingLeft: 9,
 		},
 		placeholder: {
 			fontFamily: "MontserrantSemiBold",
+			paddingLeft: 9,
 		  },
 		inputAndroid: {
 			paddingHorizontal: 10,
-			borderRadius: 8,
-			borderWidth:1.4,
+			borderBottomWidth: 1,
 			borderColor: '#cc3881',
 			height:40,
 			width:"100%",
@@ -98,6 +96,7 @@ const Inserisci_prenotazione = (props) => {
 			color:'#000000',
 			marginTop: 16,
 			fontFamily: "MontserrantSemiBold",
+			paddingLeft: 9,
 		},
 	};
 
@@ -171,11 +170,11 @@ const Inserisci_prenotazione = (props) => {
 				</View>
 				<View style = {styles.middleLowerContainer}>
 					<TextInput
-						style = {[styles.middleTextInput, {width: "30%"}]}
+						style = {[styles.middleTextInput, {width: "35%"}]}
 						placeholder = "N. persone"
 					/>
 					<TextInput
-						style = {[styles.middleTextInput, {width: "60%"}]}
+						style = {[styles.middleTextInput, {width: "55%"}]}
 						placeholder = "N. telefono"
 					/>
 				</View>
