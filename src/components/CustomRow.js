@@ -40,7 +40,19 @@ const styles = StyleSheet.create({
         marginLeft: 250,
         marginTop: -35
     },
-   
+    styleDialogTitle: {
+        fontFamily: "MontserrantBold",
+    },
+    styleDialogDescription: {
+        fontFamily: "Montserrant",
+    },
+    styleDialogBtnTxt: {
+        fontFamily: "MontserrantSemiBold",
+    },
+    styleDialogInput:{
+        fontFamily: 'MontserrantSemiBold',
+        borderBottomWidth: 1,
+    }
 });
 
 
@@ -68,11 +80,11 @@ return (
         }
     }>
         <Dialog.Container visible={visible}>
-          <Dialog.Title>Verifica la tua struttura</Dialog.Title>
-          <Dialog.Description>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
-          <Dialog.Input value={value} onChangeText={setValue} />
-          <Dialog.Button label="Annulla" onPress={handleOk} />
-          <Dialog.Button label="Verifica" onPress={
+          <Dialog.Title style={styles.styleDialogTitle}>Verifica la tua struttura</Dialog.Title>
+          <Dialog.Description style={styles.styleDialogDescription}>Per accedere alla tua struttura devi inserire il codice OTP inviato via posta tradizionale</Dialog.Description>
+          <Dialog.Input style={styles.styleDialogInput} value={value} onChangeText={setValue} />
+          <Dialog.Button style={styles.styleDialogBtnTxt} label="Annulla" onPress={handleOk} />
+          <Dialog.Button style={styles.styleDialogBtnTxt} label="Verifica" onPress={
 
             ()=>{
               if(value=='1234')

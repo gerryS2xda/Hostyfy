@@ -5,21 +5,21 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const CustomImageButton = (props) => {
     if(props.nameIcon !== ''){
         return(
-            <TouchableOpacity style = {[styles.bottoneStyle, props.style]} onPress={props.onPress}>
+            <TouchableOpacity style = {[styles.bottoneStyle, props.styleBtn]} onPress={props.onPress}>
                 <Icon name= {props.nameIcon} color={"#ffffff"} size={30} style={styles.immagineBottone}/>
-               <Text style = {styles.testoBottone}>{props.nome}</Text>
+               <Text style = {[styles.testoBottone, props.styleTxt]}>{props.nome}</Text>
              </TouchableOpacity>
         );
     }else{
         return(
             <TouchableOpacity 
-                style = {[styles.bottoneStyle, props.style]}
+                style = {[styles.bottoneStyle, props.styleBtn]}
                 onPress={props.onPress}>
                 <Image
                     style = {styles.immagineBottone}
                     source = {props.path}
                 />
-                <Text style = {styles.testoBottone}>{props.nome}</Text>
+                <Text style = {[styles.testoBottone, props.styleTxt]}>{props.nome}</Text>
             </TouchableOpacity>
         );
     }
@@ -30,7 +30,7 @@ export default CustomImageButton;
 const styles = StyleSheet.create({
     bottoneStyle : {
         borderWidth: 1,
-        width: 300,
+        width: "100%",
         height: 40,
         alignItems: 'center',
         flexDirection: 'row',
