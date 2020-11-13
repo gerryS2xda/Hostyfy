@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
         height: 40,
         borderColor: '#cc3881',
         marginTop:8,
-        borderRadius: 8,
         paddingTop:9,
         paddingLeft: 8,
         fontFamily: 'Montserrant',
@@ -61,8 +60,7 @@ const styles = StyleSheet.create({
         width: "30%",
         fontFamily: 'Montserrant',
         paddingLeft: 5,
-        marginLeft: "2%",
-        marginRight: "2%",
+        height: 40,
        },
 
        descrizioneField: {
@@ -90,6 +88,8 @@ const styles = StyleSheet.create({
 
 export default class StrutturaScreen extends React.Component {
  
+    state = {IsEditable: false}
+
     constructor(props){
         super(props);
         this.state = {
@@ -143,20 +143,21 @@ export default class StrutturaScreen extends React.Component {
                         </View>
 
                             <View style={styles.fieldContainerTop}>
-                                <TextInput style={styles.singleField}>Le sirene</TextInput>
-                                <TextInput style={styles.singleField}>Via Giovanni da Procida 18</TextInput>
-                                <TextInput style={styles.singleField}>Napoli</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Le sirene</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Via Giovanni da Procida 18</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Napoli</TextInput>
                             </View>
                             <View style={styles.twoFieldContainer}>
-                                <TextInput style={styles.twoField}>80100</TextInput>
-                                <TextInput style={styles.twoField}>Italia</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>80100</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>Italia</TextInput>
                             </View>
                             <View style={styles.fieldContainerBottom}>
-                                <TextInput style={styles.singleField}>Hotel</TextInput>
-                                <TextInput style={styles.singleField}>123</TextInput>
-                                <TextInput style={styles.descrizioneField}
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Hotel</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>123</TextInput>
+                                <TextInput style={styles.descrizioneField} 
                                 multiline={true}
                                 numberOfLines={15}
+                                editable={this.state.IsEditable}
 
                                 >Bellissimo</TextInput>
                             </View>
@@ -164,7 +165,7 @@ export default class StrutturaScreen extends React.Component {
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
-                                nome="Modifica foto"  
+                                nome="Modifica foto e video"
                                 onPress={()=> Alert.alert(
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
@@ -173,12 +174,8 @@ export default class StrutturaScreen extends React.Component {
                             /> 
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
-                                nome="Modifica video"  
-                                onPress={()=> Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })} 
+                                nome={this.state.IsEditable ? 'Applica modifiche' : "Modifica dati"}  
+                                onPress={()=> {this.state.IsEditable ? this.setState({IsEditable: false}) : this.setState({IsEditable: true})}} 
                             /> 
                         </View>
                         <View style={styles.bottomButtonContainer}> 
