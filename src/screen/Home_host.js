@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
 
   testoLogo : {
     fontSize: 20,
-    color: '#cc3881',
+    color: 'black',
     marginTop: 10,
     fontFamily: "MontserrantSemiBold",
   },
@@ -94,7 +94,7 @@ const HomeHost = (props) => {
     <ScrollView>
       <View contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
-          <Icon name= "account-circle-outline" color={"#cc3881"} size={100}/>
+          <Icon name= "account-circle-outline" color={"black"} size={100}/>
           <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
         </View>
         <View style={styles.centerContainer}>

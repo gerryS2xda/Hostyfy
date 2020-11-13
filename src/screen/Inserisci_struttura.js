@@ -160,8 +160,6 @@ export default class InserisciStrutturaScreen extends React.Component {
                             <TextInput 
                                 style={styles.descrizioneField}
                                 placeholder='Descrizione'
-                                width ={300} 
-                                height ={200} 
                                 multiline={true}
                                 numberOfLines={15}
                             />
@@ -186,12 +184,12 @@ export default class InserisciStrutturaScreen extends React.Component {
                             /> 
                         </View>
                         <View style={styles.bottomButtonContainer}>
-                            <CustomButton styleBtn={{marginTop: 10}} nome="Inserisci guida" onPress={()=> Alert.alert(
+                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Inserisci guida" onPress={()=> Alert.alert(
                                 "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
                                 { cancelable: false })} /> 
-                            <CustomButton styleBtn={{marginTop: 10}} nome="Aggiungi" onPress={()=> Alert.alert(
+                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=> Alert.alert(
                                 "Inserisci struttura", "La nuova struttura e' stata memorizzata con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],

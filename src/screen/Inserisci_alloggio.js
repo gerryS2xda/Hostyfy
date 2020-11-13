@@ -122,9 +122,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                             />
                             <TextInput 
                                 style={styles.descrizioneField}
-                                placeholder='Descrizione'
-                                width ={300} 
-                                height ={200} 
+                                placeholder='Descrizione' 
                                 multiline={true}
                                 numberOfLines={15}
                             />
@@ -149,12 +147,12 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 /> 
                             </View>
                         <View style={styles.bottomButtonContainer}> 
-                            <CustomButton styleBtn={{marginTop: 10}} nome="Inserisci guida" onPress={()=> Alert.alert(
+                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Inserisci guida" onPress={()=> Alert.alert(
                                 "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
                                 { cancelable: false })} />
-                            <CustomButton styleBtn={{marginTop: 10}} nome="Aggiungi" onPress={()=> Alert.alert(
+                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=> Alert.alert(
                                 "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
