@@ -20,9 +20,9 @@ const styles = StyleSheet.create({
 
   input: {
     height: 40,
-    width:300,
+    width:"75%",
     borderColor: '#cc3881',
-    borderWidth: 1.4,
+    borderBottomWidth: 1,
     marginTop:8,
     borderRadius: 8,
     fontFamily: "MontserrantSemiBold",
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     color: '#cc3881',
     marginTop:5,
     fontFamily: "MontserrantSemiBold",
+    backgroundColor: '#000000'
   },
 
   nonReg: {
@@ -45,10 +46,12 @@ const styles = StyleSheet.create({
   },
 
   image : {
-    width:200,
-    height:100, 
+    width:"60%",
+    height:"40%", 
     marginTop:90,
-    marginBottom: 20,
+    marginBottom: 30,
+    backgroundColor: '#000000'
+    
   },
 })
 
