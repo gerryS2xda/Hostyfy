@@ -3,6 +3,7 @@ import {Text, View, Image,ScrollView, Alert, StyleSheet} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
+import { TextInput } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -75,6 +76,7 @@ const styles = StyleSheet.create({
 
 export default class AlloggioScreen extends React.Component {
 
+    state = {IsEditable: false}
  
     constructor(props){
         super(props);
@@ -130,15 +132,19 @@ export default class AlloggioScreen extends React.Component {
                             onSnapToItem = { index => this.setState({activeIndex:index}) } />
                         </View>
                         <View style={styles.middleContainer}>
-                            <Text style={styles.singleField}>Camera 17</Text>
-                            <Text style={styles.singleField}>Disponibilità</Text>
-                            <Text style={styles.singleField}>Numero camere</Text>
-                            <Text style={styles.descrizioneField}>Descrizione</Text>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Camera 17</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Disponibilità</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Numero camere</TextInput>
+                            <TextInput style={styles.descrizioneField}
+                                editable={this.state.IsEditable}
+                                multiline={true}
+                                numberOfLines={15}
+                             >Descrizione</TextInput>
                         </View>
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
-                                nome="Modifica foto"  
+                                nome="Modifica foto e video"  
                                 onPress={()=> Alert.alert(
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
@@ -147,12 +153,8 @@ export default class AlloggioScreen extends React.Component {
                             /> 
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
-                                nome="Modifica video"  
-                                onPress={()=> Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })} 
+                                nome={this.state.IsEditable ? 'Applica modifiche' : "Modifica dati"}   
+                                onPress={()=> {this.state.IsEditable ? this.setState({IsEditable: false}) : this.setState({IsEditable: true})}}
                             /> 
                         </View>
                         <View style={styles.bottomButtonContainer}> 
