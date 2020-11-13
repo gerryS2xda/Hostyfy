@@ -86,10 +86,12 @@ const styles = StyleSheet.create({
 
 });
 
+
+
 export default class StrutturaScreen extends React.Component {
  
-    state = {IsEditable: false}
-
+    
+    state = {IsEditable: true}
     constructor(props){
         super(props);
         this.state = {
@@ -156,7 +158,7 @@ export default class StrutturaScreen extends React.Component {
                                 <TextInput style={styles.singleField} editable={this.state.IsEditable}>123</TextInput>
                                 <TextInput style={styles.descrizioneField} 
                                 multiline={true}
-                                numberOfLines={15}
+                                numberOfLines={20}
                                 editable={this.state.IsEditable}
 
                                 >Bellissimo</TextInput>
