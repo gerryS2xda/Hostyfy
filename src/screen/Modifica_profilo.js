@@ -9,22 +9,22 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'stretch',
+    width: "100%",
   },
   container: {  
     flexDirection: 'column', 
     width: "100%",
-  },
-  scrollContent: {
     justifyContent: 'center',
     alignItems: 'center',
   },
+ 
   topContainer: {
-    height:100,
+    height: '15%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:15
+    marginTop:'20%'
   },
 
   upperMiddleContainer: {
@@ -34,9 +34,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.7,
     borderRadius: 10,
-    width: 340,
-    height: 200,
-    marginTop:20
+    width: '90%',
+    height: '60%',
   },
 
   lowerMiddleContainer: {
@@ -46,8 +45,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0.7,
     borderRadius: 10,
-    width: 340,
-    height: 120,
+    width: '90%',
+    height: '13%',
     marginTop:20,
   },
 
@@ -55,6 +54,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    height: '20%',
   },
 
   singleTextInput: {
@@ -87,9 +87,8 @@ const Modifica_profilo = (props) => {
   return(
     <View style={styles.maincontainer}>
       <HeaderBar title="Il mio profilo" navigator={props.navigation} />
-      <ScrollView style = {styles.container}>
-        <View style={styles.scrollContent}> 
-          <View style = {styles.topContainer}>
+      <ScrollView contentContainerStyle = {styles.container}>
+          <View style={styles.topContainer}> 
             <Icon name= "account-circle-outline" color={"#000000"} size={100}/>
           </View>
           <View style = {styles.upperMiddleContainer}>
@@ -103,7 +102,39 @@ const Modifica_profilo = (props) => {
             />
             <TextInput
                 style = {styles.singleTextInput}
+                placeholder='Data di nascita'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
                 placeholder='Email'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Cellulare'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Telefono'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Sesso'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Nazione'
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Indirizzo'
+            />
+             <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Città'
+            />
+             <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Cap'
             />
           </View>
           <View style = {styles.lowerMiddleContainer}>
@@ -122,7 +153,6 @@ const Modifica_profilo = (props) => {
               onPress={createPositiveAlert} 
             />
           </View>
-        </View>
       </ScrollView>
     </View>
   );
