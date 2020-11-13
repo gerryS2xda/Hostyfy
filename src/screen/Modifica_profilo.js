@@ -61,8 +61,7 @@ const styles = StyleSheet.create({
     height: 40,
     width:300,
     borderColor: '#cc3881',
-    borderWidth: 1.4,
-    borderRadius: 8,
+    borderBottomWidth: 1,
     paddingLeft: 5,
     fontFamily: "MontserrantSemiBold",
   },
@@ -91,7 +90,7 @@ const Modifica_profilo = (props) => {
       <ScrollView style = {styles.container}>
         <View style={styles.scrollContent}> 
           <View style = {styles.topContainer}>
-            <Icon name= "account-circle-outline" color={"#cc3881"} size={100}/>
+            <Icon name= "account-circle-outline" color={"#000000"} size={100}/>
           </View>
           <View style = {styles.upperMiddleContainer}>
             <TextInput
@@ -110,7 +109,7 @@ const Modifica_profilo = (props) => {
           <View style = {styles.lowerMiddleContainer}>
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Vecchia password'
+                placeholder='Password attuale'
             />
             <TextInput
                 style = {styles.singleTextInput}

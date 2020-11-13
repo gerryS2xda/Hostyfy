@@ -133,12 +133,11 @@ export default class AlloggioScreen extends React.Component {
                         <View style={styles.middleContainer}>
                             <TextInput style={styles.singleField} editable={this.state.IsEditable}>Camera 17</TextInput>
                             <TextInput style={styles.singleField} editable={this.state.IsEditable}>Disponibilità</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Numero camere</TextInput>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}
                                 multiline={true}
                                 numberOfLines={15}
-                             >Descrizione</TextInput>
+                             >Servizi</TextInput>
                         </View>
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
