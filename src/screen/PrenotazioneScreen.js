@@ -71,11 +71,14 @@ export default PrenotazioneScreen;
 
 function ButtonContainer(props) {
     const [counter, setCounter] = useState(0);
-    if(counter== 0){
-        setCounter(counter+1);
+    console.log("PrenotazioneScreen: counter=" + counter);
+    if(counter==0){
         return(
             <View style={styles.buttonContainer}>
-                <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { props.navigator.navigate('EffettuaCheckIn'); }} />
+                <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
+                    setCounter(counter+1);
+                    props.navigator.navigate('EffettuaCheckIn'); 
+                }} />
             </View>
         );
     }else{
