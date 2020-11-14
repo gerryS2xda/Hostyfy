@@ -40,7 +40,7 @@ export default CustomHeaderBar;
 const styles = StyleSheet.create({
     headerHeight: Platform.select({    //NOTA: senza considerare la status bar del device
         ios: {
-          height:80, //32 se e' un iPhone, 44 se e' un iPad
+          height:64, //32 se e' un iPhone, 44 se e' un iPad
         },
         android: {
           height:56,
