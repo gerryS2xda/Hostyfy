@@ -4,6 +4,7 @@ import HeaderBar from '../components/CustomHeaderBar'
 
 const ChiaveScreen = ({navigation}) =>{
     const cameraName = "Suite Imperiale";
+    const [counter, setCounter] = useState(0);
 
     const createTwoButtonAlert = () =>
     Alert.alert(
@@ -15,7 +16,15 @@ const ChiaveScreen = ({navigation}) =>{
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "OK", onPress: () => navigation.navigate("EffettuaCheckIn") }
+        { text: "OK", onPress: () =>{
+                if(counter == 0){
+                    navigation.navigate("MoviePlayer");
+                }else{
+                    setCounter(counter+1);
+                    navigation.navigate("InfoCamera");
+                }
+            }
+        }
       ],
       { cancelable: false }
     );

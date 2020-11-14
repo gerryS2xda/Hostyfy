@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
@@ -60,10 +60,7 @@ const PrenotazioneScreen = ({navigation}) =>{
                             </View>
                         </View>
                     </View>
-                    <View style={styles.buttonContainer}>
-                        <CustomButton nome="Chiave" styleBtn={{width: 130}} onPress={() => { navigation.navigate('LaMiaChiave'); }} />
-                        <CustomButton nome="Servizi camera" styleBtn={{width: 130}} onPress={() => { navigation.navigate('InfoCamera'); }} />
-                    </View>
+                    <ButtonContainer navigator={navigation} />
                 </View>
             </ScrollView>
         </View>
@@ -71,6 +68,25 @@ const PrenotazioneScreen = ({navigation}) =>{
 }
 
 export default PrenotazioneScreen;
+
+function ButtonContainer(props) {
+    const [counter, setCounter] = useState(0);
+    if(counter== 0){
+        setCounter(counter+1);
+        return(
+            <View style={styles.buttonContainer}>
+                <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { props.navigator.navigate('EffettuaCheckIn'); }} />
+            </View>
+        );
+    }else{
+        return(
+            <View style={styles.buttonContainer}>
+                <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave'); }} />
+                <CustomButton nome="Servizi camera" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('InfoCamera'); }} />
+            </View>
+        );
+    }
+}
 
 const styles = StyleSheet.create({
     maincontainer: {

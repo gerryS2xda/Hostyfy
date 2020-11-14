@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 import RNPickerSelect from 'react-native-picker-select';
+import CustomButton from "../components/CustomButton"
 
 const CheckInScreen = ({navigation}) =>{
     const numeroPren = 10;
@@ -14,7 +15,7 @@ const CheckInScreen = ({navigation}) =>{
 			paddingHorizontal: 10,
 			borderColor: '#cc3881',
 			height:40,
-			width:120,
+			width:"96%",
 			alignItems: 'center',
             marginTop: 8,
             marginRight: 12,
@@ -26,7 +27,7 @@ const CheckInScreen = ({navigation}) =>{
 			paddingHorizontal: 10,
 			borderColor: '#cc3881',
 			height:40,
-			width:120,
+			width:"96%",
 			alignItems: 'center',
             color:'#000000',
             marginTop: 8,
@@ -36,87 +37,73 @@ const CheckInScreen = ({navigation}) =>{
 		},
 	};
 
-    const createAlertForWelcomeVideo = () =>
-        Alert.alert(
-        "Check-In",
-        "Benvenuto nella nostra struttura!! Accoglienza mediante video di presentazione nella prossima versione :)",
-        [
-            {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-            },
-            { text: "OK", onPress: () => console.log("OK Pressed") }
-        ],
-        { cancelable: false }
-    );
-
     return(
         <View style={styles.maincontainer}>
             <HeaderBar title="Check-In" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
-                <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
-                <View style={styles.infoCheckIncontainer}>
-                    <Image style={styles.checkInImage} source={require("../../assets/hotelExampleStruttura.png")}/>
-                    <Text style={styles.checkIntxt}>Check-In {nomeOsp}</Text>
-                </View>
-                <View style={styles.fieldSet}>
-                    <Text style={styles.legend}>Dati personali e residenza</Text>
-                    <View style={styles.fieldSetContent}>
-                        <View style={styles.horizontalView}>
-                            <Text style={styles.singleField}>Tizio</Text>
-                            <Text style={styles.singleField}>Caio</Text>
-                        </View>
-                        <View style={styles.horizontalView}>
-                            <Text style={styles.singleField}>23/11/1963</Text>
-                            <Text style={styles.singleField}>M</Text>
-                        </View>
-                        <View style={styles.horizontalView}>
-                            <Text style={styles.singleField}>Via Mario Rossi</Text>
-                            <Text style={styles.singleField}>Avellino (AV)</Text>
-                        </View>
-                        <View style={styles.horizontalView}>
-                            <Text style={styles.singleField}>83100</Text>
-                            <Text style={styles.singleField}>Italiana</Text>
+                <View style={styles.scrollContent}> 
+                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
+                    <View style={styles.infoCheckIncontainer}>
+                        <Image style={styles.checkInImage} source={require("../../assets/hotelExampleStruttura.png")}/>
+                        <Text style={styles.checkIntxt}>Check-In {nomeOsp}</Text>
+                    </View>
+                    <View style={styles.fieldSet}>
+                        <Text style={styles.legend}>Dati personali e residenza</Text>
+                        <View style={styles.fieldSetContent}>
+                            <View style={styles.horizontalView}>
+                                <Text style={styles.singleField}>Tizio</Text>
+                                <Text style={styles.singleField}>Caio</Text>
+                            </View>
+                            <View style={styles.horizontalView}>
+                                <Text style={styles.singleField}>23/11/1963</Text>
+                                <Text style={styles.singleField}>Italiana</Text>
+                            </View>
+                            <View style={styles.horizontalView}>
+                                <Text style={styles.singleFieldRow}>Via Mario Rossi</Text>
+                            </View>
+                            <View style={styles.horizontalView}>
+                                <Text style={styles.singleField}>Avellino (AV)</Text>
+                                <Text style={styles.singleField}>83100</Text>
+                            </View>
                         </View>
                     </View>
-                </View>
-                <View style={styles.fieldSet}>
-                    <Text style={styles.legend}>Documento riconoscimento</Text>
-                    <View style={styles.fieldSetContent}>
-                        <View style={styles.horizontalView}>
-                            <RNPickerSelect
-                                style = {pickerStyle}
-                                onValueChange = {(typeDoc) => {setDocType(typeDoc); console.log(typeDoc);}}
-                                value={typeDoc}
-                                placeholder = {{
-                                    label: 'Tipo documento',
-                                    value: null,
-                                }}
-                                items={[
-                                    { label: 'Carta d\'Identità', value: 'Carta d\'Identità' },
-                                    { label: 'Patente di guida', value: 'Patente di guida' },
-                                ]}
-                                useNativeAndroidPickerStyle={false}
-                            />
-                            <TextInput
-                                style = {styles.textFieldStyle}
-                                placeholder = 'N° documento'
-                                onChangeText = {(numeroDoc) => setNumeroDoc(numeroDoc)}
-                            />
+                    <View style={styles.fieldSet}>
+                        <Text style={styles.legend}>Documento riconoscimento</Text>
+                        <View style={styles.fieldSetContent}>
+                            <View style={styles.horizontalView}>
+                                <RNPickerSelect
+                                    style = {pickerStyle}
+                                    onValueChange = {(typeDoc) => {setDocType(typeDoc); console.log(typeDoc);}}
+                                    value={typeDoc}
+                                    placeholder = {{
+                                        label: 'Tipo documento',
+                                        value: null,
+                                    }}
+                                    items={[
+                                        { label: 'Carta d\'Identità', value: 'Carta d\'Identità' },
+                                        { label: 'Patente di guida', value: 'Patente di guida' },
+                                    ]}
+                                    useNativeAndroidPickerStyle={false}
+                                />
+                                <TextInput
+                                    style = {styles.textFieldStyle}
+                                    placeholder = 'N° documento'
+                                    onChangeText = {(numeroDoc) => setNumeroDoc(numeroDoc)}
+                                />
+                            </View>
+                            <View style={styles.horizontalView}>
+                                <TextInput
+                                    style = {[styles.textFieldStyle, styles.textFieldStyleSingleRow]}
+                                    placeholder = 'Luogo di rilascio'
+                                    onChangeText = {(luogoRilascioDoc) => setLuogoRilascioDoc(luogoRilascioDoc)}
+                                />
+                            </View>
                         </View>
-                        <TextInput
-                            style = {[styles.textFieldStyle, styles.textFieldStyleSingleRow]}
-                            placeholder = 'Luogo di rilascio'
-                            onChangeText = {(luogoRilascioDoc) => setLuogoRilascioDoc(luogoRilascioDoc)}
-                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=> navigation.navigate("LaMiaChiave") } />
                     </View>
                 </View>
-                <View style={styles.buttonContainer}>
-                        <TouchableOpacity style = {styles.bottoneStyle} onPress={createAlertForWelcomeVideo} >
-                            <Text style={{color:'#ffffff'}}>Avanti</Text>
-                        </TouchableOpacity>
-                    </View>
             </ScrollView>
        </View> 
     );
@@ -126,23 +113,25 @@ export default CheckInScreen;
 
 const styles = StyleSheet.create({
     maincontainer: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     bodyScrollcontainer: {
-        paddingLeft: 24,
-        paddingRight: 24,
-        width: "100%", 
+        width: "100%",
+    },
+    scrollContent: {
+        marginLeft: 16, 
+        marginRight: 16,
     },
     numprenotazionetxt: {
           textAlign: "left",
-          fontSize: 18,
+          fontSize: 16,
           color: "black",
-          fontWeight: "bold",
           marginTop: 16,
           marginBottom: 16,
+          fontFamily: "MontserrantSemiBold",
     },
     infoCheckIncontainer:{
         alignItems: 'center',
@@ -157,6 +146,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: "black",
         textAlign: "center",
+        fontFamily: "MontserrantSemiBold",
         marginTop: 4
     },
     fieldSet:{
@@ -172,7 +162,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: -16,
         left: 10,
-        fontWeight: 'bold',
+        fontFamily: "MontserrantSemiBold",
         backgroundColor: '#FFFFFF',
         fontSize: 16,
         padding: 4,
@@ -184,7 +174,18 @@ const styles = StyleSheet.create({
     },
     singleField: {
         height: 40,
-        width:120,
+        width: "45%", //oldvalue: 120
+        borderColor: '#cc3881',
+        marginTop:8,
+        paddingTop:9,
+        marginRight: 12,
+        paddingLeft: 8,
+        fontFamily: 'Montserrant',
+        borderBottomWidth: 1,
+    },
+    singleFieldRow: {
+        height: 40,
+        width: "96%", //oldvalue: 120
         borderColor: '#cc3881',
         marginTop:8,
         paddingTop:9,
@@ -205,15 +206,16 @@ const styles = StyleSheet.create({
     },
     textFieldStyle: {
         height: 40,
-        width:120,
+        width:"40%",
         borderColor: '#cc3881',
         marginTop:8,
+        marginRight: 12,
         paddingLeft: 8,
         fontFamily: 'Montserrant',
         borderBottomWidth: 1,
     },
     textFieldStyleSingleRow: {
-        width: 250, //settare 100% per ottenere tutto lo spazio disponibile
+        width: "96%", //settare 100% per ottenere tutto lo spazio disponibile
     },
     buttonContainer:{
         flex: 1,
@@ -222,13 +224,4 @@ const styles = StyleSheet.create({
         margin: 10,
         marginBottom: 20
     },
-    bottoneStyle : {
-        borderWidth: 1,
-        width: 120,
-        height: 32,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
-    },    
 });

@@ -48,6 +48,7 @@ import VisualizzaStoricoPrenScreen from "./src/screen/VisualizzaStoricoPrenotazi
 import UpgradeHostScreen from "./src/screen/UpgradeHostScreen"
 import WelcomeScreen from "./src/screen/WelcomeScreen"
 import VisualizzaDateAlloggi from "./src/screen/Visualizza_date_alloggi"
+import MoviePlayerScreen from "./src/screen/MediaPlayerScreen"
 
 const Stack = createStackNavigator();
 
@@ -181,6 +182,11 @@ const App = () => {
             name="VisualizzaDateAlloggi" 
             component={VisualizzaDateAlloggi} 
             options={{title: 'Calendario'}} 
+          />
+          <Stack.Screen 
+            name="MoviePlayer" 
+            component={MoviePlayerScreen} 
+            options={{title: 'Media player'}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>

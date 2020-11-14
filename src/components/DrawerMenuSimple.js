@@ -23,6 +23,7 @@ import VisualizzaPrenotazioniScreen from "../screen/VisualizzaPrenotazioni"
 import VisualizzaStoricoPrenScreen from "../screen/VisualizzaStoricoPrenotazioni"
 import UpgradeHostScreen from "../screen/UpgradeHostScreen"
 import WelcomeScreen from "../screen/WelcomeScreen"
+import MoviePlayerScreen from "../screen/MediaPlayerScreen"
 
 const Drawer = createDrawerNavigator();
 
@@ -55,6 +56,7 @@ const DrawerMenuSimple = (props) =>{
             <Drawer.Screen name="VisualizzaPrenotazioni" component={VisualizzaPrenotazioniScreen} options={{title: 'Visualizza prenotazioni', swipeEnabled: false}} />
             <Drawer.Screen name="StoricoPrenotazioni" component={VisualizzaStoricoPrenScreen} options={{title: 'Storico prenotazioni', swipeEnabled: false}} />
             <Drawer.Screen name="UpgradeHost" component={UpgradeHostScreen} options={{title: 'Upgrade host', swipeEnabled: false}} />
+            <Drawer.Screen name="MoviePlayer" component={MoviePlayerScreen} options={{title: 'Movie player', swipeEnabled: false}} />
         </Drawer.Navigator>
     );
 }
