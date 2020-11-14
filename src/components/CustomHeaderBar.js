@@ -1,5 +1,5 @@
 import React from'react'
-import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Platform, Text, View, Image, TouchableOpacity, Alert, StatusBar } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
@@ -21,6 +21,7 @@ const CustomHeaderBar = (props) => {
 
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
+          <StatusBar backgroundColor="#f2077d" barStyle={'default'} /> 
             <View style={styles.headerContent}>
                 <TouchableOpacity style={styles.drawerMenuButton} onPress={() => props.navigator.dispatch(DrawerActions.toggleDrawer())}>
                   <Image style={styles.drawerIcon} source={require("../../assets/drawerMenu_icon.png")}/>
@@ -51,7 +52,6 @@ const styles = StyleSheet.create({
     headerContainer: {
         width: "100%",
         backgroundColor: '#f2077d',
-        marginTop:20, //necessario conoscere altezza statusbar
     },
     headertitle: Platform.select({
         ios: {
