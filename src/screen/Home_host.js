@@ -1,44 +1,55 @@
 import React, { useState } from 'react'
-import {View, Text, StyleSheet, Alert } from 'react-native'
+import {View, Text, StyleSheet, Alert, SafeAreaView} from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomImageButton from "../components/CustomImageButton";
+import CustomButton from "../components/CustomButton";
 
 const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'flex-start',
-    alignItems: 'center',
+    alignItems: 'stretch',
   },
 
   container: {
-    flex:1,
     flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
   },
   
   topContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginTop:10,
+    marginTop:60,
+    height:'20%'
   },
 
   centerContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    height:170,
-    marginTop:20
+    height:'25%',
+    marginTop:10,
   },
 
   bottomContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:30
+    marginTop:40,
+    height:'30%'
+  },
+
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height:'30%'
   },
 
   testoLogo : {
@@ -47,11 +58,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontFamily: "MontserrantSemiBold",
   },
-
-  calendario: {
-    width:100,
-    height:10,
-  }
 
 })
 
@@ -95,8 +101,7 @@ const HomeHost = (props) => {
   return(
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={props.navigation} />
-    <ScrollView>
-      <View contentContainerStyle={styles.container}>
+      <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
           <Icon name= "account-circle-outline" color={"black"} size={100}/>
           <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
@@ -119,11 +124,8 @@ const HomeHost = (props) => {
           onDateChange={(date, type) => {
             if (type === 'END_DATE') {
                 setSelectedEndDate(date);
-                console.log('_il tipo è :' + type)
-                console.log('data inizio ' + new Date(selectedStartDate) + ' data fine ' + new Date(date))
-                CalendarPicker.resetSelections
+                
             } else {
-              console.log('il tipo è :' + type)
               setSelectedStartDate(date);
               setSelectedEndDate(null);
             }
@@ -131,7 +133,9 @@ const HomeHost = (props) => {
       
         />
         </View>
-      </View>
+        <View style={styles.buttonContainer}>
+          <CustomButton nome="visualizza date" styleBtn={{width:'80%', marginBottom:50}}></CustomButton>
+        </View>
       </ScrollView>
     </View>
   );
