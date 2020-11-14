@@ -47,6 +47,7 @@ import VisualizzaPrenotazioniScreen from "./src/screen/VisualizzaPrenotazioni"
 import VisualizzaStoricoPrenScreen from "./src/screen/VisualizzaStoricoPrenotazioni"
 import UpgradeHostScreen from "./src/screen/UpgradeHostScreen"
 import WelcomeScreen from "./src/screen/WelcomeScreen"
+import VisualizzaDateAlloggi from "./src/screen/Visualizza_date_alloggi"
 
 const Stack = createStackNavigator();
 
@@ -175,6 +176,11 @@ const App = () => {
             name="UpgradeHost" 
             component={UpgradeHostScreen} 
             options={{title: 'Upgrade Host'}} 
+          />
+          <Stack.Screen 
+            name="VisualizzaDateAlloggi" 
+            component={VisualizzaDateAlloggi} 
+            options={{title: 'Calendario'}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>

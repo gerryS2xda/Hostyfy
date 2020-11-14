@@ -134,7 +134,12 @@ const HomeHost = (props) => {
         />
         </View>
         <View style={styles.buttonContainer}>
-          <CustomButton nome="visualizza date" styleBtn={{width:'80%', marginBottom:50}}></CustomButton>
+          <CustomButton nome="Visualizza date"
+           styleBtn={{width:'80%', marginBottom:50}}
+           onPress={() => props.navigation.navigate("VisualizzaDateAlloggi",{
+             dataIniziale: selectedStartDate,
+             dataFinale: selectedEndDate,
+           })}></CustomButton>
         </View>
       </ScrollView>
     </View>
