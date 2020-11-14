@@ -65,8 +65,12 @@ const HomeHost = (props) => {
   const endDate = selectedEndDate ? selectedEndDate.toString() : '';
   const onDateChange = (date, type) => {
     if (type === 'END_DATE') {
-      setSelectedEndDate(date);
+        setSelectedEndDate(date);
+        console.log('_il tipo è :' + type)
+        console.log('data inizio ' + new Date(selectedStartDate) + ' data fine ' + new Date(date))
+        this.resetSelections()
     } else {
+      console.log('il tipo è :' + type)
       setSelectedStartDate(date);
       setSelectedEndDate(null);
     }
@@ -112,7 +116,19 @@ const HomeHost = (props) => {
           previousTitle = "Precedente"
           nextTitleStyle = {{color: '#cc3881'}}
           previousTitleStyle = {{color: '#cc3881'}}
-          onDateChange={onDateChange}
+          onDateChange={(date, type) => {
+            if (type === 'END_DATE') {
+                setSelectedEndDate(date);
+                console.log('_il tipo è :' + type)
+                console.log('data inizio ' + new Date(selectedStartDate) + ' data fine ' + new Date(date))
+                CalendarPicker.resetSelections
+            } else {
+              console.log('il tipo è :' + type)
+              setSelectedStartDate(date);
+              setSelectedEndDate(null);
+            }
+          }}
+      
         />
         </View>
       </View>
