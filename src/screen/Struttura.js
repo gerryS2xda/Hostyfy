@@ -91,10 +91,12 @@ const styles = StyleSheet.create({
 export default class StrutturaScreen extends React.Component {
  
     
-    state = {IsEditable: true}
+    
+
     constructor(props){
         super(props);
         this.state = {
+          IsEditable: false,
           activeIndex:0,
           carouselItems: [
           {

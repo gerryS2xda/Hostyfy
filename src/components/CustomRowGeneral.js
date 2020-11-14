@@ -11,11 +11,12 @@ const styles = StyleSheet.create({
         padding: 10,
         marginLeft:"4%", //oldvalue: 16
         marginRight:"4%", //oldvalue: 16
-        marginTop: "3%", //oldvalue: 8
+        marginTop: "2%", //oldvalue: 8
         marginBottom: "3%", //oldvalue: 8
-        borderRadius: 5,
+        borderRadius: 3,
         elevation: 2,
-        width: "96%",
+        width: "93%",
+        //backgroundColor: 'black'
     },
     title: {
         fontSize: 16,

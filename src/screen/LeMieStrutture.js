@@ -16,31 +16,22 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const styles = StyleSheet.create({
+ 
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  bodyScrollcontainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
-  container: {
-    width: "100%",
-    height: "100%"
-  },
-  scrollContent: {
-    marginRight:"3%",
-  },
-  aggiungiStruttura:{
-    width: "100%",
-    alignItems: 'flex-end',
-    marginTop: "15%",
-    marginBottom: "5%"   
   },
 
+  container: {
+    flex: 1,
+  },
+
+  aggiungiStruttura:{
+    flexDirection: "column-reverse",
+    alignItems: 'flex-end',
+    marginBottom: "5%",
+    marginRight: "3%",
+  },
 });
 
 const LeMieStrutture = (props) => {  
@@ -48,8 +39,6 @@ const LeMieStrutture = (props) => {
       return (
       <View style={styles.maincontainer}>
         <HeaderBar title="Le tue Strutture" navigator={props.navigation} /> 
-        <View style={styles.bodyScrollcontainer}>
-          <View style={styles.scrollContent}>
             <View style={styles.container}>
               <CustomListView 
                 nav= {props.navigation}
@@ -102,9 +91,7 @@ const LeMieStrutture = (props) => {
                     </TouchableOpacity>
                 </View>
             </View>
-          </View>
-        </View>
-    </View>     
+          </View>   
       
     );
 }

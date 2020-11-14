@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
     width: "90%",
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 3,
     borderRadius: 20,
     paddingVertical: 20,
-    borderColor: '#d3d9e3',
+    borderColor: '#f0f0f0',
     
   },
   input: {
@@ -67,8 +67,8 @@ const Registrazione = (props) => {
 
 const [nome, setNome] = useState('');
 const [cognome, setCognome] = useState('');
-const [lNascita, setLuogoNascita] = useState('');
-const [dNascita, setDataNascita] = useState('');
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
 const [errore, setErrore] = useState('');
 const [confermaPassword, setConfermaPassword] = useState('');
 
@@ -117,7 +117,7 @@ const [confermaPassword, setConfermaPassword] = useState('');
                       nome="Registrati" 
                       styleBtn={{width: "85%"}}
                       onPress={() => Alert.alert (
-                        'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Vai al login', onPress: ()=> props.navigation.navigate('Home')}])} 
+                        'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Accedi', onPress: ()=> props.navigation.navigate('Home')}])} 
                     />
                   </View>
               

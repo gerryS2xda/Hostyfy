@@ -16,25 +16,21 @@ const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
-  bodyScrollcontainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
-  container: {
-    width: "96%", //ridotto da 100%
-    height: "100%",
   },
 
-  image:{
-    width: 50,
-    height:50
+  container: {
+    flex: 1,
   },
+
+  aggiungiStruttura:{
+    flexDirection: "column-reverse",
+    alignItems: 'flex-end',
+    marginBottom: "5%",
+    marginRight: "3%",
+  },
+
   buttonContainer: {
-    width: "104%", //da sistemare (fa riferimento a 96%)
+    width: "100%", 
     alignItems: "center",
     justifyContent: 'center',
     marginBottom: "10%",
@@ -47,8 +43,6 @@ const VisualizzaPrenotazioni = (props) => {
       return (
         <View style={styles.maincontainer}>
           <HeaderBar title="Le tue prenotazioni" navigator={props.navigation} /> 
-          <View style={styles.bodyScrollcontainer}>
-            <View style={styles.scrollContent}></View>
               <View style={styles.container}>
                 <CustomListViewGeneral
                   nav = {props.navigation}
@@ -92,8 +86,7 @@ const VisualizzaPrenotazioni = (props) => {
                     />
                 </View>
             </View>
-          </View>
-      </View>      
+          </View>      
     );
 }
 

@@ -15,71 +15,27 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const styles = StyleSheet.create({
+
+  maincontainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+
   container: {
     flex: 1,
     backgroundColor: '#FCFCFC',
     borderWidth: 1,
     borderColor: '#d3d9e3',
   },
-  title:
-  {
-    fontSize: 25,
-    marginLeft: 20,
-  },
-
+  
   aggiungiStruttura:{
-
-    ...Platform.select({
-        ios: {
-          marginLeft: 310,
-          marginBottom: 50
-        },
-        android: 
-        {
-          marginLeft: 320,
-          marginBottom: 50
-        }
-    })
+    flexDirection: "column-reverse",
+    alignItems: 'flex-end',
+    marginBottom: "5%",
+    marginRight: "3%",
   },
 
-  containerExtra: {
-    flex: 0,
-    flexDirection: 'row',
-    padding: 10,
-    marginLeft:16,
-    marginRight:16,
-    marginTop: 8,
-    borderRadius: 5,
-    backgroundColor: '#FFF',
-    elevation: 2,
-},
-titleExtra: {
-  fontSize: 16,
-  color: '#000',
-},
-container_textExtra: {
-  flex: 1,
-  flexDirection: 'column',
-  marginLeft: 12,
-  justifyContent: 'center',
-},
-descriptionExtra: {
-  fontSize: 11,
-  fontStyle: 'italic',
-},
-photoExtra: {
-  height: 50,
-  width: 50,
-},
-arrowExtra: {
-  marginLeft: 250,
-  marginTop: -35
-},
-
-maincontainer: {
-  flex: 1,
-  backgroundColor: '#fff',
-},
+  
 });
 
 const VisualizzaAlloggi = (props) => {  
@@ -129,7 +85,6 @@ const VisualizzaAlloggi = (props) => {
 
     <View style = {styles.aggiungiStruttura}>
         <TouchableOpacity
-          style = {styles.image}
           onPress={() => props.navigation.navigate('InserisciAlloggio')}>
             <Icon
               name = "plus-circle-outline"

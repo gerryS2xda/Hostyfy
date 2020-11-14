@@ -5,7 +5,7 @@ import CustomRow from '../components/CustomRow';
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
+        flex:1,
         marginTop: 20,
     },
 });

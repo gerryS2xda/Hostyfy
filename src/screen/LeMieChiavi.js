@@ -17,33 +17,18 @@ const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
-  bodyScrollcontainer: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
+
   container: {
-    width: "100%",
-    height: "100%",
-  },
-  scrollContent: {
-    marginRight:"3%",
+    flex: 1,
   },
 
-  title:
-  {
-    fontSize: 25,
-    marginLeft: 20,
+  aggiungiStruttura:{
+    flexDirection: "column-reverse",
+    alignItems: 'flex-end',
+    marginBottom: "5%",
+    marginRight: "3%",
   },
-
-  image:{
-    width: 50,
-    height:50
-  },
-
 });
 
 const LeMieChiavi = (props) => {  
@@ -51,8 +36,6 @@ const LeMieChiavi = (props) => {
       return (
     <View style={styles.maincontainer}>
       <HeaderBar title="Le tue chiavi attive" navigator={props.navigation} /> 
-      <View style={styles.bodyScrollcontainer}>
-          <View style={styles.scrollContent}>
             <View style={styles.container}>
               <CustomListViewGeneral
                 nav = {props.navigation}
@@ -90,12 +73,7 @@ const LeMieChiavi = (props) => {
                 ]
               }/>
             </View>
-          </View>
-        </View>
-    </View>
-
-      
-      
+          </View>      
     );
 }
 

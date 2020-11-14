@@ -75,11 +75,12 @@ const styles = StyleSheet.create({
 
 export default class AlloggioScreen extends React.Component {
 
-    state = {IsEditable: false}
+   
  
     constructor(props){
         super(props);
         this.state = {
+          IsEditable: false,
           activeIndex:0,
           carouselItems: [
           {

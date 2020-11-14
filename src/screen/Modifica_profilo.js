@@ -32,10 +32,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
-    borderWidth: 0.7,
+    borderWidth: 2,
     borderRadius: 10,
     width: '90%',
     height: '60%',
+    borderColor: "#f0f0f0",
+    paddingBottom: "5%"
   },
 
   lowerMiddleContainer: {
@@ -48,27 +50,49 @@ const styles = StyleSheet.create({
     width: '90%',
     height: '13%',
     marginTop:20,
-  },
-
-  bottomContainer: {
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    height: '20%',
+    borderColor: "#f0f0f0",
+    paddingBottom: "5%",
+    borderWidth: 2,
   },
 
   singleTextInput: {
     height: 40,
-    width:300,
-    borderColor: '#cc3881',
+    width:"90%",
+    borderColor: "#cc3881",
     borderBottomWidth: 1,
     paddingLeft: 5,
     fontFamily: "MontserrantSemiBold",
   },
+
+  bottomContainer: {
+    width: "100%",
+    marginBottom: "30%",
+    alignItems: 'center',
+    marginTop:20,
+    paddingBottom: "5%",
+  },
+
+  finalContainer:{
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderWidth: 0.7,
+    borderRadius: 10,
+    width: '90%',
+    height: '18%',
+    marginTop:20,
+    borderColor: "#f0f0f0",
+    paddingBottom: "5%",
+    borderWidth: 2,
+  }
 })
 
 
+
+
+
 const Modifica_profilo = (props) => {
+
   const createPositiveAlert = () =>
       Alert.alert(
       "Salva modifiche",
@@ -84,7 +108,11 @@ const Modifica_profilo = (props) => {
       { cancelable: false }
     );
 
+    const[IsEditable, setEditable] = useState(false);
+     
   return(
+
+    
     <View style={styles.maincontainer}>
       <HeaderBar title="Il mio profilo" navigator={props.navigation} />
       <ScrollView contentContainerStyle = {styles.container}>
@@ -95,64 +123,99 @@ const Modifica_profilo = (props) => {
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Nome'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Cognome'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Data di nascita'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Email'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Cellulare'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Telefono'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Sesso'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Nazione'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Indirizzo'
+                editable={IsEditable}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Città'
+                editable={IsEditable}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Cap'
+                editable={IsEditable}
             />
           </View>
           <View style = {styles.lowerMiddleContainer}>
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Password attuale'
+                editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Nuova password'
+                editable={IsEditable}
             />
           </View>
+
+          <View style = {styles.finalContainer}>
+          
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Numero Carta'
+                editable={IsEditable}
+            />
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='Data Scadenza'
+                editable={IsEditable}
+            />
+
+            <TextInput
+                style = {styles.singleTextInput}
+                placeholder='CCV'
+                editable={IsEditable}
+            />    
+          </View>
+
           <View style = {styles.bottomContainer}>
-            <CustomButton styleBtn={{marginTop:40, marginBottom: 40}} 
-              nome="Salva modifiche" 
-              onPress={createPositiveAlert} 
-            />
-          </View>
+            <CustomButton 
+              styleBtn={{width: "90%"}} 
+              nome= {IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
+              onPress={()=> {setEditable(previousState => !previousState)}}/>
+              
+            </View>
       </ScrollView>
     </View>
   );
