@@ -5,39 +5,37 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "../components/CustomButton"
 
 const styles = StyleSheet.create({
+  
   maincontainer: {
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
-    alignItems: 'stretch',
-    width: "100%",
   },
-  container: {  
+
+  container: { 
     flexDirection: 'column', 
-    width: "100%",
     justifyContent: 'center',
     alignItems: 'center',
   },
  
   topContainer: {
-    height: '15%',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:'20%'
+    marginBottom: "4%"
+    
   },
 
   upperMiddleContainer: {
-    
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
     borderWidth: 2,
     borderRadius: 10,
     width: '90%',
-    height: '60%',
     borderColor: "#f0f0f0",
-    paddingBottom: "5%"
+    paddingBottom: "5%",
+    paddingTop: "5%"
   },
 
   lowerMiddleContainer: {
@@ -48,11 +46,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.7,
     borderRadius: 10,
     width: '90%',
-    height: '13%',
-    marginTop:20,
+    marginTop: "5%",
     borderColor: "#f0f0f0",
-    paddingBottom: "5%",
+    paddingBottom: "4%",
     borderWidth: 2,
+    paddingTop: "3%",
   },
 
   singleTextInput: {
@@ -62,34 +60,34 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingLeft: 5,
     fontFamily: "MontserrantSemiBold",
-  },
-
-  bottomContainer: {
-    width: "100%",
-    marginBottom: "30%",
-    alignItems: 'center',
-    marginTop:20,
-    paddingBottom: "5%",
+    marginBottom: "3%"
   },
 
   finalContainer:{
-    flexDirection: 'column',
+    
     justifyContent: 'space-around',
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 0.7,
     borderRadius: 10,
     width: '90%',
-    height: '18%',
-    marginTop:20,
+    marginTop: "5%",
     borderColor: "#f0f0f0",
-    paddingBottom: "5%",
+    marginBottom: "5%",
+    paddingTop: "3%",
+    paddingBottom: "3%",
     borderWidth: 2,
-  }
+    
+  },
+
+  bottonContainer: {
+    width: "100%",
+    backgroundColor: 'orange',
+    alignItems: 'center',
+    backgroundColor: "orange"
+  },
 })
-
-
-
-
 
 const Modifica_profilo = (props) => {
 
@@ -190,7 +188,6 @@ const Modifica_profilo = (props) => {
           </View>
 
           <View style = {styles.finalContainer}>
-          
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Numero Carta'
@@ -201,7 +198,6 @@ const Modifica_profilo = (props) => {
                 placeholder='Data Scadenza'
                 editable={IsEditable}
             />
-
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='CCV'
@@ -209,9 +205,9 @@ const Modifica_profilo = (props) => {
             />    
           </View>
 
-          <View style = {styles.bottomContainer}>
+          <View style = {styles.bottonContainer}>
             <CustomButton 
-              styleBtn={{width: "90%"}} 
+              styleBtn={{width: "90%", marginBottom: "20%"}} 
               nome= {IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
               onPress={()=> {setEditable(previousState => !previousState)}}/>
               
