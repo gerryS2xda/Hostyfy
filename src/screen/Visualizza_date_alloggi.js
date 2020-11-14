@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
             <View style={{backgroundColor: props.color ,width:'29%',height:50,  alignItems: 'center', borderRightWidth:1}}>
                 <Text>{props.nome2}</Text>
             </View>
-            <View style={{backgroundColor: props.color,width:'29%',height:50,  alignItems: 'center'}}>
+            <View style={{backgroundColor: props.color,width:'31%',height:50,  alignItems: 'center'}}>
                 <Text>{props.nome3}</Text>
             </View>
         </View>
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
 const Row = (props) => {
     return(
         <View style= {styles.rowView}>
-            <View style={{width:'11%',height:50}}>
+            <View style={{width:'11%',height:50,alignItems:'center',justifyContent:'center'}}>
                 <Text>{props.ora}</Text>
             </View>
             <View style={{backgroundColor: props.color1, width:'29%', height:50, borderLeftWidth:1,borderRightWidth:1}}>
@@ -83,7 +83,7 @@ const Row = (props) => {
             <View style={{backgroundColor: props.color2,width:'29%',height:50,borderRightWidth:1}}>
                 
             </View>
-            <View style={{backgroundColor: props.color3,width:'29%',height:50}}>
+            <View style={{backgroundColor: props.color3,width:'31%',height:50}}>
                 
             </View>
         </View>
@@ -114,14 +114,14 @@ const Visualizza_date_Alloggi = ({route, navigation}) => {
                 <View style={styles.topContainer}>
                     <CalendarStrip
                         calendarAnimation={{type: 'sequence', duration: 30}}
-                        daySelectionAnimation={{type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'white'}}
-                        style={{height:100,width:'100%', paddingTop: 20, paddingBottom: 10}}
-                        calendarHeaderStyle={{color: 'white'}}
-                        calendarColor={'#f2077d'}
-                        dateNumberStyle={{color: 'white'}}
-                        dateNameStyle={{color: 'white'}}
-                        highlightDateNumberStyle={{color: 'yellow'}}
-                        highlightDateNameStyle={{color: 'yellow'}}
+                        daySelectionAnimation={{type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'black'}}
+                        style={{height:100,width:'101%', paddingTop: 20, paddingBottom: 10,borderWidth:1}}
+                        calendarHeaderStyle={{color: '#f2077d'}}
+                        calendarColor={'white'}
+                        dateNumberStyle={{color: '#f2077d'}}
+                        dateNameStyle={{color: '#f2077d'}}
+                        highlightDateNumberStyle={{color: '#f2077d'}}
+                        highlightDateNameStyle={{color: '#f2077d'}}
                         disabledDateNameStyle={{color: 'grey'}}
                         disabledDateNumberStyle={{color: 'grey'}}
                         iconLeft={require('../../assets/arrow.png')}
@@ -131,22 +131,22 @@ const Visualizza_date_Alloggi = ({route, navigation}) => {
                         startingDate= {dataIniziale}
                         onDateSelected={()=>{
                             if(count == 0){
-                                setColore1("red")
-                                setColore2("purple")
-                                setColore3("blue")
+                                setColore1("#ffccee")
+                                setColore2("#ffffcc")
+                                setColore3("#ccccff")
                                 setCount(1)
                             }
                             else{
-                                setColore1("red")
+                                setColore1("#ffccee")
                                 setColore2("white")
-                                setColore3("blue")
+                                setColore3("#ccccff")
                                 setCount(0)
                             }
                         }}
                     />
                </View>
                <ScrollView contentContainerStyle={styles.bottomContainer}>
-                <RowHeader color='gray' nome1='Alloggio1' nome2='Alloggio2' nome3='Alloggio3'></RowHeader>
+                <RowHeader color='#d9d9d9' nome1='Alloggio1' nome2='Alloggio2' nome3='Alloggio3'></RowHeader>
                 <Row ora={0} color1={colore1} color2={colore2} color3={colore3}></Row>
                 <Row ora={1} color1={colore1} color2={colore2} color3={colore3}></Row>
                 <Row ora={2} color1={colore1} color2={colore2} color3={colore3}></Row>
