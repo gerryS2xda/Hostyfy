@@ -68,6 +68,10 @@ const styles = StyleSheet.create({
         paddingLeft: 5,
         backgroundColor: '#f5f5f2',
     },
+
+    singleFieldText:{
+        fontFamily: "MontserrantSemiBold",
+    }
   })
 
 
@@ -132,21 +136,29 @@ export default class AlloggioScreen extends React.Component {
                             onSnapToItem = { index => this.setState({activeIndex:index}) } />
                         </View>
                         <View style={styles.middleContainer}>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Camera 17</TextInput>
-                            <TouchableOpacity style={styles.singleField}
-                             onPress={()=>{this.props.navigation.navigate('Calendario_Alloggio')}}>
-                                 <Text>Disponibilità</Text>
-                            </TouchableOpacity>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Suite Imperiale</TextInput>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}
                                 multiline={true}
-                                numberOfLines={15}
-                             >Servizi</TextInput>
+                                numberOfLines={15}>
+                                 - Area condizionata
+                                 {"\n"}- TV
+                                 {"\n"}- Frigo Bar
+                                 {"\n"}- Idromassaggio
+                                 {"\n"}- Colazione a letto
+                                 {"\n"}- Cestino di accoglienza
+                             </TextInput>
                         </View>
+                        <CustomButton 
+                                styleBtn={{width: "100%", marginTop: "5%"}}
+                                nome= "Disponibilità" 
+                                onPress={()=>{this.props.navigation.navigate('Calendario_Alloggio')}}
+                            /> 
+
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
-                                styleBtn={{width: "45%"}} 
-                                nome="Modifica foto e video"  
+                                styleBtn={{width: "45%", alignItems: 'center', justifyContent: 'center'}}
+                                nome="Modifica foto"  
                                 onPress={()=> Alert.alert(
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
@@ -161,7 +173,7 @@ export default class AlloggioScreen extends React.Component {
                         </View>
                         <View style={styles.bottomButtonContainer}> 
                             <CustomButton 
-                                styleBtn={{marginTop: 10, width:"100%"}} 
+                                styleBtn={{marginTop: "5%", width:"100%"}} 
                                 nome="Guida"  
                                 onPress={()=> Alert.alert(
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
@@ -170,7 +182,7 @@ export default class AlloggioScreen extends React.Component {
                                     { cancelable: false })} 
                             /> 
                             <CustomButton 
-                                styleBtn={{marginTop: 10, width:"100%"}}
+                                styleBtn={{marginTop: "5%", width:"100%"}}
                                 nome= "Visualizza chiave"
                                 onPress={() => {this.props.navigation.navigate('LaMiaChiave')}}
                             />

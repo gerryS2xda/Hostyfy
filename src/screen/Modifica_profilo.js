@@ -92,6 +92,10 @@ const styles = StyleSheet.create({
     width: 200,
     marginTop: 20,
   },
+
+  singleText:{
+    fontFamily: "MontserrantSemiBold",
+  }
 })
 
 const Modifica_profilo = (props) => {
@@ -123,14 +127,17 @@ const Modifica_profilo = (props) => {
             <Icon name= "account-circle-outline" color={"#000000"} size={100}/>
           </View>
           <View style = {styles.upperMiddleContainer}>
+          <Text style = {styles.singleText}>
+              Informazioni Personali            
+            </Text>
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Nome'
+                placeholder='Ernesto'
                 editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Cognome'
+                placeholder='Rossi'
                 editable={IsEditable}
             />
             <DatePickerInputField 
@@ -142,17 +149,17 @@ const Modifica_profilo = (props) => {
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Data di nascita'
+                placeholder='23/11/1963'
                 editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Email'
+                placeholder='e.rossi@gmail.com'
                 editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Cellulare'
+                placeholder='3421776471'
                 editable={IsEditable}
             />
             <TextInput
@@ -162,31 +169,34 @@ const Modifica_profilo = (props) => {
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Sesso'
+                placeholder='M'
                 editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Nazione'
+                placeholder='Italia'
                 editable={IsEditable}
             />
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Indirizzo'
+                placeholder='contrada sterpellone'
                 editable={IsEditable}
             />
              <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Città'
+                placeholder='Pizzo Calabro'
                 editable={IsEditable}
             />
              <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Cap'
+                placeholder='89812'
                 editable={IsEditable}
             />
           </View>
           <View style = {styles.lowerMiddleContainer}>
+            <Text style = {styles.singleText}>
+              Modifica Password            
+            </Text>
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Password attuale'
@@ -199,6 +209,9 @@ const Modifica_profilo = (props) => {
             />
           </View>
           <View style = {styles.finalContainer}>
+          <Text style = {styles.singleText}>
+              Dati Pagamento            
+            </Text>
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Numero Carta'

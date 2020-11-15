@@ -169,7 +169,7 @@ export default class StrutturaScreen extends React.Component {
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
-                                nome="Modifica foto e video"
+                                nome="Modifica foto"
                                 onPress={()=> Alert.alert(
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},

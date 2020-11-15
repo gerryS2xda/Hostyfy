@@ -49,21 +49,21 @@ const VisualizzaAlloggi = (props) => {
           itemList={[
             {
               key: 1, 
-              title: 'Alloggio 1',
+              title: 'Suite imperiale',
               description: '"Fantastica"',
               image_url: require('../../assets/Alloggio/Alloggio1.jpg'),
               newPage: 'Alloggio',
             },
             {
               key: 2,
-              title: 'Alloggio 2',
+              title: 'Camera panoramica',
               description: '"Esperienza meravigliosa"',
               image_url: require('../../assets/Alloggio/Alloggio2.jpg'),
               newPage: 'Alloggio',  
             },
             {
               key: 3,
-              title: 'Alloggio 3',
+              title: 'Camera 2',
               description: '"Eccezionale"',
               image_url: require('../../assets/Alloggio/Alloggio3.jpg'),
               newPage: 'Alloggio',
@@ -71,7 +71,7 @@ const VisualizzaAlloggi = (props) => {
             },
             {
               key: 4,
-              title: 'Alloggio 4',
+              title: 'Camera 3',
               description: '"Eccellente"',
               image_url: require('../../assets/Alloggio/Alloggio4.jpg'),
               newPage: 'Alloggio',

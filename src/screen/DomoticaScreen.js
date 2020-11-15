@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Image, ScrollView, Switch } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar'
 
 const DomoticaScreen = ({navigation}) =>{
-  const infoAlloggio = "Nome / Numero camera";
+  const infoAlloggio = "Suite Imperiale";
   const listDispositivi = ["Condizionatore", "TV", "Luce 1", "Luce 2"];
   //NOTA: trovare il modo di rendere gli switch indipendenti
   const [isEnabled, setIsEnabled] = useState(false);

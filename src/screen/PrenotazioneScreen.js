@@ -4,8 +4,8 @@ import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 
 const PrenotazioneScreen = ({navigation}) =>{
-    const numeroPren = 10;
-    const nameStruttura = "La mia struttura";
+    const numeroPren = 10873945;
+    //const nameStruttura = "La mia struttura"; <Text style={styles.nameStruttura}>{nameStruttura}</Text>
     const dataCheckIn = "01/11/2020";
     const oraInizioCheckIn = "12:00";
     const oraFineCheckIn = "20:00";
@@ -26,20 +26,20 @@ const PrenotazioneScreen = ({navigation}) =>{
                     <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
                     <View style={styles.infoStrutturacontainer}>
                         <Image style={styles.strutturaImage} source={require("../../assets/hotelExampleStruttura.png")}/>
-                        <Text style={styles.nameStruttura}>{nameStruttura}</Text>
+                        
                     </View>
                     <View style={styles.fieldSet}>
                         <Text style={styles.legend}>Info prenotazione</Text>
                         <View style={styles.fieldSetContent}>
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
-                                <Text style={styles.normalText}>{dataCheckOut}</Text>
-                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
+                                <Text style={styles.normalText}>{dataCheckIn}</Text>
+                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
-                                <Text style={styles.normalText}>{dataCheckIn}</Text>
-                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
+                                <Text style={styles.normalText}>{dataCheckOut}</Text>
+                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
                             </View>
                             <View style={styles.costoTotContainer}>
                                 <Text style={styles.categoryText}>Costo totale: </Text>

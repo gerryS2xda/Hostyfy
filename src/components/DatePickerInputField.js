@@ -36,7 +36,7 @@ const DatePickerInputField = (props) => {
                 disabled={props.disabled}
                 style={props.styleField} 
                 onPress={()=>{
-                    showDatepicker();
+                    showDialog();
                     console.log(props.date);
                 }}>
                     <Text style={styles.singleField}>{props.date.toDateString()}</Text>

@@ -49,21 +49,21 @@ const VisualizzaPrenotazioni = (props) => {
                   itemList={[
                     {
                       key: 1, 
-                      title: 'Alloggio 1',
-                      description: '12/11/2020 - 18/11/2020',
+                      title: 'Suite Imperiale',
+                      description: '01/11/2020 - 03/11/2020',
                       image_url: require('../../assets/Struttura/struttura1.jpg'),
                       newPage: 'PrenotazioneDetail',
                     },
                     {
                       key: 2,
-                      title: 'Alloggio 2',
+                      title: 'Camera panoramica',
                       description: '11/11/2020 - 17/11/2020',
                       image_url: require('../../assets/Struttura/struttura2.jpg'),
                       newPage: 'PrenotazioneDetail',  
                     },
                     {
                       key: 3,
-                      title: 'Alloggio 3',
+                      title: 'Camera 3',
                       description: '10/11/2020 - 16/11/2020',
                       image_url: require('../../assets/Struttura/struttura3.jpg'),
                       newPage: 'PrenotazioneDetail',
@@ -71,7 +71,7 @@ const VisualizzaPrenotazioni = (props) => {
                     },
                     {
                       key: 4,
-                      title: 'Alloggio 4',
+                      title: 'Camera',
                       description: '10/11/2020 - 15/11/2020',
                       image_url: require('../../assets/Struttura/struttura4.jpg'),
                       newPage: 'PrenotazioneDetail', 
