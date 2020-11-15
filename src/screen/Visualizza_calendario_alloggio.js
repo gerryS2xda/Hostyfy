@@ -111,8 +111,8 @@ const Visualizza_calendario_alloggio = ({route, navigation}) => {
                         highlightDateNameStyle={{color: '#f2077d'}}
                         disabledDateNameStyle={{color: 'grey'}}
                         disabledDateNumberStyle={{color: 'grey'}}
-                        iconLeft={require('../../assets/arrow.png')}
-                        iconRight={require('../../assets/arrow.png')}
+                        iconLeft={require('../../assets/left-arrow.png')}
+                        iconRight={require('../../assets/right-arrow.png')}
                         iconContainer={{flex: 0.1}}
                         datesWhitelist= {datesWhitelist}
                         startingDate= {dataIniziale}
