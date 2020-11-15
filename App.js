@@ -58,6 +58,8 @@ import VisualizzaDateAlloggi from "./src/screen/Visualizza_date_alloggi"
 import MoviePlayerScreen from "./src/screen/MediaPlayerScreen"
 import Calendario_alloggio from "./src/screen/Calendario_alloggio"
 import Visualizza_calendario_alloggio from "./src/screen/Visualizza_calendario_alloggio"
+import NotificationScreen from "./src/screen/NotificationScreen"
+import CheckOutScreen from "./src/screen/CheckOutScreen"
 
 const Stack = createStackNavigator();
 
@@ -206,6 +208,16 @@ const App = () => {
             name="Visualizza_calendario_alloggio" 
             component={Visualizza_calendario_alloggio} 
             options={{title: 'Calendario'}} 
+          />
+          <Stack.Screen 
+            name="Notifications" 
+            component={NotificationScreen} 
+            options={{title: 'Notifiche'}} 
+          />
+          <Stack.Screen 
+            name="CheckOut" 
+            component={CheckOutScreen} 
+            options={{title: 'CheckOut'}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>

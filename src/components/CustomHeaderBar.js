@@ -25,8 +25,8 @@ const CustomHeaderBar = (props) => {
             <View style={styles.headerContent}>
                 <TouchableOpacity style={styles.drawerMenuButton} onPress={() => props.navigator.dispatch(DrawerActions.toggleDrawer())}>
                   <Image style={styles.drawerIcon} source={require("../../assets/drawerMenu_icon.png")}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.notificationButton} onPress={createNextRealeaseFeatureAlert}>
+                </TouchableOpacity> 
+                <TouchableOpacity style={styles.notificationButton} onPress={() => props.navigator.navigate("Notifications")}>
                   <Icon name="bell" color={"white"} size={24} />
                 </TouchableOpacity>
                 <Text style={styles.headertitle}>{props.title}</Text>
