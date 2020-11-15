@@ -51,19 +51,19 @@ const CheckInScreen = ({navigation}) =>{
                         <Text style={styles.legend}>Dati personali e residenza</Text>
                         <View style={styles.fieldSetContent}>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>Tizio</Text>
-                                <Text style={styles.singleField}>Caio</Text>
+                                <Text style={styles.singleField}>Enesto</Text>
+                                <Text style={styles.singleField}>Rossi</Text>
                             </View>
                             <View style={styles.horizontalView}>
                                 <Text style={styles.singleField}>23/11/1963</Text>
                                 <Text style={styles.singleField}>Italiana</Text>
                             </View>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleFieldRow}>Via Mario Rossi</Text>
+                                <Text style={styles.singleFieldRow}>Contrada Sterpellone</Text>
                             </View>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>Avellino (AV)</Text>
-                                <Text style={styles.singleField}>83100</Text>
+                                <Text style={styles.singleField}>Pizzo Calabro</Text>
+                                <Text style={styles.singleField}>8912</Text>
                             </View>
                         </View>
                     </View>
@@ -181,7 +181,9 @@ const styles = StyleSheet.create({
         marginRight: 12,
         paddingLeft: 8,
         fontFamily: 'Montserrant',
+        color: "black",
         borderBottomWidth: 1,
+        
     },
     singleFieldRow: {
         height: 40,

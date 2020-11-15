@@ -4,6 +4,7 @@ import HeaderBar from '../components/CustomHeaderBar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
+import { color } from 'react-native-reanimated';
 
 
 const styles = StyleSheet.create({
@@ -62,7 +63,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     paddingLeft: 5,
     fontFamily: "MontserrantSemiBold",
-    marginBottom: "3%"
+    marginBottom: "3%",   
   },
 
   finalContainer:{
@@ -131,66 +132,74 @@ const Modifica_profilo = (props) => {
               Informazioni Personali            
             </Text>
             <TextInput
+                disabledInputStyle={{color: "black"}}
                 style = {styles.singleTextInput}
                 placeholder='Ernesto'
                 editable={IsEditable}
+                value={"Ernesto"}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Rossi'
                 editable={IsEditable}
+                value={"Rossi"}
             />
             <DatePickerInputField 
               styleContainer={{marginBottom: "3%"}} 
               styleField={{width: "80%"}} 
               date={date} 
               setDate={setDate} 
-              disabled={!IsEditable} 
+              disabled={!IsEditable}
             />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='23/11/1963'
-                editable={IsEditable}
-            />
+           
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='e.rossi@gmail.com'
                 editable={IsEditable}
+                value={"e.rossi@gmail.com"}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='3421776471'
                 editable={IsEditable}
+                value={"3421776471"}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Telefono'
                 editable={IsEditable}
+                
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='M'
                 editable={IsEditable}
+                value={"M"}
+                
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Italia'
                 editable={IsEditable}
+                value={"Italia"}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='contrada sterpellone'
                 editable={IsEditable}
+                value={"contrada sterpellone"}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Pizzo Calabro'
                 editable={IsEditable}
+                value={"Pizzo Calabro"}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='89812'
                 editable={IsEditable}
+                value={"89812"}
             />
           </View>
           <View style = {styles.lowerMiddleContainer}>
