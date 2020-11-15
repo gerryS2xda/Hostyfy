@@ -18,9 +18,9 @@ const ChiaveScreen = ({navigation}) =>{
         },
         { text: "OK", onPress: () =>{
                 if(counter == 0){
+                    setCounter(counter+1);
                     navigation.navigate("MoviePlayer");
                 }else{
-                    setCounter(counter+1);
                     navigation.navigate("InfoCamera");
                 }
             }

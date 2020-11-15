@@ -38,7 +38,7 @@ const CustomHeaderBar = (props) => {
 export default CustomHeaderBar;
 
 const styles = StyleSheet.create({
-    headerHeight: Platform.select({    //NOTA: senza considerare la status bar del device
+    headerHeight: Platform.select({    
         ios: {
           height:64, //32 se e' un iPhone, 44 se e' un iPad
         },
@@ -80,7 +80,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    drawerMenuButton: {
+    drawerMenuButton: Platform.select({    
+      ios: {
         position: 'absolute',
         top: 18,
         left: "6%",
@@ -88,20 +89,60 @@ const styles = StyleSheet.create({
         right: 0,
         width: 24,
         height: 24,
-    }, 
+      },
+      android: {
+        position: 'absolute',
+        top: 18,
+        left: "6%",
+        bottom: 0,
+        right: 0,
+        width: 24,
+        height: 24,
+      },
+      default: {
+        position: 'absolute',
+        top: 18,
+        left: "6%",
+        bottom: 0,
+        right: 0,
+        width: 24,
+        height: 24,
+      },
+  }),
+    
     drawerIcon: {
       width: 24,
       height: 24,
     },
-    notificationButton: {
-      position: 'absolute',
-      top: 18,
-      left: "86%",
-      bottom: 0,
-      right: 0,
-      width: 24,
-      height: 24,
-    }, 
+    notificationButton: Platform.select({    
+      ios: {
+        position: 'absolute',
+        top: 18,
+        left: "86%",
+        bottom: 0,
+        right: 0,
+        width: 24,
+        height: 24,
+      },
+      android: {
+        position: 'absolute',
+        top: 18,
+        left: "86%",
+        bottom: 0,
+        right: 0,
+        width: 24,
+        height: 24,
+      },
+      default: {
+        position: 'absolute',
+        top: 18,
+        left: "86%",
+        bottom: 0,
+        right: 0,
+        width: 24,
+        height: 24,
+      },
+    }),
     notificationIcon: {
       width: 24,
       height: 24,

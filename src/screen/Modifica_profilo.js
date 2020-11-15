@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet, Alert, ScrollView } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import CustomButton from "../components/CustomButton"
+import CustomButton from "../components/CustomButton";
+import DatePickerInputField from "../components/DatePickerInputField";
+
 
 const styles = StyleSheet.create({
   
@@ -78,14 +80,17 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
     paddingBottom: "3%",
     borderWidth: 2,
-    
   },
 
   bottonContainer: {
     width: "100%",
-    backgroundColor: 'orange',
     alignItems: 'center',
-    backgroundColor: "orange"
+    marginTop: "10%",
+    marginBottom: "10%"
+  },
+  datePickerStyle: {
+    width: 200,
+    marginTop: 20,
   },
 })
 
@@ -107,10 +112,10 @@ const Modifica_profilo = (props) => {
     );
 
     const[IsEditable, setEditable] = useState(false);
+    const [date, setDate] = useState(new Date());
+    
      
   return(
-
-    
     <View style={styles.maincontainer}>
       <HeaderBar title="Il mio profilo" navigator={props.navigation} />
       <ScrollView contentContainerStyle = {styles.container}>
@@ -128,6 +133,7 @@ const Modifica_profilo = (props) => {
                 placeholder='Cognome'
                 editable={IsEditable}
             />
+            <DatePickerInputField date={date} setDate={setDate}/>
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Data di nascita'
@@ -186,7 +192,6 @@ const Modifica_profilo = (props) => {
                 editable={IsEditable}
             />
           </View>
-
           <View style = {styles.finalContainer}>
             <TextInput
                 style = {styles.singleTextInput}
@@ -207,7 +212,7 @@ const Modifica_profilo = (props) => {
 
           <View style = {styles.bottonContainer}>
             <CustomButton 
-              styleBtn={{width: "90%", marginBottom: "20%"}} 
+              styleBtn={{width: "90%"}} 
               nome= {IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
               onPress={()=> {setEditable(previousState => !previousState)}}/>
               
@@ -217,4 +222,4 @@ const Modifica_profilo = (props) => {
   );
 }
 
-export default Modifica_profilo
+export default Modifica_profilo;
