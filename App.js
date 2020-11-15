@@ -14,6 +14,13 @@
     12. npm install react-native-vector-icons
     13. npm install react-native-dialog
     14. npm install expo-font
+    15. npm install expo-av
+    16. npm install expo-video-player 
+    17. npm install react-native-slider
+    18. npm install @react-native-community/netinfo
+    19. npm install @react-native-community/slider
+    20. npm install @react-native-community/datetimepicker
+    21. npm install react-native-popup-dialog
     Swipe right to open
 */
 
