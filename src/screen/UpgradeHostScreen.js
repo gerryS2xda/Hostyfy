@@ -150,8 +150,13 @@ const styles = StyleSheet.create({
     styleDialogBtnTxt: {
         fontFamily: "MontserrantSemiBold",
     },
-    styleDialogInput:{
-        fontFamily: 'MontserrantSemiBold',
-        borderBottomWidth: 1,
-    }
+    styleDialogInput: Platform.select({    
+        ios: {
+            fontFamily: 'MontserrantSemiBold',
+        },
+        android: {
+            fontFamily: 'MontserrantSemiBold',
+            borderBottomWidth: 1,
+        } 
+    }),
 });
