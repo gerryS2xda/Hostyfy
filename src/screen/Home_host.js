@@ -104,7 +104,7 @@ const HomeHost = (props) => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
           <Icon name= "account-circle-outline" color={"black"} size={100}/>
-          <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
+          <Text style = {styles.testoLogo}>Ernesto Rossi</Text>
         </View>
         <View style={styles.centerContainer}>
           <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => props.navigation.navigate("LeMieStrutture")} />

@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     },
     headertitle: Platform.select({
         ios: {
+          marginTop: 20,
           fontSize: 17,
           fontWeight: '600',
           color: 'white',
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     drawerMenuButton: Platform.select({    
       ios: {
         position: 'absolute',
-        top: 18,
+        top: 30,
         left: "6%",
         bottom: 0,
         right: 0,
@@ -117,7 +118,7 @@ const styles = StyleSheet.create({
     notificationButton: Platform.select({    
       ios: {
         position: 'absolute',
-        top: 18,
+        top: 30,
         left: "86%",
         bottom: 0,
         right: 0,

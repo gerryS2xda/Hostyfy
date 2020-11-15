@@ -72,7 +72,7 @@ const HomeGuest = (props) => {
       <View style={styles.container}>
         <View style={styles.topContainer} >
           <Icon name= "account-circle-outline" color={"black"} size={100}/>
-          <Text style = {styles.testoLogo}>Gennaro Teodoro</Text>
+          <Text style = {styles.testoLogo}>Ernesto Rossi</Text>
         </View>
         <View style={styles.centerContainer}>
           <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= 'Modifica il tuo profilo' onPress={() => props.navigation.navigate("ModificaProfilo")} />
