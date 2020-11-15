@@ -21,47 +21,26 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   
+  
   topContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop:80,
-    height:'20%'
-  },
-
-  centerContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height:'25%',
-    marginTop:10,
-  },
-
-  bottomContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop:40,
-    height:'30%'
+    marginTop:'40%',
+    height:'40%'
   },
 
   buttonContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    height:'30%'
-  },
-
-  testoLogo : {
-    fontSize: 20,
-    color: 'black',
-    marginTop: 10,
-    fontFamily: "MontserrantSemiBold",
+    marginTop:'10%',
+    height:'50%'
   },
 
 })
 
-const HomeHost = (props) => {
+const Calendario_alloggio = (props) => {
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -82,36 +61,11 @@ const HomeHost = (props) => {
     }
   }
 
-  //Altro codice
-  const createNextRealeaseFeatureAlert = () =>
-      Alert.alert(
-      "Funzionalità non disponibile",
-      "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-      [
-          {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
-
   return(
     <View style={styles.maincontainer}>
-      <HeaderBar title="Home" navigator={props.navigation} />
+      <HeaderBar title="Calendario" navigator={props.navigation} />
       <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.topContainer} >
-          <Icon name= "account-circle-outline" color={"black"} size={100}/>
-          <Text style = {styles.testoLogo}>Raimondo Ranaldo</Text>
-        </View>
-        <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => props.navigation.navigate("LeMieStrutture")} />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => props.navigation.navigate("InserisciPrenotazione")} />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
-        </View>
-        <View style={styles.bottomContainer}>
+        <View style={styles.topContainer}>
         <CalendarPicker 
           allowRangeSelection = {true}
           minDate={minDate}
@@ -136,7 +90,7 @@ const HomeHost = (props) => {
         <View style={styles.buttonContainer}>
           <CustomButton nome="Visualizza date"
            styleBtn={{width:'80%', marginBottom:50}}
-           onPress={() => props.navigation.navigate("VisualizzaDateAlloggi",{
+           onPress={() => props.navigation.navigate("Visualizza_calendario_alloggio",{
              dataIniziale: selectedStartDate,
              dataFinale: selectedEndDate,
            })}></CustomButton>
@@ -146,4 +100,4 @@ const HomeHost = (props) => {
   );
 }
 
-export default HomeHost;
+export default Calendario_alloggio;

@@ -3,7 +3,7 @@ import {Text, View, Image,ScrollView, Alert, StyleSheet} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -133,7 +133,10 @@ export default class AlloggioScreen extends React.Component {
                         </View>
                         <View style={styles.middleContainer}>
                             <TextInput style={styles.singleField} editable={this.state.IsEditable}>Camera 17</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Disponibilità</TextInput>
+                            <TouchableOpacity style={styles.singleField}
+                             onPress={()=>{this.props.navigation.navigate('Calendario_Alloggio')}}>
+                                 <Text>Disponibilità</Text>
+                            </TouchableOpacity>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}
                                 multiline={true}
