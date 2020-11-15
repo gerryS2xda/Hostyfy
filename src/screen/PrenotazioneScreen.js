@@ -14,7 +14,7 @@ const PrenotazioneScreen = ({navigation}) =>{
     const oraFineCheckOut = "11:00";
     const prezzo = "80";
     const cameraDetails = "Doppia con letti singoli";
-    const infoPersone = "2 adulti";
+    const infoPersone = "1 adulto";
     const nameCamera = "Suite";
     const myKey = "0123";
 
