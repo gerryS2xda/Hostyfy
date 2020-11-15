@@ -133,7 +133,13 @@ const Modifica_profilo = (props) => {
                 placeholder='Cognome'
                 editable={IsEditable}
             />
-            <DatePickerInputField date={date} setDate={setDate}/>
+            <DatePickerInputField 
+              styleContainer={{marginBottom: "3%"}} 
+              styleField={{width: "80%"}} 
+              date={date} 
+              setDate={setDate} 
+              disabled={!IsEditable} 
+            />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Data di nascita'
