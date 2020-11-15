@@ -113,7 +113,7 @@ const Login = (props) => {
                 nome="Accedi" 
                 styleBtn={{width: "75%"}}
                 onPress={() => {
-                  if(email == "admin") props.navigation.navigate('HomeHost');
+                  if(email == "e.rossi@gmail.com") props.navigation.navigate('HomeHost');
                  else props.navigation.navigate('HomeGuest');
                 }} />
             <View style={styles.horizontalContainer}>

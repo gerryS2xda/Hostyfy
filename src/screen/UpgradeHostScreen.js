@@ -86,7 +86,8 @@ const UpgradeHostScreen = ({navigation}) =>{
                                         onPress: () => console.log("Cancel Pressed"),
                                         style: "cancel"
                                     },
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                                    { text: "OK", 
+                                    onPress: () => navigation.navigate('HomeHost') }
                                     ],
                                     { cancelable: false }
                                 );
@@ -153,6 +154,7 @@ const styles = StyleSheet.create({
     styleDialogInput: Platform.select({    
         ios: {
             fontFamily: 'MontserrantSemiBold',
+
         },
         android: {
             fontFamily: 'MontserrantSemiBold',

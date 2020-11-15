@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	},
 
 	bottomContainer: {
-		marginTop: 30,
+		marginTop: "70%",
 		marginBottom: 30,
 	},
 
@@ -110,7 +110,7 @@ const Inserisci_prenotazione = (props) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
           },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
+          { text: "OK", onPress: () => props.navigation.navigate('HomeHost') }
       ],
       { cancelable: false }
 	);
