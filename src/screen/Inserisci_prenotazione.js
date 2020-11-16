@@ -3,6 +3,7 @@ import {View, Text, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert } 
 import RNPickerSelect from 'react-native-picker-select';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
+import DatePickerInputField from "../components/DatePickerInputField";
 
 //npm install react-native-picker-select per la combo box
 
@@ -29,8 +30,6 @@ const styles = StyleSheet.create({
 	},
 	middleUpperContainer: {
 		marginTop: 16, 
-		flexDirection: 'row',
-		justifyContent: 'space-between',
 	},
 
 	middleLowerContainer: {
@@ -69,6 +68,8 @@ const Inserisci_prenotazione = (props) => {
 
 	const [struttura, setStruttura] = useState(null);
 	const [alloggio, setAlloggio] = useState('Alloggio');
+	const [dateStart, setDateStart] = useState(new Date());
+	const [dateEnd, setDateEnd] = useState(new Date());
 	
 	const pickerStyle = {
 		inputIOS: {
@@ -159,14 +160,20 @@ const Inserisci_prenotazione = (props) => {
 					/>
 				</View>
 				<View style = {styles.middleUpperContainer}>
-					<TextInput
-						style = {styles.middleTextInput}
-						placeholder = "Data inizio"
-					/>
-					<TextInput
-						style = {styles.middleTextInput}
-						placeholder = "Data fine"
-					/>
+						<DatePickerInputField  //data inizio
+							styleContainer={{marginTop: 0, marginLeft: -5}}
+							styleField={{width: "85%"}} 
+							date={dateStart} 
+							setDate={setDateStart} 
+							disabled={false}
+						/>
+						<DatePickerInputField  //data fine 
+							styleContainer={{marginTop: 16, marginLeft: -5}}
+							styleField={{width: "85%"}}
+							date={dateEnd} 
+							setDate={setDateEnd} 
+							disabled={false}
+						/>
 				</View>
 				<View style = {styles.middleLowerContainer}>
 					<TextInput
