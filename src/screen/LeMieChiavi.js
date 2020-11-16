@@ -42,7 +42,7 @@ const LeMieChiavi = (props) => {
                 itemList={[
                   {
                     key: 1, 
-                    title: 'Chiave Alloggio 1',
+                    title: 'Chiave Suite Imperiale',
                     description: 'Struttura: Le Sirene',
                     image_url: require('../../assets/Struttura/struttura1.jpg'),
                     newPage: 'LaMiaChiave',

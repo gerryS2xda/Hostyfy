@@ -104,12 +104,14 @@ const [confermaPassword, setConfermaPassword] = useState('');
                     style = {styles.input}
                     placeholder = 'Password'
                     onChangeText = {(password) => setPassword(password)}
+                    secureTextEntry={true}
                   />
 
                   <TextInput
                     style = {styles.input}
                     placeholder = 'Conferma Password'
                     onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
+                    secureTextEntry={true}
                   />        
 
                   <View style={styles.buttonCustomizzato}>
@@ -117,7 +119,7 @@ const [confermaPassword, setConfermaPassword] = useState('');
                       nome="Registrati" 
                       styleBtn={{width: "85%"}}
                       onPress={() => Alert.alert (
-                        'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Accedi', onPress: ()=> props.navigation.navigate('Home')}])} 
+                        'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Accedi', onPress: ()=> props.navigation.navigate('HomeGuest')}])} 
                     />
                   </View>
               
