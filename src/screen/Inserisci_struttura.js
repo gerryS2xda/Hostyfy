@@ -190,7 +190,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=> Alert.alert(
                                 "Inserisci struttura", "La nuova struttura e' stata memorizzata con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                { text: "OK", onPress: ()=> this.props.navigation.navigate('LeMieStrutture') }],
                                 { cancelable: false })} />
                         </View>
                     </View>

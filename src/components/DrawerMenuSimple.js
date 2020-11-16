@@ -132,7 +132,7 @@ function DrawerContentCustom(props){
                         <View style={styles.userInfoSection}>
                             <View style={styles.avaterAndTxtContainer}>
                                 <Icon name= "account-circle-outline" color={"black"} size={32}/>
-                                <Text style={styles.userInfo}>Ernesto Rossi</Text>
+                                <Text style={styles.userInfo}>E. Rossi</Text>
                             </View>
                                 <View style={styles.horizontalViewSwitch}>
                                     <Text style={styles.labelSwitchTxt}>Guest</Text>
@@ -198,7 +198,7 @@ function DrawerContentCustom(props){
                     <View style={styles.userInfoSection}>
                             <View style={styles.avaterAndTxtContainer}>
                                 <Icon name= "account-circle-outline" color={"black"} size={32}/>
-                                <Text style={styles.userInfo}>Ernesto Rossi</Text>
+                                <Text style={styles.userInfo}>E. Rossi</Text>
                             </View>
                                 <View style={styles.horizontalViewSwitch}>
                                     <Text style={styles.labelSwitchTxt}>Guest</Text>

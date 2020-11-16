@@ -45,7 +45,7 @@ const UpgradeHostScreen = ({navigation}) =>{
                             <Dialog.Title style={styles.styleDialogTitle}>Upgrade Host</Dialog.Title>
                             <Dialog.Description style={styles.styleDialogDescription}>Inserire le proprie credenziale per continuare il processo </Dialog.Description>
                             <Dialog.Input style={styles.styleDialogInput} label="E-mail" value={valueEmail} onChangeText={setEmailValue} />
-                            <Dialog.Input style={styles.styleDialogInput} label="Password" value={valuePwd} onChangeText={setPwdValue} />
+                            <Dialog.Input style={styles.styleDialogInput} label="Password" value={valuePwd} onChangeText={setPwdValue} secureTextEntry={true}/>
                             <Dialog.Button style={styles.styleDialogBtnTxt} label="Procedi" onPress={()=>{
                                 setFirstDialogVisible(false);
                                 setSecondDialogVisible(true);
