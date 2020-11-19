@@ -55,13 +55,13 @@ const styles = StyleSheet.create({
             <View style={{width:'11%',height:50}}>
                 
             </View>
-            <View style={{backgroundColor: props.color, width:'29%', height:50,  alignItems: 'center'  ,borderLeftWidth:1,borderRightWidth:1}}>
+            <View style={{backgroundColor: props.color, width:'29%', height:50,  alignItems: 'center'  ,borderLeftWidth:1,borderRightWidth:1, justifyContent:'center'}}>
                 <Text>{props.nome1}</Text>
             </View>
-            <View style={{backgroundColor: props.color ,width:'29%',height:50,  alignItems: 'center', borderRightWidth:1}}>
+            <View style={{backgroundColor: props.color ,width:'29%',height:50,  alignItems: 'center', borderRightWidth:1, justifyContent:'center'}}>
                 <Text>{props.nome2}</Text>
             </View>
-            <View style={{backgroundColor: props.color,width:'31%',height:50,  alignItems: 'center'}}>
+            <View style={{backgroundColor: props.color,width:'31%',height:50,  alignItems: 'center', justifyContent:'center'}}>
                 <Text>{props.nome3}</Text>
             </View>
         </View>
@@ -146,7 +146,7 @@ const Visualizza_date_Alloggi = ({route, navigation}) => {
                     />
                </View>
                <ScrollView contentContainerStyle={styles.bottomContainer}>
-                <RowHeader color='#d9d9d9' nome1='Alloggio1' nome2='Alloggio2' nome3='Alloggio3'></RowHeader>
+                <RowHeader color='#d9d9d9' nome1='Suite Imperiale' nome2='Camera panoramica' nome3='Camera 3'></RowHeader>
                 <Row ora={0} color1={colore1} color2={colore2} color3={colore3}></Row>
                 <Row ora={1} color1={colore1} color2={colore2} color3={colore3}></Row>
                 <Row ora={2} color1={colore1} color2={colore2} color3={colore3}></Row>
