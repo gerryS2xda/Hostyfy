@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, ScrollView, Alert} from 'react-native'
 import CustomButton from '../components/CustomButton'
+import {firebase} from "../firebase/config"
+import * as GuestModel from "../firebase/datamodel/GuestModel"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -118,8 +120,24 @@ const [confermaPassword, setConfermaPassword] = useState('');
                     <CustomButton 
                       nome="Registrati" 
                       styleBtn={{width: "85%"}}
-                      onPress={() => Alert.alert (
-                        'Registrazione', 'Registrazione avvenuta con successo', [{text: 'Accedi', onPress: ()=> props.navigation.navigate('HomeGuest')}])} 
+                      onPress={() => {
+                        if(password === confermaPassword){
+                          firebase.auth().createUserWithEmailAndPassword(email, confermaPassword).then((user) => {
+                            const userId = firebase.auth().currentUser.uid;
+                            console.log("Registrazione - uid:" + userId);
+                            GuestModel.createGuestDocumentForRegistration(userId, nome, cognome);
+
+                            GuestModel.getGuestDocument(userId).then(function (guest) { 
+                              props.navigation.navigate('HomeGuest', {user: guest}); //passare guest come parametro
+                            }).catch(function (err) { console.log("ERROR with read in Registrazione.js:" + err); });
+                          })
+                          .catch(function(error) {
+                            console.error("Error writing document: ", error);
+                        });
+                        }
+                          //Alert.alert('Registrazione', 'Registrazione avvenuta con successo', [{text: 'Accedi', onPress: ()=> props.navigation.navigate('HomeGuest')}]);
+                        }
+                      } 
                     />
                   </View>
               

@@ -50,7 +50,11 @@ const styles = StyleSheet.create({
   },
 })
 
-const HomeGuest = (props) => {
+const HomeGuest = ({route, navigation}) => {
+
+  const {user} = route.params;
+  console.log("Nome: " + user.nome);
+
   const createNextRealeaseFeatureAlert = () =>
       Alert.alert(
       "Funzionalità non disponibile",
@@ -68,19 +72,19 @@ const HomeGuest = (props) => {
 
   return(
     <View style={styles.maincontainer}>
-      <HeaderBar title="Home" navigator={props.navigation} />
+      <HeaderBar title="Home" navigator={navigation} />
       <View style={styles.container}>
         <View style={styles.topContainer} >
           <Icon name= "account-circle-outline" color={"black"} size={100}/>
-          <Text style = {styles.testoLogo}>Ernesto Rossi</Text>
+          <Text style = {styles.testoLogo}>{user.nome} {user.cognome}</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= 'Modifica il tuo profilo' onPress={() => props.navigation.navigate("ModificaProfilo")} />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => props.navigation.navigate("VisualizzaPrenotazioni")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= 'Modifica il tuo profilo' onPress={() => navigation.navigate("ModificaProfilo")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni")} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
-          <CustomButton styleBtn={{width:300}} nome="Esci" onPress={() => { props.navigation.navigate('Home'); }} />
+          <CustomButton styleBtn={{width:300}} nome="Esci" onPress={() => { navigation.navigate('Home'); }} />
         </View>
       </View>
     </View>

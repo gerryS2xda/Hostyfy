@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert } from 'react-native'
 import CustomButton from "../components/CustomButton"
+import {firebase} from "../firebase/config"
+import * as GuestModel from "../firebase/datamodel/GuestModel"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -113,8 +115,18 @@ const Login = (props) => {
                 nome="Accedi" 
                 styleBtn={{width: "75%"}}
                 onPress={() => {
-                  if(email == "e.rossi@gmail.com") props.navigation.navigate('HomeHost');
-                 else props.navigation.navigate('HomeGuest');
+                  firebase.auth().signInWithEmailAndPassword(email, password).then((user)=>{
+                    const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
+                    console.log("Login - uid:" + userId);
+
+                    GuestModel.getGuestDocument(userId).then(function (guest) { 
+                      //verifica se e' host oppure no
+                      if(guest.isHost) props.navigation.navigate('HomeHost');
+                      else props.navigation.navigate('HomeGuest', {user: guest});
+                    }).catch(function (err) { console.log("ERROR with read in Login.js:" + err); });
+                  }).catch(function(error) {
+                    console.error("Error login with email: ", email);
+                  });
                 }} />
             <View style={styles.horizontalContainer}>
               <Text style={styles.paswordDimenticata}>Password dimenticata?  </Text>
