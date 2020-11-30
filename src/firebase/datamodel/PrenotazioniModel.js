@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createPrenotazioniDocument(id, costo, dataInizio, dataFine, email, numPersone, numTel, alloggio, chiaveAlloggio, guest, host, struttura){
+export function createPrenotazioniDocument(id, costo, dataInizio, dataFine, email, numPersone, numTel, strutturaDocId, alloggioDocId, chiaveAlloggioDocId, guestCF){
     // Add a new document in collection "prenotazioni" con set(), se non e' presente, crea il documento
     prenotazioniCollectionRef.doc(id).set({
         id: id, 
@@ -16,12 +16,11 @@ export function createPrenotazioniDocument(id, costo, dataInizio, dataFine, emai
         email: email, 
         numPersone: numPersone, 
         numTel: numTel, 
-        alloggio: alloggio, //è riferimento, deve essere cambiato
-        chiaveAlloggio: chiaveAlloggio, //è riferimento, deve essere cambiato
-        guest: guest, //è riferimento, deve essere cambiato
-        host: host, //è riferimento, deve essere cambiato
-        struttura: struttura //è riferimento, deve essere cambiato
-        
+        strutturaRef: db.doc("struttura/"+strutturaDocId), 
+        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
+        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
+        guestRef: db.doc("guest/" + guestCF), 
+        //hostRef: db.doc("host/"+hostCF)
     })
     .then(function() {
         console.log("Document successfully written!");
@@ -32,7 +31,7 @@ export function createPrenotazioniDocument(id, costo, dataInizio, dataFine, emai
 }
 
 //Update functions
-export function updatePrenotazioniDocument(costo, dataInizio, dataFine, email, numPersone, numTel, alloggio, chiaveAlloggio, guest, host, struttura){
+export function updatePrenotazioniDocument(id, costo, dataInizio, dataFine, email, numPersone, numTel, strutturaDocId, alloggioDocId, chiaveAlloggioDocId, guestCF){
     //Edit all field of prenotazioni document
     return prenotazioniCollectionRef.doc(id).update({
         costo: costo, 
@@ -40,12 +39,12 @@ export function updatePrenotazioniDocument(costo, dataInizio, dataFine, email, n
         dataFine: dataFine, 
         email: email, 
         numPersone: numPersone, 
-        numTel: numTel, 
-        alloggio: alloggio, //è riferimento, deve essere cambiato
-        chiaveAlloggio: chiaveAlloggio, //è riferimento, deve essere cambiato
-        guest: guest, //è riferimento, deve essere cambiato
-        host: host, //è riferimento, deve essere cambiato
-        struttura: struttura //è riferimento, deve essere cambiato
+        numTel: numTel,
+        strutturaRef: db.doc("struttura/"+strutturaDocId), 
+        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
+        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
+        guestRef: db.doc("guest/" + guestCF), 
+        //hostRef: db.doc("host/"+hostCF) 
     })
     .then(function() {
         console.log("Document successfully updated!");

@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var guestCollectionRef = db.collection("guest"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc, numCell, numTel, indirizzobj, isHost){
+export function createGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc, numCell, numTel, indirizzobj, isHost, emailGuest, pwdGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
     guestCollectionRef.doc(uid).set({
         userId: uid,
@@ -18,7 +18,9 @@ export function createGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc,
         numCell: numCell,
         numTel: numTel,
         indirizzo: indirizzobj,
-        isHost: isHost
+        isHost: isHost,
+        email: emailGuest,
+        password: pwdGuest 
     })
     .then(function() {
         console.log("Document successfully written!");
@@ -44,14 +46,16 @@ export function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestata
     });
 }
 
-export function createGuestDocumentForRegistration(uid, cognome, nome){
+export function createGuestDocumentForRegistration(uid, cognome, nome, emailGuest, pwdGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
     //email e password vengono gestite da Firebase e sono accesibili mediante userId
     guestCollectionRef.doc(uid).set({
         userId: uid,
         cognome: cognome,
         nome: nome,
-        isHost: false
+        isHost: false,
+        email: emailGuest,
+        password: pwdGuest 
     })
     .then(function() {
         console.log("Document successfully written!");
@@ -62,7 +66,7 @@ export function createGuestDocumentForRegistration(uid, cognome, nome){
 }
 
 //Update functions
-export function updateGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc, numCell, numTel, indirizzobj, isHost){
+export function updateGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc, numCell, numTel, indirizzobj, isHost, emailGuest, pwdGuest){
     //Edit all field of guest document
     return guestCollectionRef.doc(uid).update({
         cf: cf,
@@ -73,7 +77,9 @@ export function updateGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc,
         numCell: numCell,
         numTel: numTel,
         indirizzo: indirizzobj,
-        isHost: isHost
+        isHost: isHost,
+        email: emailGuest,
+        password: pwdGuest 
     })
     .then(function() {
         console.log("Document successfully updated!");

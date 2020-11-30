@@ -9,7 +9,7 @@ var hostCollectionRef = db.collection("host"); //ottieni riferimento della colle
 export function createHostDocument(uid, emailWeb, passwordWeb ){
     // Add a new document in collection "host" con set(), se non e' presente, crea il documento
     hostCollectionRef.doc(uid).set({
-        userId: uid,
+        userId: db.doc("guest/"+uid),
         emailWeb: emailWeb,
         passwordWeb: passwordWeb
     })
