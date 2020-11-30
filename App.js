@@ -21,13 +21,15 @@
     19. npm install @react-native-community/slider
     20. npm install @react-native-community/datetimepicker
     21. npm install react-native-popup-dialog
+    22. npm install firebase
     Swipe right to open
 */
 
-import React from 'react';
+import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as SetupDB from "./src/firebase/setupFirestoreDB"
 // import dedicati per utilizzare font personalizzati
 import { AppLoading } from 'expo';
 import { useFonts } from 'expo-font';
@@ -64,6 +66,9 @@ import CheckOutScreen from "./src/screen/CheckOutScreen"
 const Stack = createStackNavigator();
 
 const App = () => {
+  
+  //SetupDB.createFirestoreDB();
+
   let [fontsLoaded] = useFonts({
     'Montserrant': require('./assets/fonts/montserrant.ttf'),
     'MontserrantSemiBold': require('./assets/fonts/Montserrat-SemiBold.ttf'),

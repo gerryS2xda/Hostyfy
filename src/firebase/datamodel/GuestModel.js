@@ -44,6 +44,23 @@ export function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestata
     });
 }
 
+export function createGuestDocumentForRegistration(uid, cognome, nome){
+    // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
+    //email e password vengono gestite da Firebase e sono accesibili mediante userId
+    guestCollectionRef.doc(uid).set({
+        userId: uid,
+        cognome: cognome,
+        nome: nome,
+        isHost: false
+    })
+    .then(function() {
+        console.log("Document successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing document: ", error);
+    });
+}
+
 //Update functions
 export function updateGuestDocument(uid, cf, cognome, nome, dataNasc, luogoNasc, numCell, numTel, indirizzobj, isHost){
     //Edit all field of guest document
