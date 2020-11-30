@@ -125,7 +125,7 @@ const [confermaPassword, setConfermaPassword] = useState('');
                           firebase.auth().createUserWithEmailAndPassword(email, confermaPassword).then((user) => {
                             const userId = firebase.auth().currentUser.uid;
                             console.log("Registrazione - uid:" + userId);
-                            GuestModel.createGuestDocumentForRegistration(userId, nome, cognome);
+                            GuestModel.createGuestDocumentForRegistration(userId, cognome, nome, email, confermaPassword);
 
                             GuestModel.getGuestDocument(userId).then(function (guest) { 
                               props.navigation.navigate('HomeGuest', {user: guest}); //passare guest come parametro
