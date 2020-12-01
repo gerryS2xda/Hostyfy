@@ -6,10 +6,9 @@ var db = firebase.firestore();
 var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createPrenotazioniDocument(id, costo, dataInizio, dataFine, email, numPersone, numTel, strutturaDocId, alloggioDocId, chiaveAlloggioDocId, guestCF){
+export function createPrenotazioniDocument(costo, dataInizio, dataFine, email, numPersone, numTel, strutturaDocId, alloggioDocId, chiaveAlloggioDocId, guestuid){
     // Add a new document in collection "prenotazioni" con set(), se non e' presente, crea il documento
-    prenotazioniCollectionRef.doc(id).set({
-        id: id, 
+    prenotazioniCollectionRef.add({
         costo: costo, 
         dataInizio: dataInizio,
         dataFine: dataFine, 
@@ -19,14 +18,14 @@ export function createPrenotazioniDocument(id, costo, dataInizio, dataFine, emai
         strutturaRef: db.doc("struttura/"+strutturaDocId), 
         alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
         chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
-        guestRef: db.doc("guest/" + guestCF), 
+        guestRef: db.doc("guest/" + guestuid), 
         //hostRef: db.doc("host/"+hostCF)
     })
     .then(function() {
-        console.log("Document successfully written!");
+        console.log("Prenotazione document successfully written!");
     })
     .catch(function(error) {
-        console.error("Error writing document: ", error);
+        console.error("Error writing prenotazione document: ", error);
     });
 }
 
