@@ -4,6 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioniModel"; 
 
 //npm install react-native-picker-select per la combo box
 
@@ -64,12 +65,18 @@ const styles = StyleSheet.create({
 })
 
 
-const Inserisci_prenotazione = (props) => {
-
-	const [struttura, setStruttura] = useState(null);
-	const [alloggio, setAlloggio] = useState('Alloggio');
-	const [dateStart, setDateStart] = useState(new Date());
-	const [dateEnd, setDateEnd] = useState(new Date());
+const Inserisci_prenotazione = ({route, navigation}) => {
+	const {user} = route.params;
+	const [struttura, setStruttura] = useState('');
+	const [alloggio, setAlloggio] = useState('');
+	const [nome, setNome] = useState('');
+	const [cognome, setCognome] = useState('');
+	const [numTel, setNumTelefono] = useState(0);
+	const [numPers, setNumeroPersone] = useState(0);
+	const [email, setEmail] = useState('');
+	const [costo, setCosto] = useState(0);
+	const [dateStart, setDateStart] = useState("");
+	const [dateEnd, setDateEnd] = useState("");
 	
 	const pickerStyle = {
 		inputIOS: {
@@ -111,20 +118,34 @@ const Inserisci_prenotazione = (props) => {
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
           },
-          { text: "OK", onPress: () => props.navigation.navigate('HomeHost') }
+          { text: "OK", onPress: () => navigation.navigate('HomeHost') }
+      ],
+      { cancelable: false }
+	);
+
+	const createNegativeAlert = (msgError) =>
+      Alert.alert(
+      "Inserisci prenotazione", msgError,
+      [
+          {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+          },
+          { text: "OK", onPress: () => console.log("Ok Pressed") }
       ],
       { cancelable: false }
 	);
 	
   	return(
 	<View style={styles.maincontainer}>
-		<HeaderBar title="Inserisci prenotazione" navigator={props.navigation} />
+		<HeaderBar title="Inserisci prenotazione" navigator={navigation} />
 		<ScrollView style={styles.bodyScrollcontainer}>
             <View style={styles.scrollContent}> 
 				<View style = {styles.topContainer}>
 					<RNPickerSelect
 						style = {pickerStyle}
-						onValueChange = {(struttura) => {setStruttura(struttura);console.log(struttura);}}
+						onValueChange = {(struttura) => {setStruttura(struttura);}}
 						value={struttura}
 						placeholder = {{
 							label: 'Struttura',
@@ -138,7 +159,8 @@ const Inserisci_prenotazione = (props) => {
 					/>
 					<RNPickerSelect
 						style = {pickerStyle}
-						onValueChange = {() => {}}
+						onValueChange = {(alloggio) => {setStruttura(alloggio);}}
+						value={alloggio}
 						placeholder = {{
 							label: 'Alloggio',
 							value: "Alloggio",
@@ -153,10 +175,12 @@ const Inserisci_prenotazione = (props) => {
 					<TextInput
 						style = {styles.singleTextInput}
 						placeholder = "Nome"
+						onChangeText = {(nome) => setNome(nome)}
 					/>
 					<TextInput
 						style = {styles.singleTextInput}
 						placeholder = "Cognome"
+						onChangeText = {(cognome) => setCognome(cognome)}
 					/>
 				</View>
 				<View style = {styles.middleUpperContainer}>
@@ -164,6 +188,7 @@ const Inserisci_prenotazione = (props) => {
 							styleContainer={{marginTop: 0, marginLeft: -5}}
 							styleField={{width: "85%"}} 
 							date={dateStart} 
+							placeholder={"Data di inizio"}
 							setDate={setDateStart} 
 							disabled={false}
 						/>
@@ -172,6 +197,7 @@ const Inserisci_prenotazione = (props) => {
 							styleField={{width: "85%"}}
 							date={dateEnd} 
 							setDate={setDateEnd} 
+							placeholder={"Data di fine"}
 							disabled={false}
 						/>
 				</View>
@@ -179,23 +205,37 @@ const Inserisci_prenotazione = (props) => {
 					<TextInput
 						style = {[styles.middleTextInput, {width: "35%"}]}
 						placeholder = "N. persone"
+						onChangeText = {(numPers) => setNumeroPersone(numPers)}
 					/>
 					<TextInput
 						style = {[styles.middleTextInput, {width: "55%"}]}
 						placeholder = "N. telefono"
+						onChangeText = {(numTel) => setNumTelefono(numTel)}
+					/>
+				</View>
+				<View style={styles.normalContainer}>
+					<TextInput
+						style = {styles.singleTextInput}
+						placeholder = "Costo"
+						onChangeText = {(costo) => setCosto(costo)}
 					/>
 				</View>
 				<View style={styles.normalContainer}>
 					<TextInput
 						style = {styles.singleTextInput}
 						placeholder = "Email"
+						onChangeText = {(email) => setEmail(email)}
 					/>
 				</View>
 				<View style = {styles.bottomContainer}>
 					<CustomButton 
 						nome="Inserisci" 
 						styleBtn={{width: "100%"}}
-						onPress={createPositiveAlert} 
+						onPress={()=>{
+							PrenotazioneModel.createPrenotazioniDocument(costo, dateStart, dateEnd, email, numPers, numTel, struttura, alloggio, "chiave" + alloggio, user.userId);
+							createPositiveAlert();
+							//createNegativeAlert("Impossibile memorizzare la prenotazione!!");
+						}} 
 					/>
 				</View>
 			</View>
