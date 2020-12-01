@@ -2,9 +2,9 @@ import React, {useState} from 'react';
 import {View, Button, Platform, StyleSheet, TouchableOpacity, Text} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Dialog, { DialogContent, DialogFooter, DialogButton } from 'react-native-popup-dialog';
 
 const DatePickerInputField = (props) => {
+  const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [visible, setVisible] = React.useState(false);
@@ -14,9 +14,10 @@ const DatePickerInputField = (props) => {
   const hideDialog = () => setVisible(false);
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || props.date;
+    const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
-    props.setDate(currentDate);
+    setDate(currentDate);
+    props.setDate(currentDate.toDateString());
   };
 
   const showMode = (currentMode) => {
@@ -28,45 +29,7 @@ const DatePickerInputField = (props) => {
     showMode('date');
   };
 
-  if(Platform.OS === 'ios'){
-    return(
-        <View style={[styles.dataInput, props.style]}>
-            <Icon name= "calendar-month" color={"black"} size={30} style={styles.immagineBottone}/>
-            <TouchableOpacity 
-                disabled={props.disabled}
-                style={props.styleField} 
-                onPress={()=>{
-                    showDialog();
-                    console.log(props.date);
-                }}>
-                    <Text style={styles.singleField}>{props.date.toDateString()}</Text>
-            </TouchableOpacity>
-            <Dialog 
-                visible={visible} 
-                    onTouchOutside={hideDialog}
-                    footer={
-                    <DialogFooter>
-                        <DialogButton text="CANCEL" onPress={hideDialog} />
-                        <DialogButton text="OK" onPress={() => {
-                                hideDialog();
-                                console.log(date);
-                            }} />
-                    </DialogFooter>
-                }>
-                <DialogContent>            
-                <DateTimePicker
-                    testID="dateTimePicker"
-                    value={props.date}
-                    mode={mode}
-                    is24Hour={true}
-                    display="default"
-                    onChange={onChange}
-                />  
-                </DialogContent>
-            </Dialog>
-        </View>
-    );
-  }else{
+    if(props.placeholder !== "" && props.date === ""){
         return (
             <View style={[styles.dataInput, props.styleContainer]}>
                 <Icon name= "calendar-month" color={"black"} size={30} style={styles.immagineBottone}/>
@@ -75,13 +38,35 @@ const DatePickerInputField = (props) => {
                     disabled={props.disabled}
                     onPress={()=>{
                         showDatepicker();
-                        console.log(props.date);
                 }}>
-                    <Text style={styles.singleField}>{props.date.toDateString()}</Text>
+                    <Text style={styles.placeholderField}>{props.placeholder}</Text>
                 </TouchableOpacity>
                 {show &&(<DateTimePicker
                     testID="dateTimePicker"
-                    value={props.date}
+                    value={date}
+                    mode={mode}
+                    is24Hour={true}
+                    display="default"
+                    locale="it-IT"
+                    onChange={onChange}
+                />)}
+            </View>
+        );
+    }else{
+        return (
+            <View style={[styles.dataInput, props.styleContainer]}>
+                <Icon name= "calendar-month" color={"black"} size={30} style={styles.immagineBottone}/>
+                <TouchableOpacity 
+                    style={props.styleField}
+                    disabled={props.disabled}
+                    onPress={()=>{
+                        showDatepicker();
+                }}>
+                    <Text style={styles.singleField}>{props.date}</Text>
+                </TouchableOpacity>
+                {show &&(<DateTimePicker
+                    testID="dateTimePicker"
+                    value={date}
                     mode={mode}
                     is24Hour={true}
                     display="default"
@@ -91,6 +76,10 @@ const DatePickerInputField = (props) => {
             </View>
         );
     }
+
+  
+    
+    
 };
 
 export default DatePickerInputField;
@@ -110,6 +99,17 @@ const styles = StyleSheet.create({
         height: 40,
         width:"100%",
         borderColor: '#cc3881',
+        borderBottomWidth: 1.4,
+        marginTop:8,
+        paddingTop:9,
+        fontFamily: "MontserrantSemiBold",
+        paddingLeft: 5,
+    },
+    placeholderField: {
+        height: 40,
+        width:"100%",
+        borderColor: '#cc3881',
+        color: "#C7C7CD",
         borderBottomWidth: 1.4,
         marginTop:8,
         paddingTop:9,
