@@ -61,7 +61,11 @@ const styles = StyleSheet.create({
 
 })
 
-const HomeHost = (props) => {
+const HomeHost = ({route, navigation}) => {
+
+  const {user} = route.params;
+  console.log("Nome: " + user.nome + "  EmailWeb: " + user.emailWeb);
+
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -100,15 +104,15 @@ const HomeHost = (props) => {
 
   return(
     <View style={styles.maincontainer}>
-      <HeaderBar title="Home" navigator={props.navigation} />
+      <HeaderBar title="Home" navigator={navigation} />
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
           <Icon name= "account-circle-outline" color={"black"} size={100}/>
           <Text style = {styles.testoLogo}>Ernesto Rossi</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => props.navigation.navigate("LeMieStrutture")} />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => props.navigation.navigate("InserisciPrenotazione")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => navigation.navigate("LeMieStrutture")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => navigation.navigate("InserisciPrenotazione", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
@@ -136,7 +140,7 @@ const HomeHost = (props) => {
         <View style={styles.buttonContainer}>
           <CustomButton nome="Visualizza date"
            styleBtn={{width:'80%', marginBottom:50}}
-           onPress={() => props.navigation.navigate("VisualizzaDateAlloggi",{
+           onPress={() => navigation.navigate("VisualizzaDateAlloggi",{
              dataIniziale: selectedStartDate,
              dataFinale: selectedEndDate,
            })}></CustomButton>

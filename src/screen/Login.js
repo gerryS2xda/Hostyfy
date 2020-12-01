@@ -3,6 +3,7 @@ import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, A
 import CustomButton from "../components/CustomButton"
 import {firebase} from "../firebase/config"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
+import * as HostModel from "../firebase/datamodel/HostModel"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -120,10 +121,17 @@ const Login = (props) => {
                     console.log("Login - uid:" + userId);
 
                     GuestModel.getGuestDocument(userId).then(function (guest) { 
-                      //verifica se e' host oppure no
-                      if(guest.isHost) props.navigation.navigate('HomeHost');
-                      else props.navigation.navigate('HomeGuest', {user: guest});
-                    }).catch(function (err) { console.log("ERROR with read in Login.js:" + err); });
+                      GuestModel.getCartaCreditoDocument(userId).then((creditcard)=>{
+                        //verifica se e' host oppure no
+                        if(guest.isHost){
+                          HostModel.getHostDocument(userId).then(function(host){
+                            props.navigation.navigate('HomeHost', {user: {...guest, ...host, ...creditcard}}); //fai il merge tra field di guest e di host
+                          }).catch(function (err) { console.log("ERROR with read host in Login.js:" + err); });
+                        } else{
+                          props.navigation.navigate('HomeGuest', {user: {...guest, ...creditcard}});
+                        } 
+                      }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
+                    }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
                   }).catch(function(error) {
                     console.error("Error login with email: ", email);
                   });

@@ -126,7 +126,7 @@ const [confermaPassword, setConfermaPassword] = useState('');
                             const userId = firebase.auth().currentUser.uid;
                             console.log("Registrazione - uid:" + userId);
                             GuestModel.createGuestDocumentForRegistration(userId, cognome, nome, email, confermaPassword);
-
+                            GuestModel.createCreditCardDocumentGuest(userId, 0, 0, "", "");
                             GuestModel.getGuestDocument(userId).then(function (guest) { 
                               props.navigation.navigate('HomeGuest', {user: guest}); //passare guest come parametro
                             }).catch(function (err) { console.log("ERROR with read in Registrazione.js:" + err); });
