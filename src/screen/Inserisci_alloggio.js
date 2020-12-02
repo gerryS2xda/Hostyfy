@@ -3,7 +3,8 @@ import {Text, View, Image,ScrollView, StyleSheet, Alert} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
-import * as alloggioModel from '../firebase/datamodel/AlloggioModel'
+import * as alloggioModel from '../firebase/datamodel/AlloggioModel';
+import ImagePickerButton from '../components/ImagePicker'
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -77,6 +78,7 @@ export default class InserisciAlloggioScreen extends React.Component {
           numeroPersone: '',
           piano: '',
           descrizione: '',
+          image:'',
           carouselItems: [
           {
               image:require('../../assets/Struttura/struttura1.jpg'),
@@ -145,14 +147,11 @@ export default class InserisciAlloggioScreen extends React.Component {
                             />
                         </View>
                         <View style={styles.threeButtonContainer}>
-                                <CustomButton 
+                                <ImagePickerButton 
                                     styleBtn={{width: "45%"}} 
-                                    nome="Inserisci Foto"  
-                                    onPress={()=> Alert.alert(
-                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                        { cancelable: false })} /> 
+                                    nome='Inserisci foto'  
+                                    reference= {this}
+                                    /> 
                                 <CustomButton 
                                     styleBtn={{width: "45%"}}  
                                     nome="Inserisci Video"  
