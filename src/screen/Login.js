@@ -120,15 +120,15 @@ const Login = (props) => {
                     const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
                     console.log("Login - uid:" + userId);
 
-                    db.collection("guest").doc(userId).get().then(function (doc) { 
-                      const guest = doc.data();
-                      db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (doc){
-                        const creditcard = doc.data();
+                    db.collection("guest").doc(userId).get().then(function (guestdoc) { 
+                      var guest = guestdoc.data();
+                      db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
+                        var creditcard = creditcarddoc.data();
                         //verifica se e' host oppure no
                         if(guest.isHost){
-                          db.collection("host").doc(userId).get().then(function (doc){
-                            const host = doc.data();
-                            props.navigation.navigate('HomeHost', {user: {...guest.data(), ...host.guest(), ...creditcard}}); //fai il merge tra field di guest e di host
+                          db.collection("host").doc(userId).get().then(function (hostdoc){
+                            var host = hostdoc.data();
+                            props.navigation.navigate('HomeHost', {user: {...guest, ...host, ...creditcard}}); //fai il merge tra field di guest e di host
                           }).catch(function (err) { console.log("ERROR with read host in Login.js:" + err); });
                         } else{
                           props.navigation.navigate('HomeGuest', {user: {...guest, ...creditcard}});
