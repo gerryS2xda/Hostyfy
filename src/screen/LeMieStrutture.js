@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
 
 const LeMieStrutture = (props) => {  
 
+      const {user} = props.route.params;
       return (
       <View style={styles.maincontainer}>
         <HeaderBar title="Le tue Strutture" navigator={props.navigation} /> 
@@ -82,7 +83,11 @@ const LeMieStrutture = (props) => {
 
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity 
-                  onPress={() => props.navigation.navigate('Inserisci struttura')}>
+            
+                  onPress={() => {
+                  props.navigation.navigate('Inserisci struttura', {user:user}),
+                  console.log({user})}}
+                  >
                     <Icon
                       name = "plus-circle-outline"
                       color = {"#f2077d"}

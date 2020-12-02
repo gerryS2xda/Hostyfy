@@ -24,7 +24,7 @@
     22. npm install firebase
     Swipe right to open
 */
-
+import {LogBox} from 'react-native'
 import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -64,7 +64,7 @@ import NotificationScreen from "./src/screen/NotificationScreen"
 import CheckOutScreen from "./src/screen/CheckOutScreen"
 
 const Stack = createStackNavigator();
-
+LogBox.ignoreAllLogs();
 const App = () => {
   
   //SetupDB.createFirestoreDB();
