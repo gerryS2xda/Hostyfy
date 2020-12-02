@@ -110,7 +110,7 @@ const HomeHost = ({route, navigation}) => {
           <Text style = {styles.testoLogo}>Ernesto Rossi</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => navigation.navigate("LeMieStrutture")} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => navigation.navigate("LeMieStrutture", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => navigation.navigate("InserisciPrenotazione", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>

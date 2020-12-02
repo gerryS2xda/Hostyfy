@@ -3,6 +3,7 @@ import {Text, View, Image,ScrollView, Alert, StyleSheet} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
+import * as StrutturaModel from "../firebase/datamodel/StrutturaModel"; 
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -21,8 +22,8 @@ const styles = StyleSheet.create({
 	topContainer: {
 		width: "100%",
 		marginTop: 32,
-	},
-
+    },
+    
     twoFieldContainer: {
 		marginTop: 16, 
 		flexDirection: 'row',
@@ -79,28 +80,21 @@ const styles = StyleSheet.create({
 
 export default class InserisciStrutturaScreen extends React.Component {
 
- 
-    constructor(props){
+     constructor(props){
+
+        
         super(props);
         this.state = {
-          activeIndex:0,
-          carouselItems: [
-          {
-              image:require('../../assets/Struttura/struttura1.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura2.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura3.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura4.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura5.jpg'),
-          },
-        ]
+            denominazione: "",
+            citta: "",
+            cap: "",
+            provincia: "",
+            regione: "",
+            nazione: "",
+            tipologia: "",
+            numeroAlloggi: 0,
+            descrizione: "",
+            user: props.route.params         
       }
     }
 
@@ -117,6 +111,8 @@ export default class InserisciStrutturaScreen extends React.Component {
     }
 
     render() {
+
+       
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Inserisci struttura" navigator={this.props.navigation} />
@@ -124,42 +120,70 @@ export default class InserisciStrutturaScreen extends React.Component {
                     <View style={styles.scrollContent}> 
                         <View style={styles.topContainer}>
                             <TextInput 
+                                ref = {input => { this.denominazione = input }}
                                 style={styles.singleField}
                                 placeholder='Denominazione struttura'
+                                onChangeText = {(testo) => this.setState({denominazione: testo})}
                             />
                             <TextInput 
+                                ref = {input => { this.indirizzo = input }}
                                 style={styles.singleField}
                                 placeholder='Indirizzo'
+                                onChangeText = {(testo) => this.setState({indirizzo: testo})}
                             />
                         </View>
                         <View style={styles.twoFieldContainer}>
                             <TextInput 
+                                ref = {input => { this.citta = input }}
                                 style={styles.middleTextInput}
                                 placeholder='Città'
+                                onChangeText = {(testo) => this.setState({citta: testo})}
+                                
                             />
                             <TextInput 
+                                ref = {input => { this.cap = input }}
                                 style={styles.middleTextInput}
                                 placeholder='CAP'
+                                onChangeText = {(testo) => this.setState({cap: testo})}
                             />
                         </View>
                         <View style={styles.middleContainer}>
+                            
                             <TextInput 
+                                ref = {input => { this.regione = input }}
+                                style={styles.singleField}
+                                placeholder='Regione'
+                                onChangeText = {(testo) => this.setState({regione: testo})}
+                            />
+                            
+
+                            <TextInput 
+                                ref = {input => { this.nazione = input }}
                                 style={styles.singleField}
                                 placeholder='Nazione'
+                                onChangeText = {(testo) => this.setState({nazione: testo})}
                             />
+
                             <TextInput 
+                                ref = {input => { this.tipologia = input }}
                                 style={styles.singleField}
                                 placeholder='Tipologia'
+                                onChangeText = {(testo) => this.setState({tipologia: testo})}
                             />
                             <TextInput 
+                                ref = {input => { this.alloggi = input }}
                                 style={styles.singleField}
                                 placeholder='Numero alloggi'
+                                onChangeText = {(valore) => this.setState({numeroAlloggi: valore})}
                             />
+                            
                             <TextInput 
+                                ref = {input => { this.descrizione = input }}
                                 style={styles.descrizioneField}
                                 placeholder='Descrizione'
                                 multiline={true}
                                 numberOfLines={15}
+                                onChangeText = {(testo) => this.setState({descrizione: testo})}
                             />
                         </View>
                         <View style={styles.threeButtonContainer}>
@@ -170,27 +194,36 @@ export default class InserisciStrutturaScreen extends React.Component {
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                     { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })} /> 
-                            <CustomButton 
-                                styleBtn={{width: "45%"}}  
-                                nome="Inserisci Video"  
-                                onPress={()=> Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })} 
-                            /> 
+                                    { cancelable: false })} />  
                         </View>
+
                         <View style={styles.bottomButtonContainer}>
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Inserisci guida" onPress={()=> Alert.alert(
                                 "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
                                 { cancelable: false })} /> 
+
+                           
+
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=> Alert.alert(
                                 "Inserisci struttura", "La nuova struttura e' stata memorizzata con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                { text: "OK", onPress: ()=> this.props.navigation.navigate('LeMieStrutture') }],
+                                { text: "OK", onPress: ()=> {
+                                    var indirizzo = {via: this.state.indirizzo, citta:this.state.citta, cap:this.state.cap, provincia:this.state.provincia, regione:this.state.regione, nazione:this.state.nazione}                                 
+                                    var cfHost = this.state.user.cf
+                                    StrutturaModel.createStrutturaDocument(cfHost, 0, this.state.denominazione, this.state.descrizione, indirizzo, " ", this.state.numeroAlloggi,this.state.tipologia, 0); 
+                                    this.denominazione.clear();  
+                                    this.regione.clear();                        
+                                    this.citta.clear(); 
+                                    this.descrizione.clear(); 
+                                    this.alloggi.clear(); 
+                                    this.tipologia.clear();
+                                    this.nazione.clear(); 
+                                    this.cap.clear();
+                                    this.indirizzo.clear(); 
+
+                                    this.props.navigation.navigate('LeMieStrutture') }}],
                                 { cancelable: false })} />
                         </View>
                     </View>
