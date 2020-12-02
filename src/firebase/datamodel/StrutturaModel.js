@@ -6,10 +6,9 @@ var db = firebase.firestore();
 var strutturaCollectionRef = db.collection("strutture"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createStrutturaDocument(id, cfHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId){
+export function createStrutturaDocument(cfHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId){
     // Add a new document in collection "Struttura" con set(), se non e' presente, crea il documento
-    strutturaCollectionRef.doc(id).set({
-        id: id,
+    strutturaCollectionRef.add({
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione, 
@@ -33,7 +32,6 @@ export function createStrutturaDocument(id, cfHost, codiceOtp, denominazione, de
 export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia){
     //Edit all field of guest document
     return strutturaCollectionRef.doc(id).update({
-        id: id,
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione,
@@ -62,6 +60,12 @@ export function deleteStrutturaDocument(id){
 }
 
 //Read function
+
+export function getStrutturaDocumentRef(id){
+    return strutturaCollectionRef.doc(id);
+}
+
+/*
 export async function getStrutturaDocument(id){
     let doc = await strutturaCollectionRef.doc(id).get();
     if (doc.exists) {
@@ -70,3 +74,5 @@ export async function getStrutturaDocument(id){
         Promise.reject("No such struttura document with " + uid);
     }
 }
+
+*/

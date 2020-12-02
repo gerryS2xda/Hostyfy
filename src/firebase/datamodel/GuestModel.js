@@ -150,6 +150,15 @@ export function deleteCreditCardDocument(uid){
 }
 
 //Read function
+export function getGuestDocumentRef(uid){
+    return guestCollectionRef.doc(uid);
+}
+
+export function getCartaCreditoDocumentRef(uid){
+    return guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid);
+}
+
+/*
 export async function getGuestDocument(uid){
     let doc = await guestCollectionRef.doc(uid).get();
     if (doc.exists) {
@@ -168,3 +177,4 @@ export async function getCartaCreditoDocument(uid){
     }
 }
 
+*/

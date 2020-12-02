@@ -210,6 +210,11 @@ export function deleteFotoDocument(structId, alloggioId, fotoId){
 }
 
 //Read function
+export function getAlloggioDocumentRef(structId, alloggioId){
+    return db.collection("struttura/"+structId+"/alloggi").doc("alloggio"+alloggioId);
+}
+
+/*
 export async function getAlloggioDocument(structId, alloggioId){
     let doc = await db.collection("struttura/"+structId+"/alloggi").doc("alloggio"+alloggioId).get();
     if (doc.exists) {
@@ -254,3 +259,5 @@ export async function getFotoDocument(structId, alloggioId, fotoId){
         Promise.reject("No such alloggio/foto document with " + alloggioId);
     }
 }
+
+*/

@@ -55,6 +55,12 @@ export function deleteCleanServiceDocument(matricola){
 }
 
 //Read function
+
+export function getCleanServiceDocumentRef(matricola){
+    return cleanServiceCollectionRef.doc(""+matricola);
+}
+
+/*
 export async function getCleanServiceDocument(matricola){
     let doc = await cleanServiceCollectionRef.doc(""+matricola).get();
     if (doc.exists) {
@@ -63,3 +69,4 @@ export async function getCleanServiceDocument(matricola){
         Promise.reject("No such clean service document with " + matricola);
     }
 }
+*/

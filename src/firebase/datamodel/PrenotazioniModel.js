@@ -73,3 +73,9 @@ export async function getPrenotazioniDocument(id){
         Promise.reject("No such document with " + id);
     }
 }
+
+export async function getPrenotazioniCollection(){
+    //Dammi tutti i documenti presenti nella collection "prenotazioni"
+    let docs = await prenotazioniCollectionRef.get();
+    return docs;
+}

@@ -47,6 +47,11 @@ export function deleteHostDocument(uid){
 }
 
 //Read function
+export function getHostDocumentRef(uid){
+    return hostCollectionRef.doc(uid);
+}
+
+/*
 export async function getHostDocument(uid){
     let doc = await hostCollectionRef.doc(uid).get();
     if (doc.exists) {
@@ -56,3 +61,4 @@ export async function getHostDocument(uid){
         Promise.reject("No such document with " + uid);
     }
 }
+*/
