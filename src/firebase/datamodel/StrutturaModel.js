@@ -3,16 +3,17 @@ import {firebase} from '../config'
 
 //Ottieni istanza di 'firebase.firestore.Firestore' per leggere o scrivere da db
 var db = firebase.firestore();
-var strutturaCollectionRef = db.collection("struttura"); //ottieni riferimento della collection a cui accedere 
+var strutturaCollectionRef = db.collection("strutture"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createStrutturaDocument(id, cfHost, codiceOtp, denominazione, descrizione, guida, numAlloggi, tipologia, cleanServiceDocId){
+export function createStrutturaDocument(id, cfHost, codiceOtp, denominazione, descrizione, indirizzo, guida, numAlloggi, tipologia, cleanServiceDocId){
     // Add a new document in collection "Struttura" con set(), se non e' presente, crea il documento
     strutturaCollectionRef.doc(id).set({
         id: id,
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione, 
+        indirizzo: indirizzobj,
         guida: guida, 
         numAlloggi: numAlloggi, 
         tipologia: tipologia,
