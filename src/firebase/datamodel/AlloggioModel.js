@@ -5,16 +5,16 @@ import {firebase} from '../config'
 var db = firebase.firestore();
 
 //Create functions: one function for each collection to create
-export function createAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, pathvideo){
+export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).set({
-        id: alloggioId,
+    alloggioCollectionRef.add({
         nomeAlloggio: nomeAlloggio,
         numCamere: numCamere,
         numMaxPersone: numMaxPersone,
         piano: piano,
-        pathvideo: pathvideo
+        descrizione: descrizione,
+        pathvideo: ''
     })
     .then(function() {
         console.log("Alloggio document successfully written!");

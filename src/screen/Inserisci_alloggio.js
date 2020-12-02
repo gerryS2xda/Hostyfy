@@ -3,6 +3,7 @@ import {Text, View, Image,ScrollView, StyleSheet, Alert} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
+import * as alloggioModel from '../firebase/datamodel/AlloggioModel'
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -67,11 +68,15 @@ const styles = StyleSheet.create({
 
 export default class InserisciAlloggioScreen extends React.Component {
 
- 
     constructor(props){
         super(props);
         this.state = {
           activeIndex:0,
+          nomeAlloggio: '',
+          numeroCamere: '',
+          numeroPersone: '',
+          piano: '',
+          descrizione: '',
           carouselItems: [
           {
               image:require('../../assets/Struttura/struttura1.jpg'),
@@ -114,16 +119,29 @@ export default class InserisciAlloggioScreen extends React.Component {
                             <TextInput 
                                 style={styles.singleField}
                                 placeholder='Nome alloggio'
+                                onChangeText ={(testo) => {this.setState({nomeAlloggio: testo})}}
                             />
                             <TextInput 
                                 style={styles.singleField}
                                 placeholder='Numero camere'
+                                onChangeText ={(testo) => {this.setState({numeroCamere: testo})}}
+                            />
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Numero persone'
+                                onChangeText ={(testo) => {this.setState({numeroPersone: testo})}}
+                            />
+                            <TextInput 
+                                style={styles.singleField}
+                                placeholder='Piano'
+                                onChangeText ={(testo) => {this.setState({piano: testo})}}
                             />
                             <TextInput 
                                 style={styles.descrizioneField}
                                 placeholder='Descrizione' 
                                 multiline={true}
                                 numberOfLines={15}
+                                onChangeText ={(testo) => {this.setState({descrizione: testo})}}
                             />
                         </View>
                         <View style={styles.threeButtonContainer}>
@@ -154,7 +172,9 @@ export default class InserisciAlloggioScreen extends React.Component {
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=> Alert.alert(
                                 "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                { text: "OK", onPress: () => {
+                                    alloggioModel.createAlloggioDocument('struct1',this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)} 
+                                }],
                                 { cancelable: false })} />
                         </View>
                     </View>
