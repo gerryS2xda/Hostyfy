@@ -4,6 +4,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HeaderBar from '../components/CustomHeaderBar'
 import CustomButton from '../components/CustomButton'
 import CustomImageButton from "../components/CustomImageButton";
+import {firebase} from "../firebase/config"
+
+var db = firebase.firestore();
 
 const styles = StyleSheet.create({
   maincontainer: {

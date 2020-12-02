@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert } from 'react-native'
 import CustomButton from "../components/CustomButton"
 import {firebase} from "../firebase/config"
-import * as GuestModel from "../firebase/datamodel/GuestModel"
-import * as HostModel from "../firebase/datamodel/HostModel"
+
+var db = firebase.firestore();
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -116,24 +116,27 @@ const Login = (props) => {
                 nome="Accedi" 
                 styleBtn={{width: "75%"}}
                 onPress={() => {
-                  firebase.auth().signInWithEmailAndPassword(email, password).then((user)=>{
+                  firebase.auth().signInWithEmailAndPassword(email, password).then(function (user){
                     const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
                     console.log("Login - uid:" + userId);
 
-                    GuestModel.getGuestDocument(userId).then(function (guest) { 
-                      GuestModel.getCartaCreditoDocument(userId).then((creditcard)=>{
+                    db.collection("guest").doc(userId).get().then(function (doc) { 
+                      const guest = doc.data();
+                      db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (doc){
+                        const creditcard = doc.data();
                         //verifica se e' host oppure no
                         if(guest.isHost){
-                          HostModel.getHostDocument(userId).then(function(host){
-                            props.navigation.navigate('HomeHost', {user: {...guest, ...host, ...creditcard}}); //fai il merge tra field di guest e di host
+                          db.collection("host").doc(userId).get().then(function (doc){
+                            const host = doc.data();
+                            props.navigation.navigate('HomeHost', {user: {...guest.data(), ...host.guest(), ...creditcard}}); //fai il merge tra field di guest e di host
                           }).catch(function (err) { console.log("ERROR with read host in Login.js:" + err); });
                         } else{
                           props.navigation.navigate('HomeGuest', {user: {...guest, ...creditcard}});
                         } 
                       }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
                     }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
-                  }).catch(function(error) {
-                    console.error("Error login with email: ", email);
+                  }).catch(function (error) {
+                    console.error("Error login with firebase: ", error);
                   });
                 }} />
             <View style={styles.horizontalContainer}>

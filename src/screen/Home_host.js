@@ -63,8 +63,7 @@ const styles = StyleSheet.create({
 
 const HomeHost = ({route, navigation}) => {
 
-  const {user} = route.params;
-  console.log("Nome: " + user.nome + "  EmailWeb: " + user.emailWeb);
+  const {user} = route.params; 
 
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);

@@ -322,7 +322,7 @@ const Modifica_profilo = ({route, navigation}) => {
                   setEditable(previousState => !previousState)
                 }else{
                   var indirizzo = {via: via, citta: citta, provincia: provincia, cap: cap, regione: regione};
-                  GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, dateNasc, luogoNasc, numCel, numTel, indirizzo, user.isHost, email, newpassword);
+                  GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, sesso, dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, user.isHost, email, newpassword);
                   GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
                 }  
               }}/>
