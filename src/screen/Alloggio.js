@@ -86,6 +86,7 @@ export default class AlloggioScreen extends React.Component {
         this.state = {
           IsEditable: false,
           activeIndex:0,
+          alloggio: props.route.params.alloggio,
           carouselItems: [
           {
               image:require('../../assets/Alloggio/Alloggio1.jpg'),
@@ -136,17 +137,15 @@ export default class AlloggioScreen extends React.Component {
                             onSnapToItem = { index => this.setState({activeIndex:index}) } />
                         </View>
                         <View style={styles.middleContainer}>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>Suite Imperiale</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.nomeAlloggio}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroCamere}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroMassimoPersone}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.piano}</TextInput>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}
                                 multiline={true}
                                 numberOfLines={15}>
-                                 - Area condizionata
-                                 {"\n"}- TV
-                                 {"\n"}- Frigo Bar
-                                 {"\n"}- Idromassaggio
-                                 {"\n"}- Colazione a letto
-                                 {"\n"}- Cestino di accoglienza
+                                {this.state.alloggio.descrizione}
                              </TextInput>
                         </View>
                         <CustomButton 

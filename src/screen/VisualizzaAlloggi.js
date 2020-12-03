@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import CustomListViewGeneral from '../components/CustomListViewGeneral'
+import CustomListViewGeneralAlloggio from '../components/CustomListViewGeneralAlloggio'
 import {
   StyleSheet,
   Text,
@@ -39,49 +39,15 @@ const styles = StyleSheet.create({
 });
 
 const VisualizzaAlloggi = (props) => {  
-
+      const {list} = props.route.params
       return (
         <View style={styles.maincontainer}>
       <HeaderBar title="Alloggi" navigator={props.navigation} /> 
       <View style={styles.container}>
-        <CustomListViewGeneral
+        <CustomListViewGeneralAlloggio
           nav = {props.navigation}
-          itemList={[
-            {
-              key: 1, 
-              title: 'Suite imperiale',
-              description: '"Fantastica"',
-              image_url: require('../../assets/Alloggio/Alloggio1.jpg'),
-              newPage: 'Alloggio',
-            },
-            {
-              key: 2,
-              title: 'Camera panoramica',
-              description: '"Esperienza meravigliosa"',
-              image_url: require('../../assets/Alloggio/Alloggio2.jpg'),
-              newPage: 'Alloggio',  
-            },
-            {
-              key: 3,
-              title: 'Camera 2',
-              description: '"Eccezionale"',
-              image_url: require('../../assets/Alloggio/Alloggio3.jpg'),
-              newPage: 'Alloggio',
-              
-            },
-            {
-              key: 4,
-              title: 'Camera 3',
-              description: '"Eccellente"',
-              image_url: require('../../assets/Alloggio/Alloggio4.jpg'),
-              newPage: 'Alloggio',
-              
-            }
-            
-          ]
-
-   
-        }/>
+          itemList= {list}
+        />
 
     <View style = {styles.aggiungiStruttura}>
         <TouchableOpacity

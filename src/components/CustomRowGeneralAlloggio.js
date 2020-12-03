@@ -47,27 +47,24 @@ const styles = StyleSheet.create({
 });
 
 
-const CustomRowGeneral = (props) => {
+const CustomRowGeneralAlloggio = (props) => {
     
 return (
 <TouchableOpacity 
     onPress = {()=>{ 
-    db.collection("struttura").doc(props.id).get().then((doc) =>{
-        var struttura = {
-            denominazione: doc.data().denominazione,
-            via: doc.data().via,
-            provincia: doc.data().provincia,
-            cap: doc.data().cap,
-            nazione: doc.data().nazione,
-            tipologia: doc.data().tipologia,
-            numeroAlloggi: doc.data().numeroAlloggi,
+    db.collection("struttura").doc(props.strutturaId).collection('alloggi').doc(props.id).get().then((doc) =>{
+        var alloggio = {
+            nomeAlloggio: doc.data().nomeAlloggio,
+            numeroCamere: doc.data().numCamere,
+            numeroMassimoPersone: doc.data().numMaxPersone,
+            pathVideo: doc.data().pathvideo,
+            piano: doc.data().piano,
             descrizione: doc.data().descrizione,
             id: props.id
         }
-        props.nav.navigate(props.newPage,{struttura: struttura})
-    })  
-        
-        }}>
+        props.nav.navigate(props.newPage,{alloggio: alloggio})
+        })      
+    }}>
            
     <View style={styles.container}>
         <Image source={props.image_url} style={styles.photo} />
@@ -88,4 +85,4 @@ return (
 
 );
 }
-export default CustomRowGeneral;
+export default CustomRowGeneralAlloggio;

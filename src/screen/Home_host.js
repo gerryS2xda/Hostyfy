@@ -125,7 +125,8 @@ const HomeHost = ({route, navigation}) => {
                     description: doc.data().descrizione,
                     image_url: require('../../assets/Struttura/struttura1.jpg'),
                     newPage: 'VisualizzaStruttura',
-                    OTP: 'true'
+                    OTP: 'true',
+                    id: doc.id
                 }
                 count++;
                 itemList.push(oggetto);

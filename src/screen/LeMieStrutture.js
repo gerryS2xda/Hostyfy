@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import CustomListView from '../components/CustomListView'
+import CustomListViewGeneral from '../components/CustomListViewGeneral'
 import {
   StyleSheet,
   Text,
@@ -43,48 +43,10 @@ const LeMieStrutture = (props) => {
       <View style={styles.maincontainer}>
         <HeaderBar title="Le tue Strutture" navigator={props.navigation} /> 
             <View style={styles.container}>
-              <CustomListView 
+              <CustomListViewGeneral 
                 nav= {props.navigation}
                 itemList = {list}
-                /*
-                itemList={[
-                  {
-                    key: 1, 
-                    title: 'Le Sirene',
-                    description: '"Fantastica"',
-                    image_url: require('../../assets/Struttura/struttura1.jpg'),
-                    newPage: 'VisualizzaStruttura',
-                    OTP: 'true'
-                  },
-                  {
-                    key: 2,
-                    title: 'Exe Majestic',
-                    description: '"Esperienza meravigliosa"',
-                    image_url: require('../../assets/Struttura/struttura2.jpg'),
-                    newPage: 'VisualizzaStruttura',
-                    OTP: 'false'
-                  },
-                  {
-                    key: 3,
-                    title: 'Villa Domina',
-                    description: '"Eccezionale"',
-                    image_url: require('../../assets/Struttura/struttura3.jpg'),
-                    newPage: 'VisualizzaStruttura',
-                    OTP: 'true'
-                  },
-                  {
-                    key: 4,
-                    title: 'Apartments Tudor',
-                    description: '"Eccellente"',
-                    image_url: require('../../assets/Struttura/struttura4.jpg'),
-                    newPage: 'VisualizzaStruttura',
-                    OTP: 'true'
-                  }
-                  
-                ]
-                
-              } *//>
-
+              />
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity 
             

@@ -4,6 +4,9 @@ import { Directions } from 'react-native-gesture-handler';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
+import {firebase} from '../firebase/config'
+
+var db = firebase.firestore();
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -90,14 +93,13 @@ const styles = StyleSheet.create({
 
 export default class StrutturaScreen extends React.Component {
  
-    
-    
 
     constructor(props){
         super(props);
         this.state = {
           IsEditable: false,
           activeIndex:0,
+          struttura: props.route.params.struttura,
           carouselItems: [
           {
               image:require('../../assets/Struttura/struttura1.jpg'),
@@ -117,7 +119,6 @@ export default class StrutturaScreen extends React.Component {
         ]
       }
     }
-
     _renderItem({item,index}){
         return (
           <View>
@@ -147,23 +148,23 @@ export default class StrutturaScreen extends React.Component {
                         </View>
 
                             <View style={styles.fieldContainerTop}>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Le sirene</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Via Giovanni da Procida 18</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Napoli</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.denominazione}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.via}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.provincia}</TextInput>
                             </View>
                             <View style={styles.twoFieldContainer}>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>80100</TextInput>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>Italia</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.cap}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.nazione}</TextInput>
                             </View>
                             <View style={styles.fieldContainerBottom}>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>Hotel</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>123</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.tipologia}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.numeroAlloggi}</TextInput>
                                 <TextInput style={styles.descrizioneField} 
                                 multiline={true}
                                 numberOfLines={20}
                                 editable={this.state.IsEditable}
 
-                                >Bellissimo</TextInput>
+                                >{this.state.struttura.descrizione}</TextInput>
                             </View>
 
                         <View style={styles.threeButtonContainer}>
@@ -195,7 +196,27 @@ export default class StrutturaScreen extends React.Component {
                             <CustomButton 
                                 styleBtn={{marginTop: 10, width:"100%"}}
                                 nome= "Visualizza alloggi"
-                                onPress={() => {this.props.navigation.navigate('VisualizzaAlloggi')}}
+                                onPress={() => {
+                                    var itemList = [];
+                                    var count = 1;
+                                    db.collection('struttura').doc(this.state.struttura.id).collection('alloggi').get().then((querySnapshot)=>{
+                                    querySnapshot.forEach((doc) =>{
+                                        var oggetto = {
+                                            key: count, 
+                                            title: doc.data().nomeAlloggio,
+                                            description: doc.data().descrizione,
+                                            image_url: require('../../assets/Struttura/struttura1.jpg'),
+                                            newPage: 'Alloggio',
+                                            strutturaId: this.state.struttura.id,
+                                            id: doc.id
+                                        }
+                                        count++;
+                                        itemList.push(oggetto);
+                                        })
+                                    this.props.navigation.navigate("VisualizzaAlloggi", {list: itemList});
+                                    })
+                    
+                                }}
                             />
                         </View>
                     </View>
