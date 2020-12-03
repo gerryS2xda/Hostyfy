@@ -12,12 +12,12 @@ export function createPrenotazioniDocument(costo, dataInizio, dataFine, email, n
         costo: costo, 
         dataInizio: dataInizio,
         dataFine: dataFine, 
-        email: email, 
+        emailPren: email, 
         numPersone: numPersone, 
         numTel: numTel, 
-        strutturaRef: db.doc("struttura/"+strutturaDocId), 
-        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
-        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
+        strutturaRef: db.doc("strutture/"+strutturaDocId), 
+        alloggioRef: db.doc("strutture/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
+        chiaveAlloggioRef: db.doc("strutture/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
         guestRef: db.doc("guest/" + guestuid), 
         //hostRef: db.doc("host/"+hostCF)
     })
@@ -36,12 +36,12 @@ export function updatePrenotazioniDocument(id, costo, dataInizio, dataFine, emai
         costo: costo, 
         dataInizio: dataInizio,
         dataFine: dataFine, 
-        email: email, 
+        emailPren: email, 
         numPersone: numPersone, 
         numTel: numTel,
-        strutturaRef: db.doc("struttura/"+strutturaDocId), 
-        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
-        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
+        strutturaRef: db.doc("strutture/"+strutturaDocId), 
+        alloggioRef: db.doc("strutturae/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
+        chiaveAlloggioRef: db.doc("strutture/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
         guestRef: db.doc("guest/" + guestCF), 
         //hostRef: db.doc("host/"+hostCF) 
     })
@@ -64,6 +64,8 @@ export function deletePrenotazioniDocument(id){
 }
 
 //Read function
+
+/*
 export async function getPrenotazioniDocument(id){
     let doc = await prenotazioniCollectionRef.doc(id).get();
     if (doc.exists) {
@@ -79,3 +81,4 @@ export async function getPrenotazioniCollection(){
     let docs = await prenotazioniCollectionRef.get();
     return docs;
 }
+*/
