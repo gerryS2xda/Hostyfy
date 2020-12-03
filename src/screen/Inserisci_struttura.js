@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
 		marginTop: 16, 
 		flexDirection: 'row',
 		justifyContent: 'space-between',
+    
     },
 
     threeButtonContainer: {
@@ -188,7 +189,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                         </View>
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
-                                styleBtn={{width: "45%"}} 
+                                styleBtn={{width: "100%"}} 
                                 nome="Inserisci Foto"  
                                 onPress={()=> Alert.alert(
                                     "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
