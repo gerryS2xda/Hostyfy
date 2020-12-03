@@ -64,9 +64,9 @@ import NotificationScreen from "./src/screen/NotificationScreen"
 import CheckOutScreen from "./src/screen/CheckOutScreen"
 
 const Stack = createStackNavigator();
-LogBox.ignoreAllLogs();
+
 const App = () => {
-  
+  LogBox.ignoreAllLogs();  
   //SetupDB.createFirestoreDB();
 
   let [fontsLoaded] = useFonts({

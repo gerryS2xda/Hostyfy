@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, Alert, Switch } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
+import {firebase} from "../firebase/config"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import LoginScreen from "../screen/Login"
 import HomeHostScreen from "../screen/Home_host"
@@ -31,11 +32,50 @@ import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
 
 const Drawer = createDrawerNavigator();
+var db = firebase.firestore();
 
 const DrawerMenuSimple = (props) =>{
 
+    //NOTA: il valore di currentUser e' null alla prima lettura di questa pagina da parte di "App.js", viene settata ogni volta che si apre il drawer menu
+    var userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "unknown user";
+    const [user, setUser] = useState({empty: "empty"});
+
+    if(user.hasOwnProperty("empty") && userId !== "unknown user"){
+
+        db.collection("guest").doc(userId).get().then(function (guestdoc) { 
+            var guest = guestdoc.data();
+            db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
+            var creditcard = creditcarddoc.data();
+            //verifica se e' host oppure no
+            if(guest.isHost){
+                db.collection("host").doc(userId).get().then(function (hostdoc){
+                var host = hostdoc.data();
+                setUser({...guest, ...host, ...creditcard});
+                }).catch(function (err) { console.log("ERROR with read host in DrawerMenuSimple.js:" + err); });
+            } else{
+                setUser({...guest, ...creditcard});
+            } 
+        }).catch(function (err) { console.log("ERROR with read guest/creditcard in DrawerMenuSimple.js:" + err); });
+        }).catch(function (err) { console.log("ERROR with read guest in DrawerMenuSimple.js:" + err); });
+    }else if(user.hasOwnProperty("empty")){ //significa che userId non e' null
+        db.collection("guest").doc(userId).get().then(function (guestdoc) { 
+            var guest = guestdoc.data();
+            db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
+            var creditcard = creditcarddoc.data();
+            //verifica se e' host oppure no
+            if(guest.isHost){
+                db.collection("host").doc(userId).get().then(function (hostdoc){
+                var host = hostdoc.data();
+                setUser({...guest, ...host, ...creditcard});
+                }).catch(function (err) { console.log("ERROR with read host in DrawerMenuSimple.js:" + err); });
+            } else{
+                setUser({...guest, ...creditcard});
+            } 
+        }).catch(function (err) { console.log("ERROR with read guest/creditcard in DrawerMenuSimple.js:" + err); });
+        }).catch(function (err) { console.log("ERROR with read guest in DrawerMenuSimple.js:" + err); });
+    }
     return( 
-        <Drawer.Navigator drawerContent={props =>  <DrawerContentCustom {...props}/>}>
+        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userProps={user} setUserProp={setUser}/>}>
             <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
             <Drawer.Screen name="Home" component={LoginScreen} options={{
                 title: 'Home', 
@@ -74,17 +114,22 @@ const DrawerMenuSimple = (props) =>{
 export default DrawerMenuSimple;
 
 function DrawerContentCustom(props){
+    
+    var userLogged = props.userProps;
+
     //<Icon>
     const colorIcon = "black";
     const sizeIcon = 24;
     //gestione dello switch Guest<>Host
-    const [isHost, setIsHost] = useState(false); //NOTA: questi valori dovranno essere letti dal DB
+    const [isHost, setIsHost] = useState(userLogged.isHost);
     const toggleSwitchGuestHost = () => {
         setIsHost(previousState => !previousState);
         if(!isHost){
-            props.navigation.navigate('HomeHost');
+            props.setUserProp({empty: "empty"});
+            props.navigation.navigate('HomeHost', {user: userLogged});
         }else{
-            props.navigation.navigate('HomeGuest');
+            props.setUserProp({empty: "empty"});
+            props.navigation.navigate('HomeGuest', {user: userLogged});
         }
     };
     const [isUpgradePay, setIsUpgradePay] = useState(true); 
@@ -115,6 +160,7 @@ function DrawerContentCustom(props){
             style: "cancel"
             },
             { text: "OK", onPress: () =>{
+                    //Aggiungi codice per Downgrade (update is Host From DB)
                     setIsHost(false);
                     setIsUpgradePay(false);
                 } 
@@ -132,7 +178,7 @@ function DrawerContentCustom(props){
                         <View style={styles.userInfoSection}>
                             <View style={styles.avaterAndTxtContainer}>
                                 <Icon name= "account-circle-outline" color={"black"} size={32}/>
-                                <Text style={styles.userInfo}>E. Rossi</Text>
+                                <Text style={styles.userInfo}>{userLogged.nome} {userLogged.cognome}</Text>
                             </View>
                                 <View style={styles.horizontalViewSwitch}>
                                     <Text style={styles.labelSwitchTxt}>Guest</Text>
@@ -151,30 +197,43 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
-                                onPress={() => {props.navigation.navigate('HomeGuest')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('HomeGuest', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Area personale</Text>)}
-                                onPress={() => {props.navigation.navigate('ModificaProfilo')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('ModificaProfilo', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
-                                onPress={() => {props.navigation.navigate('VisualizzaPrenotazioni')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
-                                onPress={() => {props.navigation.navigate('LeMieChiavi')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('LeMieChiavi', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => (<Icon name="arrow-up-bold-circle" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Upgrade host</Text>)}
                                 onPress={() => {
                                         setIsHost(true); //dovra' essere rimosso non appena si perfeziona implementazione
-                                        setIsUpgradePay(true); //per la demo (si dovra' gestire in altro modo questo)    
-                                        props.navigation.navigate('UpgradeHost');
+                                        setIsUpgradePay(true); //per la demo (si dovra' gestire in altro modo questo)   
+                                        props.setUserProp({empty: "empty"}); 
+                                        props.navigation.navigate('UpgradeHost', {user: userLogged});
                                     }
                                 }
                             />
@@ -185,7 +244,10 @@ function DrawerContentCustom(props){
                     <DrawerItem 
                         icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
                         label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
-                        onPress={() => {props.navigation.navigate('Home')}} 
+                        onPress={() => {
+                            props.setUserProp({empty: "empty"});
+                            props.navigation.navigate('Home');
+                        }} 
                     />
                 </View>
             </View>
@@ -198,7 +260,7 @@ function DrawerContentCustom(props){
                     <View style={styles.userInfoSection}>
                             <View style={styles.avaterAndTxtContainer}>
                                 <Icon name= "account-circle-outline" color={"black"} size={32}/>
-                                <Text style={styles.userInfo}>E. Rossi</Text>
+                                <Text style={styles.userInfo}>{userLogged.nome} {userLogged.cognome}</Text>
                             </View>
                                 <View style={styles.horizontalViewSwitch}>
                                     <Text style={styles.labelSwitchTxt}>Guest</Text>
@@ -217,32 +279,50 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
-                                onPress={() => {props.navigation.navigate('HomeHost')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('HomeHost', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Area personale</Text>)}
-                                onPress={() => {props.navigation.navigate('ModificaProfilo')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('ModificaProfilo', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
-                                onPress={() => {props.navigation.navigate('VisualizzaPrenotazioni')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
-                                onPress={() => {props.navigation.navigate('LeMieChiavi')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('LeMieChiavi', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="hospital-building" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie strutture</Text>)}
-                                onPress={() => {props.navigation.navigate('LeMieStrutture')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('LeMieStrutture', {user: userLogged});
+                                }}
                             /> 
                             <DrawerItem 
                                 icon={() => ( <Icon name="calendar-month" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Calendario prenotazioni</Text>)}
-                                onPress={() => {props.navigation.navigate('Visualizza_calendario_alloggio')}}
+                                onPress={() => {
+                                    props.setUserProp({empty: "empty"});
+                                    props.navigation.navigate('Visualizza_calendario_alloggio', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="broom" color={colorIcon} size={sizeIcon} /> )}
@@ -266,7 +346,10 @@ function DrawerContentCustom(props){
                     <DrawerItem 
                         icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
                         label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
-                        onPress={() => {props.navigation.navigate('Home')}} 
+                        onPress={() => {
+                            props.setUserProp({empty: "empty"});
+                            props.navigation.navigate('Home');
+                        }} 
                     />
                 </View>
             </View>
