@@ -83,15 +83,15 @@ maincontainer: {
 },
 });
 
-const VisualizzaStoricoPrenotazioni = (props) => {  
+const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {  
 
       return (
         <View style={styles.maincontainer}>
-        <HeaderBar title="Prenotazioni passate" navigator={props.navigation} /> 
+        <HeaderBar title="Prenotazioni passate" navigator={navigation} /> 
         
           <View style={styles.container}>
             <CustomListViewGeneral
-              nav = {props.navigation}
+              nav = {navigation}
               itemList={[
                 {
                   key: 1, 

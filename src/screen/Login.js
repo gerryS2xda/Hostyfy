@@ -138,6 +138,7 @@ const Login = (props) => {
                   }).catch(function (error) {
                     console.error("Error login with firebase: ", error);
                   });
+                  
                 }} />
             <View style={styles.horizontalContainer}>
               <Text style={styles.paswordDimenticata}>Password dimenticata?  </Text>

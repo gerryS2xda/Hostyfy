@@ -124,6 +124,7 @@ const Modifica_profilo = ({route, navigation}) => {
     const [cognome, setCognome] = useState(user.cognome);
     const [dateNasc, setDateNascita] = useState(user.dataNascita);
     const [luogoNasc, setLuogoNascita] = useState(user.luogoNascita);
+    const [email, setEmail] = useState(user.email);
     const [numCel, setNumeroCellulare] = useState(user.numCell);
     const [numTel, setNumeroTelefono] = useState(user.numTel);
     const [sesso, setSesso] = useState(user.sesso);
@@ -157,21 +158,21 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='Nome'
                 editable={IsEditable}
-                value={user.nome}
+                value={nome}
                 onChangeText = {(nome) => setNome(nome)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Cognome'
                 editable={IsEditable}
-                value={user.cognome}
+                value={cognome}
                 onChangeText = {(cognome) => setCognome(cognome)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Codice fiscale'
                 editable={IsEditable}
-                value={user.cf}
+                value={cf}
                 onChangeText = {(cf) => setCodiceFiscale(cf)}
             />
             <DatePickerInputField 
@@ -186,77 +187,77 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='Luogo nascita'
                 editable={IsEditable}
-                value={user.luogoNascita}
+                value={luogoNasc}
                 onChangeText = {(luogoNasc) => setLuogoNascita(luogoNasc)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Email'
                 editable={IsEditable}
-                value={user.email}
+                value={email}
                 onChangeText = {(email) => setEmail(email)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Numero cellulare'
                 editable={IsEditable}
-                value={user.numCell}
+                value={numCel}
                 onChangeText = {(numCel) => setNumeroCellulare(numCel)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Numero telefono'
                 editable={IsEditable}
-                value={user.numTel}
+                value={numTel}
                 onChangeText = {(numTel) => setNumeroTelefono(numTel)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Sesso'
                 editable={IsEditable}
-                value={user.sesso}
+                value={sesso}
                 onChangeText = {(sesso) => setSesso(sesso)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Nazionalità'
                 editable={IsEditable}
-                value={user.nazionalita}
+                value={nazionalita}
                 onChangeText = {(nazionalita) => setNazionalita(nazionalita)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Via'
                 editable={IsEditable}
-                value={user.indirizzo.via}
+                value={via}
                 onChangeText = {(via) => setVia(via)}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Città'
                 editable={IsEditable}
-                value={user.indirizzo.citta}
+                value={citta}
                 onChangeText = {(citta) => setCitta(citta)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Provincia'
                 editable={IsEditable}
-                value={user.indirizzo.provincia}
+                value={provincia}
                 onChangeText = {(provincia) => setProvincia(provincia)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Regione'
                 editable={IsEditable}
-                value={user.indirizzo.regione}
+                value={regione}
                 onChangeText = {(regione) => setRegione(regione)}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='CAP'
                 editable={IsEditable}
-                value={user.indirizzo.cap}
+                value={cap}
                 onChangeText = {(cap) => setCAP(cap)}
             />
           </View>
@@ -268,7 +269,7 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='Password attuale'
                 editable={IsEditable}
-                value={user.password}
+                value={password}
                 onChangeText = {(password) => setPassword(password)}
             />
             <TextInput
@@ -286,13 +287,13 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='Numero Carta'
                 editable={IsEditable}
-                value={user.numeroCarta}
+                value={numCarta}
                 onChangeText = {(numCarta) => setNumeroCarta(numCarta)}
             />
             <DatePickerInputField 
               styleContainer={{marginBottom: "3%"}} 
               styleField={{width: "80%"}} 
-              date={user.dataScadenza} 
+              date={dateScadenza} 
               setDate={setDateScadenza} 
               placeholder={"Data scadenza"}
               disabled={!IsEditable}
@@ -301,14 +302,14 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='CCV'
                 editable={IsEditable}
-                value={user.ccv}
+                value={ccv}
                 onChangeText = {(ccv) => setCCV(ccv)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Intestatario'
                 editable={IsEditable}
-                value={user.intestatario}
+                value={intestatario}
                 onChangeText = {(intestatario) => setIntestatario(intestatario)}
             />    
           </View>

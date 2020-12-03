@@ -100,6 +100,7 @@ const styles = StyleSheet.create({
         width:"100%",
         borderColor: '#cc3881',
         borderBottomWidth: 1.4,
+        color: "black",
         marginTop:8,
         paddingTop:9,
         fontFamily: "MontserrantSemiBold",
