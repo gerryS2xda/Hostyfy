@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
 	},
 
 	bottomContainer: {
-		marginTop: "70%",
+		marginTop: "40%",
 		marginBottom: 30,
 	},
 
@@ -157,9 +157,9 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 						]}
 						useNativeAndroidPickerStyle={false}
 					/>
-					<RNPickerSelect
+					<RNPickerSelect	
 						style = {pickerStyle}
-						onValueChange = {(alloggio) => {setStruttura(alloggio);}}
+						onValueChange = {(alloggio) => {setAlloggio(alloggio);}}
 						value={alloggio}
 						placeholder = {{
 							label: 'Alloggio',
