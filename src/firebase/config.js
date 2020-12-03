@@ -4,10 +4,10 @@
 import firebase from 'firebase';
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/storage";
 
 // Optionally import the services that you want to use
 //import "firebase/functions";
-//import "firebase/storage";
 //import "firebase/database";
 
 // Initialize Firebase

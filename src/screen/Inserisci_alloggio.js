@@ -5,7 +5,13 @@ import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as alloggioModel from '../firebase/datamodel/AlloggioModel';
 import ImagePickerButton from '../components/ImagePicker'
+import {firebase} from "../firebase/config"
 
+//Firebase
+var db = firebase.firestore(); 
+var storageRef = firebase.storage().ref(); // create a storage reference from our storage service
+
+//Styles
 const styles = StyleSheet.create({
     maincontainer: {
 		flex: 1,
