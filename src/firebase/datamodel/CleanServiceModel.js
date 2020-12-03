@@ -8,7 +8,7 @@ var cleanServiceCollectionRef = db.collection("cleanService"); //ottieni riferim
 //Create functions: one function for each collection to create
 export function createCleanServiceDocument(matricola, nome, cognome, email, numeroTelefono, ditta, dataAssunzione){
     // Add a new document in collection "cleanService" con set(), se non e' presente, crea il documento
-    cleanServiceCollectionRef.doc(""+matricola).set({
+    cleanServiceCollectionRef.add({
         matricola: matricola, 
         nome: nome, 
         cognome: cognome, 
@@ -18,7 +18,7 @@ export function createCleanServiceDocument(matricola, nome, cognome, email, nume
         dataAssunzione: dataAssunzione 
     })
     .then(function() {
-        console.log("Document successfully written!");
+        console.log("Clean Service document successfully written!");
     })
     .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -53,20 +53,3 @@ export function deleteCleanServiceDocument(matricola){
         console.error("Error removing clean service document: ", error);
     });
 }
-
-//Read function
-
-export function getCleanServiceDocumentRef(matricola){
-    return cleanServiceCollectionRef.doc(""+matricola);
-}
-
-/*
-export async function getCleanServiceDocument(matricola){
-    let doc = await cleanServiceCollectionRef.doc(""+matricola).get();
-    if (doc.exists) {
-        return doc.data();
-    } else {
-        Promise.reject("No such clean service document with " + matricola);
-    }
-}
-*/

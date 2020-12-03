@@ -9,12 +9,12 @@ var hostCollectionRef = db.collection("host"); //ottieni riferimento della colle
 export function createHostDocument(uid, emailWeb, passwordWeb ){
     // Add a new document in collection "host" con set(), se non e' presente, crea il documento
     hostCollectionRef.doc(uid).set({
-        userId: db.doc("guest/"+uid),
+        userId: uid,
         emailWeb: emailWeb,
         passwordWeb: passwordWeb
     })
     .then(function() {
-        console.log("Document successfully written!");
+        console.log("Host document successfully written!");
     })
     .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -29,7 +29,7 @@ export function updateHostDocument(uid,  emailWeb, passwordWeb){
         passwordWeb: passwordWeb    
     })
     .then(function() {
-        console.log("Document successfully updated!");
+        console.log("Host document successfully updated!");
     })
     .catch(function(error) {
         // The document probably doesn't exist.
@@ -40,25 +40,8 @@ export function updateHostDocument(uid,  emailWeb, passwordWeb){
 //Delete function
 export function deleteHostDocument(uid){
     hostCollectionRef.doc(uid).delete().then(function() {
-        console.log("Document successfully deleted!");
+        console.log("Host document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);
     });
 }
-
-//Read function
-export function getHostDocumentRef(uid){
-    return hostCollectionRef.doc(uid);
-}
-
-/*
-export async function getHostDocument(uid){
-    let doc = await hostCollectionRef.doc(uid).get();
-    if (doc.exists) {
-        //console.log("Nome: " + doc.data().nome);
-        return doc.data();
-    } else {
-        Promise.reject("No such document with " + uid);
-    }
-}
-*/

@@ -25,7 +25,7 @@ export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luo
         password: pwdGuest 
     })
     .then(function() {
-        console.log("Document successfully written!");
+        console.log("Guest document successfully written!");
     })
     .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -52,7 +52,7 @@ export function createGuestDocumentForRegistration(uid, cognome, nome, emailGues
         password: pwdGuest 
     })
     .then(function() {
-        console.log("Document successfully written!");
+        console.log("Guest document successfully written!");
     })
     .catch(function(error) {
         console.error("Error writing document: ", error);
@@ -148,33 +148,3 @@ export function deleteCreditCardDocument(uid){
         console.error("Error removing document: ", error);
     });
 }
-
-//Read function
-export function getGuestDocumentRef(uid){
-    return guestCollectionRef.doc(uid);
-}
-
-export function getCartaCreditoDocumentRef(uid){
-    return guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid);
-}
-
-/*
-export async function getGuestDocument(uid){
-    let doc = await guestCollectionRef.doc(uid).get();
-    if (doc.exists) {
-        return doc.data();
-    } else {
-        Promise.reject("No such guest document with " + uid);
-    }
-}
-
-export async function getCartaCreditoDocument(uid){
-    let doc = await guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).get();
-    if (doc.exists) {
-        return doc.data();
-    } else {
-        Promise.reject("No such guest/creditcard document with " + uid);
-    }
-}
-
-*/

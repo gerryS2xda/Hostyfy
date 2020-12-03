@@ -15,9 +15,9 @@ export function createPrenotazioniDocument(costo, dataInizio, dataFine, email, n
         emailPren: email, 
         numPersone: numPersone, 
         numTel: numTel, 
-        strutturaRef: db.doc("strutture/"+strutturaDocId), 
-        alloggioRef: db.doc("strutture/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
-        chiaveAlloggioRef: db.doc("strutture/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
+        strutturaRef: db.doc("struttura/"+strutturaDocId), 
+        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
+        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
         guestRef: db.doc("guest/" + guestuid), 
         //hostRef: db.doc("host/"+hostCF)
     })
@@ -39,9 +39,9 @@ export function updatePrenotazioniDocument(id, costo, dataInizio, dataFine, emai
         emailPren: email, 
         numPersone: numPersone, 
         numTel: numTel,
-        strutturaRef: db.doc("strutture/"+strutturaDocId), 
-        alloggioRef: db.doc("strutturae/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
-        chiaveAlloggioRef: db.doc("strutture/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
+        strutturaRef: db.doc("struttura/"+strutturaDocId), 
+        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
+        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
         guestRef: db.doc("guest/" + guestCF), 
         //hostRef: db.doc("host/"+hostCF) 
     })
@@ -62,23 +62,3 @@ export function deletePrenotazioniDocument(id){
         console.error("Error removing document: ", error);
     });
 }
-
-//Read function
-
-/*
-export async function getPrenotazioniDocument(id){
-    let doc = await prenotazioniCollectionRef.doc(id).get();
-    if (doc.exists) {
-        //console.log("Nome: " + doc.data().nome);
-        return doc.data();
-    } else {
-        Promise.reject("No such document with " + id);
-    }
-}
-
-export async function getPrenotazioniCollection(){
-    //Dammi tutti i documenti presenti nella collection "prenotazioni"
-    let docs = await prenotazioniCollectionRef.get();
-    return docs;
-}
-*/

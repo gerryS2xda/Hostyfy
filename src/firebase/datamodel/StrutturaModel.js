@@ -3,7 +3,7 @@ import {firebase} from '../config'
 
 //Ottieni istanza di 'firebase.firestore.Firestore' per leggere o scrivere da db
 var db = firebase.firestore();
-var strutturaCollectionRef = db.collection("strutture"); //ottieni riferimento della collection a cui accedere 
+var strutturaCollectionRef = db.collection("struttura"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
 export function createStrutturaDocument(cfHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId){
@@ -59,20 +59,3 @@ export function deleteStrutturaDocument(id){
     });
 }
 
-//Read function
-
-export function getStrutturaDocumentRef(id){
-    return strutturaCollectionRef.doc(id);
-}
-
-/*
-export async function getStrutturaDocument(id){
-    let doc = await strutturaCollectionRef.doc(id).get();
-    if (doc.exists) {
-        return doc.data();
-    } else {
-        Promise.reject("No such struttura document with " + uid);
-    }
-}
-
-*/
