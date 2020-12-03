@@ -178,6 +178,21 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => {
+                                    
+                                    var fileFoto;
+
+                                    var storageRef = firebase.storage().ref();
+
+                                    // Create a reference to 'mountains.jpg'
+                                    var mountainsRef = storageRef.child('alloggio_1.jpg');
+
+                                    // Create a reference to 'images/mountains.jpg'
+                                    var mountainImagesRef = storageRef.child('images/alloggio_1.jpg');
+
+                                    mountainImagesRef.put(fileFoto).then(function(snapshot) {
+                                        console.log('Uploaded a blob or file!');
+                                      });
+                                    
                                     alloggioModel.createAlloggioDocument('struct1',this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)} 
                                 }],
                                 { cancelable: false })} />

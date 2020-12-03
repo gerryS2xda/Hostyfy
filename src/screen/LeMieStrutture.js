@@ -13,7 +13,9 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
 import HeaderBar from '../components/CustomHeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {firebase} from '../firebase/config'
 
+var db = firebase.firestore();
 
 const styles = StyleSheet.create({
  
@@ -35,14 +37,16 @@ const styles = StyleSheet.create({
 });
 
 const LeMieStrutture = (props) => {  
+      const {user, list} = props.route.params;
 
-      const {user} = props.route.params;
       return (
       <View style={styles.maincontainer}>
         <HeaderBar title="Le tue Strutture" navigator={props.navigation} /> 
             <View style={styles.container}>
               <CustomListView 
                 nav= {props.navigation}
+                itemList = {list}
+                /*
                 itemList={[
                   {
                     key: 1, 
@@ -78,8 +82,8 @@ const LeMieStrutture = (props) => {
                   }
                   
                 ]
-
-              }/>
+                
+              } *//>
 
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity 

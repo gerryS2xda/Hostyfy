@@ -6,6 +6,9 @@ import HeaderBar from '../components/CustomHeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomImageButton from "../components/CustomImageButton";
 import CustomButton from "../components/CustomButton";
+import {firebase} from '../firebase/config'
+
+var db = firebase.firestore();
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -110,7 +113,27 @@ const HomeHost = ({route, navigation}) => {
           <Text style = {styles.testoLogo}>Ernesto Rossi</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() => navigation.navigate("LeMieStrutture", {user: user})} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() =>{
+                console.log(user.userId)
+                var itemList = [];
+                var count = 1;
+                db.collection('struttura').where('cfHostRef', '==', user.userIdRef).get().then((querySnapshot)=>{
+                querySnapshot.forEach((doc) =>{
+                var oggetto = {
+                    key: count, 
+                    title: doc.data().denominazione,
+                    description: doc.data().descrizione,
+                    image_url: require('../../assets/Struttura/struttura1.jpg'),
+                    newPage: 'VisualizzaStruttura',
+                    OTP: 'true'
+                }
+                count++;
+                itemList.push(oggetto);
+                })
+                navigation.navigate("LeMieStrutture", {user: user, list: itemList});
+                })
+
+            }} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => navigation.navigate("InserisciPrenotazione", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
