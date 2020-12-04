@@ -110,14 +110,14 @@ const HomeHost = ({route, navigation}) => {
       <ScrollView contentContainerStyle={styles.container}>
         <View style={styles.topContainer} >
           <Icon name= "account-circle-outline" color={"black"} size={100}/>
-          <Text style = {styles.testoLogo}>{user.nome}</Text>
+          <Text style = {styles.testoLogo}>{user.nome} {user.cognome}</Text>
         </View>
         <View style={styles.centerContainer}>
           <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() =>{
                 console.log(user.userId)
                 var itemList = [];
                 var count = 1;
-                db.collection('struttura').where('cfHostRef', '==', user.userIdRef).get().then((querySnapshot)=>{
+                db.collection('struttura').where('hostRef', '==', user.userIdRef).get().then((querySnapshot)=>{
                 querySnapshot.forEach((doc) =>{
                 var oggetto = {
                     key: count, 

@@ -146,7 +146,7 @@ function DrawerContentCustom(props){
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
             },
-            { text: "OK", onPress: () => console.log("OK Pressed") }
+            { text: "Conferma", onPress: () => console.log("OK Pressed") }
         ],
         { cancelable: false }
     );
@@ -161,11 +161,17 @@ function DrawerContentCustom(props){
             onPress: () => console.log("Cancel Pressed"),
             style: "cancel"
             },
-            { text: "OK", onPress: () =>{
+            { text: "Conferma", onPress: () =>{
+                    
+                    
                     //Aggiungi codice per Downgrade (update is Host From DB)
-                    setIsHost(false);
                     GuestModel.updateisHost(userLogged.userId,false);
+                    isRealHost = false;
+                    setIsHost(previousState=>!previousState);
                     setIsUpgradePay(false);
+                    userLogged.isHost = false;
+                    console.log("Real: " + isRealHost+" Stato: "+isHost)
+                    props.navigation.navigate('HomeGuest', {user: userLogged});
                 } 
             }
         ],
@@ -173,16 +179,32 @@ function DrawerContentCustom(props){
     );
 
     
-    if(!isHost && !isRealHost){
+
+    if(!isHost){
         return(
             <View style={styles.drawerContainer}>
             <DrawerContentScrollView {...props}>
                 <View style={styles.drawerContent}>
-                    <View style={styles.userInfoSection}>
+                    <View style={styles.userInfoSectionGuest}>
                         <View style={styles.avaterAndTxtContainerGuest}>
                             <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>
                         </View>
-                </View>
+                                {isRealHost && ( 
+
+                                                <View style={styles.horizontalViewSwitch}>
+                                                    <Text style={styles.labelSwitchTxt}>Guest</Text>
+                                                        <Switch style={styles.switchStyle}
+                                                            trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                                            thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
+                                                            ios_backgroundColor="#3e3e3e"
+                                                            disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
+                                                            onValueChange={toggleSwitchGuestHost}
+                                                            value={isHost}
+                                                        />
+                                                    <Text style={styles.labelSwitchTxt}>Host</Text>
+                                                </View>
+                        )}
+                    </View>   
                         <View style={styles.drawerSection}>
                             <DrawerItem 
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
@@ -216,6 +238,7 @@ function DrawerContentCustom(props){
                                     props.navigation.navigate('LeMieChiavi', {user: userLogged});
                                 }}
                             />
+                            {!isRealHost && (
                             <DrawerItem 
                                 icon={() => (<Icon name="arrow-up-bold-circle" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Upgrade host</Text>)}
@@ -227,6 +250,7 @@ function DrawerContentCustom(props){
                                     }
                                 }
                             />
+                            )}
                         </View>
                     </View>
                 </DrawerContentScrollView>
@@ -247,9 +271,10 @@ function DrawerContentCustom(props){
             <View style={styles.drawerContainer}>
                 <DrawerContentScrollView {...props}>
                     <View style={styles.drawerContent}>
-                        <View style={styles.userInfoSection}>
+                        <View style={styles.userInfoSectionGuest}>
                             <View style={styles.avaterAndTxtContainer}>
-                                <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>                           
+                                <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>
+                            </View>                           
                                         <View style={styles.horizontalViewSwitch}>
                                             <Text style={styles.labelSwitchTxt}>Guest</Text>
                                                 <Switch style={styles.switchStyle}
@@ -262,7 +287,7 @@ function DrawerContentCustom(props){
                                                 />
                                             <Text style={styles.labelSwitchTxt}>Host</Text>
                                         </View>
-                            </View>
+                        
                         </View>
                         <View style={styles.drawerSection}>
                             <DrawerItem 
@@ -353,30 +378,38 @@ const styles = StyleSheet.create({
     drawerContent: {
         flex: 1,
     },
+    userInfoSectionGuest: {
+        flexDirection: 'column',
+        borderBottomColor: '#b2c2bf',
+        borderBottomWidth: 1,
+        paddingBottom: 6,
+      },
+      avaterAndTxtContainerGuest: {
+        alignItems: 'flex-start',
+        marginTop: "1%",
+        marginBottom: "1%",
+        paddingLeft: "5%"
+    },
+        avaterAndTxtContainer: {
+        alignItems: 'flex-start',
+        marginTop: "1%",
+        marginBottom: "1%",
+        paddingLeft: "5%"
+    },
     userInfoSection: {
-      flexDirection: 'row',
-      paddingLeft: 16,
-      borderBottomColor: '#b2c2bf',
-      borderBottomWidth: 1,
-      paddingBottom: 6,
-    },
-    avaterAndTxtContainer: {
+        flexDirection: 'row',
         alignItems: 'center',
-        marginTop: 2,
-        marginRight: 8,
-    },
-    avaterAndTxtContainerGuest: {
-        alignItems: 'center',
-        marginTop: "4%",
-        marginRight: 8,
-        marginBottom: "3%"
-    },
+        justifyContent: 'center',
+        borderBottomColor: '#b2c2bf',
+        borderBottomWidth: 1,
+        paddingBottom: "2%",
+      },
     userInfo: {
+        justifyContent: 'center',
         fontSize: 16,
         marginTop: 1,
         color: 'black',
-        fontFamily: 'Montserrant',
-        marginLeft: "9%"
+        fontFamily: 'MontserrantSemiBold',
     },
     labelDrawerItemStyle: {
         fontSize: 14, 
@@ -395,6 +428,13 @@ const styles = StyleSheet.create({
     },
     horizontalViewSwitch: {
         flexDirection: 'row',
+        marginLeft: 12,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 2,
+    },
+    horizontalViewSwitchGuest:{
+        flexDirection: 'column',
         marginLeft: 12,
         alignItems: 'center',
         justifyContent: 'center',

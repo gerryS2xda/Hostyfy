@@ -104,19 +104,21 @@ const Login = (props) => {
               style = {styles.input}
               placeholder = 'Email'
               onChangeText = {(email) => setEmail(email)}
+              ref = {input => { this.emailref = input }}
             />
             <TextInput
               style = {styles.input}
               placeholder = 'Password'
               onChangeText = {(password) => setPassword(password)}
               secureTextEntry = {true}
+              ref = {input => { this.passwordref = input }}
             />
             <Text>{errore}</Text>
             <CustomButton 
                 nome="Accedi" 
                 styleBtn={{width: "75%"}}
                 onPress={() => {
-                  firebase.auth().signInWithEmailAndPassword(email, password).then(function (user){
+                  firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user){
                     const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
                     console.log("Login - uid:" + userId);
 
@@ -128,7 +130,7 @@ const Login = (props) => {
                         if(guest.isHost){
                           db.collection("host").doc(userId).get().then(function (hostdoc){
                             var host = hostdoc.data();
-                            props.navigation.navigate('HomeHost', {user: {...guest, ...host, ...creditcard}}); //fai il merge tra field di guest e di host
+                            props.navigation.navigate('HomeGuest', {user: {...guest, ...host, ...creditcard}}); //fai il merge tra field di guest e di host
                           }).catch(function (err) { console.log("ERROR with read host in Login.js:" + err); });
                         } else{
                           props.navigation.navigate('HomeGuest', {user: {...guest, ...creditcard}});
@@ -136,7 +138,10 @@ const Login = (props) => {
                       }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
                     }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
                   }).catch(function (error) {
-                    console.error("Error login with firebase: ", error);
+                    Alert.alert('Errore nell\'autenticazione', 'Username e/o password errati, ritenta!', [{text: 'OK', onPress: ()=>{
+                      this.emailref.clear();  
+                      this.passwordref.clear();
+                    }}]);
                   });
                   
                 }} />

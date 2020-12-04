@@ -81,7 +81,7 @@ const HomeGuest = ({route, navigation}) => {
           <Text style = {styles.testoLogo}>{user.nome} {user.cognome}</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= 'Modifica il tuo profilo' onPress={() => navigation.navigate("ModificaProfilo", {user: user})} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= ' ' onPress={() => navigation.navigate("ModificaProfilo", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
