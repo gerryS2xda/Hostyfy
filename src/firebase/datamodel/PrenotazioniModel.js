@@ -9,6 +9,7 @@ var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferim
 export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){ 
     // Add a new document in collection "prenotazioni" con set(), se non e' presente, crea il documento
     prenotazioniCollectionRef.add({
+        numeroPrenotazione: 0,
         hostRef: hostuid,
         guestRef: guestuid,
         strutturaDocId: strutturaDocId, 
@@ -20,8 +21,11 @@ export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, al
         numTel: numTel, 
         costo: costo, 
     })
-    .then(function() {
+    .then(function(docRef) {
         console.log("Prenotazione document successfully written!");
+        prenotazioniCollectionRef.get().then((docs)=>{
+            updateNumeroPrenotazione(docRef, docs.size +1);
+        });
     })
     .catch(function(error) {
         console.error("Error writing prenotazione document: ", error);
@@ -42,6 +46,20 @@ export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, struttu
         numPersone: numPersone, 
         numTel: numTel, 
         costo: costo, 
+    })
+    .then(function() {
+        console.log("Prenotazione document successfully updated!");
+    })
+    .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating prenotazione document: ", error);
+    }); 
+}
+
+export function updateNumeroPrenotazione(prenDocId, numPren){
+    //Edit all field of prenotazioni document
+    return prenotazioniCollectionRef.doc(prenDocId).update({
+        numeroPrenotazione: numPren,
     })
     .then(function() {
         console.log("Prenotazione document successfully updated!");
