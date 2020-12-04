@@ -178,22 +178,23 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => {
+                                    var structId = "struct1";
+                                    console.log(this.state.image);    
+                                    alloggioModel.createAlloggioDocument(structId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)
+                                    db.collection("struttura/"+structId+"/alloggi").where("nomeAlloggio", "==", this.state.nomeAlloggio).get().then((querySnapshot)=>{
+                                        querySnapshot.forEach((doc)=>{
+                                            var alloggioId = doc.id;
+                                            var nomeAlloggio = doc.data().nomeAlloggio;
+                                            db.collection("struttura/"+structId+"/alloggi").doc(doc.id).collection("foto").get().then((fotodocs)=>{
+                                                var fotoCount = fotodocs.size; //restituisce numero documenti in una collezione
+                                                fotoCount++;
+                                                this.uploadImageAndInsertIntoDB(this.state.image, structId, alloggioId, "struttura/"+structId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
+                                            });
+                                        });
+                                    });
                                     
-                                    var fileFoto;
-
-                                    var storageRef = firebase.storage().ref();
-
-                                    // Create a reference to 'mountains.jpg'
-                                    var mountainsRef = storageRef.child('alloggio_1.jpg');
-
-                                    // Create a reference to 'images/mountains.jpg'
-                                    var mountainImagesRef = storageRef.child('images/alloggio_1.jpg');
-
-                                    mountainImagesRef.put(fileFoto).then(function(snapshot) {
-                                        console.log('Uploaded a blob or file!');
-                                      });
                                     
-                                    alloggioModel.createAlloggioDocument('struct1',this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)} 
+                                } 
                                 }],
                                 { cancelable: false })} />
                         </View>
@@ -201,5 +202,38 @@ export default class InserisciAlloggioScreen extends React.Component {
                 </ScrollView>
             </View>
         );
+    }
+
+    //Function for upload a image and obtain a download URL
+    uploadImageAndInsertIntoDB = async(uri, structId, alloggioId, pathImage) => {
+        const response = await fetch(uri);
+        const blob = await response.blob(); 
+        var ref = storageRef.child(pathImage);
+
+        // Upload file and metadata to the object 'images/mountains.jpg'
+        var uploadTask= ref.put(blob);
+
+        // Listen for state changes, errors, and completion of the upload.
+        uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+            (snapshot)=> {}, (error)=> {
+            switch (error.code) {
+            case 'storage/unauthorized': 
+                console.log("User doesn't have permission to access the object");
+                break;
+            case 'storage/canceled':
+                console.log("User canceled the upload");
+                break;
+            case 'storage/unknown':
+                console.log("Unknown error occurred, inspect error.serverResponse");
+                break;
+            }
+        }, function() {
+            // Upload completed successfully, now we can get the download URL
+            uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+            console.log('File available at', downloadURL);
+            alloggioModel.createFotoDocument(structId, alloggioId, downloadURL);
+        });
+        
+    });
     }
 }

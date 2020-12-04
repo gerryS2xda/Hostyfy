@@ -27,7 +27,7 @@ export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMax
 export function createCalendarioDocument(structId, alloggioId, giornoDisp, meseDisp, annoDisp){
     // Add a new document in collection "alloggi/alloggio+id/calendario"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("calendario").add({
+    alloggioCollectionRef.doc(alloggioId).collection("calendario").add({
         giorno: giornoDisp,
         mese: meseDisp,
         anno: annoDisp
@@ -43,7 +43,7 @@ export function createCalendarioDocument(structId, alloggioId, giornoDisp, meseD
 export function createChiaveDocument(structId, alloggioId, chiaveId){
     // Add a new document in collection "alloggi/alloggio+id/chiave"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("chiave").doc("idchiave" + chiaveId).set({
+    alloggioCollectionRef.doc(alloggioId).collection("chiave").doc("idchiave" + chiaveId).set({
         id: chiaveId,
     })
     .then(function() {
@@ -57,7 +57,7 @@ export function createChiaveDocument(structId, alloggioId, chiaveId){
 export function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
     // Add a new document in collection "alloggi/alloggio+id/dispositividomotici"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("dispositividomotici").doc(nomeDevice).set({
+    alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).set({
         nome: nomeDevice,
         attivo: isActive,
     })
@@ -72,7 +72,7 @@ export function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
 export function createFotoDocument(structId, alloggioId, pathFoto){
     // Add a new document in collection "alloggi/alloggio+id/foto"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("foto").add({
+    alloggioCollectionRef.doc(alloggioId).collection("foto").add({
         path: pathFoto,
     })
     .then(function() {
@@ -88,7 +88,7 @@ export function createFotoDocument(structId, alloggioId, pathFoto){
 export function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, pathvideo){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).update({
+    alloggioCollectionRef.doc(alloggioId).update({
         id: alloggioId,
         nomeAlloggio: nomeAlloggio,
         numCamere: numCamere,
@@ -107,7 +107,7 @@ export function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCa
 export function updateCalendarioDocument(structId, alloggioId, docId, giornoDisp, meseDisp, annoDisp){
     // Add a new document in collection "alloggi/alloggio+id/calendario"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("calendario").doc(docId).update({
+    alloggioCollectionRef.doc(alloggioId).collection("calendario").doc(docId).update({
         giorno: giornoDisp,
         mese: meseDisp,
         anno: annoDisp
@@ -123,7 +123,7 @@ export function updateCalendarioDocument(structId, alloggioId, docId, giornoDisp
 export function updateChiaveDocument(structId, alloggioId, chiaveId){
     // Add a new document in collection "alloggi/alloggio+id/chiave"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("chiave").doc("idchiave" + chiaveId).update({
+    alloggioCollectionRef.doc(alloggioId).collection("chiave").doc("idchiave" + chiaveId).update({
         id: chiaveId,
     })
     .then(function() {
@@ -137,7 +137,7 @@ export function updateChiaveDocument(structId, alloggioId, chiaveId){
 export function updateDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
     // Add a new document in collection "alloggi/alloggio+id/dispositividomotici"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("dispositividomotici").doc(nomeDevice).update({
+    alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).update({
         nome: nomeDevice,
         attivo: isActive,
     })
@@ -152,7 +152,7 @@ export function updateDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
 export function updateFotoDocument(structId, alloggioId, fotoId, pathFoto){
     // Add a new document in collection "alloggi/alloggio+id/foto"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("foto").doc(""+fotoId).update({
+    alloggioCollectionRef.doc(alloggioId).collection("foto").doc(""+fotoId).update({
         path: pathFoto,
     })
     .then(function() {
@@ -166,7 +166,7 @@ export function updateFotoDocument(structId, alloggioId, fotoId, pathFoto){
 //Delete function
 export function deleteAlloggioDocument(structId, alloggioId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).delete().then(function() {
+    alloggioCollectionRef.doc(alloggioId).delete().then(function() {
         console.log("Alloggio document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio document: ", error);
@@ -175,7 +175,7 @@ export function deleteAlloggioDocument(structId, alloggioId){
 
 export function deleteCalendarioDocument(structId, alloggioId, docId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("calendario").doc(docId).delete().then(function() {
+    alloggioCollectionRef.doc(alloggioId).collection("calendario").doc(docId).delete().then(function() {
         console.log("Alloggio/calendario document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/calendario document: ", error);
@@ -184,7 +184,7 @@ export function deleteCalendarioDocument(structId, alloggioId, docId){
 
 export function deleteChiaveDocument(structId, alloggioId, chiaveId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("chiave").doc("idchiave" + chiaveId).delete().then(function() {
+    alloggioCollectionRef.doc(alloggioId).collection("chiave").doc("idchiave" + chiaveId).delete().then(function() {
         console.log("Alloggio/chiave document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/chiave document: ", error);
@@ -193,7 +193,7 @@ export function deleteChiaveDocument(structId, alloggioId, chiaveId){
 
 export function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevice){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("dispositividomotici").doc(nomeDevice).delete().then(function() {
+    alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).delete().then(function() {
         console.log("Alloggio/dispositividomotici document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/dispositividomotici document: ", error);
@@ -202,7 +202,7 @@ export function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
 
 export function deleteFotoDocument(structId, alloggioId, fotoId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc("alloggio"+alloggioId).collection("foto").doc(""+fotoId).delete().then(function() {
+    alloggioCollectionRef.doc(alloggioId).collection("foto").doc(""+fotoId).delete().then(function() {
         console.log("Alloggio/foto document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/foto document: ", error);
