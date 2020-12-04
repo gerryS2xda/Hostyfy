@@ -1,5 +1,5 @@
 import React, { Component, useState } from 'react';
-import CustomListViewGeneral from '../components/CustomListViewGeneral'
+import CustomListViewGeneralPrenotazione from '../components/CustomListViewGeneralPrenotazione'
 import {
   StyleSheet,
   Text,
@@ -45,49 +45,17 @@ const styles = StyleSheet.create({
 
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
-      const {user} = route.params;
-      const [prenotazioneList, setPrenotazioneList] = useState([]);
-
-      if(prenotazioneList.length == 0){
-        //Dammi tutti i documenti presenti nella collection "prenotazioni"
-        PrenotazioneModel.getPrenotazioniCollection().then((querySnapshot)=>{
-          querySnapshot.forEach((doc)=>{
-            prenotazioneList.push(doc);
-            console.log("Test");
-          });
-          setPrenotazioneList(prenotazioneList);
-        });
-      }
-      
-     
-      prenotazioneList.forEach((item, index)=>{
-        console.log(item.data().email);
-      });
-      console.log("Length: " + prenotazioneList.length);
-      console.log("Testing outer" + prenotazioneList.toString());
-
+      const {user, list} = route.params; 
       return (
         <View style={styles.maincontainer}>
           <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
           <ScrollView style={styles.bodyScrollcontainer}>
             <View style={styles.scrollContent}>
               <View style={styles.container}>
-                {
-                  prenotazioneList.map((item, key)=>(
-                          <CustomListViewGeneral
-                            nav = {navigation}
-                            itemList={[
-                              {
-                                key: key+1, 
-                                title: item.data().email,
-                                description: "" + item.data().dataInizio + "-" + item.data().dataFine,
-                                image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
-                                newPage: 'PrenotazioneDetail',
-                                data: item.data(),
-                              }]}
-                          />
-                      )
-                    )}
+                  <CustomListViewGeneralPrenotazione
+                    nav = {navigation}
+                    itemList={list}
+                />
               </View>
             </View>
           </ScrollView>
