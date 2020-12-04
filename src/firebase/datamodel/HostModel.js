@@ -9,9 +9,9 @@ var hostCollectionRef = db.collection("host"); //ottieni riferimento della colle
 export function createHostDocument(uid, emailWeb, passwordWeb ){
     // Add a new document in collection "host" con set(), se non e' presente, crea il documento
     hostCollectionRef.doc(uid).set({
-        userId: uid,
-        emailWeb: emailWeb,
-        passwordWeb: passwordWeb
+        userIdRef: uid,
+        emailWebAlloggiati: emailWeb,
+        passwordWebAlloggiati: passwordWeb
     })
     .then(function() {
         console.log("Host document successfully written!");
@@ -25,8 +25,8 @@ export function createHostDocument(uid, emailWeb, passwordWeb ){
 export function updateHostDocument(uid,  emailWeb, passwordWeb){
     //Edit all field of host document
     return hostCollectionRef.doc(uid).update({
-        emailWeb: emailWeb,
-        passwordWeb: passwordWeb    
+        emailWebAlloggiati: emailWeb,
+        passwordWebAlloggiati: passwordWeb    
     })
     .then(function() {
         console.log("Host document successfully updated!");

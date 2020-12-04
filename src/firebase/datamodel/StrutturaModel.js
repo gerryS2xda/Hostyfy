@@ -27,10 +27,21 @@ export function createStrutturaDocument(cfHost, codiceOtp, denominazione, descri
     });
 }
 
+export function createFotoDocument(structId, pathFoto){
+    // Add a new document in collection "alloggi/alloggio+id/foto"
+    strutturaCollectionRef.doc(structId).collection("foto").add({
+        path: pathFoto,
+    })
+    .then(function() {
+        console.log("Foto document in \"struttura/" + structId + " collection\" successfully written!");
+    })
+    .catch(function(error) {
+        console.error("Error writing foto document in \"struttura/" + structId + " collection\": ", error);
+    });
+}
 
 //Update functions
 export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia){
-    //Edit all field of guest document
     return strutturaCollectionRef.doc(id).update({
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
@@ -49,6 +60,17 @@ export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizion
     }); 
 }
 
+export function updateFotoDocument(structId, fotoId, pathFoto){
+    strutturaCollectionRef.doc(structId).collection("foto").doc(fotoId).update({
+        path: pathFoto,
+    })
+    .then(function() {
+        console.log("Foto document in \"struttura/" + structId + " collection\" successfully updated!");
+    })
+    .catch(function(error) {
+        console.error("Error writing foto document in \"struttura/" + structId + " collection\": ", error);
+    });
+}
 
 //Delete function
 export function deleteStrutturaDocument(id){
@@ -59,3 +81,10 @@ export function deleteStrutturaDocument(id){
     });
 }
 
+export function deleteFotoDocument(structId, fotoId){
+    strutturaCollectionRef.doc(structId).collection("foto").doc(fotoId).delete().then(function() {
+        console.log("struttura/structId/foto document successfully deleted!");
+    }).catch(function(error) {
+        console.error("Error removing struttura/structId/foto document: ", error);
+    });
+}
