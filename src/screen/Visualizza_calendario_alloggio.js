@@ -2,7 +2,11 @@ import React, { useState } from 'react'
 import {View, Text, StyleSheet, ScrollView} from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar'
 import CalendarStrip from 'react-native-calendar-strip';
+import {firebase} from '../firebase/config'
+import * as alloggioModel from '../firebase/datamodel/AlloggioModel'
 
+//Ottieni istanza di 'firebase.firestore.Firestore' per leggere o scrivere da db
+var db = firebase.firestore();
 const styles = StyleSheet.create({
     maincontainer: {
       flex: 1,
@@ -84,7 +88,7 @@ const Row = (props) => {
 
 
 const Visualizza_calendario_alloggio = ({route, navigation}) => {
-    const {dataIniziale, dataFinale} = route.params;
+    const {dataIniziale, dataFinale, id, strutturaId} = route.params;
     let datesWhitelist = [{
         start: dataIniziale,
         end: dataFinale
@@ -116,19 +120,17 @@ const Visualizza_calendario_alloggio = ({route, navigation}) => {
                         iconContainer={{flex: 0.1}}
                         datesWhitelist= {datesWhitelist}
                         startingDate= {dataIniziale}
-                        onDateSelected={()=>{
-                            if(count == 0){
-                                setColore1("#ccccff")
-                                setCount(1)
-                            }
-                            else if (count == 1){
-                                setColore1("#ccccff")
-                                setCount(2)
-                            }
-                            else if (count == 2){
-                                setColore1("white")
-                                setCount(0)
-                            }
+                        onDateSelected={(data)=>{
+                            var date = new Date(data)
+                            var alloggioCollectionRef = db.collection("struttura/"+strutturaId+"/alloggi");
+                            alloggioCollectionRef.doc(id).collection("calendario").where("anno",'==',date.getFullYear()).where("mese",'==',(date.getMonth()+1)).where("giorno",'==',date.getDate()).get().then(function(querySnapshot) {
+                                if(querySnapshot.size > 0){
+                                    setColore1("#ffccee")
+                                }
+                                else{
+                                    setColore1("#ffffff")
+                                }
+                            }).catch((error)=>{})
                         }}
                     />
                </View>

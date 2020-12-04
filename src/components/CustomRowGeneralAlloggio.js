@@ -60,7 +60,8 @@ return (
             pathVideo: doc.data().pathvideo,
             piano: doc.data().piano,
             descrizione: doc.data().descrizione,
-            id: props.id
+            id: props.id,
+            strutturaId:props.strutturaId
         }
         props.nav.navigate(props.newPage,{alloggio: alloggio})
         })      

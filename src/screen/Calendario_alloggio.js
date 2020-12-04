@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
 })
 
 const Calendario_alloggio = (props) => {
+  const {id, strutturaId} = props.route.params;
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);
@@ -93,6 +94,8 @@ const Calendario_alloggio = (props) => {
            onPress={() => props.navigation.navigate("Visualizza_calendario_alloggio",{
              dataIniziale: selectedStartDate,
              dataFinale: selectedEndDate,
+             id: id,
+             strutturaId: strutturaId,
            })}></CustomButton>
         </View>
       </ScrollView>
