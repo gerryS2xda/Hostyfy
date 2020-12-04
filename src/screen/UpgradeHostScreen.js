@@ -3,10 +3,11 @@ import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } fr
 import HeaderBar from '../components/CustomHeaderBar';
 import Dialog from "react-native-dialog";
 import CustomButton from "../components/CustomButton";
+import * as GuestModel from "../firebase/datamodel/GuestModel"
 
-const UpgradeHostScreen = ({navigation}) =>{
+const UpgradeHostScreen = ({route, navigation}) =>{
     const userState = "guest"; //necessario per controllare lo stato attuale dell'utente
-
+    const {user} = route.params; 
     //Necessario per primo dialog
     const [isVisibleFirstDialog, setFirstDialogVisible] = useState(false);
     const [isVisibleSecondDialog, setSecondDialogVisible] = useState(false);
@@ -87,7 +88,12 @@ const UpgradeHostScreen = ({navigation}) =>{
                                         style: "cancel"
                                     },
                                     { text: "OK", 
-                                    onPress: () => navigation.navigate('HomeHost') }
+                                    onPress: () => {
+                                        GuestModel.updateisHost(user.userId, true)
+                                        user.isHost=true;
+                                        navigation.navigate('HomeHost', {user:user}) 
+                                               
+                                        }}
                                     ],
                                     { cancelable: false }
                                 );

@@ -30,6 +30,7 @@ import CalendarioAlloggio from "../screen/Calendario_alloggio"
 import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
+import * as GuestModel from "../firebase/datamodel/GuestModel"
 
 const Drawer = createDrawerNavigator();
 var db = firebase.firestore();
@@ -116,6 +117,7 @@ export default DrawerMenuSimple;
 function DrawerContentCustom(props){
     
     var userLogged = props.userProps;
+    var isRealHost = userLogged.isHost;
 
     //<Icon>
     const colorIcon = "black";
@@ -162,6 +164,7 @@ function DrawerContentCustom(props){
             { text: "OK", onPress: () =>{
                     //Aggiungi codice per Downgrade (update is Host From DB)
                     setIsHost(false);
+                    GuestModel.updateisHost(userLogged.userId,false);
                     setIsUpgradePay(false);
                 } 
             }
@@ -169,30 +172,17 @@ function DrawerContentCustom(props){
         { cancelable: false }
     );
 
-
-    if(!isHost){
+    
+    if(!isHost && !isRealHost){
         return(
             <View style={styles.drawerContainer}>
-                <DrawerContentScrollView {...props}>
-                    <View style={styles.drawerContent}>
-                        <View style={styles.userInfoSection}>
-                            <View style={styles.avaterAndTxtContainer}>
-                                <Icon name= "account-circle-outline" color={"black"} size={32}/>
-                                <Text style={styles.userInfo}>{userLogged.nome} {userLogged.cognome}</Text>
-                            </View>
-                                <View style={styles.horizontalViewSwitch}>
-                                    <Text style={styles.labelSwitchTxt}>Guest</Text>
-                                    <Switch style={styles.switchStyle}
-                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                        thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
-                                        ios_backgroundColor="#3e3e3e"
-                                        disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
-                                        onValueChange={toggleSwitchGuestHost}
-                                        value={isHost}
-                                    />
-                                    <Text style={styles.labelSwitchTxt}>Host</Text>
-                                </View>
+            <DrawerContentScrollView {...props}>
+                <View style={styles.drawerContent}>
+                    <View style={styles.userInfoSection}>
+                        <View style={styles.avaterAndTxtContainerGuest}>
+                            <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>
                         </View>
+                </View>
                         <View style={styles.drawerSection}>
                             <DrawerItem 
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
@@ -257,23 +247,22 @@ function DrawerContentCustom(props){
             <View style={styles.drawerContainer}>
                 <DrawerContentScrollView {...props}>
                     <View style={styles.drawerContent}>
-                    <View style={styles.userInfoSection}>
+                        <View style={styles.userInfoSection}>
                             <View style={styles.avaterAndTxtContainer}>
-                                <Icon name= "account-circle-outline" color={"black"} size={32}/>
-                                <Text style={styles.userInfo}>{userLogged.nome} {userLogged.cognome}</Text>
+                                <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>                           
+                                        <View style={styles.horizontalViewSwitch}>
+                                            <Text style={styles.labelSwitchTxt}>Guest</Text>
+                                                <Switch style={styles.switchStyle}
+                                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                                    thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
+                                                    ios_backgroundColor="#3e3e3e"
+                                                    disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
+                                                    onValueChange={toggleSwitchGuestHost}
+                                                    value={isHost}
+                                                />
+                                            <Text style={styles.labelSwitchTxt}>Host</Text>
+                                        </View>
                             </View>
-                                <View style={styles.horizontalViewSwitch}>
-                                    <Text style={styles.labelSwitchTxt}>Guest</Text>
-                                    <Switch style={styles.switchStyle}
-                                        trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                        thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
-                                        ios_backgroundColor="#3e3e3e"
-                                        disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
-                                        onValueChange={toggleSwitchGuestHost}
-                                        value={isHost}
-                                    />
-                                    <Text style={styles.labelSwitchTxt}>Host</Text>
-                                </View>
                         </View>
                         <View style={styles.drawerSection}>
                             <DrawerItem 
@@ -376,11 +365,18 @@ const styles = StyleSheet.create({
         marginTop: 2,
         marginRight: 8,
     },
+    avaterAndTxtContainerGuest: {
+        alignItems: 'center',
+        marginTop: "4%",
+        marginRight: 8,
+        marginBottom: "3%"
+    },
     userInfo: {
         fontSize: 16,
         marginTop: 1,
         color: 'black',
         fontFamily: 'Montserrant',
+        marginLeft: "9%"
     },
     labelDrawerItemStyle: {
         fontSize: 14, 
