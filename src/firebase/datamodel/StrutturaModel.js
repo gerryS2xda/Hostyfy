@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var strutturaCollectionRef = db.collection("struttura"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createStrutturaDocument(cfHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId){
+export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId){
     // Add a new document in collection "Struttura" con set(), se non e' presente, crea il documento
     strutturaCollectionRef.add({
         codiceOtp: codiceOtp, 
@@ -16,8 +16,8 @@ export function createStrutturaDocument(cfHost, codiceOtp, denominazione, descri
         guida: guida, 
         numAlloggi: numAlloggi, 
         tipologia: tipologia,
-        cfHostRef: db.doc("host/"+cfHost),      
-        cleanServiceRef: db.doc("cleanService/"+cleanServiceDocId) 
+        hostRef: uidHost,      
+        cleanServiceRef: cleanServiceDocId 
     })
     .then(function() {
         console.log("Struttura document successfully written!");
@@ -49,7 +49,7 @@ export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizion
         indirizzo: indirizzobj, 
         guida: guida, 
         numAlloggi: numAlloggi, 
-        tipologia: tipologia 
+        tipologia: tipologia, 
     })
     .then(function() {
         console.log("Struttura document successfully updated!");
