@@ -6,20 +6,19 @@ var db = firebase.firestore();
 var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createPrenotazioniDocument(costo, dataInizio, dataFine, email, numPersone, numTel, strutturaDocId, alloggioDocId, chiaveAlloggioDocId, guestuid){
+export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){ 
     // Add a new document in collection "prenotazioni" con set(), se non e' presente, crea il documento
     prenotazioniCollectionRef.add({
-        costo: costo, 
+        hostRef: hostuid,
+        guestRef: guestuid,
+        strutturaDocId: strutturaDocId, 
+        alloggioRef: alloggioDocId,
         dataInizio: dataInizio,
         dataFine: dataFine, 
-        emailPren: email, 
+        emailPren: emailPren, 
         numPersone: numPersone, 
         numTel: numTel, 
-        strutturaRef: db.doc("struttura/"+strutturaDocId), 
-        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
-        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
-        guestRef: db.doc("guest/" + guestuid), 
-        //hostRef: db.doc("host/"+hostCF)
+        costo: costo, 
     })
     .then(function() {
         console.log("Prenotazione document successfully written!");
@@ -30,35 +29,34 @@ export function createPrenotazioniDocument(costo, dataInizio, dataFine, email, n
 }
 
 //Update functions
-export function updatePrenotazioniDocument(id, costo, dataInizio, dataFine, email, numPersone, numTel, strutturaDocId, alloggioDocId, chiaveAlloggioDocId, guestCF){
+export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){
     //Edit all field of prenotazioni document
-    return prenotazioniCollectionRef.doc(id).update({
-        costo: costo, 
+    return prenotazioniCollectionRef.doc(prenDocId).update({
+        hostRef: hostuid,
+        guestRef: guestuid,
+        strutturaDocId: strutturaDocId, 
+        alloggioRef: alloggioDocId,
         dataInizio: dataInizio,
         dataFine: dataFine, 
-        emailPren: email, 
+        emailPren: emailPren, 
         numPersone: numPersone, 
-        numTel: numTel,
-        strutturaRef: db.doc("struttura/"+strutturaDocId), 
-        alloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId), 
-        chiaveAlloggioRef: db.doc("struttura/" + strutturaDocId + "/alloggi/" + alloggioDocId + "/chiave/" + chiaveAlloggioDocId), 
-        guestRef: db.doc("guest/" + guestCF), 
-        //hostRef: db.doc("host/"+hostCF) 
+        numTel: numTel, 
+        costo: costo, 
     })
     .then(function() {
-        console.log("Document successfully updated!");
+        console.log("Prenotazione document successfully updated!");
     })
     .catch(function(error) {
         // The document probably doesn't exist.
-        console.error("Error updating document: ", error);
+        console.error("Error updating prenotazione document: ", error);
     }); 
 }
 
 //Delete function
-export function deletePrenotazioniDocument(id){
-    prenotazioniCollectionRef.doc(id).delete().then(function() {
-        console.log("Document successfully deleted!");
+export function deletePrenotazioniDocument(prenDocId){
+    prenotazioniCollectionRef.doc(prenDocId).delete().then(function() {
+        console.log("Prenotazione document successfully deleted!");
     }).catch(function(error) {
-        console.error("Error removing document: ", error);
+        console.error("Error removing prenotazione document: ", error);
     });
 }
