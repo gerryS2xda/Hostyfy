@@ -4,16 +4,17 @@ import HeaderBar from '../components/CustomHeaderBar';
 import Dialog from "react-native-dialog";
 import CustomButton from "../components/CustomButton";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
+import * as HostModel from "../firebase/datamodel/HostModel"
 
 const UpgradeHostScreen = ({route, navigation}) =>{
-    const userState = "guest"; //necessario per controllare lo stato attuale dell'utente
+    
     const {user} = route.params; 
     //Necessario per primo dialog
     const [isVisibleFirstDialog, setFirstDialogVisible] = useState(false);
     const [isVisibleSecondDialog, setSecondDialogVisible] = useState(false);
     const [isVisibleThirdDialog, setThirdDialogVisible] = useState(false);
-    const [valueEmail, setEmailValue] = useState('');
-    const [valuePwd, setPwdValue] = useState('');
+    const [emailWebAlloggiati, setEmailWebAlloggiati] = useState('');
+    const [passwordWebAlloggiati, setPasswordWebAlloggiati] = useState('');
     const prezzoUpgrade = "80";
     const [valueNumCarta, setNumeroCartaValue] = useState('');
     const [valueDataScadenza, setDataScadenzaValue] = useState('');
@@ -45,8 +46,8 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                         <Dialog.Container visible={isVisibleFirstDialog}>
                             <Dialog.Title style={styles.styleDialogTitle}>Upgrade Host</Dialog.Title>
                             <Dialog.Description style={styles.styleDialogDescription}>Inserire le proprie credenziale per continuare il processo </Dialog.Description>
-                            <Dialog.Input style={styles.styleDialogInput} label="E-mail" value={valueEmail} onChangeText={setEmailValue} />
-                            <Dialog.Input style={styles.styleDialogInput} label="Password" value={valuePwd} onChangeText={setPwdValue} secureTextEntry={true}/>
+                            <Dialog.Input style={styles.styleDialogInput} label="E-mail" value={emailWebAlloggiati} onChangeText={setEmailWebAlloggiati} />
+                            <Dialog.Input style={styles.styleDialogInput} label="Password" value={passwordWebAlloggiati} onChangeText={setPasswordWebAlloggiati} secureTextEntry={true}/>
                             <Dialog.Button style={styles.styleDialogBtnTxt} label="Procedi" onPress={()=>{
                                 setFirstDialogVisible(false);
                                 setSecondDialogVisible(true);
@@ -89,10 +90,12 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                                     },
                                     { text: "OK", 
                                     onPress: () => {
-                                        GuestModel.updateisHost(user.userId, true)
-                                        user.isHost=true;
-                                        navigation.navigate('HomeHost', {user:user}) 
-                                               
+                                            GuestModel.updateisHost(user.userId, true);
+                                            user.isHost=true;
+                                            HostModel.createHostDocument(user.userId, emailWebAlloggiati, passwordWebAlloggiati);
+                                            //user non contiene le info di host, per tale motivo creo la variabile host con le info inserite e aggiungo i valori a 'user'
+                                            var host = {userIdRef: user.userId, emailWebAlloggiati: emailWebAlloggiati, passwordWebAlloggiati: passwordWebAlloggiati};
+                                            navigation.navigate('HomeHost', {user:{...user, ...host}}); 
                                         }}
                                     ],
                                     { cancelable: false }
