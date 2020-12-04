@@ -79,6 +79,7 @@ export default class InserisciAlloggioScreen extends React.Component {
         super(props);
         this.state = {
           activeIndex:0,
+          strutturaId: props.route.params.strutturaId,
           nomeAlloggio: '',
           numeroCamere: '',
           numeroPersone: '',
@@ -178,17 +179,16 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => {
-                                    var structId = "struct1";
                                     console.log(this.state.image);    
-                                    alloggioModel.createAlloggioDocument(structId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)
-                                    db.collection("struttura/"+structId+"/alloggi").where("nomeAlloggio", "==", this.state.nomeAlloggio).get().then((querySnapshot)=>{
+                                    alloggioModel.createAlloggioDocument(this.state.strutturaId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)
+                                    db.collection("struttura/"+this.state.strutturaId+"/alloggi").where("nomeAlloggio", "==", this.state.nomeAlloggio).get().then((querySnapshot)=>{
                                         querySnapshot.forEach((doc)=>{
                                             var alloggioId = doc.id;
                                             var nomeAlloggio = doc.data().nomeAlloggio;
-                                            db.collection("struttura/"+structId+"/alloggi").doc(doc.id).collection("foto").get().then((fotodocs)=>{
+                                            db.collection("struttura/"+this.state.strutturaId+"/alloggi").doc(doc.id).collection("foto").get().then((fotodocs)=>{
                                                 var fotoCount = fotodocs.size; //restituisce numero documenti in una collezione
                                                 fotoCount++;
-                                                this.uploadImageAndInsertIntoDB(this.state.image, structId, alloggioId, "struttura/"+structId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
+                                                this.uploadImageAndInsertIntoDB(this.state.image, this.state.strutturaId, alloggioId, "struttura/"+this.state.strutturaId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
                                             });
                                         });
                                     });

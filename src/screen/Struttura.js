@@ -213,7 +213,7 @@ export default class StrutturaScreen extends React.Component {
                                         count++;
                                         itemList.push(oggetto);
                                         })
-                                    this.props.navigation.navigate("VisualizzaAlloggi", {list: itemList});
+                                    this.props.navigation.navigate("VisualizzaAlloggi", {list: itemList, strutturaId: this.state.struttura.id});
                                     })
                     
                                 }}
