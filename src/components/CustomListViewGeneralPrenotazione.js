@@ -24,6 +24,7 @@ return (
                     description = {item.description}
                     newPage = {item.newPage}
                     nav= {navigate}
+                    id= {item.id}
                     />
             } />
     </View>   
