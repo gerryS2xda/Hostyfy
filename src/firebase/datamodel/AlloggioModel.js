@@ -5,7 +5,7 @@ import {firebase} from '../config'
 var db = firebase.firestore();
 
 //Create functions: one function for each collection to create
-export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione){
+export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, fotoObj){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     alloggioCollectionRef.add({
@@ -14,7 +14,8 @@ export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMax
         numMaxPersone: numMaxPersone,
         piano: piano,
         descrizione: descrizione,
-        pathvideo: ''
+        pathvideo: '',
+        fotoList: fotoObj,
     })
     .then(function() {
         console.log("Alloggio document successfully written!");
@@ -68,21 +69,6 @@ export function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
         console.error("Error writing dispositivi domotici document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
     });
 }
-
-export function createFotoDocument(structId, alloggioId, pathFoto){
-    // Add a new document in collection "alloggi/alloggio+id/foto"
-    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc(alloggioId).collection("foto").add({
-        path: pathFoto,
-    })
-    .then(function() {
-        console.log("Foto document in \"alloggi/alloggio" + alloggioId + " collection\" successfully written!");
-    })
-    .catch(function(error) {
-        console.error("Error writing foto document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
-    });
-}
-
 
 //Update functions
 export function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, pathvideo){
@@ -149,17 +135,17 @@ export function updateDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
     });
 }
 
-export function updateFotoDocument(structId, alloggioId, fotoId, pathFoto){
+export function updateFotoField(structId, alloggioId, fotoObj){
     // Add a new document in collection "alloggi/alloggio+id/foto"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc(alloggioId).collection("foto").doc(""+fotoId).update({
-        path: pathFoto,
+    alloggioCollectionRef.doc(alloggioId).update({
+        fotoList: fotoObj,
     })
     .then(function() {
-        console.log("Foto document in \"alloggi/alloggio" + alloggioId + " collection\" successfully written!");
+        console.log("Foto document in \"alloggi/alloggio" + alloggioId + " successfully written!");
     })
     .catch(function(error) {
-        console.error("Error writing foto document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
+        console.error("Error writing foto document in \"alloggi/alloggio" + alloggioId + " : ", error);
     });
 }
 
@@ -199,13 +185,3 @@ export function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
         console.error("Error removing alloggio/dispositividomotici document: ", error);
     });
 }
-
-export function deleteFotoDocument(structId, alloggioId, fotoId){
-    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    alloggioCollectionRef.doc(alloggioId).collection("foto").doc(""+fotoId).delete().then(function() {
-        console.log("Alloggio/foto document successfully deleted!");
-    }).catch(function(error) {
-        console.error("Error removing alloggio/foto document: ", error);
-    });
-}
-

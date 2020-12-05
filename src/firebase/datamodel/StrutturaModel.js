@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var strutturaCollectionRef = db.collection("struttura"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId){
+export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId, fotoObj){
     // Add a new document in collection "Struttura" con set(), se non e' presente, crea il documento
     strutturaCollectionRef.add({
         codiceOtp: codiceOtp, 
@@ -17,26 +17,14 @@ export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descr
         numAlloggi: numAlloggi, 
         tipologia: tipologia,
         hostRef: uidHost,      
-        cleanServiceRef: cleanServiceDocId 
+        cleanServiceRef: cleanServiceDocId,
+        fotoList: fotoObj, 
     })
     .then(function() {
         console.log("Struttura document successfully written!");
     })
     .catch(function(error) {
         console.error("Error writing struttura document: ", error);
-    });
-}
-
-export function createFotoDocument(structId, pathFoto){
-    // Add a new document in collection "alloggi/alloggio+id/foto"
-    strutturaCollectionRef.doc(structId).collection("foto").add({
-        path: pathFoto,
-    })
-    .then(function() {
-        console.log("Foto document in \"struttura/" + structId + " collection\" successfully written!");
-    })
-    .catch(function(error) {
-        console.error("Error writing foto document in \"struttura/" + structId + " collection\": ", error);
     });
 }
 
@@ -60,15 +48,15 @@ export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizion
     }); 
 }
 
-export function updateFotoDocument(structId, fotoId, pathFoto){
-    strutturaCollectionRef.doc(structId).collection("foto").doc(fotoId).update({
-        path: pathFoto,
+export function updateFotoField(structId, fotoObj){
+    strutturaCollectionRef.doc(structId).update({
+        fotoList: fotoObj, 
     })
     .then(function() {
-        console.log("Foto document in \"struttura/" + structId + " collection\" successfully updated!");
+        console.log("Foto document in \"struttura/" + structId + " successfully updated!");
     })
     .catch(function(error) {
-        console.error("Error writing foto document in \"struttura/" + structId + " collection\": ", error);
+        console.error("Error writing foto document in \"struttura/" + structId + " : ", error);
     });
 }
 
@@ -78,13 +66,5 @@ export function deleteStrutturaDocument(id){
         console.log("Struttura document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing struttura document: ", error);
-    });
-}
-
-export function deleteFotoDocument(structId, fotoId){
-    strutturaCollectionRef.doc(structId).collection("foto").doc(fotoId).delete().then(function() {
-        console.log("struttura/structId/foto document successfully deleted!");
-    }).catch(function(error) {
-        console.error("Error removing struttura/structId/foto document: ", error);
     });
 }
