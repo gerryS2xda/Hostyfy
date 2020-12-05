@@ -1,6 +1,5 @@
-import React from 'react';
-import {Text, View, Image,ScrollView, TouchableOpacity, StyleSheet, TextInput, Alert} from 'react-native';
-import { Directions } from 'react-native-gesture-handler';
+import React, {useEffect} from 'react';
+import {Text, View, Image,ScrollView, BackHandler, StyleSheet, TextInput, Alert} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
@@ -99,26 +98,29 @@ export default class StrutturaScreen extends React.Component {
         this.state = {
           IsEditable: false,
           activeIndex:0,
+          user: props.route.params.user,
           struttura: props.route.params.struttura,
-          carouselItems: [
-          {
-              image:require('../../assets/Struttura/struttura1.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura2.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura3.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura4.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura5.jpg'),
-          },
-        ]
+          carouselItems: props.route.params.fotoCarousel,
       }
     }
+
+    //BackHandler che rileva la pressione del tasto "Back", necessario per invocare goBack() di react navigation
+    backAction = () => {
+        this.props.navigation.pop();
+        return true;
+    };
+    
+    componentDidMount() {
+        this.backHandler = BackHandler.addEventListener(
+          "hardwareBackPress",
+          this.backAction
+        );
+    }
+    
+    componentWillUnmount() {
+        this.backHandler.remove();
+    }
+
     _renderItem({item,index}){
         return (
           <View>
@@ -199,23 +201,40 @@ export default class StrutturaScreen extends React.Component {
                                 onPress={() => {
                                     var itemList = [];
                                     var count = 1;
+                                    var count1 = 1;
                                     db.collection('struttura').doc(this.state.struttura.id).collection('alloggi').get().then((querySnapshot)=>{
-                                    querySnapshot.forEach((doc) =>{
-                                        var oggetto = {
-                                            key: count, 
-                                            title: doc.data().nomeAlloggio,
-                                            description: doc.data().descrizione,
-                                            image_url: require('../../assets/Struttura/struttura1.jpg'),
-                                            newPage: 'Alloggio',
-                                            strutturaId: this.state.struttura.id,
-                                            id: doc.id
+                                        if(querySnapshot.size==0){
+                                            this.props.navigation.push("VisualizzaAlloggi", {user: this.state.user, list: itemList, strutturaId: this.state.struttura.id});
                                         }
-                                        count++;
-                                        itemList.push(oggetto);
+
+                                        querySnapshot.forEach((doc) =>{
+                                            var alloggio = doc.data();
+                                            var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
+
+                                            var imageURL = "";
+                                            if(fotoArray.length == 0){
+                                                imageURL = require("../../assets/imagenotfound.png");
+                                            }else{
+                                                imageURL = {uri: fotoArray[0]};
+                                            }
+                                            var oggetto = {
+                                                key: count, 
+                                                title: alloggio.nomeAlloggio, 
+                                                description: alloggio.descrizione,
+                                                image_url: imageURL, 
+                                                newPage: 'Alloggio',
+                                                strutturaId: this.state.struttura.id,  
+                                                id: doc.id
+                                            }
+                                            count++;
+                                            itemList.push(oggetto);
+                                            if(count1 < querySnapshot.size){
+                                                count1++;
+                                            }else{
+                                                this.props.navigation.push("VisualizzaAlloggi", {user: this.state.user, list: itemList, strutturaId: this.state.struttura.id});
+                                            }
                                         })
-                                    this.props.navigation.navigate("VisualizzaAlloggi", {list: itemList, strutturaId: this.state.struttura.id});
-                                    })
-                    
+                                    });
                                 }}
                             />
                         </View>

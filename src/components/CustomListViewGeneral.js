@@ -13,21 +13,24 @@ const styles = StyleSheet.create({
 
 const CustomListViewGeneral = (props) => {
     const navigate = props.nav;
-return (
-    <View style={styles.container}>
-        <FlatList
-                data={props.itemList}
-                renderItem={({ item }) => 
-                <CustomRowGeneral
-                    title={item.title}
-                    image_url={item.image_url}
-                    description = {item.description}
-                    newPage = {item.newPage}
-                    nav= {navigate}
-                    id={item.id}
-                    />
-            } />
-    </View>   
-);
+    const userLogged = props.userLogged;
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                    data={props.itemList}
+                    renderItem={({ item }) => 
+                    <CustomRowGeneral
+                        title={item.title}
+                        image_url={item.image_url}
+                        description = {item.description}
+                        newPage = {item.newPage}
+                        nav= {navigate}
+                        userLogged = {userLogged}
+                        id={item.id}
+                        />
+                } />
+        </View>   
+    );
 }
 export default CustomListViewGeneral;

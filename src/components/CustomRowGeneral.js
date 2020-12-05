@@ -48,44 +48,57 @@ const styles = StyleSheet.create({
 
 
 const CustomRowGeneral = (props) => {
-    
-return (
-<TouchableOpacity 
-    onPress = {()=>{ 
-    db.collection("struttura").doc(props.id).get().then((doc) =>{
-        var struttura = {
-            denominazione: doc.data().denominazione,
-            via: doc.data().via,
-            provincia: doc.data().provincia,
-            cap: doc.data().cap,
-            nazione: doc.data().nazione,
-            tipologia: doc.data().tipologia,
-            numeroAlloggi: doc.data().numeroAlloggi,
-            descrizione: doc.data().descrizione,
-            id: props.id
-        }
-        props.nav.navigate(props.newPage,{struttura: struttura})
-    })  
-        
-        }}>
-           
-    <View style={styles.container}>
-        <Image source={props.image_url} style={styles.photo} />
-        <View style={styles.container_text}>
-            <Text style={styles.title}>
-                {props.title}
-            </Text>
-            <Text style={styles.description}>
-                {props.description}
-            </Text>
-        </View>
-        <Image
-                source = {require('../../assets/arrow.png')}
-                style = {styles.arrow} 
-            />
-    </View>
-</TouchableOpacity>
+    const userLogged = props.userLogged;
+    return (
+        <TouchableOpacity 
+            onPress = {()=>{ 
+            db.collection("struttura").doc(props.id).get().then((doc) =>{
+                
+                var struttura = {
+                    denominazione: doc.data().denominazione,
+                    via: doc.data().via,
+                    provincia: doc.data().provincia,
+                    cap: doc.data().cap,
+                    nazione: doc.data().nazione,
+                    tipologia: doc.data().tipologia,
+                    numeroAlloggi: doc.data().numeroAlloggi,
+                    descrizione: doc.data().descrizione,
+                    fotoList: doc.data().fotoList,
+                    id: doc.id
+                }
+                var fotoList = [];
+                var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
+                fotoArray.forEach((value)=>{
+                    fotoList.push({image: {uri: value}});
+                }); 
+                                                            
+                if(fotoList.length == 0){
+                    var imageURL = require("../../assets/imagenotfound.png");
+                    fotoList.push({image: imageURL});
+                } 
 
-);
-}
+                props.nav.push("VisualizzaStruttura",{user: userLogged, struttura: struttura, fotoCarousel: fotoList})
+            })  
+                
+                }}>
+                
+            <View style={styles.container}>
+                <Image source={props.image_url} style={styles.photo} />
+                <View style={styles.container_text}>
+                    <Text style={styles.title}>
+                        {props.title}
+                    </Text>
+                    <Text style={styles.description}>
+                        {props.description}
+                    </Text>
+                </View>
+                <Image
+                        source = {require('../../assets/arrow.png')}
+                        style = {styles.arrow} 
+                    />
+            </View>
+        </TouchableOpacity>
+
+        );
+    }
 export default CustomRowGeneral;

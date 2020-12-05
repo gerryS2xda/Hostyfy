@@ -45,15 +45,14 @@ const LeMieStrutture = (props) => {
             <View style={styles.container}>
               <CustomListViewGeneral 
                 nav= {props.navigation}
+                userLogged = {user}
                 itemList = {list}
               />
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity 
-            
                   onPress={() => {
-                  props.navigation.navigate('Inserisci struttura', {user:user}),
-                  console.log({user})}}
-                  >
+                    props.navigation.navigate('Inserisci struttura', {user:user});
+                  }}>
                     <Icon
                       name = "plus-circle-outline"
                       color = {"#f2077d"}
