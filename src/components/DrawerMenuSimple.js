@@ -225,9 +225,40 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
-                                onPress={() => {
+                                onPress={ () => {
                                     props.setUserProp({refresh: "refresh"});
-                                    props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged});
+                                    var dataOdierna = new Date(); 
+                                    db.collection('prenotazioni').where('guestRef','==',userLogged.userId).where('dataFine','>=',dataOdierna).get().then(async(querySnapshot)=>{
+                                        var itemList = [];
+                                        var count = 1;
+                                        if(querySnapshot.size==0){
+                                            props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged,isHost:false, list: itemList});
+                                        }
+                                        querySnapshot.forEach( (doc) =>{
+                                            var prenotazione = doc.data();
+                                            var prenotazioneId = doc.id;
+                                            console.log(prenotazione)
+                                            db.collection('struttura').doc(prenotazione.strutturaRef).collection('alloggi').doc(prenotazione.alloggioRef).get().then((doc1) =>{
+                                                alloggio = doc1.data();
+                                                var oggetto = {
+                                                    key: count, 
+                                                    title: alloggio.nomeAlloggio,
+                                                    description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
+                                                    image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+                                                    newPage: 'PrenotazioneDetail',
+                                                    id: prenotazioneId,
+                                                }
+                                                itemList.push(oggetto)
+                                                if(count<querySnapshot.size){
+                                                    count++
+                                                }
+                                                else{
+                                                    console.log(itemList)
+                                                    props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged,isHost:false, list: itemList});
+                                                }
+                                            })
+                                        })
+                                    })
                                 }}
                             />
                             <DrawerItem 
@@ -311,15 +342,19 @@ function DrawerContentCustom(props){
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
                                 onPress={ () => {
                                     props.setUserProp({refresh: "refresh"});
-                                    db.collection('prenotazioni').where('hostRef','==',userLogged.userIdRef).get().then(async(querySnapshot)=>{
+                                    var dataOdierna = new Date(); 
+                                    db.collection('prenotazioni').where('hostRef','==',userLogged.userIdRef).where('dataFine','>=',dataOdierna).get().then(async(querySnapshot)=>{
                                         var itemList = [];
                                         var count = 1;
+                                        if(querySnapshot.size==0){
+                                            props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged,isHost:true, list: itemList});
+                                        }
                                         querySnapshot.forEach( (doc) =>{
                                             var prenotazione = doc.data();
                                             var prenotazioneId = doc.id;
                                             console.log(prenotazione)
                                             db.collection('struttura').doc(prenotazione.strutturaRef).collection('alloggi').doc(prenotazione.alloggioRef).get().then((doc1) =>{
-                                                alloggio = doc1.data();
+                                                var alloggio = doc1.data();
                                                 var oggetto = {
                                                     key: count, 
                                                     title: alloggio.nomeAlloggio,
@@ -334,7 +369,7 @@ function DrawerContentCustom(props){
                                                 }
                                                 else{
                                                     console.log(itemList)
-                                                    props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged, list: itemList});
+                                                    props.navigation.navigate('VisualizzaPrenotazioni', {user: userLogged,isHost:true, list: itemList});
                                                 }
                                             })
                                         })

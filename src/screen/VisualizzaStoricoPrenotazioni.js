@@ -1,5 +1,4 @@
 import React, { Component, useState } from 'react';
-import CustomListViewGeneral from '../components/CustomListViewGeneral'
 import {
   StyleSheet,
   Text,
@@ -9,6 +8,7 @@ import {
   ScrollView
 } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
+import CustomListViewGeneralPrenotazione from '../components/CustomListViewGeneralPrenotazione';
 
 
 const styles = StyleSheet.create({
@@ -84,48 +84,16 @@ maincontainer: {
 });
 
 const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {  
-
+      const {user, list} = route.params; 
       return (
         <View style={styles.maincontainer}>
         <HeaderBar title="Prenotazioni passate" navigator={navigation} /> 
         
           <View style={styles.container}>
-            <CustomListViewGeneral
+            <CustomListViewGeneralPrenotazione
               nav = {navigation}
-              itemList={[
-                {
-                  key: 1, 
-                  title: 'Le Sirene',
-                  description: '12/11/2019 - 18/11/2019',
-                  image_url: require('../../assets/Struttura/struttura1.jpg'),
-                  newPage: 'PrenotazioneDetail',
-                },
-                {
-                  key: 2,
-                  title: 'Exe Majestic',
-                  description: '11/11/2019 - 17/11/2020',
-                  image_url: require('../../assets/Struttura/struttura2.jpg'),
-                  newPage: 'PrenotazioneDetail',  
-                },
-                {
-                  key: 3,
-                  title: 'Villa Domina',
-                  description: '10/11/2019 - 16/11/2019',
-                  image_url: require('../../assets/Struttura/struttura3.jpg'),
-                  newPage: 'PrenotazioneDetail',
-                  
-                },
-                {
-                  key: 4,
-                  title: 'Apartments Tudor',
-                  description: '10/11/2020 - 15/11/2019',
-                  image_url: require('../../assets/Struttura/struttura4.jpg'),
-                  newPage: 'PrenotazioneDetail',
-                  
-                }              
-              ]
-            }/>
-
+              itemList={list}
+            />
           </View>
       </View>
 
