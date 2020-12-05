@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var guestCollectionRef = db.collection("guest"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest, pwdGuest){
+export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
     guestCollectionRef.doc(uid).set({
         userId: uid,
@@ -21,8 +21,7 @@ export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luo
         numTel: numTel,
         indirizzo: indirizzobj,
         isHost: isHost,
-        email: emailGuest, 
-        password: pwdGuest 
+        email: emailGuest
     })
     .then(function() {
         console.log("Guest document successfully written!");
@@ -32,7 +31,7 @@ export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luo
     });
 }
 
-export function createGuestDocumentForRegistration(uid, cognome, nome, emailGuest, pwdGuest){
+export function createGuestDocumentForRegistration(uid, cognome, nome, emailGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
     //email e password vengono gestite da Firebase e sono accesibili mediante userId
     guestCollectionRef.doc(uid).set({
@@ -48,8 +47,7 @@ export function createGuestDocumentForRegistration(uid, cognome, nome, emailGues
         numTel: 0,
         indirizzo: {via: "", citta: "", provincia: "", cap: 0, regione: ""},
         isHost: false,
-        email: emailGuest,
-        password: pwdGuest 
+        email: emailGuest
     })
     .then(function() {
         console.log("Guest document successfully written!");
@@ -76,7 +74,7 @@ export function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestata
 }
 
 //Update functions
-export function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest, pwdGuest){
+export function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
     //Edit all field of guest document
     return guestCollectionRef.doc(uid).update({
         cf: cf,
@@ -90,8 +88,7 @@ export function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luo
         indirizzo: indirizzobj,
         nazionalita: nazionalita,
         isHost: isHost,
-        email: emailGuest,
-        password: pwdGuest 
+        email: emailGuest
     })
     .then(function() {
         console.log("Document successfully updated!");
