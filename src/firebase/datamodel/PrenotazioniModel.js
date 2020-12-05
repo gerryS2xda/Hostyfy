@@ -41,7 +41,7 @@ export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, struttu
         strutturaDocId: strutturaDocId, 
         alloggioRef: alloggioDocId,
         dataInizio: new Date(dataInizio),
-        dataFine: new Date(dataInizio), 
+        dataFine: new Date(dataFine), 
         emailPren: emailPren, 
         numPersone: numPersone, 
         numTel: numTel, 
