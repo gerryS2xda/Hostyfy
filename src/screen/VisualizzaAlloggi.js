@@ -39,19 +39,20 @@ const styles = StyleSheet.create({
 });
 
 const VisualizzaAlloggi = (props) => {  
-      const {list, strutturaId} = props.route.params;
+      const {user, list, strutturaId} = props.route.params;
       return (
         <View style={styles.maincontainer}>
       <HeaderBar title="Alloggi" navigator={props.navigation} /> 
       <View style={styles.container}>
         <CustomListViewGeneralAlloggio
           nav = {props.navigation}
+          userLogged = {user}
           itemList= {list}
         />
 
     <View style = {styles.aggiungiStruttura}>
         <TouchableOpacity
-          onPress={() => props.navigation.navigate('InserisciAlloggio', {strutturaId: strutturaId})}>
+          onPress={() => props.navigation.navigate('InserisciAlloggio', {user: user, strutturaId: strutturaId})}>
             <Icon
               name = "plus-circle-outline"
               color = {"#f2077d"}

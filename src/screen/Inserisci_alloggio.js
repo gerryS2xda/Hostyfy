@@ -79,6 +79,7 @@ export default class InserisciAlloggioScreen extends React.Component {
         super(props);
         this.state = {
           activeIndex:0,
+          user: props.route.params.user,
           strutturaId: props.route.params.strutturaId,
           nomeAlloggio: '',
           numeroCamere: '',
@@ -86,31 +87,12 @@ export default class InserisciAlloggioScreen extends React.Component {
           piano: '',
           descrizione: '',
           image:'',
-          carouselItems: [
-          {
-              image:require('../../assets/Struttura/struttura1.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura2.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura3.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura4.jpg'),
-          },
-          {
-              image:require('../../assets/Struttura/struttura5.jpg'),
-          },
-        ]
-      }
+        }
     }
 
     _renderItem({item,index}){
         return (
-          <View style={{ justifyContent:'center',
-            marginLeft:50
-              }}>
+          <View style={{ justifyContent:'center', marginLeft:50 }}>
            <Image style={{width:250, height:250}} source = {item.image} />
             <Text>{item.title}</Text>
           </View>
@@ -175,28 +157,65 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
                                 { cancelable: false })} />
-                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=> Alert.alert(
-                                "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
-                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                { text: "OK", onPress: () => {
-                                    console.log(this.state.image);    
-                                    alloggioModel.createAlloggioDocument(this.state.strutturaId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione)
+                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=>{
+                                alloggioModel.createAlloggioDocument(this.state.strutturaId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione, {});
+                                
+                                
                                     db.collection("struttura/"+this.state.strutturaId+"/alloggi").where("nomeAlloggio", "==", this.state.nomeAlloggio).get().then((querySnapshot)=>{
-                                        querySnapshot.forEach((doc)=>{
-                                            var alloggioId = doc.id;
-                                            var nomeAlloggio = doc.data().nomeAlloggio;
-                                            db.collection("struttura/"+this.state.strutturaId+"/alloggi").doc(doc.id).collection("foto").get().then((fotodocs)=>{
-                                                var fotoCount = fotodocs.size; //restituisce numero documenti in una collezione
-                                                fotoCount++;
-                                                this.uploadImageAndInsertIntoDB(this.state.image, this.state.strutturaId, alloggioId, "struttura/"+this.state.strutturaId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
-                                            });
+                                        if(this.state.image !== ""){
+                                            querySnapshot.forEach((doc)=>{
+                                                var alloggioId = doc.id;
+                                                var nomeAlloggio = doc.data().nomeAlloggio;
+                                                var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
+                                                var fotoCount = fotoArray.length + 1;
+                                                this.uploadImageAndInsertIntoDB(this.state.image, this.state.strutturaId, alloggioId, fotoArray, "struttura/"+this.state.strutturaId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
                                         });
-                                    });
-                                    
-                                    
-                                } 
-                                }],
-                                { cancelable: false })} />
+                                        }
+                                        Alert.alert(
+                                            "Inserisci alloggio", "Il nuovo alloggio e' stato memorizzato con successo!",
+                                            [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                            { text: "OK", onPress: () => { 
+                                                console.log("OK pressed InserisciAlloggio"); 
+                                                
+                                                //Una volta aggiunta una nuova struttura, per mostrarla nella lista occore rifare la lettura delle strutture associate a quell'host
+                                                var itemList = [];
+                                                var count = 1;
+                                                var count1 = 1; //contatore per gestire asincronismo della prima query
+                                                db.collection("struttura/"+this.state.strutturaId+"/alloggi").get().then((querySnapshot)=>{
+                                                    querySnapshot.forEach((doc) =>{
+                                                        var alloggio = doc.data();
+                                                        var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
+                                                        
+                                                        var imageURL = "";
+                                                        if(fotoArray.length == 0){
+                                                            imageURL = require("../../assets/imagenotfound.png");
+                                                        }else{
+                                                            imageURL = {uri: fotoArray[0]};
+                                                        }
+                                                        var oggetto = {
+                                                            key: count, 
+                                                            title: alloggio.nomeAlloggio, 
+                                                            description: alloggio.descrizione,
+                                                            image_url: imageURL, 
+                                                            newPage: 'Alloggio',
+                                                            strutturaId: this.state.strutturaId,  
+                                                            id: doc.id
+                                                        }
+                                                        count++;
+                                                        itemList.push(oggetto);
+                                                        if(count1 < querySnapshot.size){
+                                                            count1++;
+                                                        }else{
+                                                            this.props.navigation.push("VisualizzaAlloggi", {user: this.state.user, list: itemList, strutturaId: this.state.strutturaId});
+                                                        }
+                                                    });
+                                                });
+                                            } 
+                                        }],
+                                        { cancelable: false });
+                                });
+                            }
+                         } />
                         </View>
                     </View>
                 </ScrollView>
@@ -205,7 +224,7 @@ export default class InserisciAlloggioScreen extends React.Component {
     }
 
     //Function for upload a image and obtain a download URL
-    uploadImageAndInsertIntoDB = async(uri, structId, alloggioId, pathImage) => {
+    uploadImageAndInsertIntoDB = async(uri, structId, alloggioId, fotoArray, pathImage) => {
         const response = await fetch(uri);
         const blob = await response.blob(); 
         var ref = storageRef.child(pathImage);
@@ -231,7 +250,8 @@ export default class InserisciAlloggioScreen extends React.Component {
             // Upload completed successfully, now we can get the download URL
             uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
             console.log('File available at', downloadURL);
-            alloggioModel.createFotoDocument(structId, alloggioId, downloadURL);
+            fotoArray.push(downloadURL);
+            alloggioModel.updateFotoField(structId, alloggioId, Object.assign({}, fotoArray));
         });
         
     });

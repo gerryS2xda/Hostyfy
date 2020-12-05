@@ -48,42 +48,54 @@ const styles = StyleSheet.create({
 
 
 const CustomRowGeneralAlloggio = (props) => {
-    
-return (
-<TouchableOpacity 
-    onPress = {()=>{ 
-    db.collection("struttura").doc(props.strutturaId).collection('alloggi').doc(props.id).get().then((doc) =>{
-        var alloggio = {
-            nomeAlloggio: doc.data().nomeAlloggio,
-            numeroCamere: doc.data().numCamere,
-            numeroMassimoPersone: doc.data().numMaxPersone,
-            pathVideo: doc.data().pathvideo,
-            piano: doc.data().piano,
-            descrizione: doc.data().descrizione,
-            id: props.id,
-            strutturaId:props.strutturaId
-        }
-        props.nav.navigate(props.newPage,{alloggio: alloggio})
-        })      
-    }}>
-           
-    <View style={styles.container}>
-        <Image source={props.image_url} style={styles.photo} />
-        <View style={styles.container_text}>
-            <Text style={styles.title}>
-                {props.title}
-            </Text>
-            <Text style={styles.description}>
-                {props.description}
-            </Text>
-        </View>
-        <Image
-                source = {require('../../assets/arrow.png')}
-                style = {styles.arrow} 
-            />
-    </View>
-</TouchableOpacity>
+    const userLogged = props.userLogged;
+    return (
+        <TouchableOpacity 
+            onPress = {()=>{ 
+                db.collection("struttura").doc(props.strutturaId).collection('alloggi').doc(props.id).get().then((doc) =>{
+                    var alloggio = {
+                        nomeAlloggio: doc.data().nomeAlloggio,
+                        numeroCamere: doc.data().numCamere,
+                        numeroMassimoPersone: doc.data().numMaxPersone,
+                        pathVideo: doc.data().pathvideo,
+                        piano: doc.data().piano,
+                        descrizione: doc.data().descrizione,
+                        id: props.id,
+                        strutturaId: props.strutturaId,
+                        fotoList: doc.data().fotoList,
 
-);
+                    }
+
+                    var fotoList = [];
+                    var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
+                    fotoArray.forEach((value)=>{
+                        fotoList.push({image: {uri: value}});
+                    }); 
+                                                                        
+                    if(fotoList.length == 0){
+                        var imageURL = require("../../assets/imagenotfound.png");
+                        fotoList.push({image: imageURL});
+                    } 
+                    props.nav.push(props.newPage,{user: userLogged, alloggio: alloggio, fotoCarousel: fotoList});
+                })      
+            }}>
+                
+            <View style={styles.container}>
+                <Image source={props.image_url} style={styles.photo} />
+                <View style={styles.container_text}>
+                    <Text style={styles.title}>
+                        {props.title}
+                    </Text>
+                    <Text style={styles.description}>
+                        {props.description}
+                    </Text>
+                </View>
+                <Image
+                        source = {require('../../assets/arrow.png')}
+                        style = {styles.arrow} 
+                    />
+            </View>
+        </TouchableOpacity>
+    );
 }
 export default CustomRowGeneralAlloggio;

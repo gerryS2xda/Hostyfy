@@ -37,9 +37,9 @@ const ImagePickerButton = (props) => {
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images, //accetta solo immagini come asset
       allowsEditing: false,
-      allowsMultipleSelection: true,
+      allowsMultipleSelection: true, //funziona solo su web
       aspect: [4, 3],
       quality: 1,
     });

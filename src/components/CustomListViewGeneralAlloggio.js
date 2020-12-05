@@ -13,7 +13,9 @@ const styles = StyleSheet.create({
 
 const CustomListViewGeneralAlloggio = (props) => {
     const navigate = props.nav;
-return (
+    const userLogged = props.userLogged;
+
+    return (
     <View style={styles.container}>
         <FlatList
                 data={props.itemList}
@@ -25,6 +27,7 @@ return (
                     newPage = {item.newPage}
                     nav= {navigate}
                     strutturaId={item.strutturaId}
+                    userLogged = {userLogged}
                     id={item.id}
                     />
             } />

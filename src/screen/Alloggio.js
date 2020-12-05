@@ -86,21 +86,9 @@ export default class AlloggioScreen extends React.Component {
         this.state = {
           IsEditable: false,
           activeIndex:0,
+          user: props.route.params.user,
           alloggio: props.route.params.alloggio,
-          carouselItems: [
-          {
-              image:require('../../assets/Alloggio/Alloggio1.jpg'),
-          },
-          {
-              image:require('../../assets/Alloggio/Alloggio2.jpg'),
-          },
-          {
-              image:require('../../assets/Alloggio/Alloggio3.jpg'),
-          },
-          {
-              image:require('../../assets/Alloggio/Alloggio4.jpg'),
-          },
-        ]
+          carouselItems: props.route.params.fotoCarousel,
       }
     }
 
