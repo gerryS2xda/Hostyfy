@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'rea
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 
-const PrenotazioneScreen = ({navigation}) =>{
+const PrenotazioneScreen = ({route,navigation}) =>{
+    const {prenotazione, alloggio} = route.params; 
     const numeroPren = 10873945;
     //const nameStruttura = "La mia struttura"; <Text style={styles.nameStruttura}>{nameStruttura}</Text>
     const dataCheckIn = "01/11/2020";
@@ -23,7 +24,7 @@ const PrenotazioneScreen = ({navigation}) =>{
             <HeaderBar title="Prenotazione" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
                 <View style={styles.scrollContent}> 
-                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
+                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {prenotazione.numeroPrenotazione}</Text>
                     <View style={styles.infoStrutturacontainer}>
                         <Image style={styles.strutturaImage} source={require("../../assets/hotelExampleStruttura.png")}/>
                         
@@ -33,17 +34,17 @@ const PrenotazioneScreen = ({navigation}) =>{
                         <View style={styles.fieldSetContent}>
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
-                                <Text style={styles.normalText}>{dataCheckIn}</Text>
+                                <Text style={styles.normalText}>{prenotazione.dataInizio}</Text>
                                 <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
-                                <Text style={styles.normalText}>{dataCheckOut}</Text>
+                                <Text style={styles.normalText}>{prenotazione.dataFine}</Text>
                                 <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
                             </View>
                             <View style={styles.costoTotContainer}>
                                 <Text style={styles.categoryText}>Costo totale: </Text>
-                                <Text style={styles.normalText}>{prezzo}€</Text>
+                                <Text style={styles.normalText}>{prenotazione.costo}€</Text>
                             </View>
                         </View>
                     </View>
@@ -52,11 +53,11 @@ const PrenotazioneScreen = ({navigation}) =>{
                         <View style={styles.fieldSetContent}>
                             <View style={styles.horizontalViewInfoCamera}>
                                 <Text style={styles.categoryText}>Camera: </Text>
-                                <Text style={styles.normalText}>{cameraDetails}</Text>
+                                <Text style={styles.normalText}>{alloggio.descrizione}</Text>
                             </View>
                             <View style={styles.horizontalViewInfoCamera}>
                                 <Image style={styles.userIcon} source={require("../../assets/user.png")} />
-                                <Text style={styles.normalText}>{infoPersone}</Text>
+                                <Text style={styles.normalText}>{prenotazione.numPersone}</Text>
                             </View>
                         </View>
                     </View>
