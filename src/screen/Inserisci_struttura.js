@@ -101,7 +101,6 @@ export default class InserisciStrutturaScreen extends React.Component {
             tipologia: "",
             numeroAlloggi: 0,
             descrizione: "",
-            user: props.route.params.user,
             image:''         
       }
     }
@@ -119,7 +118,10 @@ export default class InserisciStrutturaScreen extends React.Component {
     }
 
     render() {
-
+        var user = this.props.route.params.user;
+        if(this.state.image !== ""){
+            this.setState({image: ""});
+        }
        
         return (
             <View style={styles.maincontainer}>
@@ -213,7 +215,7 @@ export default class InserisciStrutturaScreen extends React.Component {
 
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=>{
                                 var indirizzo = {via: this.state.indirizzo, citta:this.state.citta, cap:this.state.cap, provincia:this.state.provincia, regione:this.state.regione, nazione:this.state.nazione}                                 
-                                var hostUID = this.state.user.userIdRef;
+                                var hostUID = user.userIdRef;
                                 //Aggiungi la nuova struttura nel DB
                                 StrutturaModel.createStrutturaDocument(hostUID, 0, this.state.denominazione, this.state.descrizione, indirizzo, " ", this.state.numeroAlloggi,this.state.tipologia, "not specificated", {}); 
                
@@ -271,7 +273,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                                                 if(count1 < querySnapshot.size){
                                                     count1++;
                                                 }else{
-                                                    this.props.navigation.push("LeMieStrutture", {user: this.state.user, list: itemList});
+                                                    this.props.navigation.navigate("LeMieStrutture", {user: user, list: itemList});
                                                 }
                                             });
                                         });

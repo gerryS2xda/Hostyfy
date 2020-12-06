@@ -98,27 +98,7 @@ export default class StrutturaScreen extends React.Component {
         this.state = {
           IsEditable: false,
           activeIndex:0,
-          user: props.route.params.user,
-          struttura: props.route.params.struttura,
-          carouselItems: props.route.params.fotoCarousel,
       }
-    }
-
-    //BackHandler che rileva la pressione del tasto "Back", necessario per invocare goBack() di react navigation
-    backAction = () => {
-        this.props.navigation.pop();
-        return true;
-    };
-    
-    componentDidMount() {
-        this.backHandler = BackHandler.addEventListener(
-          "hardwareBackPress",
-          this.backAction
-        );
-    }
-    
-    componentWillUnmount() {
-        this.backHandler.remove();
     }
 
     _renderItem({item,index}){
@@ -132,6 +112,13 @@ export default class StrutturaScreen extends React.Component {
     }
 
     render() {
+        var struttura = this.props.route.params.struttura;
+        var user = this.props.route.params.user;
+        var carouselItems = this.props.route.params.fotoCarousel;
+        if(this.state.IsEditable){
+            this.setState({IsEditable:false});
+        }
+        
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Struttura" navigator={this.props.navigation} />
@@ -142,7 +129,7 @@ export default class StrutturaScreen extends React.Component {
                             style= {styles.carouselStyle}
                             layout={"default"}
                             ref={ref => this.carousel = ref}
-                            data={this.state.carouselItems}
+                            data={carouselItems}
                             sliderWidth={300}
                             itemWidth={300}
                             renderItem={this._renderItem}
@@ -150,23 +137,22 @@ export default class StrutturaScreen extends React.Component {
                         </View>
 
                             <View style={styles.fieldContainerTop}>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.denominazione}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.via}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.provincia}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.denominazione}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.via}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.provincia}</TextInput>
                             </View>
                             <View style={styles.twoFieldContainer}>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.cap}</TextInput>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.nazione}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{struttura.cap}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{struttura.nazione}</TextInput>
                             </View>
                             <View style={styles.fieldContainerBottom}>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.tipologia}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.numeroAlloggi}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.tipologia}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.numeroAlloggi}</TextInput>
                                 <TextInput style={styles.descrizioneField} 
-                                multiline={true}
-                                numberOfLines={20}
-                                editable={this.state.IsEditable}
-
-                                >{this.state.struttura.descrizione}</TextInput>
+                                    multiline={true}
+                                    numberOfLines={20}
+                                    editable={this.state.IsEditable}
+                                >{struttura.descrizione}</TextInput>
                             </View>
 
                         <View style={styles.threeButtonContainer}>
@@ -202,9 +188,9 @@ export default class StrutturaScreen extends React.Component {
                                     var itemList = [];
                                     var count = 1;
                                     var count1 = 1;
-                                    db.collection('struttura').doc(this.state.struttura.id).collection('alloggi').get().then((querySnapshot)=>{
+                                    db.collection('struttura').doc(struttura.id).collection('alloggi').get().then((querySnapshot)=>{
                                         if(querySnapshot.size==0){
-                                            this.props.navigation.push("VisualizzaAlloggi", {user: this.state.user, list: itemList, strutturaId: this.state.struttura.id});
+                                            this.props.navigation.push("VisualizzaAlloggi", {user: user, list: itemList, strutturaId: struttura.id});
                                         }
 
                                         querySnapshot.forEach((doc) =>{
@@ -223,7 +209,7 @@ export default class StrutturaScreen extends React.Component {
                                                 description: alloggio.descrizione,
                                                 image_url: imageURL, 
                                                 newPage: 'Alloggio',
-                                                strutturaId: this.state.struttura.id,  
+                                                strutturaId: struttura.id,  
                                                 id: doc.id
                                             }
                                             count++;
@@ -231,7 +217,7 @@ export default class StrutturaScreen extends React.Component {
                                             if(count1 < querySnapshot.size){
                                                 count1++;
                                             }else{
-                                                this.props.navigation.push("VisualizzaAlloggi", {user: this.state.user, list: itemList, strutturaId: this.state.struttura.id});
+                                                this.props.navigation.push("VisualizzaAlloggi", {user: user, list: itemList, strutturaId: struttura.id});
                                             }
                                         })
                                     });

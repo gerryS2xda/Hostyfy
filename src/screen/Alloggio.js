@@ -86,9 +86,6 @@ export default class AlloggioScreen extends React.Component {
         this.state = {
           IsEditable: false,
           activeIndex:0,
-          user: props.route.params.user,
-          alloggio: props.route.params.alloggio,
-          carouselItems: props.route.params.fotoCarousel,
       }
     }
 
@@ -105,9 +102,13 @@ export default class AlloggioScreen extends React.Component {
     }
 
     render() {
+        var user = this.props.route.params.user;
+        var alloggio = this.props.route.params.alloggio;
+        var carouselItems = this.props.route.params.fotoCarousel;
+        if(this.state.IsEditable){
+            this.setState({IsEditable:false});
+        }
 
-        const nameCamera = "Suite";
-        const myKey = "0123";
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Alloggio" navigator={this.props.navigation} />
@@ -118,30 +119,29 @@ export default class AlloggioScreen extends React.Component {
                             style= {styles.carouselStyle}
                             layout={"default"}
                             ref={ref => this.carousel = ref}
-                            data={this.state.carouselItems}
+                            data={carouselItems}
                             sliderWidth={300}
                             itemWidth={300}
                             renderItem={this._renderItem}
                             onSnapToItem = { index => this.setState({activeIndex:index}) } />
                         </View>
                         <View style={styles.middleContainer}>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.nomeAlloggio}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroCamere}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroMassimoPersone}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.piano}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.nomeAlloggio}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.numeroCamere}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.numeroMassimoPersone}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.piano}</TextInput>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}
                                 multiline={true}
                                 numberOfLines={15}>
-                                {this.state.alloggio.descrizione}
+                                {alloggio.descrizione}
                              </TextInput>
                         </View>
                         <CustomButton 
                                 styleBtn={{width: "100%", marginTop: "5%"}}
                                 nome= "Disponibilità" 
                                 onPress={()=>{
-                                    console.log(this.state.alloggio.id)
-                                    this.props.navigation.navigate('Calendario_Alloggio',{id:this.state.alloggio.id, strutturaId:this.state.alloggio.strutturaId})}}
+                                    this.props.navigation.navigate('Calendario_Alloggio',{user: user, id: alloggio.id, strutturaId: alloggio.strutturaId})}}
                             /> 
 
                         <View style={styles.threeButtonContainer}>
@@ -173,7 +173,7 @@ export default class AlloggioScreen extends React.Component {
                             <CustomButton 
                                 styleBtn={{marginTop: "5%", width:"100%"}}
                                 nome= "Visualizza chiave"
-                                onPress={() => {this.props.navigation.navigate('LaMiaChiave')}}
+                                onPress={() => {this.props.navigation.navigate('LaMiaChiave', {user: user})}}
                             />
                         </View>
                     </View>

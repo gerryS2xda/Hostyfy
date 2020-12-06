@@ -79,8 +79,6 @@ export default class InserisciAlloggioScreen extends React.Component {
         super(props);
         this.state = {
           activeIndex:0,
-          user: props.route.params.user,
-          strutturaId: props.route.params.strutturaId,
           nomeAlloggio: '',
           numeroCamere: '',
           numeroPersone: '',
@@ -101,6 +99,12 @@ export default class InserisciAlloggioScreen extends React.Component {
     }
 
     render() {
+        var user = this.props.route.params.user;
+        var strutturaId = this.props.route.params.strutturaId;
+        if(this.state.image !== ""){
+            this.setState({image: ""});
+        }
+
         return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Inserisci Alloggio" navigator={this.props.navigation} />
@@ -158,17 +162,17 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
                                 { cancelable: false })} />
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=>{
-                                alloggioModel.createAlloggioDocument(this.state.strutturaId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione, {});
+                                alloggioModel.createAlloggioDocument(strutturaId,this.state.nomeAlloggio, this.state.numeroCamere,this.state.numeroPersone,this.state.piano, this.state.descrizione, {});
                                 
                                 
-                                    db.collection("struttura/"+this.state.strutturaId+"/alloggi").where("nomeAlloggio", "==", this.state.nomeAlloggio).get().then((querySnapshot)=>{
+                                    db.collection("struttura/"+strutturaId+"/alloggi").where("nomeAlloggio", "==", this.state.nomeAlloggio).get().then((querySnapshot)=>{
                                         if(this.state.image !== ""){
                                             querySnapshot.forEach((doc)=>{
                                                 var alloggioId = doc.id;
                                                 var nomeAlloggio = doc.data().nomeAlloggio;
                                                 var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
                                                 var fotoCount = fotoArray.length + 1;
-                                                this.uploadImageAndInsertIntoDB(this.state.image, this.state.strutturaId, alloggioId, fotoArray, "struttura/"+this.state.strutturaId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
+                                                this.uploadImageAndInsertIntoDB(this.state.image, strutturaId, alloggioId, fotoArray, "struttura/"+strutturaId+"/alloggi/" + nomeAlloggio+ "/"+fotoCount);
                                         });
                                         }
                                         Alert.alert(
@@ -181,7 +185,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                                                 var itemList = [];
                                                 var count = 1;
                                                 var count1 = 1; //contatore per gestire asincronismo della prima query
-                                                db.collection("struttura/"+this.state.strutturaId+"/alloggi").get().then((querySnapshot)=>{
+                                                db.collection("struttura/"+strutturaId+"/alloggi").get().then((querySnapshot)=>{
                                                     querySnapshot.forEach((doc) =>{
                                                         var alloggio = doc.data();
                                                         var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
@@ -198,7 +202,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                                                             description: alloggio.descrizione,
                                                             image_url: imageURL, 
                                                             newPage: 'Alloggio',
-                                                            strutturaId: this.state.strutturaId,  
+                                                            strutturaId: strutturaId,  
                                                             id: doc.id
                                                         }
                                                         count++;
@@ -206,7 +210,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                                                         if(count1 < querySnapshot.size){
                                                             count1++;
                                                         }else{
-                                                            this.props.navigation.push("VisualizzaAlloggi", {user: this.state.user, list: itemList, strutturaId: this.state.strutturaId});
+                                                            this.props.navigation.navigate("VisualizzaAlloggi", {user: user, list: itemList, strutturaId: strutturaId});
                                                         }
                                                     });
                                                 });
