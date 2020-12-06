@@ -113,41 +113,10 @@ const HomeHost = ({route, navigation}) => {
           <Text style = {styles.testoLogo}>{user.nome} {user.cognome}</Text>
         </View>
         <View style={styles.centerContainer}>
-        <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} nome= 'Le mie strutture' onPress={() =>{
-              var itemList = [];
-              var count = 1;
-              var count1 = 1;
-              db.collection('struttura').where('hostRef', '==', user.userIdRef).get().then((querySnapshot)=>{
-                querySnapshot.forEach((doc) =>{
-                  var struttura = doc.data();
-                  var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS 
-                                                    
-                  var imageURL = "";
-                  if(fotoArray.length == 0){
-                      imageURL = require("../../assets/imagenotfound.png");
-                  }else{
-                        imageURL = {uri: fotoArray[0]};
-                  }
-                  var oggetto = {
-                      key: count, 
-                      title: struttura.denominazione, 
-                      description: struttura.descrizione,
-                      image_url: imageURL, 
-                      newPage: 'VisualizzaStruttura',
-                      OTP: 'true',
-                      id: doc.id
-                    }
-                    count++;
-                    itemList.push(oggetto);
-                    if(count1 < querySnapshot.size){
-                        count1++;
-                    }else{
-                        navigation.navigate("LeMieStrutture", {user: user, list: itemList});
-                    }
-                })
-              });
-
-            }} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} 
+            nome= 'Le mie strutture' 
+            onPress={() =>{  onPressLeMieStrutture(navigation, user); }} 
+          />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} nome= 'Inserisci prenotazione' onPress={() => navigation.navigate("InserisciPrenotazione", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
@@ -187,3 +156,41 @@ const HomeHost = ({route, navigation}) => {
 }
 
 export default HomeHost;
+
+//Other function
+function onPressLeMieStrutture(navigation, user){
+
+  var itemList = [];
+  var count = 1;
+  var count1 = 1;
+  db.collection('struttura').where('hostRef', '==', user.userIdRef).get().then((querySnapshot)=>{
+    querySnapshot.forEach((doc) =>{
+      var struttura = doc.data();
+      var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS 
+                                        
+      var imageURL = "";
+      if(fotoArray.length == 0){
+          imageURL = require("../../assets/imagenotfound.png");
+      }else{
+            imageURL = {uri: fotoArray[0]};
+      }
+      var oggetto = {
+          key: count, 
+          title: struttura.denominazione, 
+          description: struttura.descrizione,
+          image_url: imageURL, 
+          newPage: 'VisualizzaStruttura',
+          OTP: 'true',
+          id: doc.id
+        }
+        count++;
+        itemList.push(oggetto);
+        if(count1 < querySnapshot.size){
+            count1++;
+        }else{
+            navigation.navigate("LeMieStrutture", {user: user, list: itemList});
+        }
+    })
+  });
+
+}
