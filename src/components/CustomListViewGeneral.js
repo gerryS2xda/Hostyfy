@@ -14,11 +14,13 @@ const styles = StyleSheet.create({
 const CustomListViewGeneral = (props) => {
     const navigate = props.nav;
     const userLogged = props.userLogged;
+    const itemList = props.itemList;
 
     return (
         <View style={styles.container}>
             <FlatList
-                    data={props.itemList}
+                    keyExtractor={(itemList)=>itemList.key.toString()}
+                    data={itemList}
                     renderItem={({ item }) => 
                     <CustomRowGeneral
                         title={item.title}

@@ -13,10 +13,13 @@ const styles = StyleSheet.create({
 
 const CustomListViewGeneralPrenotazione = (props) => {
     const navigate = props.nav;
+    const itemList = props.itemList;
+
 return (
     <View style={styles.container}>
         <FlatList
-                data={props.itemList}
+                keyExtractor={(itemList)=>itemList.key.toString()}
+                data={itemList}
                 renderItem={({ item }) => 
                 <CustomRowGeneralPrenotazione
                     title={item.title}
