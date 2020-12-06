@@ -56,12 +56,12 @@ const CustomRowGeneral = (props) => {
                 
                 var struttura = {
                     denominazione: doc.data().denominazione,
-                    via: doc.data().via,
-                    provincia: doc.data().provincia,
-                    cap: doc.data().cap,
-                    nazione: doc.data().nazione,
+                    via: doc.data().indirizzo.via,
+                    provincia: doc.data().indirizzo.provincia,
+                    cap: doc.data().indirizzo.cap,
+                    nazione: doc.data().indirizzo.nazione,
                     tipologia: doc.data().tipologia,
-                    numeroAlloggi: doc.data().numeroAlloggi,
+                    numeroAlloggi: doc.data().numAlloggi,
                     descrizione: doc.data().descrizione,
                     fotoList: doc.data().fotoList,
                     id: doc.id
@@ -77,7 +77,7 @@ const CustomRowGeneral = (props) => {
                     fotoList.push({image: imageURL});
                 } 
 
-                props.nav.push("VisualizzaStruttura",{user: userLogged, struttura: struttura, fotoCarousel: fotoList})
+                props.nav.navigate("VisualizzaStruttura",{user: userLogged, struttura: struttura, fotoCarousel: fotoList})
             })  
                 
                 }}>

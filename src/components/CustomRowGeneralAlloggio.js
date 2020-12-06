@@ -76,7 +76,7 @@ const CustomRowGeneralAlloggio = (props) => {
                         var imageURL = require("../../assets/imagenotfound.png");
                         fotoList.push({image: imageURL});
                     } 
-                    props.nav.push(props.newPage,{user: userLogged, alloggio: alloggio, fotoCarousel: fotoList});
+                    props.nav.navigate(props.newPage,{user: userLogged, alloggio: alloggio, fotoCarousel: fotoList});
                 })      
             }}>
                 
