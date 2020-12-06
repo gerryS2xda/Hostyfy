@@ -111,7 +111,7 @@ export default class AlloggioScreen extends React.Component {
 
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title="Alloggio" navigator={this.props.navigation} />
+                <HeaderBar title={alloggio.nomeAlloggio} navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.carouselContainer} >

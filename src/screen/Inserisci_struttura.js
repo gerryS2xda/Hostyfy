@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
     },
 	topContainer: {
 		width: "100%",
-		marginTop: 32,
     },
     
     twoFieldContainer: {
@@ -101,7 +100,8 @@ export default class InserisciStrutturaScreen extends React.Component {
             tipologia: "",
             numeroAlloggi: 0,
             descrizione: "",
-            image:''         
+            image:'',
+            isImageUploaded: false         
       }
     }
 
@@ -117,11 +117,18 @@ export default class InserisciStrutturaScreen extends React.Component {
         )
     }
 
-    render() {
-        var user = this.props.route.params.user;
+    resetState(){
         if(this.state.image !== ""){
             this.setState({image: ""});
         }
+        if(this.state.isImageUploaded){
+            this.setState({isImageUploaded: false});
+        }
+    }
+
+    render() {
+        var user = this.props.route.params.user;
+        this.resetState();
        
         return (
             <View style={styles.maincontainer}>
@@ -142,12 +149,19 @@ export default class InserisciStrutturaScreen extends React.Component {
                                 onChangeText = {(testo) => this.setState({indirizzo: testo})}
                             />
                         </View>
-                        <View style={styles.twoFieldContainer}>
-                            <TextInput 
+                        <TextInput 
                                 ref = {input => { this.citta = input }}
-                                style={styles.middleTextInput}
+                                style={styles.singleField}
                                 placeholder='Città'
                                 onChangeText = {(testo) => this.setState({citta: testo})}
+                                
+                            />
+                        <View style={styles.twoFieldContainer}>
+                            <TextInput 
+                                ref = {input => { this.provincia = input }}
+                                style={styles.middleTextInput}
+                                placeholder='Provincia'
+                                onChangeText = {(testo) => this.setState({provincia: testo})}
                                 
                             />
                             <TextInput 
@@ -236,7 +250,8 @@ export default class InserisciStrutturaScreen extends React.Component {
                                         //reset dei field del form
                                         this.denominazione.clear();  
                                         this.regione.clear();                        
-                                        this.citta.clear(); 
+                                        this.citta.clear();
+                                        this.provincia.clear(); 
                                         this.descrizione.clear(); 
                                         this.alloggi.clear(); 
                                         this.tipologia.clear();

@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
 
     middleContainer: {
         width: "100%",
-		marginTop: 32,
     },
 
     threeButtonContainer: {
@@ -85,6 +84,7 @@ export default class InserisciAlloggioScreen extends React.Component {
           piano: '',
           descrizione: '',
           image:'',
+          isImageUploaded: false,
         }
     }
 
@@ -98,12 +98,19 @@ export default class InserisciAlloggioScreen extends React.Component {
         )
     }
 
-    render() {
-        var user = this.props.route.params.user;
-        var strutturaId = this.props.route.params.strutturaId;
+    resetState(){
         if(this.state.image !== ""){
             this.setState({image: ""});
         }
+        if(this.state.isImageUploaded){
+            this.setState({isImageUploaded: false});
+        }
+    }
+
+    render() {
+        var user = this.props.route.params.user;
+        var strutturaId = this.props.route.params.strutturaId;
+        this.resetState();
 
         return (
             <View style={styles.maincontainer}>

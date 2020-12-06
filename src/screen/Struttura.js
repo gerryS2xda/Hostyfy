@@ -121,7 +121,7 @@ export default class StrutturaScreen extends React.Component {
         
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title="Struttura" navigator={this.props.navigation} />
+                <HeaderBar title={struttura.denominazione} navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}>
                         <View style={styles.carouselContainer} >
