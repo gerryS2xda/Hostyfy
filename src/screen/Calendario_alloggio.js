@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
 })
 
 const Calendario_alloggio = (props) => {
-  const {id, strutturaId} = props.route.params;
+  const {user, id, strutturaId} = props.route.params;
+  
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);
   const [selectedEndDate, setSelectedEndDate] = useState(null);

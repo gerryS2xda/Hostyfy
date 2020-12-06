@@ -32,6 +32,7 @@ const styles = StyleSheet.create({
 });
 
 const LeMieChiavi = (props) => {  
+      const {user} = props.route.params;
 
       return (
     <View style={styles.maincontainer}>
