@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
-
+import {firebase} from '../firebase/config';
 
 const styles = StyleSheet.create({
   
@@ -14,13 +14,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     justifyContent: 'center',
   },
-
   container: { 
     flexDirection: 'column', 
     justifyContent: 'center',
     alignItems: 'center',
   },
- 
   topContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
     marginBottom: "4%"
     
   },
-
   upperMiddleContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
@@ -40,9 +37,7 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
     paddingTop: "5%"
   },
-
-  lowerMiddleContainer: {
-    
+  lowerMiddleContainer: { 
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -55,7 +50,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     paddingTop: "3%",
   },
-
   singleTextInput: {
     height: 40,
     width:"90%",
@@ -66,8 +60,7 @@ const styles = StyleSheet.create({
     marginBottom: "3%",   
   },
 
-  finalContainer:{
-    
+  finalContainer:{ 
     justifyContent: 'space-around',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -86,9 +79,10 @@ const styles = StyleSheet.create({
   bottonContainer: {
     width: "100%",
     alignItems: 'center',
-    marginTop: "10%",
-    marginBottom: "10%"
+    marginTop: "2%",
+    marginBottom: "4%"
   },
+  
   datePickerStyle: {
     width: 200,
     marginTop: 20,
@@ -134,14 +128,15 @@ const Modifica_profilo = ({route, navigation}) => {
     const [provincia, setProvincia] = useState(user.indirizzo.provincia);
     const [regione, setRegione] = useState(user.indirizzo.regione);
     const [cap, setCAP] = useState(user.indirizzo.cap);
-    const [password, setPassword] = useState(user.password);
+    const [confermaPassword, setConfermaPassword] = useState("");
     const [newpassword, setNewPassword] = useState("");
     //Dati relativi al pagamento
     const [numCarta, setNumeroCarta] = useState(user.numeroCarta);
     const [ccv, setCCV] = useState(user.ccv);
     const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
     const [intestatario, setIntestatario] = useState(user.intestatario);
-     
+    
+    
   return(
     <View style={styles.maincontainer}>
       <HeaderBar title="Il mio profilo" navigator={navigation} />
@@ -267,16 +262,20 @@ const Modifica_profilo = ({route, navigation}) => {
             </Text>
             <TextInput
                 style = {styles.singleTextInput}
-                placeholder='Password attuale'
-                editable={IsEditable}
-                value={password}
-                onChangeText = {(password) => setPassword(password)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
+                ref = {input => {nuovaPasswordRef = input }}
                 placeholder='Nuova password'
                 editable={IsEditable}
+                secureTextEntry = {true}
                 onChangeText = {(newpassword) => setNewPassword(newpassword)}
+            />
+
+            <TextInput
+                style = {styles.singleTextInput}
+                ref = {input => {confermaPasswordRef = input }}
+                placeholder='Conferma Nuova password'
+                editable={IsEditable}
+                secureTextEntry = {true}
+                onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
             />
           </View>
           <View style = {styles.finalContainer}>
@@ -314,21 +313,51 @@ const Modifica_profilo = ({route, navigation}) => {
             />    
           </View>
 
-          <View style = {styles.bottonContainer}>
+          
+      </ScrollView>
+      
+      <View style = {styles.bottonContainer}>
             <CustomButton 
               styleBtn={{width: "90%"}} 
-              nome= {IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
+              nome = {IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
               onPress={()=> {
-                if(!IsEditable){
+                if(!IsEditable)
+                {
                   setEditable(previousState => !previousState)
-                }else{
-                  var indirizzo = {via: via, citta: citta, provincia: provincia, cap: cap, regione: regione};
-                  GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, sesso, dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, user.isHost, email, newpassword);
-                  GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
-                }  
-              }}/>
+                }
+                else
+                {               
+                    if(newpassword!==confermaPassword)
+                    {
+                    
+                      Alert.alert('Errore nell\'inserimento', 'Le nuove password non coincidono!', [{text: 'OK', onPress: ()=>{
+
+                      }}]);
+                    }
+                    else
+                    {
+                      
+                      var indirizzo = {via: via, citta: citta, provincia: provincia, cap: cap, regione: regione};
+                      GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, sesso, dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, user.isHost, email);
+                      GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza); 
+                      
+                        var userLogin = firebase.auth().currentUser;
+                        
+                        userLogin.updatePassword(newpassword).then(function() {
+                        Alert.alert('Modifica Password', 'Password modificata con successo!', [{text: 'OK', onPress: ()=>{
+                          setEditable(previousState => !previousState)
+                        }}]);})
+                      .catch(function(error) {
+                        Alert.alert('Modifica Password', 'Riprova, vi è stato un problema con la modifica della password!', [{text: 'OK'}]);})
+                    }
+                }     
+                  nuovaPasswordRef.clear();  
+                 confermaPasswordRef.clear();
+                   
+              }
+              }/>
+              
             </View>
-      </ScrollView>
     </View>
   );
 }

@@ -81,12 +81,18 @@ const HomeGuest = ({route, navigation}) => {
           <Text style = {styles.testoLogo}>{user.nome} {user.cognome}</Text>
         </View>
         <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= ' ' onPress={() => navigation.navigate("ModificaProfilo", {user: user})} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= 'Modifica Profilo' onPress={() => navigation.navigate("ModificaProfilo", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni", {user: user})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
-          <CustomButton styleBtn={{width:300}} nome="Esci" onPress={() => { navigation.navigate('Home'); }} />
+          <CustomButton styleBtn={{width:300}} nome="Esci" onPress={() => { 
+            firebase.auth().signOut().then(function() {
+              navigation.navigate('Home');
+            }).catch(function(error) {
+              // An error happened.
+            });
+             }} />
         </View>
       </View>
     </View>

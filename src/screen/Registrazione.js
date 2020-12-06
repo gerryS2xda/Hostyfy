@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   }
 });
 
+var db = firebase.firestore();
 
 const Registrazione = (props) => {
 
@@ -91,22 +92,26 @@ const [confermaPassword, setConfermaPassword] = useState('');
                     style = {styles.input}
                     placeholder = 'Nome'
                     onChangeText = {(nome) => setNome(nome)}
+                    ref = {input => {nomeref= input }}
                   />
                   <TextInput
                     style = {styles.input}
                     placeholder = 'Cognome'
                     onChangeText = {(cognome) => setCognome(cognome)}
+                    ref = {input => {cognomeref= input }}
                   />
                   <TextInput
                     style = {styles.input}
                     placeholder = 'Email'
                     onChangeText = {(email) => setEmail(email)}
+                    ref = {input => {emailref= input }}
                   />
                   <TextInput
                     style = {styles.input}
                     placeholder = 'Password'
                     onChangeText = {(password) => setPassword(password)}
                     secureTextEntry={true}
+                    ref = {input => {passwordref= input }}
                   />
 
                   <TextInput
@@ -114,6 +119,7 @@ const [confermaPassword, setConfermaPassword] = useState('');
                     placeholder = 'Conferma Password'
                     onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
                     secureTextEntry={true}
+                    ref = {input => {confermapasswordref= input }}
                   />        
 
                   <View style={styles.buttonCustomizzato}>
@@ -127,17 +133,33 @@ const [confermaPassword, setConfermaPassword] = useState('');
                             console.log("Registrazione - uid:" + userId);
                             GuestModel.createGuestDocumentForRegistration(userId, cognome, nome, email, confermaPassword);
                             GuestModel.createCreditCardDocumentGuest(userId, 0, 0, "", "");
-                            GuestModel.getGuestDocument(userId).then(function (guest) { 
-                              props.navigation.navigate('HomeGuest', {user: guest}); //passare guest come parametro
-                            }).catch(function (err) { console.log("ERROR with read in Registrazione.js:" + err); });
-                          })
-                          .catch(function(error) {
-                            console.error("Error writing document: ", error);
-                        });
-                        }
-                          //Alert.alert('Registrazione', 'Registrazione avvenuta con successo', [{text: 'Accedi', onPress: ()=> props.navigation.navigate('HomeGuest')}]);
-                        }
-                      } 
+                            
+                            db.collection("guest").doc(userId).get().then(function (guestdoc) { 
+                              var guest = guestdoc.data();
+                              db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
+                                var creditcard = creditcarddoc.data();
+                                props.navigation.navigate('HomeGuest', {user: {...guest, ...creditcard}});
+                                
+                                nomeref.clear();  
+                                cognomeref.clear();
+                                emailref.clear();
+                                passwordref.clear();
+                                confermapasswordref.clear();
+                                
+                              }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
+                            }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
+                          }).catch(function (error) {
+                            Alert.alert('Errore nella registrazione', 'Riprova a inserire i dati', [{text: 'OK', onPress: ()=>{
+                                nomeref.clear();  
+                                cognomeref.clear();
+                                emailref.clear();
+                                passwordref.clear();
+                                confermapasswordref.clear();
+                            }}]);
+                          });                            
+                        }                      
+                      }
+                    } 
                     />
                   </View>
               

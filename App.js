@@ -62,6 +62,7 @@ import Calendario_alloggio from "./src/screen/Calendario_alloggio"
 import Visualizza_calendario_alloggio from "./src/screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "./src/screen/NotificationScreen"
 import CheckOutScreen from "./src/screen/CheckOutScreen"
+import PasswordDimenticata from "./src/screen/PasswordDimenticata"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -223,6 +224,11 @@ const App = () => {
             name="CheckOut" 
             component={CheckOutScreen} 
             options={{title: 'CheckOut'}} 
+          />
+          <Stack.Screen 
+            name="PasswordDimenticata" 
+            component={PasswordDimenticata} 
+            options={{title: 'PasswordDimenticata'}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>

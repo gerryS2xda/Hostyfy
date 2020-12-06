@@ -40,7 +40,7 @@ const DrawerMenuSimple = (props) =>{
     //NOTA: il valore di currentUser e' null alla prima lettura di questa pagina da parte di "App.js", viene settata ogni volta che si apre il drawer menu
     var userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "unknown user";
     const [user, setUser] = useState({empty: "empty"});
-
+    
     if(user.hasOwnProperty("empty") && userId !== "unknown user"){
 
         db.collection("guest").doc(userId).get().then(function (guestdoc) { 
@@ -58,7 +58,8 @@ const DrawerMenuSimple = (props) =>{
             } 
         }).catch(function (err) { console.log("ERROR with read guest/creditcard in DrawerMenuSimple.js:" + err); });
         }).catch(function (err) { console.log("ERROR with read guest in DrawerMenuSimple.js:" + err); });
-    }else if(user.hasOwnProperty("refresh")){ //significa che userId non e' null
+    }else{//significa che userId non e' null
+         
         db.collection("guest").doc(userId).get().then(function (guestdoc) { 
             var guest = guestdoc.data();
             db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
@@ -127,10 +128,8 @@ function DrawerContentCustom(props){
     const toggleSwitchGuestHost = () => {
         setIsHost(previousState => !previousState);
         if(!isHost){
-            props.setUserProp({refresh: "refresh"});
             props.navigation.navigate('HomeHost', {user: userLogged});
         }else{
-            props.setUserProp({refresh: "refresh"});
             props.navigation.navigate('HomeGuest', {user: userLogged});
         }
     };
@@ -210,7 +209,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('HomeGuest', {user: userLogged});
                                 }}
                             />
@@ -218,7 +216,6 @@ function DrawerContentCustom(props){
                                 icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Area personale</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('ModificaProfilo', {user: userLogged});
                                 }}
                             />
@@ -226,7 +223,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
                                 onPress={ () => {
-                                    props.setUserProp({refresh: "refresh"});
                                     var dataOdierna = new Date(); 
                                     db.collection('prenotazioni').where('guestRef','==',userLogged.userId).where('dataFine','>=',dataOdierna).get().then(async(querySnapshot)=>{
                                         var itemList = [];
@@ -265,7 +261,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('LeMieChiavi', {user: userLogged});
                                 }}
                             />
@@ -274,9 +269,8 @@ function DrawerContentCustom(props){
                                 icon={() => (<Icon name="arrow-up-bold-circle" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Upgrade host</Text>)}
                                 onPress={() => {
-                                        setIsHost(true); //dovra' essere rimosso non appena si perfeziona implementazione
+                                        
                                         setIsUpgradePay(true); //per la demo (si dovra' gestire in altro modo questo)   
-                                        props.setUserProp({refresh: "refresh"}); 
                                         props.navigation.navigate('UpgradeHost', {user: userLogged});
                                     }
                                 }
@@ -290,7 +284,6 @@ function DrawerContentCustom(props){
                         icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
                         label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
                         onPress={() => {
-                            props.setUserProp({refresh: "refresh"});
                             props.navigation.navigate('Home');
                         }} 
                     />
@@ -325,7 +318,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('HomeHost', {user: userLogged});
                                 }}
                             />
@@ -333,7 +325,6 @@ function DrawerContentCustom(props){
                                 icon={() => (<Icon name="account" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Area personale</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('ModificaProfilo', {user: userLogged});
                                 }}
                             />
@@ -341,7 +332,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="briefcase" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Prenotazioni</Text>)}
                                 onPress={ () => {
-                                    props.setUserProp({refresh: "refresh"});
                                     var dataOdierna = new Date(); 
                                     db.collection('prenotazioni').where('hostRef','==',userLogged.userIdRef).where('dataFine','>=',dataOdierna).get().then(async(querySnapshot)=>{
                                         var itemList = [];
@@ -380,7 +370,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('LeMieChiavi', {user: userLogged});
                                 }}
                             />
@@ -388,7 +377,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="hospital-building" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie strutture</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('LeMieStrutture', {user: userLogged});
                                 }}
                             /> 
@@ -396,7 +384,6 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="calendar-month" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Calendario prenotazioni</Text>)}
                                 onPress={() => {
-                                    props.setUserProp({refresh: "refresh"});
                                     props.navigation.navigate('Visualizza_calendario_alloggio', {user: userLogged});
                                 }}
                             />
@@ -423,7 +410,6 @@ function DrawerContentCustom(props){
                         icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
                         label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
                         onPress={() => {
-                            props.setUserProp({refresh: "refresh"});
                             props.navigation.navigate('Home');
                         }} 
                     />
