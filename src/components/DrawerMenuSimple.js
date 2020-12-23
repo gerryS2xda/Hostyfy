@@ -30,6 +30,7 @@ import CalendarioAlloggio from "../screen/Calendario_alloggio"
 import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
+import ImagePickerMultiple from "../components/ImagePickerMultiple"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 
 const Drawer = createDrawerNavigator();
@@ -58,24 +59,8 @@ const DrawerMenuSimple = (props) =>{
             } 
         }).catch(function (err) { console.log("ERROR with read guest/creditcard in DrawerMenuSimple.js:" + err); });
         }).catch(function (err) { console.log("ERROR with read guest in DrawerMenuSimple.js:" + err); });
-    }else{//significa che userId non e' null
-         
-        db.collection("guest").doc(userId).get().then(function (guestdoc) { 
-            var guest = guestdoc.data();
-            db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
-            var creditcard = creditcarddoc.data();
-            //verifica se e' host oppure no
-            if(guest.isHost){
-                db.collection("host").doc(userId).get().then(function (hostdoc){
-                var host = hostdoc.data();
-                setUser({...guest, ...host, ...creditcard});
-                }).catch(function (err) { console.log("ERROR with read host in DrawerMenuSimple.js:" + err); });
-            } else{
-                setUser({...guest, ...creditcard});
-            } 
-        }).catch(function (err) { console.log("ERROR with read guest/creditcard in DrawerMenuSimple.js:" + err); });
-        }).catch(function (err) { console.log("ERROR with read guest in DrawerMenuSimple.js:" + err); });
     }
+    
     return( 
         <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userProps={user} setUserProp={setUser}/>}>
             <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
