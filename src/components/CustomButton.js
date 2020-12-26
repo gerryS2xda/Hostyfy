@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:8,
-        backgroundColor: '#f2077d',
+        backgroundColor: '#0692d4',
     },
     testoBottone: {
         color:'#ffffff',

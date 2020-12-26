@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         borderRadius:8,
-        backgroundColor: '#f2077d',
+        backgroundColor: '#0692d4',
     },
     immagineBottone : {
         width:30,

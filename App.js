@@ -22,6 +22,8 @@
     20. npm install @react-native-community/datetimepicker
     21. npm install react-native-popup-dialog
     22. npm install firebase
+    23. npm install react-native-modalbox@latest --save
+    24. npm i react-native-modalbox
     Swipe right to open
 */
 import {LogBox} from 'react-native'

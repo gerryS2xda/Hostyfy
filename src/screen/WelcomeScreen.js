@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     welcometitle:{
       textAlign: "center",
       fontSize: 28,
-      color: "#f2077d",
+      color: "#003580",
       marginTop: 32,
       marginBottom: 16,
       fontFamily: "MontserrantBold",
@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     suggestTxt: {
       textAlign: 'center',
       fontSize: 16,
-      color: 'black',
+      color: '#666666',
       fontFamily: "Montserrant"
     }
   });

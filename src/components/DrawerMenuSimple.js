@@ -30,7 +30,6 @@ import CalendarioAlloggio from "../screen/Calendario_alloggio"
 import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
-import ImagePickerMultiple from "../components/ImagePickerMultiple"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 
 const Drawer = createDrawerNavigator();

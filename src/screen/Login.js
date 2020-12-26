@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, Button } from 'react-native'
 import CustomButton from "../components/CustomButton"
 import {firebase} from "../firebase/config"
+import Modal from 'react-native-modalbox'
+import CustomAlert from '../components/CustomAlert'
 
 var db = firebase.firestore();
 
@@ -32,7 +34,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width:"75%",
-    borderColor: '#cc3881',
+    borderColor: '#666666',
     borderBottomWidth: 1,
     marginTop:"4%",
     fontFamily: "MontserrantSemiBold",
@@ -40,20 +42,23 @@ const styles = StyleSheet.create({
   },
 
   paswordDimenticata: {
-    color: '#cc3881',
+    color: '#303a52',
     fontFamily: "MontserrantSemiBold",
+    fontSize: 12
   },
   clickTxt: {
-    color: '#cc3881',
+    color: '#303a52',
     fontFamily: "MontserrantSemiBold",
     textDecorationLine: "underline",
     textDecorationStyle: "solid",
+    fontSize: 12
   },
   nonReg: {
     alignContent: 'center',
-    color: '#cc3881',
+    color: '#303a52',
     marginBottom: "3%",
     fontFamily: "MontserrantSemiBold",
+    fontSize: 15
   },
 
   image : {
@@ -73,7 +78,7 @@ const Login = (props) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errore, setErrore] = useState('');
+  const [errore, setErrore] = useState(false);
 
   const createNextRealeaseFeatureAlert = () =>
       Alert.alert(
@@ -93,6 +98,17 @@ const Login = (props) => {
 
   return(
     <View style={styles.maincontainer}>
+
+    {errore && (<CustomAlert
+      stato = {errore}
+      setStato = {setErrore}
+      titolo = "Errore di accesso"
+      testo = "Username e/o Password Errati, ritenta!"
+      buttonName = "Ok"
+      pagina = "Home"
+      navigator = {props.navigation}></CustomAlert>)}
+
+
       <ScrollView style={styles.bodyScrollcontainer}>
         <View style={styles.scrollContent}>
           <View style={styles.container_1}>
@@ -101,17 +117,18 @@ const Login = (props) => {
               style = {styles.image} 
             />
             <TextInput
+              ref = {ref => {emailref=ref}}
               style = {styles.input}
               placeholder = 'Email'
               onChangeText = {(email) => setEmail(email)}
-              ref = {input => {emailref = input }}
+              
             />
             <TextInput
               style = {styles.input}
+              ref = {ref => {passwordref=ref}}
               placeholder = 'Password'
               onChangeText = {(password) => setPassword(password)}
               secureTextEntry = {true}
-              ref = {input => { passwordref = input }}
             />
             <Text>{errore}</Text>
             <CustomButton 
@@ -145,10 +162,7 @@ const Login = (props) => {
                       }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
                     }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
                   }).catch(function (error) {
-                    Alert.alert('Errore nell\'autenticazione', 'Username e/o password errati, ritenta!', [{text: 'OK', onPress: ()=>{
-                      emailref.clear();  
-                      passwordref.clear();
-                    }}]);
+                    if(!errore) setErrore(true);
                   });
                   
                 }} />

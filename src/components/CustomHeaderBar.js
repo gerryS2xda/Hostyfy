@@ -29,7 +29,7 @@ const CustomHeaderBar = (props) => {
       }),
       headerContainer: {
           width: "100%",
-          backgroundColor: '#f2077d',
+          backgroundColor: '#003780',
       },
       headertitle: Platform.select({
           ios: {
@@ -153,7 +153,7 @@ const CustomHeaderBar = (props) => {
 
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
-          <StatusBar backgroundColor="#f2077d" barStyle={'default'} /> 
+          <StatusBar backgroundColor="#003780" barStyle={'default'} /> 
             <View style={styles.headerContent}>
                 {
                   showBackButton && (

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, ImagePropTypes } from 'react-native'
 import CustomButton from "../components/CustomButton"
 import {firebase} from "../firebase/config"
+import CustomAlert from "../components/CustomAlert"
 
 var db = firebase.firestore();
 
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width:"75%",
-    borderColor: '#cc3881',
+    borderColor: '#666666',
     borderBottomWidth: 1,
     marginTop:"4%",
     fontFamily: "MontserrantSemiBold",
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
   passwordDimenticata: {
     color: '#000000',
     fontFamily: "MontserrantSemiBold",
+    alignContent: 'flex-start',
   },
   clickTxt: {
     color: '#cc3881',
@@ -69,9 +71,7 @@ const styles = StyleSheet.create({
   },
   informazioniPersonali: {
     width: "90%",
-    justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 3,
     borderRadius: 20,
     paddingVertical: 20,
     borderColor: '#f0f0f0',
@@ -82,9 +82,30 @@ const styles = StyleSheet.create({
 const Login = (props) => {
 
   const [email, setEmail] = useState('');
-
+  const [positivWrite, setPositiveWrite] = useState(false)
+  const [value, setValue] = useState(false)
+                          
   return(
     <View style={styles.maincontainer}>
+
+        {positivWrite && (<CustomAlert
+          titolo = "Operazione completata"
+          testo = "L'email è stata inviata con successo"
+          pagina = "Home"
+          buttonName = "Ok"
+          navigator = {props.navigation} 
+          stato = {value}
+          setStato ={setValue}></CustomAlert>)}
+
+          {!positivWrite && (<CustomAlert
+          titolo = "Operazione non completata"
+          testo = "Email non presente nei nostri sistemi"
+          pagina = "PasswordDimenticata"
+          buttonName = "Ok"
+          navigator = {props.navigation} 
+          stato = {value}
+          setStato ={setValue}></CustomAlert>)}               
+
       <ScrollView style={styles.bodyScrollcontainer}>
         <View style={styles.scrollContent}>
           <View style={styles.container_1}>
@@ -109,18 +130,17 @@ const Login = (props) => {
                     nome = "Conferma" 
                     styleBtn={{width: "75%"}}
                     onPress={()=>{
-                        var auth = firebase.auth();
-                        
-                        
+                        var auth = firebase.auth();  
                         auth.sendPasswordResetEmail(email.trim()).then(function() {
-                            Alert.alert('Operazione completata', 'L\'email è stata inviata con successo', [{text: 'OK', onPress: ()=>{
-                                emailref.clear();
-                                props.navigation.navigate('Home');  
-                              }}]);
-                        }).catch(function(error) {
-                            Alert.alert('Errore nell\'invio dell\'email', 'L\'email inserita non è presente nei nostri sistemi', [{text: 'OK', onPress: ()=>{
-                                emailref.clear();  
-                              }}]);
+                        
+                          if(!value) setValue(true);
+                          setPositiveWrite(true);
+                          emailref.clear();
+                        
+                          
+                        }).catch(function(error) { 
+                          setPositiveWrite(false);
+                          if(!value) setValue(true);
                         });
 
 
