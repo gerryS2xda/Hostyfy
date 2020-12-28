@@ -80,22 +80,6 @@ const Login = (props) => {
   const [password, setPassword] = useState('');
   const [errore, setErrore] = useState(false);
 
-  const createNextRealeaseFeatureAlert = () =>
-      Alert.alert(
-      "Funzionalità non disponibile",
-      "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-      [
-          {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
-
-
   return(
     <View style={styles.maincontainer}>
 
@@ -162,6 +146,8 @@ const Login = (props) => {
                       }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
                     }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
                   }).catch(function (error) {
+                        emailref.clear();  
+                        passwordref.clear();
                     if(!errore) setErrore(true);
                   });
                   
