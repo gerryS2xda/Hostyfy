@@ -4,7 +4,7 @@ import * as CleanServiceModel from "./datamodel/CleanServiceModel"
 import * as HostModel from "./datamodel/HostModel"
 import * as StrutturaModel from "./datamodel/StrutturaModel"
 import * as AlloggioModel from "./datamodel/AlloggioModel"
-import * as PrenotazioneModel from "./datamodel/PrenotazioniModel"
+import * as PrenotazioneModel from "./datamodel/PrenotazioneModel"
 
 export function createFirestoreDB(){
 
