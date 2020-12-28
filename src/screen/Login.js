@@ -1,11 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, Button } from 'react-native'
 import CustomButton from "../components/CustomButton"
-import {firebase} from "../firebase/config"
-import Modal from 'react-native-modalbox'
 import CustomAlert from '../components/CustomAlert'
-
-var db = firebase.firestore();
+import {firebase} from "../firebase/config"
+import * as GuestModel from "../firebase/datamodel/GuestModel"
+import * as HostModel from "../firebase/datamodel/HostModel"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -79,6 +78,8 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errore, setErrore] = useState(false);
+  const emailRef = useRef(null);
+  const passwordref = useRef(null);
 
   return(
     <View style={styles.maincontainer}>
@@ -101,7 +102,7 @@ const Login = (props) => {
               style = {styles.image} 
             />
             <TextInput
-              ref = {ref => {emailref=ref}}
+              ref = {emailRef}
               style = {styles.input}
               placeholder = 'Email'
               onChangeText = {(email) => setEmail(email)}
@@ -109,7 +110,7 @@ const Login = (props) => {
             />
             <TextInput
               style = {styles.input}
-              ref = {ref => {passwordref=ref}}
+              ref = {passwordref}
               placeholder = 'Password'
               onChangeText = {(password) => setPassword(password)}
               secureTextEntry = {true}
@@ -119,37 +120,24 @@ const Login = (props) => {
                 nome="Accedi" 
                 styleBtn={{width: "75%"}}
                 onPress={() => {
-                    firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user){
-                    const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
-                    console.log("Login - uid:" + userId);
-
-                    db.collection("guest").doc(userId).get().then(function (guestdoc) { 
-                      var guest = guestdoc.data();
-                      db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
-                        var creditcard = creditcarddoc.data();
-                        //verifica se e' host oppure no
-                        if(guest.isHost)
-                        {
-                          db.collection("host").doc(userId).get().then(function (hostdoc){
-                            var host = hostdoc.data();
-                            props.navigation.navigate('HomeGuest', {user: {...guest, ...host, ...creditcard}});
-                            //fai il merge tra field di guest e di host
-                          }).catch(function (err) { console.log("ERROR with read host in Login.js:" + err); });
-                        } 
-                        else
-                        {
-                          props.navigation.navigate('HomeGuest', {user: {...guest, ...creditcard}}); 
-                        } 
-                        emailref.clear();  
-                        passwordref.clear();
-                        
-                      }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
-                    }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
-                  }).catch(function (error) {
-                        emailref.clear();  
-                        passwordref.clear();
-                    if(!errore) setErrore(true);
-                  });
+                    firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(async function (user){
+                      const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
+                      var guestDoc = await GuestModel.getGuestDocument(userId);
+                      var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
+                      if(guestDoc.isHost){ //verifica se guest e' anche un host
+                          var hostDoc = await HostModel.getHostDocument(userId);
+                          props.navigation.navigate('HomeGuest', {user: {...guestDoc, ...creditcardDoc, ...hostDoc}});
+                      }else{
+                        props.navigation.navigate('HomeGuest', {user: {...guestDoc, ...creditcardDoc}});
+                      }
+                      emailRef.current.clear();  
+                      passwordref.current.clear();
+                    }).catch(function (err) {
+                          console.log("ERROR in Login.js:" + err);
+                          emailRef.current.clear();  
+                          passwordref.current.clear();
+                          if(!errore) setErrore(true);
+                    });
                   
                 }} />
             <View style={styles.horizontalContainer}>
@@ -175,4 +163,4 @@ const Login = (props) => {
   );
 }
 
-export default Login
+export default Login;
