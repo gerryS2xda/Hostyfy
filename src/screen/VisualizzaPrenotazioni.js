@@ -7,24 +7,21 @@ import {
 } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
-import {firebase} from '../firebase/config'
-import { useFocusEffect } from '@react-navigation/native';
-
-//Get Cloud firestore reference
-var db = firebase.firestore();
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
+import * as StrutturaModel from "../firebase/datamodel/StrutturaModel"
 
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
       const {user,isHost} = route.params; 
       const [list, setList] = useState([]);
        
-      React.useEffect(() => {
+      useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
           // Screen was focused -> Do something
           async function getData(){
             if(isHost){
               var dataOdierna = new Date(); 
-              let docs = await getPrenotazioniAttualiHostQuery(user, dataOdierna);
+              let docs = await PrenotazioneModel.getPrenotazioniAttualiHostQuery(user.userIdRef, dataOdierna); //NOTA: per guest usare 'user.userId'
               var itemList = [];
               var count = 1;
               if(docs.length==0){
@@ -37,7 +34,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 var prenotazione = doc.data();
                 var prenotazioneId = doc.id;
                 console.log(prenotazione)
-                let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                let alloggio = await StrutturaModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
                 var oggetto = {
                   key: count, 
                   title: alloggio.nomeAlloggio,
@@ -82,7 +79,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                       styleBtn={{width: "90%"}} 
                       nome="Storico prenotazioni" 
                       onPress={() => {
-                        getPrenotazioni(user, navigation, isHost)
+                        getPrenotazioni(user, navigation, isHost).catch(function (err) { console.log("ERROR in VisualizzaPrenotazioni: " + err); });
                         }
                       }
                     />
@@ -125,20 +122,10 @@ const styles = StyleSheet.create({
 });
 
 //Async function for query
-async function getPrenotazioniAttualiHostQuery(user, dataOdierna){
-  let docs = await db.collection('prenotazioni').where('hostRef','==',user.userIdRef).where('dataFine','>=',dataOdierna).get();
-  return docs.docs;
-}
-
-async function getPrenotazioniAttualiGuestQuery(user, dataOdierna){
-  let docs = await db.collection('prenotazioni').where('guestRef','==',user.userId).where('dataFine','>=',dataOdierna).get();
-  return docs.docs;
-}
-
 async function getPrenotazioni(user, navigation, isHost){
   if(isHost){
     var dataOdierna = new Date();
-    let docs = await getPrenotazioniHostQuery(user, dataOdierna);
+    let docs = await PrenotazioneModel.getPrenotazioniHostQuery(user.userIdRef, dataOdierna);
     var itemList = [];
     var count = 1;
     if(docs.size==0){
@@ -147,7 +134,7 @@ async function getPrenotazioni(user, navigation, isHost){
     for(const doc of docs){
       var prenotazione = doc.data();
       var prenotazioneId = doc.id;
-      let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+      let alloggio = await StrutturaModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
       var oggetto = {
           key: count, 
           title: alloggio.nomeAlloggio,
@@ -162,7 +149,7 @@ async function getPrenotazioni(user, navigation, isHost){
     navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
   } else {
     var dataOdierna = new Date();
-    let docs = await getPrenotazioniGuestQuery(user, dataOdierna);
+    let docs = await PrenotazioneModel.getPrenotazioniGuestQuery(user.userId, dataOdierna);
     var itemList = [];
     var count = 1;
     if(docs.size==0){
@@ -171,7 +158,7 @@ async function getPrenotazioni(user, navigation, isHost){
     for(const doc of docs){
       var prenotazione = doc.data();
       var prenotazioneId = doc.id;
-      let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+      let alloggio = await StrutturaModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
       var oggetto = {
           key: count, 
           title: alloggio.nomeAlloggio,
@@ -187,16 +174,3 @@ async function getPrenotazioni(user, navigation, isHost){
   }
 }
 
-
-async function getPrenotazioniHostQuery(user, dataOdierna){
-  let docs = await db.collection('prenotazioni').where('hostRef','==',user.userIdRef).where('dataFine','<=',dataOdierna).get();
-  return docs.docs;
-}
-async function getPrenotazioniGuestQuery(user, dataOdierna){
-  let docs = await db.collection('prenotazioni').where('guestRef','==',user.userId).where('dataFine','<=',dataOdierna).get();
-  return docs.docs;
-}
-async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
-  let alloggio = await db.collection('struttura').doc(strutturaRef).collection('alloggi').doc(alloggioRef).get();
-  return alloggio.data();
-}
