@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { Component, useState, useEffect } from 'react';
 import CustomListViewGeneralPrenotazione from '../components/CustomListViewGeneralPrenotazione'
 import {
   StyleSheet,
@@ -47,7 +47,48 @@ const styles = StyleSheet.create({
 
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
-      const {user,isHost, list} = route.params; 
+      const {user,isHost} = route.params; 
+      const [list, setList] = useState([]);
+      useEffect(()=>{
+        const getData = async() =>{
+        if(isHost){
+          var dataOdierna = new Date(); 
+          let docs = await getPrenotazioniAttualiHostQuery(user, dataOdierna);
+          var itemList = [];
+          var count = 1;
+          if(docs.length==0){
+            console.log("loop");
+            setList(itemList);
+          }
+          else{
+            console.log("Ciao");
+          for(const doc of docs){
+            var prenotazione = doc.data();
+            var prenotazioneId = doc.id;
+            console.log(prenotazione)
+            let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+            var oggetto = {
+              key: count, 
+              title: alloggio.nomeAlloggio,
+              description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
+              image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+              newPage: 'PrenotazioneDetail',
+              id: prenotazioneId,
+            }
+            itemList.push(oggetto)              
+            count++;
+                
+            }
+            console.log(itemList)
+            setList(itemList);
+          }                        
+        } else {
+
+        }
+      }
+      getData();
+      },[getData])
+      console.log("lista: " +list);
       return (
         <View style={styles.maincontainer}>
           <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
@@ -66,75 +107,9 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                       styleBtn={{width: "90%"}} 
                       nome="Storico prenotazioni" 
                       onPress={() => {
-                        console.log(isHost)
-                        if(isHost){
-                            var dataOdierna = new Date(); 
-                            db.collection('prenotazioni').where('hostRef','==',user.userIdRef).where('dataFine','<=',dataOdierna).get().then(async(querySnapshot)=>{
-                                var itemList = [];
-                                var count = 1;
-                                if(querySnapshot.size==0){
-                                  navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-                                }
-                                querySnapshot.forEach( (doc) =>{
-                                    var prenotazione = doc.data();
-                                    var prenotazioneId = doc.id;
-                                    console.log(prenotazione)
-                                    db.collection('struttura').doc(prenotazione.strutturaRef).collection('alloggi').doc(prenotazione.alloggioRef).get().then((doc1) =>{
-                                        var alloggio = doc1.data();
-                                        var oggetto = {
-                                            key: count, 
-                                            title: alloggio.nomeAlloggio,
-                                            description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
-                                            image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
-                                            newPage: 'PrenotazioneDetail',
-                                            id: prenotazioneId,
-                                        }
-                                        itemList.push(oggetto)
-                                        if(count<querySnapshot.size){
-                                            count++
-                                        }
-                                        else{
-                                            console.log(itemList)
-                                            navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-                                        }
-                                    })
-                                })
-                            })
-                        } else{
-                            var dataOdierna = new Date(); 
-                            db.collection('prenotazioni').where('guestRef','==',user.userId).where('dataFine','<=',dataOdierna).get().then(async(querySnapshot)=>{
-                                var itemList = [];
-                                var count = 1;
-                                if(querySnapshot.size==0){
-                                  navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-                                }
-                                querySnapshot.forEach( (doc) =>{
-                                    var prenotazione = doc.data();
-                                    var prenotazioneId = doc.id;
-                                    console.log(prenotazione)
-                                    db.collection('struttura').doc(prenotazione.strutturaRef).collection('alloggi').doc(prenotazione.alloggioRef).get().then((doc1) =>{
-                                        alloggio = doc1.data();
-                                        var oggetto = {
-                                            key: count, 
-                                            title: alloggio.nomeAlloggio,
-                                            description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
-                                            image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
-                                            newPage: 'PrenotazioneDetail',
-                                            id: prenotazioneId,
-                                        }
-                                        itemList.push(oggetto)
-                                        if(count<querySnapshot.size){
-                                            count++
-                                        }
-                                        else{
-                                            console.log(itemList)
-                                            navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-                                        }
-                                    })
-                                })
-                            })
-                        }}
+                        getPrenotazioni(user, navigation, isHost)
                         }
+                      }
                     />
                 </View>
           </View>      
@@ -142,3 +117,78 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
 }
 
 export default VisualizzaPrenotazioni
+
+async function getPrenotazioniAttualiHostQuery(user, dataOdierna){
+  let docs = await db.collection('prenotazioni').where('hostRef','==',user.userIdRef).where('dataFine','>=',dataOdierna).get();
+  return docs.docs;
+}
+async function getPrenotazioniAttualiGuestQuery(user, dataOdierna){
+  let docs = await db.collection('prenotazioni').where('guestRef','==',user.userId).where('dataFine','>=',dataOdierna).get();
+  return docs.docs;
+}
+
+async function getPrenotazioni(user, navigation, isHost){
+  if(isHost){
+    var dataOdierna = new Date();
+    let docs = await getPrenotazioniHostQuery(user, dataOdierna);
+    var itemList = [];
+    var count = 1;
+    if(docs.size==0){
+      navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
+    }
+    for(const doc of docs){
+      var prenotazione = doc.data();
+      var prenotazioneId = doc.id;
+      let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+      var oggetto = {
+          key: count, 
+          title: alloggio.nomeAlloggio,
+          description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
+          image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+          newPage: 'PrenotazioneDetail',
+          id: prenotazioneId,
+      }
+      itemList.push(oggetto);
+    };
+    console.log(itemList);
+    navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
+  } else {
+    var dataOdierna = new Date();
+    let docs = await getPrenotazioniGuestQuery(user, dataOdierna);
+    var itemList = [];
+    var count = 1;
+    if(docs.size==0){
+      navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
+    }
+    for(const doc of docs){
+      var prenotazione = doc.data();
+      var prenotazioneId = doc.id;
+      let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+      var oggetto = {
+          key: count, 
+          title: alloggio.nomeAlloggio,
+          description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
+          image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+          newPage: 'PrenotazioneDetail',
+          id: prenotazioneId,
+      }
+      itemList.push(oggetto);
+    };
+    console.log(itemList);
+    navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
+  }
+}
+
+
+async function getPrenotazioniHostQuery(user, dataOdierna){
+  let docs = await db.collection('prenotazioni').where('hostRef','==',user.userIdRef).where('dataFine','<=',dataOdierna).get();
+  return docs.docs;
+}
+async function getPrenotazioniGuestQuery(user, dataOdierna){
+  let docs = await db.collection('prenotazioni').where('guestRef','==',user.userId).where('dataFine','<=',dataOdierna).get();
+  return docs.docs;
+}
+async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
+  let alloggio = await db.collection('struttura').doc(strutturaRef).collection('alloggi').doc(alloggioRef).get();
+  return alloggio.data();
+}
