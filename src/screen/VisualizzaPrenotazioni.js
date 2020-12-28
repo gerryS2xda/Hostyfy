@@ -1,20 +1,99 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import CustomListViewGeneralPrenotazione from '../components/CustomListViewGeneralPrenotazione'
 import {
   StyleSheet,
-  Text,
   ScrollView,
   View,
-  Image,
-  Alert
 } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
-import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioniModel" 
 import {firebase} from '../firebase/config'
+import { useFocusEffect } from '@react-navigation/native';
 
+//Get Cloud firestore reference
 var db = firebase.firestore();
 
+const VisualizzaPrenotazioni = ({route, navigation}) => {  
+
+      const {user,isHost} = route.params; 
+      const [list, setList] = useState([]);
+       
+      React.useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', () => {
+          // Screen was focused -> Do something
+          async function getData(){
+            if(isHost){
+              var dataOdierna = new Date(); 
+              let docs = await getPrenotazioniAttualiHostQuery(user, dataOdierna);
+              var itemList = [];
+              var count = 1;
+              if(docs.length==0){
+                console.log("loop");
+                setList(itemList);
+              }
+              else{
+                console.log("Ciao");
+              for(const doc of docs){
+                var prenotazione = doc.data();
+                var prenotazioneId = doc.id;
+                console.log(prenotazione)
+                let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                var oggetto = {
+                  key: count, 
+                  title: alloggio.nomeAlloggio,
+                  description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
+                  image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+                  newPage: 'PrenotazioneDetail',
+                  id: prenotazioneId,
+                }
+                itemList.push(oggetto)              
+                count++;
+                    
+                }
+                console.log(itemList)
+                setList(itemList);
+              }                        
+            } else {
+    
+            }
+          }
+          getData();
+        });
+    
+        return unsubscribe;
+      }, [navigation]);
+    
+      console.log("lista2: " +list);
+      return (
+        <View style={styles.maincontainer}>
+          <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
+          <ScrollView style={styles.bodyScrollcontainer}>
+            <View style={styles.scrollContent}>
+              <View style={styles.container}>
+                  <CustomListViewGeneralPrenotazione
+                    nav = {navigation}
+                    itemList={list}
+                />
+              </View>
+            </View>
+          </ScrollView>
+          <View style={styles.buttonContainer}>
+                  <CustomButton
+                      styleBtn={{width: "90%"}} 
+                      nome="Storico prenotazioni" 
+                      onPress={() => {
+                        getPrenotazioni(user, navigation, isHost)
+                        }
+                      }
+                    />
+                </View>
+          </View>      
+    );
+}
+
+export default VisualizzaPrenotazioni;
+
+//Style
 const styles = StyleSheet.create({
   maincontainer: {
 		flex: 1,
@@ -45,83 +124,12 @@ const styles = StyleSheet.create({
 
 });
 
-const VisualizzaPrenotazioni = ({route, navigation}) => {  
-
-      const {user,isHost} = route.params; 
-      const [list, setList] = useState([]);
-      useEffect(()=>{
-        const getData = async() =>{
-        if(isHost){
-          var dataOdierna = new Date(); 
-          let docs = await getPrenotazioniAttualiHostQuery(user, dataOdierna);
-          var itemList = [];
-          var count = 1;
-          if(docs.length==0){
-            console.log("loop");
-            setList(itemList);
-          }
-          else{
-            console.log("Ciao");
-          for(const doc of docs){
-            var prenotazione = doc.data();
-            var prenotazioneId = doc.id;
-            console.log(prenotazione)
-            let alloggio = await getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
-            var oggetto = {
-              key: count, 
-              title: alloggio.nomeAlloggio,
-              description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
-              image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
-              newPage: 'PrenotazioneDetail',
-              id: prenotazioneId,
-            }
-            itemList.push(oggetto)              
-            count++;
-                
-            }
-            console.log(itemList)
-            setList(itemList);
-          }                        
-        } else {
-
-        }
-      }
-      getData();
-      },[getData])
-      console.log("lista: " +list);
-      return (
-        <View style={styles.maincontainer}>
-          <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
-          <ScrollView style={styles.bodyScrollcontainer}>
-            <View style={styles.scrollContent}>
-              <View style={styles.container}>
-                  <CustomListViewGeneralPrenotazione
-                    nav = {navigation}
-                    itemList={list}
-                />
-              </View>
-            </View>
-          </ScrollView>
-          <View style={styles.buttonContainer}>
-                  <CustomButton
-                      styleBtn={{width: "90%"}} 
-                      nome="Storico prenotazioni" 
-                      onPress={() => {
-                        getPrenotazioni(user, navigation, isHost)
-                        }
-                      }
-                    />
-                </View>
-          </View>      
-    );
-}
-
-export default VisualizzaPrenotazioni
-
+//Async function for query
 async function getPrenotazioniAttualiHostQuery(user, dataOdierna){
   let docs = await db.collection('prenotazioni').where('hostRef','==',user.userIdRef).where('dataFine','>=',dataOdierna).get();
   return docs.docs;
 }
+
 async function getPrenotazioniAttualiGuestQuery(user, dataOdierna){
   let docs = await db.collection('prenotazioni').where('guestRef','==',user.userId).where('dataFine','>=',dataOdierna).get();
   return docs.docs;
