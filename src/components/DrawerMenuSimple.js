@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { StyleSheet, Text, View, Image, Alert, Switch } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import {firebase} from "../firebase/config"
@@ -31,37 +31,40 @@ import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_allogg
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
+import * as HostModel from "../firebase/datamodel/HostModel"
 
+//Create Drawer navigator
 const Drawer = createDrawerNavigator();
+//Get Cloud firestore reference
 var db = firebase.firestore();
 
-const DrawerMenuSimple = (props) =>{
+const DrawerMenuSimple = ({navigation}) =>{
 
     //NOTA: il valore di currentUser e' null alla prima lettura di questa pagina da parte di "App.js", viene settata ogni volta che si apre il drawer menu
     var userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "unknown user";
-    const [user, setUser] = useState({empty: "empty"});
+    const [user, setUser] = useState({});
     
-    if(user.hasOwnProperty("empty") && userId !== "unknown user"){
+    useEffect(() => {
+        const getUserAccount = async ()=>{
+            if(userId !== "unknown user"){
+                var guestDoc = await GuestModel.getGuestDocument(userId);
+                var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
+                if(guestDoc.isHost){ //verifica se guest e' anche un host
+                    var hostDoc = await HostModel.getHostDocument(userId);
+                    setUser({...guestDoc, ...creditcardDoc, ...hostDoc});
+                }else{
+                    setUser({...guestDoc, ...creditcardDoc});
+                }
+            }else{
+                return Promise.reject("UserID is 'unknown', please wait for login");
+            }
+        }
 
-        db.collection("guest").doc(userId).get().then(function (guestdoc) { 
-            var guest = guestdoc.data();
-            db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc){
-            var creditcard = creditcarddoc.data();
-            //verifica se e' host oppure no
-            if(guest.isHost){
-                db.collection("host").doc(userId).get().then(function (hostdoc){
-                var host = hostdoc.data();
-                setUser({...guest, ...host, ...creditcard});
-                }).catch(function (err) { console.log("ERROR with read host in DrawerMenuSimple.js:" + err); });
-            } else{
-                setUser({...guest, ...creditcard});
-            } 
-        }).catch(function (err) { console.log("ERROR with read guest/creditcard in DrawerMenuSimple.js:" + err); });
-        }).catch(function (err) { console.log("ERROR with read guest in DrawerMenuSimple.js:" + err); });
-    }
+        getUserAccount().catch(function (err) { console.log("ERROR in DrawerMenuSimple: " + err); });
+      }, [userId]);
     
     return( 
-        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userProps={user} setUserProp={setUser}/>}>
+        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userProps={user} />}>
             <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
             <Drawer.Screen name="Home" component={LoginScreen} options={{
                 title: 'Home', 
@@ -372,7 +375,7 @@ function DrawerContentCustom(props){
     }
 }
 
-//Other function
+//OnPress function
 function onPressLeMieStrutture(navigation, userLogged){
 
     var itemList = [];
