@@ -68,3 +68,13 @@ export function deleteStrutturaDocument(id){
         console.error("Error removing struttura document: ", error);
     });
 }
+
+//Read query functions
+export async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
+    let alloggio = await strutturaCollectionRef.doc(strutturaRef).collection('alloggi').doc(alloggioRef).get();
+    if(alloggio.exists){
+        return alloggio.data();
+    }else{
+        return Promise.reject("StrutturaModel: No such alloggio document");
+    }
+}

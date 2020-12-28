@@ -145,3 +145,22 @@ export function deleteCreditCardDocument(uid){
         console.error("Error removing document: ", error);
     });
 }
+
+//Read query functions
+export async function getGuestDocument(userId){
+    let guestDoc = await guestCollectionRef.doc(userId).get();
+    if(guestDoc.exists){
+        return guestDoc.data();
+    }else{
+        return Promise.reject("GuestModel: No such guest document");
+    }
+}
+
+export async function getGuestCreditCardDocument(userId){
+    let creditCardDoc = await guestCollectionRef.doc(userId).collection("cartaCredito").doc(userId).get();
+    if(creditCardDoc.exists){
+        return creditCardDoc.data();
+    }else{
+        return Promise.reject("GuestModel: No such creditcard document");
+    }
+}

@@ -78,3 +78,26 @@ export function deletePrenotazioniDocument(prenDocId){
         console.error("Error removing prenotazione document: ", error);
     });
 }
+
+//Read query functions
+export async function getPrenotazioniHostQuery(userId, dataOdierna){
+    let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).where('dataFine','<=',dataOdierna).get();
+    return docs.docs; //Converte i documenti in un array di doc (per evitare di usare il forEach())
+}
+
+export async function getPrenotazioniGuestQuery(userId, dataOdierna){
+    let docs = await prenotazioniCollectionRef.where('guestRef','==',userId).where('dataFine','<=',dataOdierna).get();
+    return docs.docs; 
+}
+
+export async function getPrenotazioniAttualiHostQuery(userId, dataOdierna){
+    let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).where('dataFine','>=',dataOdierna).get();
+    return docs.docs;
+}
+  
+export async function getPrenotazioniAttualiGuestQuery(userId, dataOdierna){
+    let docs = await prenotazioniCollectionRef.where('guestRef','==',userId).where('dataFine','>=',dataOdierna).get();
+    return docs.docs;
+}
+
+

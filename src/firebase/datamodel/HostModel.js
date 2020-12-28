@@ -45,3 +45,13 @@ export function deleteHostDocument(uid){
         console.error("Error removing document: ", error);
     });
 }
+
+//Read query functions
+export async function getHostDocument(userId){
+    let hostDoc = await hostCollectionRef.doc(userId).get();
+    if(hostDoc.exists){
+        return hostDoc.data();
+    }else{
+        return Promise.reject("HostModel: No such host document");
+    }
+}
