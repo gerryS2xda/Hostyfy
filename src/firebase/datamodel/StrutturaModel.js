@@ -69,12 +69,3 @@ export function deleteStrutturaDocument(id){
     });
 }
 
-//Read query functions
-export async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
-    let alloggio = await strutturaCollectionRef.doc(strutturaRef).collection('alloggi').doc(alloggioRef).get();
-    if(alloggio.exists){
-        return alloggio.data();
-    }else{
-        return Promise.reject("StrutturaModel: No such alloggio document");
-    }
-}

@@ -185,3 +185,14 @@ export function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
         console.error("Error removing alloggio/dispositividomotici document: ", error);
     });
 }
+
+//Read query functions
+export async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
+    var alloggioCollectionRef = db.collection("struttura/"+strutturaRef+"/alloggi");
+    let alloggio = await alloggioCollectionRef.doc(alloggioRef).get();
+    if(alloggio.exists){
+        return alloggio.data();
+    }else{
+        return Promise.reject("AlloggioModel: No such alloggio document");
+    }
+}

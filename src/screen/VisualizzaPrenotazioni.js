@@ -8,7 +8,7 @@ import {
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
-import * as StrutturaModel from "../firebase/datamodel/StrutturaModel"
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
@@ -34,7 +34,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 var prenotazione = doc.data();
                 var prenotazioneId = doc.id;
                 console.log(prenotazione)
-                let alloggio = await StrutturaModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
                 var oggetto = {
                   key: count, 
                   title: alloggio.nomeAlloggio,
@@ -134,7 +134,7 @@ async function getPrenotazioni(user, navigation, isHost){
     for(const doc of docs){
       var prenotazione = doc.data();
       var prenotazioneId = doc.id;
-      let alloggio = await StrutturaModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+      let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
       var oggetto = {
           key: count, 
           title: alloggio.nomeAlloggio,
@@ -158,7 +158,7 @@ async function getPrenotazioni(user, navigation, isHost){
     for(const doc of docs){
       var prenotazione = doc.data();
       var prenotazioneId = doc.id;
-      let alloggio = await StrutturaModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+      let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
       var oggetto = {
           key: count, 
           title: alloggio.nomeAlloggio,
