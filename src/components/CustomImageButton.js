@@ -7,7 +7,7 @@ const CustomImageButton = (props) => {
         return(
             <TouchableOpacity style = {[styles.bottoneStyle, props.styleBtn]} onPress={props.onPress}>
                 <Icon name= {props.nameIcon} color={"#ffffff"} size={30} style={styles.immagineBottone}/>
-               <Text style = {[styles.testoBottone, props.styleTxt]}>{props.nome}</Text>
+               <Text style = {styles.testoBottone}>{props.nome}</Text>
              </TouchableOpacity>
         );
     }else{
@@ -19,7 +19,7 @@ const CustomImageButton = (props) => {
                     style = {styles.immagineBottone}
                     source = {props.path}
                 />
-                <Text style = {[styles.testoBottone, props.styleTxt]}>{props.nome}</Text>
+                <Text style = {styles.testoBottone}>{props.nome}</Text>
             </TouchableOpacity>
         );
     }
