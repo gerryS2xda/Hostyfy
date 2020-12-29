@@ -43,9 +43,9 @@ export function createGuestDocumentForRegistration(uid, cognome, nome, emailGues
         dataNascita: "",
         luogoNascita: "",
         nazionalita: "",
-        numCell: 0,
-        numTel: 0,
-        indirizzo: {via: "", citta: "", provincia: "", cap: 0, regione: ""},
+        numCell: "",
+        numTel: "",
+        indirizzo: {via: "", citta: "", provincia: "", cap: "", regione: ""},
         isHost: false,
         email: emailGuest
     })

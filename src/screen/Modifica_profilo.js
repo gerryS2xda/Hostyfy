@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
-import {View, Text, Image, TextInput, StyleSheet, Alert, ScrollView } from 'react-native'
+import React, { useState, useRef } from 'react'
+import {View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
@@ -97,7 +96,7 @@ const styles = StyleSheet.create({
 })
 
 const Modifica_profilo = ({route, navigation}) => {
-  //Ottieni info utente attualmente connesso
+    //Ottieni info utente attualmente connesso
     const {user} = route.params;
 
     const [IsEditable, setEditable] = useState(false); 
@@ -118,6 +117,7 @@ const Modifica_profilo = ({route, navigation}) => {
     const [cap, setCAP] = useState(user.indirizzo.cap);
     const [confermaPassword, setConfermaPassword] = useState("");
     const [newpassword, setNewPassword] = useState("");
+
     //Dati relativi al pagamento
     const [numCarta, setNumeroCarta] = useState(user.numeroCarta);
     const [ccv, setCCV] = useState(user.ccv);
@@ -127,9 +127,12 @@ const Modifica_profilo = ({route, navigation}) => {
     const [passCompare, setPassCompare] = useState(false);
     const [updateErrorSuccess, setUpdateErrorSuccess] = useState(false);
     const [updateErrorFailed, setUpdateErrorFailed] = useState(false);
-    
-    
-  return(
+
+    //Riferimenti ai textInput
+    var nuovaPasswordRef = useRef("");
+    var confermaPasswordRef = useRef("");
+      
+   return(
     <View style={styles.maincontainer}>
       
           {passCompare && (<CustomAlert
@@ -171,21 +174,21 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='Nome'
                 editable={IsEditable}
-                value={nome}
+                value={nome.toString()}
                 onChangeText = {(nome) => setNome(nome)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Cognome'
                 editable={IsEditable}
-                value={cognome}
+                value={cognome.toString()}
                 onChangeText = {(cognome) => setCognome(cognome)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Codice fiscale'
                 editable={IsEditable}
-                value={cf}
+                value={cf.toString()}
                 onChangeText = {(cf) => setCodiceFiscale(cf)}
             />
             <DatePickerInputField 
@@ -200,77 +203,77 @@ const Modifica_profilo = ({route, navigation}) => {
                 style = {styles.singleTextInput}
                 placeholder='Luogo nascita'
                 editable={IsEditable}
-                value={luogoNasc}
+                value={luogoNasc.toString()}
                 onChangeText = {(luogoNasc) => setLuogoNascita(luogoNasc)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Email'
                 editable={IsEditable}
-                value={email}
+                value={email.toString()}
                 onChangeText = {(email) => setEmail(email)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Numero cellulare'
                 editable={IsEditable}
-                value={numCel}
+                value={numCel.toString()}
                 onChangeText = {(numCel) => setNumeroCellulare(numCel)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Numero telefono'
                 editable={IsEditable}
-                value={numTel}
+                value={numTel.toString()}
                 onChangeText = {(numTel) => setNumeroTelefono(numTel)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Sesso'
                 editable={IsEditable}
-                value={sesso}
+                value={sesso.toString()}
                 onChangeText = {(sesso) => setSesso(sesso)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Nazionalità'
                 editable={IsEditable}
-                value={nazionalita}
+                value={nazionalita.toString()}
                 onChangeText = {(nazionalita) => setNazionalita(nazionalita)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Via'
                 editable={IsEditable}
-                value={via}
+                value={via.toString()}
                 onChangeText = {(via) => setVia(via)}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Città'
                 editable={IsEditable}
-                value={citta}
+                value={citta.toString()}
                 onChangeText = {(citta) => setCitta(citta)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Provincia'
                 editable={IsEditable}
-                value={provincia}
+                value={provincia.toString()}
                 onChangeText = {(provincia) => setProvincia(provincia)}
             />
             <TextInput
                 style = {styles.singleTextInput}
                 placeholder='Regione'
                 editable={IsEditable}
-                value={regione}
+                value={regione.toString()}
                 onChangeText = {(regione) => setRegione(regione)}
             />
              <TextInput
                 style = {styles.singleTextInput}
                 placeholder='CAP'
                 editable={IsEditable}
-                value={cap}
+                value={cap.toString()}
                 onChangeText = {(cap) => setCAP(cap)}
             />
           </View>
@@ -280,7 +283,7 @@ const Modifica_profilo = ({route, navigation}) => {
             </Text>
             <TextInput
                 style = {styles.singleTextInput}
-                ref = {input => {nuovaPasswordRef = input}}
+                ref = {nuovaPasswordRef}
                 placeholder='Nuova password'
                 editable={IsEditable}
                 secureTextEntry = {true}
@@ -289,51 +292,46 @@ const Modifica_profilo = ({route, navigation}) => {
 
             <TextInput
                 style = {styles.singleTextInput}
-                ref = {input => {confermaPasswordRef = input}}
-                placeholder='Conferma Nuova password'
+                ref = {confermaPasswordRef}
+                placeholder='Conferma nuova password'
                 editable={IsEditable}
                 secureTextEntry = {true}
                 onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
             />
           </View>
           <View style = {styles.finalContainer}>
-          <Text style = {styles.singleText}>
-              Dati Pagamento            
-            </Text>
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Numero Carta'
-                editable={IsEditable}
-                value={numCarta}
-                onChangeText = {(numCarta) => setNumeroCarta(numCarta)}
-            />
-            <DatePickerInputField 
-              styleContainer={{marginBottom: "3%"}} 
-              styleField={{width: "80%"}} 
-              date={dateScadenza} 
-              setDate={setDateScadenza} 
-              placeholder={"Data scadenza"}
-              disabled={!IsEditable}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='CCV'
-                editable={IsEditable}
-                value={ccv}
-                onChangeText = {(ccv) => setCCV(ccv)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Intestatario'
-                editable={IsEditable}
-                value={intestatario}
-                onChangeText = {(intestatario) => setIntestatario(intestatario)}
-            />    
+            <Text style = {styles.singleText}> Dati Pagamento </Text>
+              <TextInput
+                  style = {styles.singleTextInput}
+                  placeholder='Numero Carta'
+                  editable={IsEditable}
+                  value={numCarta.toString()}
+                  onChangeText = {(numCarta) => setNumeroCarta(numCarta)}
+              />
+              <DatePickerInputField 
+                styleContainer={{marginBottom: "3%"}} 
+                styleField={{width: "80%"}} 
+                date={dateScadenza.toString()} 
+                setDate={setDateScadenza} 
+                placeholder={"Data scadenza"}
+                disabled={!IsEditable}
+              />
+              <TextInput
+                  style = {styles.singleTextInput}
+                  placeholder='CCV'
+                  editable={IsEditable}
+                  value={ccv.toString()}
+                  onChangeText = {(ccv) => setCCV(ccv)}
+              />
+              <TextInput
+                  style = {styles.singleTextInput}
+                  placeholder='Intestatario'
+                  editable={IsEditable}
+                  value={intestatario.toString()}
+                  onChangeText = {(intestatario) => setIntestatario(intestatario)}
+              />    
           </View>
-
-          
       </ScrollView>
-      
       <View style = {styles.bottonContainer}>
             <CustomButton 
               styleBtn={{width: "90%"}} 
@@ -363,7 +361,6 @@ const Modifica_profilo = ({route, navigation}) => {
                         if(newpassword === "")
                         {
                             tempPassword = password;
-                            console.log(tempPassword)
                         }
                         else
                         {
@@ -380,8 +377,8 @@ const Modifica_profilo = ({route, navigation}) => {
                       })
                     }
                 }     
-                  nuovaPasswordRef.clear();  
-                 confermaPasswordRef.clear();
+                nuovaPasswordRef.current.clear();  
+                confermaPasswordRef.current.clear();
                    
               }
               }/>
