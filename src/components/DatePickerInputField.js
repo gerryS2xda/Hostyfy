@@ -41,6 +41,7 @@ const DatePickerInputField = (props) => {
                     is24Hour={true}
                     display="default"
                     locale="it-IT"
+                    isDarkModeEnabled={false}
                 />
             </View>
         );
@@ -65,6 +66,7 @@ const DatePickerInputField = (props) => {
                     is24Hour={true}
                     display="default"
                     locale="it-IT"
+                    isDarkModeEnabled={false}
                 />
             </View>
         );

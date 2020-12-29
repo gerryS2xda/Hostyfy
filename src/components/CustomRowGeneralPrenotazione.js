@@ -54,11 +54,11 @@ return (
     onPress = { () => {
         db.collection('prenotazioni').doc(props.id).get().then(async(doc)=>{
             var prenotazione = doc.data();
-            prenotazione.dataInizio = ""+prenotazione.dataInizio; 
-            prenotazione.dataFine = ""+prenotazione.dataFine ;
+            prenotazione.dataInizio = prenotazione.dataInizio.seconds; 
+            prenotazione.dataFine = prenotazione.dataFine.seconds;
             db.collection('struttura').doc(prenotazione.strutturaRef).collection('alloggi').doc(prenotazione.alloggioRef).get().then((doc1) =>{
                 var alloggio = doc1.data();
-                props.nav.push(props.newPage,{prenotazione: prenotazione,alloggio: alloggio})
+                props.nav.navigate(props.newPage,{prenotazione: prenotazione,alloggio: alloggio})
             })
         })
     }}>

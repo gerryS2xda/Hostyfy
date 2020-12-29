@@ -34,12 +34,12 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                         <View style={styles.fieldSetContent}>
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
-                                <Text style={styles.normalText}>{prenotazione.dataInizio}</Text>
+                                <Text style={styles.normalText}>{( new Date(prenotazione.dataInizio*1000)).toLocaleString("it-IT").split(",")[0]}</Text>
                                 <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
-                                <Text style={styles.normalText}>{prenotazione.dataFine}</Text>
+                                <Text style={styles.normalText}>{( new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
                                 <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
                             </View>
                             <View style={styles.costoTotContainer}>
