@@ -1,4 +1,4 @@
-import React, { Component, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CustomListViewGeneral from '../components/CustomListViewGeneral'
 import {
   StyleSheet,
@@ -7,15 +7,12 @@ import {
   Image,
   Alert,
   Platform,
-  ScrollView
+  ScrollView, 
+  TouchableOpacity
 } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Dialog from 'react-native-dialog';
 import HeaderBar from '../components/CustomHeaderBar'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {firebase} from '../firebase/config'
-
-var db = firebase.firestore();
+import * as StrutturaModel from "../firebase/datamodel/StrutturaModel"
 
 const styles = StyleSheet.create({
  
@@ -37,7 +34,49 @@ const styles = StyleSheet.create({
 });
 
 const LeMieStrutture = (props) => {  
-      const {user, list} = props.route.params;
+      const {user} = props.route.params;
+      const [struttureList, setStruttureList] = useState([]);
+
+      useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', () => {
+          // Screen was focused -> Do something
+          async function getMieStruttureData(){
+            var itemList = [];
+            var count = 1;
+            var struttureDocs = await StrutturaModel.getStruttureOfAHostQuery(user.userIdRef);
+            if(struttureDocs.length == 0){
+              setStruttureList(itemList);
+            }else{
+              for(const doc of struttureDocs){
+                var struttura = doc.data();
+                var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS 
+                                        
+                var imageURL = "";
+                if(fotoArray.length == 0){
+                    imageURL = require("../../assets/imagenotfound.png");
+                }else{
+                      imageURL = {uri: fotoArray[0]};
+                }
+                var oggetto = {
+                    key: count, 
+                    title: struttura.denominazione, 
+                    description: struttura.descrizione,
+                    image_url: imageURL, 
+                    newPage: 'VisualizzaStruttura',
+                    OTP: 'true',
+                    id: doc.id
+                  }
+                  count++;
+                  itemList.push(oggetto);
+              }
+              console.log("MieStrutture: " + itemList.toString());
+              setStruttureList(itemList);
+            }
+          }
+          getMieStruttureData();
+        });
+        return unsubscribe;
+      }, [props.navigation]);
 
       return (
       <View style={styles.maincontainer}>
@@ -46,12 +85,13 @@ const LeMieStrutture = (props) => {
               <CustomListViewGeneral 
                 nav= {props.navigation}
                 userLogged = {user}
-                itemList = {list}
+                itemList = {struttureList}
               />
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity 
                   onPress={() => {
-                    props.navigation.navigate('Inserisci struttura', {user:user});
+                    var struttura = {denominazione: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: 0, descrizione: ""};
+                    props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], strutturaState: struttura});
                   }}>
                     <Icon
                       name = "plus-circle-outline"
@@ -66,4 +106,4 @@ const LeMieStrutture = (props) => {
     );
 }
 
-export default LeMieStrutture
+export default LeMieStrutture;
