@@ -120,16 +120,9 @@ const Login = (props) => {
                 nome="Accedi" 
                 styleBtn={{width: "75%"}}
                 onPress={() => {
-                    firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(async function (user){
+                    firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user){
                       const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
-                      var guestDoc = await GuestModel.getGuestDocument(userId);
-                      var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
-                      if(guestDoc.isHost){ //verifica se guest e' anche un host
-                          var hostDoc = await HostModel.getHostDocument(userId);
-                          props.navigation.navigate('HomeGuest', {user: {...guestDoc, ...creditcardDoc, ...hostDoc}});
-                      }else{
-                        props.navigation.navigate('HomeGuest', {user: {...guestDoc, ...creditcardDoc}});
-                      }
+                      props.navigation.navigate('HomeGuest', {userId: userId});
                       emailRef.current.clear();  
                       passwordref.current.clear();
                     }).catch(function (err) {
