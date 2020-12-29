@@ -6,6 +6,7 @@ import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import {firebase} from '../firebase/config';
+import CustomAlert from '../components/CustomAlert'
 
 const styles = StyleSheet.create({
   
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container: { 
+    marginTop: "5%",
     flexDirection: 'column', 
     justifyContent: 'center',
     alignItems: 'center',
@@ -53,11 +55,12 @@ const styles = StyleSheet.create({
   singleTextInput: {
     height: 40,
     width:"90%",
-    borderColor: "#cc3881",
+    borderColor: "#000000",
     borderBottomWidth: 1,
     paddingLeft: 5,
-    fontFamily: "MontserrantSemiBold",
-    marginBottom: "3%",   
+    fontFamily: "Montserrant",
+    marginBottom: "2%", 
+    color: "#000000"  
   },
 
   finalContainer:{ 
@@ -90,27 +93,12 @@ const styles = StyleSheet.create({
 
   singleText:{
     fontFamily: "MontserrantSemiBold",
-  }
+  }, 
 })
 
 const Modifica_profilo = ({route, navigation}) => {
   //Ottieni info utente attualmente connesso
-  const {user} = route.params;
-
-  const createPositiveAlert = () =>
-      Alert.alert(
-      "Salva modifiche",
-      "Le modifiche sono state memorizzate con successo!",
-      [
-          {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
+    const {user} = route.params;
 
     const [IsEditable, setEditable] = useState(false); 
     const [cf, setCodiceFiscale] = useState(user.cf);
@@ -135,15 +123,45 @@ const Modifica_profilo = ({route, navigation}) => {
     const [ccv, setCCV] = useState(user.ccv);
     const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
     const [intestatario, setIntestatario] = useState(user.intestatario);
+    const [password, setPassword] = useState(user.password);
+    const [passCompare, setPassCompare] = useState(false);
+    const [updateErrorSuccess, setUpdateErrorSuccess] = useState(false);
+    const [updateErrorFailed, setUpdateErrorFailed] = useState(false);
     
     
   return(
     <View style={styles.maincontainer}>
+      
+          {passCompare && (<CustomAlert
+          stato = {passCompare}
+          setStato = {setPassCompare}
+          titolo = "Password non coincidenti"
+          testo = "Le password inserite non coindono, riprova con l'inserimento"
+          buttonName = "Ok"
+          pagina = "ModificaProfilo"
+          navigator = {navigation}></CustomAlert>)}
+
+          {updateErrorSuccess && (<CustomAlert
+          stato = {updateErrorSuccess}
+          setStato = {setUpdateErrorSuccess}
+          titolo = "Modifica completata"
+          testo = "I dati sono stati modificati con successo!"
+          buttonName = "Ok"
+          pagina = "ModificaProfilo"
+          navigator = {navigation}></CustomAlert>)}
+
+          {updateErrorFailed && (<CustomAlert
+          stato = {updateErrorFailed}
+          setStato = {setUpdateErrorFailed}
+          titolo = "Modifica non completata"
+          testo = "I dati non sono stati modificati con successo, riprova con l'inserimento!"
+          buttonName = "Ok"
+          pagina = "ModificaProfilo"
+          navigator = {navigation}></CustomAlert>)}      
+
       <HeaderBar title="Il mio profilo" navigator={navigation} />
       <ScrollView contentContainerStyle = {styles.container}>
-          <View style={styles.topContainer}> 
-            <Icon name= "account-circle-outline" color={"#000000"} size={100}/>
-          </View>
+         
           <View style = {styles.upperMiddleContainer}>
           <Text style = {styles.singleText}>
               Informazioni Personali            
@@ -171,8 +189,8 @@ const Modifica_profilo = ({route, navigation}) => {
                 onChangeText = {(cf) => setCodiceFiscale(cf)}
             />
             <DatePickerInputField 
-              styleContainer={{marginBottom: "3%"}} 
-              styleField={{width: "80%"}} 
+              styleContainer={{marginBottom: "2%"}} 
+              styleField={{width: "81.5%"}} 
               date={dateNasc} 
               placeholder={"Data di nascita"}
               setDate={setDateNascita} 
@@ -262,7 +280,7 @@ const Modifica_profilo = ({route, navigation}) => {
             </Text>
             <TextInput
                 style = {styles.singleTextInput}
-                ref = {input => {nuovaPasswordRef = input }}
+                ref = {input => {nuovaPasswordRef = input}}
                 placeholder='Nuova password'
                 editable={IsEditable}
                 secureTextEntry = {true}
@@ -271,7 +289,7 @@ const Modifica_profilo = ({route, navigation}) => {
 
             <TextInput
                 style = {styles.singleTextInput}
-                ref = {input => {confermaPasswordRef = input }}
+                ref = {input => {confermaPasswordRef = input}}
                 placeholder='Conferma Nuova password'
                 editable={IsEditable}
                 secureTextEntry = {true}
@@ -329,10 +347,7 @@ const Modifica_profilo = ({route, navigation}) => {
                 {               
                     if(newpassword!==confermaPassword)
                     {
-                    
-                      Alert.alert('Errore nell\'inserimento', 'Le nuove password non coincidono!', [{text: 'OK', onPress: ()=>{
-
-                      }}]);
+                      if(!passCompare) setPassCompare(true);
                     }
                     else
                     {
@@ -343,12 +358,26 @@ const Modifica_profilo = ({route, navigation}) => {
                       
                         var userLogin = firebase.auth().currentUser;
                         
-                        userLogin.updatePassword(newpassword).then(function() {
-                        Alert.alert('Modifica Password', 'Password modificata con successo!', [{text: 'OK', onPress: ()=>{
+                        //viene controllato se entrmabi i campi sono vuoti
+                        var tempPassword = "";
+                        if(newpassword === "")
+                        {
+                            tempPassword = password;
+                            console.log(tempPassword)
+                        }
+                        else
+                        {
+                           tempPassword = newpassword;
+                        }
+                        
+                        userLogin.updatePassword(tempPassword).then(function() {
+                          
+                          if(!updateErrorSuccess) setUpdateErrorSuccess(true);
                           setEditable(previousState => !previousState)
-                        }}]);})
+                        })
                       .catch(function(error) {
-                        Alert.alert('Modifica Password', 'Riprova, vi è stato un problema con la modifica della password!', [{text: 'OK'}]);})
+                        if(!updateErrorFailed) setUpdateErrorFailed(true);
+                      })
                     }
                 }     
                   nuovaPasswordRef.clear();  

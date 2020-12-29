@@ -3,6 +3,7 @@ import {View, Text, Image, TextInput, Button, StyleSheet,TouchableOpacity, Scrol
 import CustomButton from '../components/CustomButton'
 import {firebase} from "../firebase/config"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
+import CustomAlert from '../components/CustomAlert'
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     width: "85%",
-    borderColor: '#cc3881',
+    borderColor: '#666666',
     borderBottomWidth: 1,
     fontFamily: 'MontserrantSemiBold',
     paddingLeft: 5,
@@ -72,12 +73,22 @@ const [nome, setNome] = useState('');
 const [cognome, setCognome] = useState('');
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
-const [errore, setErrore] = useState('');
+const [errore, setErrore] = useState(false);
 const [confermaPassword, setConfermaPassword] = useState('');
 
   return(
 
     <View style={styles.maincontainer}>
+
+    {errore && (<CustomAlert
+          stato = {errore}
+          setStato = {setErrore}
+          titolo = "Errore nella registrazione"
+          testo = "Riprova a inserire i dati!"
+          buttonName = "Ok"
+          pagina = "Registratione"
+          navigator = {props.navigation}></CustomAlert>)} 
+
       <ScrollView style={styles.bodyScrollcontainer}>
         <View style={styles.scrollContent}>
           <View style={styles.first}>
@@ -149,13 +160,14 @@ const [confermaPassword, setConfermaPassword] = useState('');
                               }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
                             }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
                           }).catch(function (error) {
-                            Alert.alert('Errore nella registrazione', 'Riprova a inserire i dati', [{text: 'OK', onPress: ()=>{
+
+                            if(!errore) setErrore(true);
                                 nomeref.clear();  
                                 cognomeref.clear();
                                 emailref.clear();
                                 passwordref.clear();
                                 confermapasswordref.clear();
-                            }}]);
+                            
                           });                            
                         }                      
                       }

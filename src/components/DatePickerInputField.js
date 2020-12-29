@@ -98,8 +98,8 @@ const styles = StyleSheet.create({
     singleField: {
         height: 40,
         width:"100%",
-        borderColor: '#cc3881',
-        borderBottomWidth: 1.4,
+        borderColor: '#666666',
+        borderBottomWidth: 1,
         color: "black",
         marginTop:8,
         paddingTop:9,
@@ -109,9 +109,9 @@ const styles = StyleSheet.create({
     placeholderField: {
         height: 40,
         width:"100%",
-        borderColor: '#cc3881',
+        borderColor: '#666666',
         color: "#C7C7CD",
-        borderBottomWidth: 1.4,
+        borderBottomWidth: 1,
         marginTop:8,
         paddingTop:9,
         fontFamily: "MontserrantSemiBold",

@@ -1,46 +1,74 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground} from 'react-native';
 
 const WelcomeScreen = ({navigation}) => {
     return(
-        <View style={styles.container}>
-            <TouchableOpacity onPress={() => { navigation.navigate('Home'); }}>
-              <View style={styles.containerLogoTitle}>
-                  <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
-                  <Text style={styles.welcometitle}>Benvenuto</Text>
-              </View>
-              <View style={styles.containerSwipe}>
-                  <Text style={styles.suggestTxt}>Tocca sullo schermo per continuare </Text>
-              </View>
-            </TouchableOpacity>
-        </View>
+        <ImageBackground 
+          source = {require("../../assets/Varie/Benvenuto.jpg")}
+          style = {styles.image}>     
+          
+            <View style={styles.container}>
+                <TouchableOpacity onPress={() => { navigation.navigate('Home'); }}>
+                
+                <View style={styles.containerLogoTitle}>
+                    <View style={styles.containerLogo}>
+                        <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
+                    </View>
+                    <View style={styles.containerTitle}>
+                          <Text style={styles.welcometitle}>Hostyfy,</Text>
+                          <Text style={styles.welcometitle2}> l'ospitalità intelligente!</Text>
+                    </View>
+                </View>
+                
+                  <View style={styles.containerSwipe}>
+                      <Text style={styles.suggestTxt}>Tocca sullo schermo per continuare </Text>
+                  </View>
+                </TouchableOpacity>
+            </View>
+          </ImageBackground>
+      
     );
 }
 
 export default WelcomeScreen;
 
 const styles = StyleSheet.create({
+
     container: {
       flex: 1,
-      backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: 'rgba(0,0,0,0.4)'
     },
     containerLogoTitle: {
-      marginTop: 120,
+      flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
+      marginTop: "60%"
+    },
+
+    containerTitle: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      
     },
     logo:{
-      width: 300,
-      height: 150,
+      width: 50,
+      height: 50,
     },
+
     welcometitle:{
       textAlign: "center",
-      fontSize: 28,
-      color: "#003580",
-      marginTop: 32,
-      marginBottom: 16,
+      fontSize: 22,
+      color: "#0692d4",
+      fontFamily: "MontserrantBold",
+    },
+
+    welcometitle2:{
+      textAlign: "center",
+      fontSize: 20,
+      color: "#ffffff",
       fontFamily: "MontserrantBold",
     },
     swipeIcon:{
@@ -50,7 +78,6 @@ const styles = StyleSheet.create({
     },
     containerSwipe:{
       flex: 1,
-      backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'flex-end',
       marginBottom: 60,
@@ -58,7 +85,13 @@ const styles = StyleSheet.create({
     suggestTxt: {
       textAlign: 'center',
       fontSize: 16,
-      color: '#666666',
-      fontFamily: "Montserrant"
-    }
+      color: '#ffffff',
+      fontFamily: "MontserrantSemiBold"
+    },
+
+      image:{
+        flex:1,
+        backgroundColor: "#000000",
+        justifyContent: "center",
+    }, 
   });

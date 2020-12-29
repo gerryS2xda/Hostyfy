@@ -6,7 +6,7 @@ const CustomButton = (props) => {
         <TouchableOpacity
             style = {[styles.bottoneStyle, props.styleBtn]}
             onPress={props.onPress}>
-            <Text style = {styles.testoBottone}>{props.nome}</Text>
+             <Text style = {styles.testoBottone}>{props.nome}</Text>
         </TouchableOpacity>
     );
 }
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         height: 40,
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius:8,
+        borderRadius:20,
         backgroundColor: '#0692d4',
     },
     testoBottone: {

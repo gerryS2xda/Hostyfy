@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: "20%",
-    marginBottom: "10%",
+    marginBottom: "5%",
   },
 
   input: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     width:"60%",
     height:120, 
     marginTop:"25%",
-    marginBottom: "4%",    
+    marginBottom: "15%",    
   },
   horizontalContainer: {
     flexDirection: 'row',
@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingVertical: 20,
     borderColor: '#f0f0f0',
+    borderWidth: 3,
     
   },
 })

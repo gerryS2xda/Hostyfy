@@ -7,7 +7,7 @@ const CustomImageButton = (props) => {
         return(
             <TouchableOpacity style = {[styles.bottoneStyle, props.styleBtn]} onPress={props.onPress}>
                 <Icon name= {props.nameIcon} color={"#ffffff"} size={30} style={styles.immagineBottone}/>
-               <Text style = {styles.testoBottone}>{props.nome}</Text>
+               <Text style = {[styles.testoBottone, props.styleTxt]}>{props.nome}</Text>
              </TouchableOpacity>
         );
     }else{
@@ -36,13 +36,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        borderRadius:8,
+        borderRadius:20,
         backgroundColor: '#0692d4',
     },
     immagineBottone : {
         width:30,
         height:30,
-        marginLeft: 5,
+        marginLeft: "5%",
     },
     testoBottone: {
         color:'#ffffff',
