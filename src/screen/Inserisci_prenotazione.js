@@ -4,7 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
-import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioniModel"; 
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"; 
 
 //npm install react-native-picker-select per la combo box
 

@@ -78,8 +78,8 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errore, setErrore] = useState(false);
-  const emailRef = useRef(null);
-  const passwordref = useRef(null);
+  var emailRef = useRef(null);
+  var passwordref = useRef(null);
 
   return(
     <View style={styles.maincontainer}>
