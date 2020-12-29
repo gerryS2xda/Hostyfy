@@ -40,22 +40,30 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       backgroundColor: 'rgba(0,0,0,0.4)'
     },
+
     containerLogoTitle: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      marginTop: "60%"
+      marginTop: "60%",
+    },
+
+    containerLogo: {
+      width: "100%",
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginBottom: '-6%'
+    },
+    
+    logo:{
+      width: "45%" ,
+      height: "55%",
     },
 
     containerTitle: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      
-    },
-    logo:{
-      width: 50,
-      height: 50,
     },
 
     welcometitle:{
@@ -71,11 +79,7 @@ const styles = StyleSheet.create({
       color: "#ffffff",
       fontFamily: "MontserrantBold",
     },
-    swipeIcon:{
-      width:32,
-      height:32,
-      margin:1,
-    },
+    
     containerSwipe:{
       flex: 1,
       alignItems: 'center',
