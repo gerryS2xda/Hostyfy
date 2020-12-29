@@ -1,32 +1,25 @@
 import React, {useState} from 'react';
 import {View, Button, Platform, StyleSheet, TouchableOpacity, Text} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const DatePickerInputField = (props) => {
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [visible, setVisible] = React.useState(false);
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
-  const showDialog = () => setVisible(true);
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
 
-  const hideDialog = () => setVisible(false);
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
 
-  const onChange = (event, selectedDate) => {
+  const handleConfirm = (selectedDate) => {
     const currentDate = selectedDate || date;
-    setShow(Platform.OS === 'ios');
     setDate(currentDate);
     props.setDate(currentDate.toDateString());
-  };
-
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-  };
-
-  const showDatepicker = () => {
-    showMode('date');
+    hideDatePicker();
   };
 
     if(props.placeholder !== "" && props.date === ""){
@@ -36,20 +29,19 @@ const DatePickerInputField = (props) => {
                 <TouchableOpacity 
                     style={props.styleField}
                     disabled={props.disabled}
-                    onPress={()=>{
-                        showDatepicker();
-                }}>
+                    onPress={()=> showDatePicker()}>
                     <Text style={styles.placeholderField}>{props.placeholder}</Text>
                 </TouchableOpacity>
-                {show &&(<DateTimePicker
-                    testID="dateTimePicker"
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
                     value={date}
-                    mode={mode}
+                    mode="date"  //Choose between 'date', 'time', and 'datetime'
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
                     is24Hour={true}
                     display="default"
                     locale="it-IT"
-                    onChange={onChange}
-                />)}
+                />
             </View>
         );
     }else{
@@ -60,19 +52,20 @@ const DatePickerInputField = (props) => {
                     style={props.styleField}
                     disabled={props.disabled}
                     onPress={()=>{
-                        showDatepicker();
+                        showDatePicker();
                 }}>
                     <Text style={styles.singleField}>{props.date}</Text>
                 </TouchableOpacity>
-                {show &&(<DateTimePicker
-                    testID="dateTimePicker"
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
                     value={date}
-                    mode={mode}
+                    mode="date"  //Choose between 'date', 'time', and 'datetime'
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
                     is24Hour={true}
                     display="default"
                     locale="it-IT"
-                    onChange={onChange}
-                />)}
+                />
             </View>
         );
     }
