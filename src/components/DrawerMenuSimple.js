@@ -288,8 +288,8 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="hospital-building" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie strutture</Text>)}
-                                onPress={() => { 
-                                    onPressLeMieStrutture(props.navigation, userLogged);
+                                onPress={() => {
+                                    props.navigation.navigate("LeMieStrutture", {user: userLogged}); 
                                 }}
                             /> 
                             <DrawerItem 
@@ -371,42 +371,6 @@ function createDowngradeHostAlert(){
         ],
         { cancelable: false }
     );
-}
-//OnPress function
-function onPressLeMieStrutture(navigation, userLogged){
-
-    var itemList = [];
-    var count = 1;
-    var count1 = 1;
-    db.collection('struttura').where('hostRef', '==', userLogged.userIdRef).get().then((querySnapshot)=>{
-      querySnapshot.forEach((doc) =>{
-        var struttura = doc.data();
-        var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS 
-                                          
-        var imageURL = "";
-        if(fotoArray.length == 0){
-            imageURL = require("../../assets/imagenotfound.png");
-        }else{
-              imageURL = {uri: fotoArray[0]};
-        }
-        var oggetto = {
-            key: count, 
-            title: struttura.denominazione, 
-            description: struttura.descrizione,
-            image_url: imageURL, 
-            newPage: 'VisualizzaStruttura',
-            OTP: 'true',
-            id: doc.id
-          }
-          count++;
-          itemList.push(oggetto);
-          if(count1 < querySnapshot.size){
-              count1++;
-          }else{
-              navigation.navigate("LeMieStrutture", {user: userLogged, list: itemList});
-          }
-      })
-    });
 }
 
 //Style 
