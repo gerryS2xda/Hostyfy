@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import {View, Text, StyleSheet, Alert, SafeAreaView} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import {View, Text, StyleSheet, Alert} from 'react-native'
 import CalendarPicker from 'react-native-calendar-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomImageButton from "../components/CustomImageButton";
 import CustomButton from "../components/CustomButton";
 import {firebase} from '../firebase/config'
+import * as GuestModel from "../firebase/datamodel/GuestModel"
+import * as HostModel from "../firebase/datamodel/HostModel"
 
 var db = firebase.firestore();
 
@@ -66,7 +68,30 @@ const styles = StyleSheet.create({
 
 const HomeHost = ({route, navigation}) => {
 
-  const {user} = route.params; 
+  const {userId} = route.params; 
+
+  const [user, setUser] = useState({});
+  
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      // Screen was focused -> Do something
+      // Ottieni info dell'utente da DB usando lo userId
+      async function getUserData(){
+        var guestDoc = await GuestModel.getGuestDocument(userId);
+        var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
+        if(guestDoc.isHost){ //verifica se guest e' anche un host
+            var hostDoc = await HostModel.getHostDocument(userId);
+            setUser({...guestDoc, ...creditcardDoc, ...hostDoc});
+        }else{
+          setUser({...guestDoc, ...creditcardDoc});
+        }
+      }
+      getUserData();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
 
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);

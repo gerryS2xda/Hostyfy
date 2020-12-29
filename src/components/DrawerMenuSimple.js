@@ -64,7 +64,7 @@ const DrawerMenuSimple = ({navigation}) =>{
       }, [userId]);
     
     return( 
-        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userProps={user} />}>
+        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userId={userId} userProps={user} />}>
             <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
             <Drawer.Screen name="Home" component={LoginScreen} options={{
                 title: 'Home', 
@@ -104,6 +104,7 @@ export default DrawerMenuSimple;
 
 function DrawerContentCustom(props){
     
+    var userId = props.userId;
     var userLogged = props.userProps;
     var isRealHost = userLogged.isHost;
 
@@ -115,56 +116,12 @@ function DrawerContentCustom(props){
     const toggleSwitchGuestHost = () => {
         setIsHost(previousState => !previousState);
         if(!isHost){
-            props.navigation.navigate('HomeHost', {user: userLogged});
+            props.navigation.navigate('HomeHost', {userId: userId});
         }else{
-            props.navigation.navigate('HomeGuest', {user: userLogged});
+            props.navigation.navigate('HomeGuest', {userId: userId});
         }
     };
     const [isUpgradePay, setIsUpgradePay] = useState(true); 
-
-    const createNextRealeaseFeatureAlert = () =>
-        Alert.alert(
-        "Funzionalità non disponibile",
-        "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-        [
-            {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-            },
-            { text: "Conferma", onPress: () => console.log("OK Pressed") }
-        ],
-        { cancelable: false }
-    );
-
-    const createDowngradeHostAlert = () =>
-        Alert.alert(
-        "Downgrade host",
-        "Procedendo si perdono tutti i servizi dedicati all'host e quindi si ritorna ad essere un guest. Premi Ok per continuare",
-        [
-            {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-            },
-            { text: "Conferma", onPress: () =>{
-                    
-                    
-                    //Aggiungi codice per Downgrade (update is Host From DB)
-                    GuestModel.updateisHost(userLogged.userId,false);
-                    isRealHost = false;
-                    setIsHost(previousState=>!previousState);
-                    setIsUpgradePay(false);
-                    userLogged.isHost = false;
-                    console.log("Real: " + isRealHost+" Stato: "+isHost)
-                    props.navigation.navigate('HomeGuest', {user: userLogged});
-                } 
-            }
-        ],
-        { cancelable: false }
-    );
-
-    
 
     if(!isHost){
         return(
@@ -175,28 +132,27 @@ function DrawerContentCustom(props){
                         <View style={styles.avaterAndTxtContainerGuest}>
                             <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>
                         </View>
-                                {isRealHost && ( 
-
-                                                <View style={styles.horizontalViewSwitch}>
-                                                    <Text style={styles.labelSwitchTxt}>Guest</Text>
-                                                        <Switch style={styles.switchStyle}
-                                                            trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                                            thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
-                                                            ios_backgroundColor="#3e3e3e"
-                                                            disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
-                                                            onValueChange={toggleSwitchGuestHost}
-                                                            value={isHost}
-                                                        />
-                                                    <Text style={styles.labelSwitchTxt}>Host</Text>
-                                                </View>
-                        )}
+                        {isRealHost && ( 
+                            <View style={styles.horizontalViewSwitch}>
+                                <Text style={styles.labelSwitchTxt}>Guest</Text>
+                                <Switch style={styles.switchStyle}
+                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                    thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
+                                    ios_backgroundColor="#3e3e3e"
+                                    disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
+                                    onValueChange={toggleSwitchGuestHost}
+                                    value={isHost}
+                                />
+                                <Text style={styles.labelSwitchTxt}>Host</Text>
+                            </View>
+                            )}
                     </View>   
                         <View style={styles.drawerSection}>
                             <DrawerItem 
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('HomeGuest', {user: userLogged});
+                                    props.navigation.navigate('HomeGuest', {userId: userId});
                                 }}
                             />
                             <DrawerItem 
@@ -305,7 +261,7 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('HomeHost', {user: userLogged});
+                                    props.navigation.navigate('HomeHost', {userId: userId});
                                 }}
                             />
                             <DrawerItem 
@@ -375,6 +331,47 @@ function DrawerContentCustom(props){
     }
 }
 
+//Alert function
+function createNextRealeaseFeatureAlert(){
+    Alert.alert(
+        "Funzionalità non disponibile",
+        "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+        [
+            {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+            },
+            { text: "Conferma", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+    );
+}
+
+function createDowngradeHostAlert(){
+    Alert.alert(
+        "Downgrade host",
+        "Procedendo si perdono tutti i servizi dedicati all'host e quindi si ritorna ad essere un guest. Premi Ok per continuare",
+        [
+        {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+        },
+        { text: "Conferma", onPress: () => {
+                GuestModel.updateisHost(userLogged.userId,false);
+                isRealHost = false;
+                setIsHost(previousState=>!previousState);
+                setIsUpgradePay(false);
+                userLogged.isHost = false;
+                console.log("Real: " + isRealHost+" Stato: "+isHost)
+                props.navigation.navigate('HomeGuest', {userId: userId});
+            } 
+        }
+        ],
+        { cancelable: false }
+    );
+}
 //OnPress function
 function onPressLeMieStrutture(navigation, userLogged){
 
