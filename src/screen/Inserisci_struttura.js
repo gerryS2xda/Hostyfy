@@ -111,7 +111,6 @@ export default class InserisciStrutturaScreen extends React.Component {
         var struttState = this.props.route.params.strutturaState;
         
         if(struttState.hasOwnProperty("denominazione") && !this.state.isStrutturaStateUpdate){
-            console.log("UPDATESTATE");
             this.setState({denominazione: struttState.denominazione, via: struttState.via, citta: struttState.citta,
                 cap: struttState.cap, provincia: struttState.provincia, regione: struttState.regione,
                 nazione: struttState.nazione, tipologia: struttState.tipologia, numeroAlloggi: struttState.numeroAlloggi,
@@ -123,7 +122,6 @@ export default class InserisciStrutturaScreen extends React.Component {
         var struttState = this.props.route.params.strutturaState;
         
         if(struttState.hasOwnProperty("denominazione") && !this.state.isStrutturaStateUpdate){
-            console.log("UPDATESTATE");
             this.setState({denominazione: struttState.denominazione, via: struttState.via, citta: struttState.citta,
                 cap: struttState.cap, provincia: struttState.provincia, regione: struttState.regione,
                 nazione: struttState.nazione, tipologia: struttState.tipologia, numeroAlloggi: struttState.numeroAlloggi,
@@ -375,7 +373,6 @@ export default class InserisciStrutturaScreen extends React.Component {
         const response = await fetch(uri);
         const blob = await response.blob(); 
         var ref = storageRef.child(pathImage);
-        console.log("PHOTOURI: " + uri);
 
         // Upload file and metadata to the object 'images/mountains.jpg'
         var uploadTask= ref.put(blob);
