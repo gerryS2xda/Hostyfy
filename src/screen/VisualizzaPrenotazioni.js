@@ -13,6 +13,7 @@ import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
       const {user,isHost} = route.params; 
+      console.log(isHost)
       const [list, setList] = useState([]);
        
       useEffect(() => {
@@ -33,12 +34,14 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
               for(const doc of docs){
                 var prenotazione = doc.data();
                 var prenotazioneId = doc.id;
+                var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 console.log(prenotazione)
                 let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
                 var oggetto = {
                   key: count, 
                   title: alloggio.nomeAlloggio,
-                  description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
+                  description: "" + dataInizio + " - " + dataFine,
                   image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
                   newPage: 'PrenotazioneDetail',
                   id: prenotazioneId,
@@ -51,9 +54,40 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 setList(itemList);
               }                        
             } else {
-    
+              var dataOdierna = new Date(); 
+              let docs = await PrenotazioneModel.getPrenotazioniAttualiGuestQuery(user.userId, dataOdierna); //NOTA: per guest usare 'user.userId'
+              var itemList = [];
+              var count = 1;
+              if(docs.length==0){
+                console.log("loop");
+                setList(itemList);
+              }
+              else{
+                console.log("Ciao");
+              for(const doc of docs){
+                var prenotazione = doc.data();
+                var prenotazioneId = doc.id;
+                var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                console.log(prenotazione)
+                let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                var oggetto = {
+                  key: count, 
+                  title: alloggio.nomeAlloggio,
+                  description: "" + dataInizio + " - " + dataFine,
+                  image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+                  newPage: 'PrenotazioneDetail',
+                  id: prenotazioneId,
+                }
+                itemList.push(oggetto)              
+                count++;
+                    
+                }
+                console.log(itemList)
+                setList(itemList);
             }
           }
+        }
           getData();
         });
     
@@ -79,7 +113,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                       styleBtn={{width: "90%"}} 
                       nome="Storico prenotazioni" 
                       onPress={() => {
-                        getPrenotazioni(user, navigation, isHost).catch(function (err) { console.log("ERROR in VisualizzaPrenotazioni: " + err); });
+                          navigation.navigate("StoricoPrenotazioni", {user:user});
                         }
                       }
                     />
@@ -122,55 +156,5 @@ const styles = StyleSheet.create({
 });
 
 //Async function for query
-async function getPrenotazioni(user, navigation, isHost){
-  if(isHost){
-    var dataOdierna = new Date();
-    let docs = await PrenotazioneModel.getPrenotazioniHostQuery(user.userIdRef, dataOdierna);
-    var itemList = [];
-    var count = 1;
-    if(docs.size==0){
-      navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-    }
-    for(const doc of docs){
-      var prenotazione = doc.data();
-      var prenotazioneId = doc.id;
-      let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
-      var oggetto = {
-          key: count, 
-          title: alloggio.nomeAlloggio,
-          description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
-          image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
-          newPage: 'PrenotazioneDetail',
-          id: prenotazioneId,
-      }
-      itemList.push(oggetto);
-    };
-    console.log(itemList);
-    navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-  } else {
-    var dataOdierna = new Date();
-    let docs = await PrenotazioneModel.getPrenotazioniGuestQuery(user.userId, dataOdierna);
-    var itemList = [];
-    var count = 1;
-    if(docs.size==0){
-      navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-    }
-    for(const doc of docs){
-      var prenotazione = doc.data();
-      var prenotazioneId = doc.id;
-      let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
-      var oggetto = {
-          key: count, 
-          title: alloggio.nomeAlloggio,
-          description: "" + prenotazione.dataInizio + "-" + prenotazione.dataFine,
-          image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
-          newPage: 'PrenotazioneDetail',
-          id: prenotazioneId,
-      }
-      itemList.push(oggetto);
-    };
-    console.log(itemList);
-    navigation.navigate('StoricoPrenotazioni', {user: user, list: itemList});
-  }
-}
+
 
