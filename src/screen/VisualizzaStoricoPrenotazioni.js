@@ -1,4 +1,5 @@
 import React, { Component, useState, useEffect } from 'react';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import {
   StyleSheet,
   Text,
@@ -87,8 +88,11 @@ maincontainer: {
 const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {  
       const {user} = route.params; 
       const [list, setList] = useState([]);
-      useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
+      const isFocused = useIsFocused();
+
+      useFocusEffect(
+        React.useCallback(() => {
+          // Do something when the screen is focused
           async function getStoricoPrenotazioni(){
             if(user.isHost){
               var dataOdierna = new Date();
@@ -145,10 +149,11 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
             }
           }
           getStoricoPrenotazioni();
-        });
-    
-        return unsubscribe;
-      }, [navigation]);
+          return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+        }, [isFocused]))
 
       return (
         <View style={styles.maincontainer}>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import CustomListViewGeneralPrenotazione from '../components/CustomListViewGeneralPrenotazione'
 import {
   StyleSheet,
@@ -15,10 +16,11 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
       const {user,isHost} = route.params; 
       console.log(isHost)
       const [list, setList] = useState([]);
-       
-      useEffect(() => {
-        const unsubscribe = navigation.addListener('focus', () => {
-          // Screen was focused -> Do something
+      const isFocused = useIsFocused();
+
+      useFocusEffect(
+        React.useCallback(() => {
+          // Do something when the screen is focused
           async function getData(){
             if(isHost){
               var dataOdierna = new Date(); 
@@ -89,10 +91,12 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
           }
         }
           getData();
-        });
-    
-        return unsubscribe;
-      }, [navigation]);
+          return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+        }, [isFocused])
+      );
     
       console.log("lista2: " +list);
       return (
@@ -104,6 +108,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                   <CustomListViewGeneralPrenotazione
                     nav = {navigation}
                     itemList={list}
+                    user = {user}
                 />
               </View>
             </View>

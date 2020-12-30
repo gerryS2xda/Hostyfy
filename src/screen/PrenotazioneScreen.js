@@ -2,22 +2,37 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const PrenotazioneScreen = ({route,navigation}) =>{
-    const {prenotazione, alloggio} = route.params; 
-    const numeroPren = 10873945;
-    //const nameStruttura = "La mia struttura"; <Text style={styles.nameStruttura}>{nameStruttura}</Text>
-    const dataCheckIn = "01/11/2020";
-    const oraInizioCheckIn = "12:00";
-    const oraFineCheckIn = "20:00";
-    const dataCheckOut = "03/11/2020";
-    const oraInizioCheckOut = "10:00";
-    const oraFineCheckOut = "11:00";
-    const prezzo = "80";
-    const cameraDetails = "Doppia con letti singoli";
-    const infoPersone = "1 adulto";
-    const nameCamera = "Suite";
-    const myKey = "0123";
+    const {prenotazioneId, user} = route.params; 
+    const [alloggio, setAlloggio] = useState({});
+    const [prenotazione, setPrenotazione] = useState({});
+    const isFocused = useIsFocused();
+    useFocusEffect(
+        React.useCallback(() => {
+          // Do something when the screen is focused
+            async function getDatiPrenotazione(){
+            let prenotazione = await PrenotazioneModel.getPrenotazioneById(prenotazioneId);
+            prenotazione.dataInizio = prenotazione.dataInizio.seconds; 
+            prenotazione.dataFine = prenotazione.dataFine.seconds;
+            let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+            setAlloggio(alloggio);
+            setPrenotazione(prenotazione);
+        }
+        console.log(alloggio);
+        console.log(prenotazione)
+        getDatiPrenotazione()
+        return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+        }, [isFocused])
+      );
+
+
 
     return(
         <View style={styles.maincontainer}>
@@ -35,12 +50,10 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
                                 <Text style={styles.normalText}>{( new Date(prenotazione.dataInizio*1000)).toLocaleString("it-IT").split(",")[0]}</Text>
-                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckIn} alle ore {oraFineCheckIn}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
                                 <Text style={styles.normalText}>{( new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
-                                <Text style={styles.normalText}>Dalle ore {oraInizioCheckOut} alle ore {oraFineCheckOut}</Text>
                             </View>
                             <View style={styles.costoTotContainer}>
                                 <Text style={styles.categoryText}>Costo totale: </Text>
@@ -61,7 +74,8 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                             </View>
                         </View>
                     </View>
-                    <ButtonContainer navigator={navigation} />
+                    {!user.isHost && (
+                    <ButtonContainer navigator={navigation} />)}
                 </View>
             </ScrollView>
         </View>

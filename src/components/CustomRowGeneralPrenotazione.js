@@ -52,15 +52,7 @@ const CustomRowGeneralPrenotazione = (props) => {
 return (
 <TouchableOpacity 
     onPress = { () => {
-        db.collection('prenotazioni').doc(props.id).get().then(async(doc)=>{
-            var prenotazione = doc.data();
-            prenotazione.dataInizio = prenotazione.dataInizio.seconds; 
-            prenotazione.dataFine = prenotazione.dataFine.seconds;
-            db.collection('struttura').doc(prenotazione.strutturaRef).collection('alloggi').doc(prenotazione.alloggioRef).get().then((doc1) =>{
-                var alloggio = doc1.data();
-                props.nav.navigate(props.newPage,{prenotazione: prenotazione,alloggio: alloggio})
-            })
-        })
+        props.nav.navigate(props.newPage,{prenotazioneId: props.id, user: props.user})
     }}>
            
     <View style={styles.container}>

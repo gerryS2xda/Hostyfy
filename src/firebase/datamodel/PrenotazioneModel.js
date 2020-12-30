@@ -100,4 +100,7 @@ export async function getPrenotazioniAttualiGuestQuery(userId, dataOdierna){
     return docs.docs;
 }
 
-
+export async function getPrenotazioneById(prenotazioneId){
+    let doc = await db.collection('prenotazioni').doc(prenotazioneId).get();
+    return doc.data();
+}
