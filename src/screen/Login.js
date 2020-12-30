@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, Button, ImageBackground} from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, Button, ImageBackground,KeyboardAvoidingView} from 'react-native'
 import CustomButton from "../components/CustomButton"
 import CustomAlert from '../components/CustomAlert'
 import {firebase} from "../firebase/config"
@@ -7,6 +7,7 @@ import {firebase} from "../firebase/config"
 const styles = StyleSheet.create({
 
   imageBack:{
+    width: "100%",
     flex: 1,
     justifyContent: "center",
   },
@@ -15,7 +16,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    //backgroundColor: "#ffffff"
+    //backgroundColor: "#000000"
   },
   bodyScrollcontainer: {
     width: "100%",
@@ -89,7 +90,7 @@ const Login = (props) => {
   var passwordref = useRef(null);
 
   return(
-    <View style={styles.maincontainer}>
+    <KeyboardAvoidingView style={styles.maincontainer}>
 
     {errore && (<CustomAlert
       stato = {errore}
@@ -101,7 +102,7 @@ const Login = (props) => {
       navigator = {props.navigation}></CustomAlert>)}
 
 
-      <ScrollView style={styles.bodyScrollcontainer}>
+     
 
       <ImageBackground 
           source = {require("../../assets/Varie/Login.png")}
@@ -164,8 +165,7 @@ const Login = (props) => {
           </View>
           </View>
           </ImageBackground>
-      </ScrollView>
-    </View>
+    </KeyboardAvoidingView>
  
    
   );
