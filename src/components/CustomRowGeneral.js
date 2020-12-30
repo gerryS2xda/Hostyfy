@@ -49,38 +49,13 @@ const styles = StyleSheet.create({
 
 const CustomRowGeneral = (props) => {
     const userLogged = props.userLogged;
+    const strutturaId = props.id;
+
     return (
         <TouchableOpacity 
             onPress = {()=>{ 
-            db.collection("struttura").doc(props.id).get().then((doc) =>{
-                
-                var struttura = {
-                    denominazione: doc.data().denominazione,
-                    via: doc.data().indirizzo.via,
-                    provincia: doc.data().indirizzo.provincia,
-                    cap: doc.data().indirizzo.cap,
-                    nazione: doc.data().indirizzo.nazione,
-                    tipologia: doc.data().tipologia,
-                    numeroAlloggi: doc.data().numAlloggi,
-                    descrizione: doc.data().descrizione,
-                    fotoList: doc.data().fotoList,
-                    id: doc.id
-                }
-                var fotoList = [];
-                var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
-                fotoArray.forEach((value)=>{
-                    fotoList.push({image: {uri: value}});
-                }); 
-                                                            
-                if(fotoList.length == 0){
-                    var imageURL = require("../../assets/imagenotfound.png");
-                    fotoList.push({image: imageURL});
-                } 
-
-                props.nav.navigate("VisualizzaStruttura",{user: userLogged, struttura: struttura, fotoCarousel: fotoList})
-            })  
-                
-                }}>
+                props.nav.navigate("VisualizzaStruttura",{user: userLogged, strutturaId: strutturaId});
+            }}>
                 
             <View style={styles.container}>
                 <Image source={props.image_url} style={styles.photo} />

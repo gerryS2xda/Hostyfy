@@ -1,9 +1,10 @@
-import React, {useEffect} from 'react';
-import {Text, View, Image,ScrollView, BackHandler, StyleSheet, TextInput, Alert} from 'react-native';
+import React from 'react';
+import {Text, View, Image,ScrollView, StyleSheet, TextInput, Alert} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
-import {firebase} from '../firebase/config'
+import {firebase} from '../firebase/config';
+import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 
 var db = firebase.firestore();
 
@@ -92,11 +93,12 @@ const styles = StyleSheet.create({
 
 export default class StrutturaScreen extends React.Component {
  
-
     constructor(props){
         super(props);
         this.state = {
           IsEditable: false,
+          struttura : {},
+          carouselItems: [],
           activeIndex:0,
       }
     }
@@ -111,17 +113,65 @@ export default class StrutturaScreen extends React.Component {
         )
     }
 
-    render() {
-        var struttura = this.props.route.params.struttura;
-        var user = this.props.route.params.user;
-        var carouselItems = this.props.route.params.fotoCarousel;
+    //Invocato dopo che il componente è montato (cioè inserito nell’albero del DOM).
+    componentDidMount() {    
         if(this.state.IsEditable){
             this.setState({IsEditable:false});
         }
+
+        async function getStrutturaData(reference){
+            var strutturaId = reference.props.route.params.strutturaId;
+            //Attendi finche' non ottieni dati della struttura dal DB
+            var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
+
+            //Riempi carouselList con le foto presenti nel documento appena ottenuto
+            var fotoList = [];
+            var fotoArray = Object.values(strutturaDoc.fotoList); //restituisce gli URL delle foto in un array JS
+            fotoArray.forEach((value)=>{
+                fotoList.push({image: {uri: value}});
+            });
+            if(fotoList.length == 0){
+                var imageURL = require("../../assets/imagenotfound.png");
+                fotoList.push({image: imageURL});
+            } 
+            reference.setState({struttura: strutturaDoc, carouselItems: fotoList}); //Memorizza la struttura e la lista foto per carousel nello state
+        }
+        getStrutturaData(this);
+    }  
+    
+    //Invocato immediatamente dopo che avviene un aggiornamento del componente. Non viene chiamato per la renderizzazione iniziale.
+    componentDidUpdate() {    
+        if(this.state.IsEditable){
+            this.setState({IsEditable:false});
+        }
+
+        async function getStrutturaData(reference){
+            var strutturaId = reference.props.route.params.strutturaId;
+            //Attendi finche' non ottieni dati della struttura dal DB
+            var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
+
+            //Riempi carouselList con le foto presenti nel documento appena ottenuto
+            var fotoList = [];
+            var fotoArray = Object.values(strutturaDoc.fotoList); //restituisce gli URL delle foto in un array JS
+            fotoArray.forEach((value)=>{
+                fotoList.push({image: {uri: value}});
+            });
+            if(fotoList.length == 0){
+                var imageURL = require("../../assets/imagenotfound.png");
+                fotoList.push({image: imageURL});
+            } 
+            reference.setState({struttura: strutturaDoc, carouselItems: fotoList}); //Memorizza la struttura e la lista foto per carousel nello state
+        }
+        getStrutturaData(this);
+    }
+
+
+    render() {
+        var user = this.props.route.params.user;
         
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title={struttura.denominazione} navigator={this.props.navigation} />
+                <HeaderBar title={this.state.struttura.denominazione} navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}>
                         <View style={styles.carouselContainer} >
@@ -129,7 +179,7 @@ export default class StrutturaScreen extends React.Component {
                             style= {styles.carouselStyle}
                             layout={"default"}
                             ref={ref => this.carousel = ref}
-                            data={carouselItems}
+                            data={this.state.carouselItems}
                             sliderWidth={300}
                             itemWidth={300}
                             renderItem={this._renderItem}
@@ -137,22 +187,22 @@ export default class StrutturaScreen extends React.Component {
                         </View>
 
                             <View style={styles.fieldContainerTop}>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.denominazione}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.via}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.provincia}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.denominazione}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.via}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.provincia}</TextInput>
                             </View>
                             <View style={styles.twoFieldContainer}>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{struttura.cap}</TextInput>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{struttura.nazione}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.cap}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.nazione}</TextInput>
                             </View>
                             <View style={styles.fieldContainerBottom}>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.tipologia}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{struttura.numeroAlloggi}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.tipologia}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.numeroAlloggi}</TextInput>
                                 <TextInput style={styles.descrizioneField} 
                                     multiline={true}
                                     numberOfLines={20}
                                     editable={this.state.IsEditable}
-                                >{struttura.descrizione}</TextInput>
+                                >{this.state.struttura.descrizione}</TextInput>
                             </View>
 
                         <View style={styles.threeButtonContainer}>
@@ -185,42 +235,8 @@ export default class StrutturaScreen extends React.Component {
                                 styleBtn={{marginTop: 10, width:"100%"}}
                                 nome= "Visualizza alloggi"
                                 onPress={() => {
-                                    var itemList = [];
-                                    var count = 1;
-                                    var count1 = 1;
-                                    db.collection('struttura').doc(struttura.id).collection('alloggi').get().then((querySnapshot)=>{
-                                        if(querySnapshot.size==0){
-                                            this.props.navigation.push("VisualizzaAlloggi", {user: user, list: itemList, strutturaId: struttura.id});
-                                        }
-
-                                        querySnapshot.forEach((doc) =>{
-                                            var alloggio = doc.data();
-                                            var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
-
-                                            var imageURL = "";
-                                            if(fotoArray.length == 0){
-                                                imageURL = require("../../assets/imagenotfound.png");
-                                            }else{
-                                                imageURL = {uri: fotoArray[0]};
-                                            }
-                                            var oggetto = {
-                                                key: count, 
-                                                title: alloggio.nomeAlloggio, 
-                                                description: alloggio.descrizione,
-                                                image_url: imageURL, 
-                                                newPage: 'Alloggio',
-                                                strutturaId: struttura.id,  
-                                                id: doc.id
-                                            }
-                                            count++;
-                                            itemList.push(oggetto);
-                                            if(count1 < querySnapshot.size){
-                                                count1++;
-                                            }else{
-                                                this.props.navigation.push("VisualizzaAlloggi", {user: user, list: itemList, strutturaId: struttura.id});
-                                            }
-                                        })
-                                    });
+                                    var strutturaId = this.props.route.params.strutturaId;
+                                    this.props.navigation.push("VisualizzaAlloggi", {user: user, strutturaId: strutturaId});        
                                 }}
                             />
                         </View>
