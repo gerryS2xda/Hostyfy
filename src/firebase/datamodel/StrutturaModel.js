@@ -79,3 +79,17 @@ export async function getStrutturaByDenominazione(denominazione){
     let docs = await strutturaCollectionRef.where("denominazione", "==", denominazione).get();
     return docs.docs;
 }
+
+export async function getStrutturaDocumentById(strutturaId){
+    let struttura = await strutturaCollectionRef.doc(strutturaId).get()
+    if(struttura.exists){
+        return struttura.data();
+    }else{
+        return Promise.reject("StrutturaModel: No such struttura document");
+    }
+}
+
+export async function getAlloggiOfStruttura(strutturaId){
+    let alloggi = await strutturaCollectionRef.doc(strutturaId).collection('alloggi').get();
+    return alloggi.docs;
+}
