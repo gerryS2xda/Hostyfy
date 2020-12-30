@@ -1,13 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import CustomListViewGeneral from '../components/CustomListViewGeneral'
 import {
   StyleSheet,
-  Text,
   View,
-  Image,
-  Alert,
-  Platform,
-  ScrollView, 
   TouchableOpacity
 } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
@@ -36,47 +32,50 @@ const styles = StyleSheet.create({
 const LeMieStrutture = (props) => {  
       const {user} = props.route.params;
       const [struttureList, setStruttureList] = useState([]);
+      const isFocused = useIsFocused();
 
-      useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', () => {
-          // Screen was focused -> Do something
+      useFocusEffect(
+        useCallback(() => {
+          // Do something when the screen is focused
           async function getMieStruttureData(){
-            var itemList = [];
-            var count = 1;
-            var struttureDocs = await StrutturaModel.getStruttureOfAHostQuery(user.userIdRef);
-            if(struttureDocs.length == 0){
-              setStruttureList(itemList);
-            }else{
-              for(const doc of struttureDocs){
-                var struttura = doc.data();
-                var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS 
-                                        
-                var imageURL = "";
-                if(fotoArray.length == 0){
-                    imageURL = require("../../assets/imagenotfound.png");
-                }else{
-                      imageURL = {uri: fotoArray[0]};
-                }
-                var oggetto = {
-                    key: count, 
-                    title: struttura.denominazione, 
-                    description: struttura.descrizione,
-                    image_url: imageURL, 
-                    newPage: 'VisualizzaStruttura',
-                    OTP: 'true',
-                    id: doc.id
+              var itemList = [];
+              var count = 1;
+              var struttureDocs = await StrutturaModel.getStruttureOfAHostQuery(user.userIdRef);
+              if(struttureDocs.length == 0){
+                setStruttureList(itemList);
+              }else{
+                for(const doc of struttureDocs){
+                  var struttura = doc.data();
+                  var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS 
+                                          
+                  var imageURL = "";
+                  if(fotoArray.length == 0){
+                      imageURL = require("../../assets/imagenotfound.png");
+                  }else{
+                        imageURL = {uri: fotoArray[0]};
                   }
-                  count++;
-                  itemList.push(oggetto);
+                  var oggetto = {
+                      key: count, 
+                      title: struttura.denominazione, 
+                      description: struttura.descrizione,
+                      image_url: imageURL, 
+                      newPage: 'VisualizzaStruttura',
+                      OTP: 'true',
+                      id: doc.id
+                    }
+                    count++;
+                    itemList.push(oggetto);
+                }
+                setStruttureList(itemList);
               }
-              console.log("MieStrutture: " + itemList.toString());
-              setStruttureList(itemList);
             }
-          }
-          getMieStruttureData();
-        });
-        return unsubscribe;
-      }, [props.navigation]);
+            getMieStruttureData();
+          return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+        }, [isFocused])
+      );
 
       return (
       <View style={styles.maincontainer}>

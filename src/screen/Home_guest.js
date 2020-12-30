@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {View, Text, StyleSheet, Alert } from 'react-native'
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HeaderBar from '../components/CustomHeaderBar'
 import CustomButton from '../components/CustomButton'
 import CustomImageButton from "../components/CustomImageButton";
-import {firebase} from "../firebase/config"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
-
-var db = firebase.firestore();
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -59,10 +57,11 @@ const HomeGuest = ({route, navigation}) => {
 
   const {userId} = route.params;
   const [user, setUser] = useState({});
+  const isFocused = useIsFocused();
   
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      // Screen was focused -> Do something
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
       // Ottieni info dell'utente da DB usando lo userId
       async function getUserData(){
         var guestDoc = await GuestModel.getGuestDocument(userId);
@@ -75,10 +74,12 @@ const HomeGuest = ({route, navigation}) => {
         }
       }
       getUserData();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [isFocused])
+  );
 
   const createNextRealeaseFeatureAlert = () =>
       Alert.alert(

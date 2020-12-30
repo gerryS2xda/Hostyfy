@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import {View, Text, StyleSheet, Alert} from 'react-native'
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ScrollView } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
@@ -66,13 +67,12 @@ const styles = StyleSheet.create({
 const HomeHost = ({route, navigation}) => {
 
   const {userId} = route.params; 
-
   const [user, setUser] = useState({});
-  
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      // Screen was focused -> Do something
-      // Ottieni info dell'utente da DB usando lo userId
+  const isFocused = useIsFocused();
+
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
       async function getUserData(){
         var guestDoc = await GuestModel.getGuestDocument(userId);
         var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
@@ -84,11 +84,13 @@ const HomeHost = ({route, navigation}) => {
         }
       }
       getUserData();
-    });
 
-    return unsubscribe;
-  }, [navigation]);
-
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      };
+    }, [isFocused])
+  );
 
   //Codice per gestire lo stato del calendario quando si seleziona un range di giorni
   const [selectedStartDate, setSelectedStartDate] = useState(null);
