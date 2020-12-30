@@ -19,11 +19,11 @@
     17. npm install react-native-slider
     18. npm install @react-native-community/netinfo
     19. npm install @react-native-community/slider
-    20. npm install @react-native-community/datetimepicker
-    21. npm install react-native-popup-dialog
-    22. npm install firebase
-    23. npm install react-native-modalbox@latest --save
-    24. npm i react-native-modalbox
+    20. npm install react-native-popup-dialog
+    21. npm install firebase
+    22. npm install react-native-modalbox@latest --save
+    23. npm i react-native-modalbox
+    24. npm i react-native-modal-datetime-picker @react-native-community/datetimepicker
     Swipe right to open
 */
 import {LogBox} from 'react-native'
@@ -65,6 +65,7 @@ import Visualizza_calendario_alloggio from "./src/screen/Visualizza_calendario_a
 import NotificationScreen from "./src/screen/NotificationScreen"
 import CheckOutScreen from "./src/screen/CheckOutScreen"
 import PasswordDimenticata from "./src/screen/PasswordDimenticata"
+import ImagePickerMultiple from "./src/components/ImagePickerMultiple"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -231,6 +232,11 @@ const App = () => {
             name="PasswordDimenticata" 
             component={PasswordDimenticata} 
             options={{title: 'PasswordDimenticata'}} 
+          />
+          <Stack.Screen 
+            name="ImagePickerMultiple" 
+            component={ImagePickerMultiple} 
+            options={{title: 'Selezionate 0 foto', headerShown: true}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>
