@@ -8,7 +8,7 @@ var hostCollectionRef = db.collection("host"); //ottieni riferimento della colle
 //Create functions: one function for each collection to create
 export function createHostDocument(uid, emailWeb, passwordWeb ){
     // Add a new document in collection "host" con set(), se non e' presente, crea il documento
-    hostCollectionRef.doc(uid).set({
+    return hostCollectionRef.doc(uid).set({
         userIdRef: uid,
         emailWebAlloggiati: emailWeb,
         passwordWebAlloggiati: passwordWeb
@@ -39,7 +39,7 @@ export function updateHostDocument(uid,  emailWeb, passwordWeb){
 
 //Delete function
 export function deleteHostDocument(uid){
-    hostCollectionRef.doc(uid).delete().then(function() {
+    return hostCollectionRef.doc(uid).delete().then(function() {
         console.log("Host document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);

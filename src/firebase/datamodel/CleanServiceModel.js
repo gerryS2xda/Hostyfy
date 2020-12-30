@@ -8,7 +8,7 @@ var cleanServiceCollectionRef = db.collection("cleanService"); //ottieni riferim
 //Create functions: one function for each collection to create
 export function createCleanServiceDocument(matricola, nome, cognome, email, numeroTelefono, ditta, dataAssunzione){
     // Add a new document in collection "cleanService" con set(), se non e' presente, crea il documento
-    cleanServiceCollectionRef.add({
+    return cleanServiceCollectionRef.add({
         matricola: matricola, 
         nome: nome, 
         cognome: cognome, 
@@ -47,7 +47,7 @@ export function updateCleanServiceDocument(matricola, nome, cognome, email, nume
 
 //Delete function
 export function deleteCleanServiceDocument(matricola){
-    cleanServiceCollectionRef.doc(""+matricola).delete().then(function() {
+    return cleanServiceCollectionRef.doc(""+matricola).delete().then(function() {
         console.log("Clean service document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing clean service document: ", error);

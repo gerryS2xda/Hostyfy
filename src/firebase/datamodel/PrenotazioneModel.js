@@ -8,7 +8,7 @@ var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferim
 //Create functions: one function for each collection to create
 export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){ 
     // Add a new document in collection "prenotazioni" con set(), se non e' presente, crea il documento
-    prenotazioniCollectionRef.add({
+    return prenotazioniCollectionRef.add({
         numeroPrenotazione: 0,
         hostRef: hostuid,
         guestRef: guestuid,
@@ -72,7 +72,7 @@ export function updateNumeroPrenotazione(prenDocId, numPren){
 
 //Delete function
 export function deletePrenotazioniDocument(prenDocId){
-    prenotazioniCollectionRef.doc(prenDocId).delete().then(function() {
+    return prenotazioniCollectionRef.doc(prenDocId).delete().then(function() {
         console.log("Prenotazione document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing prenotazione document: ", error);

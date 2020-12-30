@@ -8,7 +8,7 @@ var strutturaCollectionRef = db.collection("struttura"); //ottieni riferimento d
 //Create functions: one function for each collection to create
 export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId, fotoObj){
     // Add a new document in collection "Struttura" con set(), se non e' presente, crea il documento
-    strutturaCollectionRef.add({
+    return strutturaCollectionRef.add({
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione, 
@@ -49,7 +49,7 @@ export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizion
 }
 
 export function updateFotoField(structId, fotoObj){
-    strutturaCollectionRef.doc(structId).update({
+    return strutturaCollectionRef.doc(structId).update({
         fotoList: fotoObj, 
     })
     .then(function() {
@@ -62,7 +62,7 @@ export function updateFotoField(structId, fotoObj){
 
 //Delete function
 export function deleteStrutturaDocument(id){
-    strutturaCollectionRef.doc(id).delete().then(function() {
+    return strutturaCollectionRef.doc(id).delete().then(function() {
         console.log("Struttura document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing struttura document: ", error);
@@ -72,5 +72,10 @@ export function deleteStrutturaDocument(id){
 //Read query function
 export async function getStruttureOfAHostQuery(userId){
     let docs = await strutturaCollectionRef.where('hostRef', '==', userId).get();
+    return docs.docs;
+}
+
+export async function getStrutturaByDenominazione(denominazione){
+    let docs = await strutturaCollectionRef.where("denominazione", "==", denominazione).get();
     return docs.docs;
 }

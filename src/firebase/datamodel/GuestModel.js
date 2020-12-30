@@ -8,7 +8,7 @@ var guestCollectionRef = db.collection("guest"); //ottieni riferimento della col
 //Create functions: one function for each collection to create
 export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
-    guestCollectionRef.doc(uid).set({
+    return guestCollectionRef.doc(uid).set({
         userId: uid,
         cf: cf,
         cognome: cognome,
@@ -34,7 +34,7 @@ export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luo
 export function createGuestDocumentForRegistration(uid, cognome, nome, emailGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
     //email e password vengono gestite da Firebase e sono accesibili mediante userId
-    guestCollectionRef.doc(uid).set({
+    return guestCollectionRef.doc(uid).set({
         userId: uid,
         cf: "", 
         cognome: cognome,
@@ -59,7 +59,7 @@ export function createGuestDocumentForRegistration(uid, cognome, nome, emailGues
 
 export function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestatario, dataScadenza){
     // Add a new document in collection "guest"
-    guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).set({
+    return guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).set({
         numeroCarta: numCreditCard,
         ccv: ccv,
         intestatario: intestatario,
@@ -131,7 +131,7 @@ export function updateCreditCardDocument(uid, numCreditCard, ccv, intestatario, 
 
 //Delete function
 export function deleteGuestDocument(uid){
-    guestCollectionRef.doc(uid).delete().then(function() {
+    return guestCollectionRef.doc(uid).delete().then(function() {
         console.log("Document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);
