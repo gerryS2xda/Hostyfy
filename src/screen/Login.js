@@ -1,17 +1,21 @@
 import React, { useState, useRef } from 'react'
-import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, Button } from 'react-native'
+import {View, Text, Image, TextInput, StyleSheet,TouchableOpacity, ScrollView, Alert, Button, ImageBackground} from 'react-native'
 import CustomButton from "../components/CustomButton"
 import CustomAlert from '../components/CustomAlert'
 import {firebase} from "../firebase/config"
-import * as GuestModel from "../firebase/datamodel/GuestModel"
-import * as HostModel from "../firebase/datamodel/HostModel"
 
 const styles = StyleSheet.create({
+
+  imageBack:{
+    flex: 1,
+    justifyContent: "center",
+  },
+
   maincontainer: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    //backgroundColor: "#ffffff"
   },
   bodyScrollcontainer: {
     width: "100%",
@@ -19,27 +23,17 @@ const styles = StyleSheet.create({
   container_1: {
     width: "100%",
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: "83%",
   },
 
   container_2: {
     width: "100%",
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: "20%",
-    marginBottom: "10%",
+    marginTop: "18%",
+    marginBottom: "10%"
   },
-
-  input: {
-    height: 40,
-    width:"75%",
-    borderColor: '#666666',
-    borderBottomWidth: 1,
-    marginTop:"4%",
-    fontFamily: "MontserrantSemiBold",
-    paddingLeft: 5
-  },
-
   paswordDimenticata: {
     color: '#303a52',
     fontFamily: "MontserrantSemiBold",
@@ -60,18 +54,31 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
 
-  image : {
-    width:"60%",
-    height:120, 
-    marginTop:"25%",
-    marginBottom: "4%",    
+  titolo : {
+    alignContent: 'center',
+    fontFamily: "MontserrantBold",
+    fontSize: 26,
+    color: '#303a52',
+    marginTop: "15%",
+    marginBottom: "3%"
   },
   horizontalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: "3%",
   },
-})
+
+  input: {
+    height: 40,
+    width: "75%",
+    borderColor: '#666666',
+    borderWidth: 1.7,
+    borderRadius: 20,
+    fontFamily: 'MontserrantSemiBold',
+    paddingLeft: "5%",
+    marginTop: "4%",
+    paddingRight: "5%",
+  }});
 
 const Login = (props) => {
 
@@ -95,19 +102,25 @@ const Login = (props) => {
 
 
       <ScrollView style={styles.bodyScrollcontainer}>
-        <View style={styles.scrollContent}>
+
+      <ImageBackground 
+          source = {require("../../assets/Varie/Login.png")}
+          style = {styles.imageBack}>
+      
+        <View style={styles.scrollContent}>    
           <View style={styles.container_1}>
-            <Image
-              source = {require('../../assets/HOSTYFY.png')}
-              style = {styles.image} 
-            />
-            <TextInput
-              ref = {emailRef}
-              style = {styles.input}
-              placeholder = 'Email'
-              onChangeText = {(email) => setEmail(email)}
-              
-            />
+           
+            <Text style = {styles.titolo}>Login</Text>
+            
+           
+              <TextInput
+                ref = {emailRef}
+                style = {styles.input}
+                placeholder = 'Email'
+                onChangeText = {(email) => setEmail(email)}
+               />
+          
+
             <TextInput
               style = {styles.input}
               ref = {passwordref}
@@ -133,22 +146,24 @@ const Login = (props) => {
                     });
                   
                 }} />
-            <View style={styles.horizontalContainer}>
-              <Text style={styles.paswordDimenticata}>Password dimenticata?  </Text>
-              <TouchableOpacity onPress={() => props.navigation.navigate('PasswordDimenticata')}>
-                <Text style={styles.clickTxt}>Clicca qui</Text>
-              </TouchableOpacity>
-            </View>  
-          </View> 
-          <View style={styles.container_2}>
-                <Text style={styles.nonReg}>Non hai un account?</Text>
-                <CustomButton 
-                    nome = "Registrati" 
-                    styleBtn={{width: "75%"}}
-                    onPress={() => props.navigation.navigate('Registratione')} 
-                />
-            </View>  
+              <View style={styles.horizontalContainer}>
+                <Text style={styles.paswordDimenticata}>Password dimenticata?  </Text>
+                <TouchableOpacity onPress={() => props.navigation.navigate('PasswordDimenticata')}>
+                  <Text style={styles.clickTxt}>Clicca qui</Text>
+                </TouchableOpacity>
+              </View>  
+           
+              <View style={styles.container_2}>
+                    <Text style={styles.nonReg}>Non hai un account?</Text>
+                    <CustomButton 
+                        nome = "Registrati" 
+                        styleBtn={{width: "75%"}}
+                        onPress={() => props.navigation.navigate('Registratione')} 
+                    />
+                </View>  
           </View>
+          </View>
+          </ImageBackground>
       </ScrollView>
     </View>
  
