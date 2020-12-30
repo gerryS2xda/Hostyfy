@@ -90,7 +90,7 @@ const LeMieStrutture = (props) => {
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity 
                   onPress={() => {
-                    var struttura = {denominazione: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: 0, descrizione: ""};
+                    var struttura = {denominazione: "", via: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: 0, descrizione: ""};
                     props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], strutturaState: struttura});
                   }}>
                     <Icon
