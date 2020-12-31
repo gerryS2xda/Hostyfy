@@ -1,9 +1,9 @@
 import React from 'react';
-import {Text, View, Image,ScrollView, Alert, StyleSheet} from 'react-native';
+import {Text, View, Image,ScrollView, Alert, StyleSheet, TextInput} from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -72,23 +72,99 @@ const styles = StyleSheet.create({
     singleFieldText:{
         fontFamily: "MontserrantSemiBold",
     }
-  })
-
-
-
+});
 
 export default class AlloggioScreen extends React.Component {
 
-   
- 
     constructor(props){
         super(props);
         this.state = {
           IsEditable: false,
+          alloggio : {},
+          carouselItems: [],
+          chiaveIdAlloggio: "",
           activeIndex:0,
       }
     }
 
+    //Invocato dopo che il componente è montato (cioè inserito nell’albero del DOM).
+    componentDidMount() {
+        if(this.state.IsEditable){
+            this.setState({IsEditable:false});
+        }
+
+        async function getAlloggioData(reference){
+            var strutturaId = reference.props.route.params.strutturaId;
+            var alloggioId = reference.props.route.params.alloggioId;
+
+            //Attendi finche' non ottieni dati dell'alloggio dal DB
+            var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
+
+            //Attendi finche' non si ottiene l'Id di una chiave attiva per aprire alloggio
+            var chiaviDoc = await AlloggioModel.getChiaviCollectionOfAlloggio(strutturaId, alloggioId);
+            var chiaveId = "";
+            for(const chiaveDoc of chiaviDoc){
+                var chiave = chiaveDoc.data();
+                if(chiave.isActive){
+                    chiaveId = chiaveDoc.id;
+                }
+            }
+            
+            //Riempi carouselList con le foto presenti nel documento appena ottenuto
+            var fotoList = [];
+            var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
+            fotoArray.forEach((value)=>{
+                fotoList.push({image: {uri: value}});
+            });
+            if(fotoList.length == 0){
+                var imageURL = require("../../assets/imagenotfound.png");
+                fotoList.push({image: imageURL});
+            } 
+            //Memorizza l'alloggio, lista foto per carousel e l'id di una chiave attiva nello state
+            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList, chiaveIdAlloggio: chiaveId}); 
+        }
+        getAlloggioData(this);
+    }  
+    
+    //Invocato immediatamente dopo che avviene un aggiornamento del componente. Non viene chiamato per la renderizzazione iniziale.
+    componentDidUpdate() {    
+        if(this.state.IsEditable){
+            this.setState({IsEditable:false});
+        }
+
+        async function getAlloggioData(reference){
+            var strutturaId = reference.props.route.params.strutturaId;
+            var alloggioId = reference.props.route.params.alloggioId;
+
+            //Attendi finche' non ottieni dati dell'alloggio dal DB
+            var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
+
+            //Attendi finche' non si ottiene l'Id di una chiave attiva per aprire alloggio
+            var chiaviDoc = await AlloggioModel.getChiaviCollectionOfAlloggio(strutturaId, alloggioId);
+            var chiaveId = "";
+            for(const chiaveDoc of chiaviDoc){
+                var chiave = chiaveDoc.data();
+                if(chiave.isActive){
+                    chiaveId = chiaveDoc.id;
+                }
+            }
+            
+            //Riempi carouselList con le foto presenti nel documento appena ottenuto
+            var fotoList = [];
+            var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
+            fotoArray.forEach((value)=>{
+                fotoList.push({image: {uri: value}});
+            });
+            if(fotoList.length == 0){
+                var imageURL = require("../../assets/imagenotfound.png");
+                fotoList.push({image: imageURL});
+            } 
+            //Memorizza l'alloggio, lista foto per carousel e l'id di una chiave attiva nello state
+            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList, chiaveIdAlloggio: chiaveId}); 
+        }
+        getAlloggioData(this);
+    }
+    
     _renderItem({item,index}){
         return (
           <View style={{ justifyContent:'center',
@@ -103,15 +179,12 @@ export default class AlloggioScreen extends React.Component {
 
     render() {
         var user = this.props.route.params.user;
-        var alloggio = this.props.route.params.alloggio;
-        var carouselItems = this.props.route.params.fotoCarousel;
-        if(this.state.IsEditable){
-            this.setState({IsEditable:false});
-        }
+        var strutturaId = this.props.route.params.strutturaId;
+        var alloggioId = this.props.route.params.alloggioId;
 
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title={alloggio.nomeAlloggio} navigator={this.props.navigation} />
+                <HeaderBar title={this.state.alloggio.nomeAlloggio} navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.carouselContainer} >
@@ -119,31 +192,31 @@ export default class AlloggioScreen extends React.Component {
                             style= {styles.carouselStyle}
                             layout={"default"}
                             ref={ref => this.carousel = ref}
-                            data={carouselItems}
+                            data={this.state.carouselItems}
                             sliderWidth={300}
                             itemWidth={300}
                             renderItem={this._renderItem}
                             onSnapToItem = { index => this.setState({activeIndex:index}) } />
                         </View>
                         <View style={styles.middleContainer}>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.nomeAlloggio}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.numeroCamere}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.numeroMassimoPersone}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{alloggio.piano}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.nomeAlloggio}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroCamere}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroMassimoPersone}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.piano}</TextInput>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}
                                 multiline={true}
                                 numberOfLines={15}>
-                                {alloggio.descrizione}
+                                {this.state.alloggio.descrizione}
                              </TextInput>
                         </View>
                         <CustomButton 
                                 styleBtn={{width: "100%", marginTop: "5%"}}
                                 nome= "Disponibilità" 
                                 onPress={()=>{
-                                    this.props.navigation.navigate('Calendario_Alloggio',{user: user, id: alloggio.id, strutturaId: alloggio.strutturaId})}}
-                            /> 
-
+                                    this.props.navigation.navigate('Calendario_Alloggio',{user: user, id: alloggioId, strutturaId: strutturaId})
+                                }}
+                        /> 
                         <View style={styles.threeButtonContainer}>
                             <CustomButton 
                                 styleBtn={{width: "45%", alignItems: 'center', justifyContent: 'center'}}
@@ -173,7 +246,10 @@ export default class AlloggioScreen extends React.Component {
                             <CustomButton 
                                 styleBtn={{marginTop: "5%", width:"100%"}}
                                 nome= "Visualizza chiave"
-                                onPress={() => {this.props.navigation.navigate('LaMiaChiave', {user: user})}}
+                                onPress={() => {
+                                        this.props.navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, chiaveId: this.state.chiaveIdAlloggio})
+                                    }
+                                }
                             />
                         </View>
                     </View>
