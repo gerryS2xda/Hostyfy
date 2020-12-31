@@ -236,7 +236,7 @@ export default class StrutturaScreen extends React.Component {
                                 nome= "Visualizza alloggi"
                                 onPress={() => {
                                     var strutturaId = this.props.route.params.strutturaId;
-                                    this.props.navigation.push("VisualizzaAlloggi", {user: user, strutturaId: strutturaId});        
+                                    this.props.navigation.navigate("VisualizzaAlloggi", {user: user, strutturaId: strutturaId});        
                                 }}
                             />
                         </View>
