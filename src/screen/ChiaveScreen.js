@@ -1,29 +1,58 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 
-const ChiaveScreen = ({navigation}) =>{
-    const cameraName = "Suite Imperiale";
-    const [counter, setCounter] = useState(0);
+const ChiaveScreen = ({route, navigation}) =>{
+    const {user, strutturaId, alloggioId, chiaveId} = route.params;
+    const [alloggio, setAlloggio] = useState({});
+    const [chiave, setChiave] = useState({});
+    const isFocused = useIsFocused();
+  
+    useFocusEffect(
+        useCallback(() => {
+        // Do something when the screen is focused
+        // Ottieni info dell'utente da DB usando lo userId
+            async function getAlloggioAndChiaveData(){
+
+                //Attendi finche' non ottieni dati di un alloggio
+                var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
+                setAlloggio(alloggioDoc); //Memorizza i dati dell'alloggio nello state
+
+                //Attendi finche' non ottieni dati della chiave associata ad un alloggio
+                var chiaveDoc = await AlloggioModel.getChiaveDocumentById(strutturaId, alloggioId, chiaveId);
+                setChiave(chiaveDoc); //Memorizza i dati della chiave nello state
+            }
+            getAlloggioAndChiaveData();
+        return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+        };
+        }, [isFocused])
+    );
+
+    const setNavigationScreenAfterPressKey = async () =>{
+        if(chiave.isFirstAccess){
+            //Attendi finche' non viene aggiornato lo stato della chiave relativo al primo access
+            await AlloggioModel.updateFirstAccessChiaveDocument(strutturaId, alloggioId, chiaveId, false);
+            navigation.navigate("MoviePlayer");
+        }else{
+            navigation.navigate("InfoCamera");
+        }
+    }
 
     const createTwoButtonAlert = () =>
     Alert.alert(
       "Ingresso alloggio",
-      "Benvenuto nella camera " + JSON.stringify(cameraName),
+      "Benvenuto nella camera " + JSON.stringify(alloggio.nomeAlloggio),
       [
         {
           text: "Cancel",
           onPress: () => console.log("Cancel Pressed"),
           style: "cancel"
         },
-        { text: "OK", onPress: () =>{
-                if(counter == 0){
-                    setCounter(counter+1);
-                    navigation.navigate("MoviePlayer");
-                }else{
-                    navigation.navigate("InfoCamera");
-                }
-            }
+        { text: "OK", onPress: () =>{ setNavigationScreenAfterPressKey()}
         }
       ],
       { cancelable: false }
@@ -33,10 +62,7 @@ const ChiaveScreen = ({navigation}) =>{
     return(
         <View style={styles.maincontainer}>
             <HeaderBar title="La mia chiave" navigator={navigation} />
-            
-            
             <View style={styles.bodyViewContent}>
-
                 <View style={styles.buttonKeyContainer}>
                     <TouchableOpacity onPress={createTwoButtonAlert} >
                         <Image style={styles.keyImage} source={require("../../assets/electronicKeyHotel.png")}/>
@@ -49,6 +75,7 @@ const ChiaveScreen = ({navigation}) =>{
 
 export default ChiaveScreen;
 
+//STYLE
 const styles = StyleSheet.create({
     maincontainer: {
         flex: 1,
