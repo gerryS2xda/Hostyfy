@@ -1,12 +1,5 @@
-import { useLinkProps } from '@react-navigation/native';
-import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Dialog from 'react-native-dialog';
-import {firebase} from '../firebase/config'
-
-var db = firebase.firestore();
-
+import React from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -49,35 +42,13 @@ const styles = StyleSheet.create({
 
 const CustomRowGeneralAlloggio = (props) => {
     const userLogged = props.userLogged;
+    const strutturaId = props.strutturaId;
+    const alloggioId = props.id;
+
     return (
         <TouchableOpacity 
             onPress = {()=>{ 
-                db.collection("struttura").doc(props.strutturaId).collection('alloggi').doc(props.id).get().then((doc) =>{
-                    var alloggio = {
-                        nomeAlloggio: doc.data().nomeAlloggio,
-                        numeroCamere: doc.data().numCamere,
-                        numeroMassimoPersone: doc.data().numMaxPersone,
-                        pathVideo: doc.data().pathvideo,
-                        piano: doc.data().piano,
-                        descrizione: doc.data().descrizione,
-                        id: props.id,
-                        strutturaId: props.strutturaId,
-                        fotoList: doc.data().fotoList,
-
-                    }
-
-                    var fotoList = [];
-                    var fotoArray = Object.values(doc.data().fotoList); //restituisce gli URL delle foto in un array JS
-                    fotoArray.forEach((value)=>{
-                        fotoList.push({image: {uri: value}});
-                    }); 
-                                                                        
-                    if(fotoList.length == 0){
-                        var imageURL = require("../../assets/imagenotfound.png");
-                        fotoList.push({image: imageURL});
-                    } 
-                    props.nav.navigate(props.newPage,{user: userLogged, alloggio: alloggio, fotoCarousel: fotoList});
-                })      
+                props.nav.navigate(props.newPage,{user: userLogged, strutturaId: strutturaId, alloggioId: alloggioId});      
             }}>
                 
             <View style={styles.container}>

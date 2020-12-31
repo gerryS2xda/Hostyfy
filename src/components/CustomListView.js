@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, FlatList, StyleSheet, Text, Alert, Image} from 'react-native';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
+import { View, FlatList, StyleSheet} from 'react-native';
 import CustomRow from '../components/CustomRow';
 
 const styles = StyleSheet.create({
