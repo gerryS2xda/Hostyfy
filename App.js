@@ -65,7 +65,8 @@ import Visualizza_calendario_alloggio from "./src/screen/Visualizza_calendario_a
 import NotificationScreen from "./src/screen/NotificationScreen"
 import CheckOutScreen from "./src/screen/CheckOutScreen"
 import PasswordDimenticata from "./src/screen/PasswordDimenticata"
-import ImagePickerMultiple from "./src/components/ImagePickerMultiple"
+import ImagePickerMultipleStruttura from "./src/components/ImagePickerMultipleStruttura"
+import ImagePickerMultipleAlloggio from "./src/components/ImagePickerMultipleAlloggio"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -234,8 +235,13 @@ const App = () => {
             options={{title: 'PasswordDimenticata'}} 
           />
           <Stack.Screen 
-            name="ImagePickerMultiple" 
-            component={ImagePickerMultiple} 
+            name="ImagePickerMultipleStruttura" 
+            component={ImagePickerMultipleStruttura} 
+            options={{title: 'Selezionate 0 foto', headerShown: true}} 
+          />
+          <Stack.Screen 
+            name="ImagePickerMultipleAlloggio" 
+            component={ImagePickerMultipleAlloggio} 
             options={{title: 'Selezionate 0 foto', headerShown: true}} 
           />
         </Stack.Navigator>   

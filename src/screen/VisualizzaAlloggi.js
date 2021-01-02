@@ -99,7 +99,9 @@ const VisualizzaAlloggi = (props) => {
 
               <View style = {styles.aggiungiStruttura}>
                 <TouchableOpacity
-                  onPress={() => props.navigation.navigate('InserisciAlloggio', {user: user, strutturaId: strutturaId})}>
+                  onPress={() =>{
+                      props.navigation.navigate('InserisciAlloggio', {user: user, strutturaId: strutturaId, photoList: [], state: {}});
+                  }}>
                     <Icon
                       name = "plus-circle-outline"
                       color = {"#f2077d"}

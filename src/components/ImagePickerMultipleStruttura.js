@@ -3,14 +3,15 @@ import { StyleSheet, View, Text, TouchableOpacity, ActivityIndicator } from 'rea
 import * as ImageManipulator from 'expo-image-manipulator';
 import {ImageBrowser} from 'expo-image-picker-multiple';
 
-export default class ImagePickerMultiple extends Component {
+export default class ImagePickerMultipleStruttura extends Component {
   _getHeaderLoader = () => (
     <ActivityIndicator size='small' color={'#0580FF'}/>
   );
 
   imagesCallback = (callback) => {
     const user = this.props.route.params.user;
-    const struttura = this.props.route.params.struttura;
+    //stato della schermata precedente siccome per inserire le image si apre un'altra schermata che comporta perdita di dati inseriti in precedenza
+    const state = this.props.route.params.state; 
     const { navigation } = this.props;
 
     this.props.navigation.setOptions({
@@ -27,7 +28,7 @@ export default class ImagePickerMultiple extends Component {
           type: 'image/jpg'
         })
       }
-      navigation.navigate('Inserisci struttura', {user:user, photoList: cPhotos, strutturaState: struttura})
+      navigation.navigate('Inserisci struttura', {user:user, photoList: cPhotos, state: state})
     })
     .catch((e) => console.log(e));
   };

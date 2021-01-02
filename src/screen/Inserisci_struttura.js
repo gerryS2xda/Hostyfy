@@ -102,13 +102,12 @@ export default class InserisciStrutturaScreen extends React.Component {
             descrizione: "",
             via: "",
             modalUploadVisibility: false,
-            counter: 0,
             isStrutturaStateUpdate: false,         
       }
     }
 
     componentDidMount() {    
-        var struttState = this.props.route.params.strutturaState;
+        var struttState = this.props.route.params.state;
         
         if(struttState.hasOwnProperty("denominazione") && !this.state.isStrutturaStateUpdate){
             this.setState({denominazione: struttState.denominazione, via: struttState.via, citta: struttState.citta,
@@ -119,7 +118,7 @@ export default class InserisciStrutturaScreen extends React.Component {
     }  
     
     componentDidUpdate() {    
-        var struttState = this.props.route.params.strutturaState;
+        var struttState = this.props.route.params.state;
         
         if(struttState.hasOwnProperty("denominazione") && !this.state.isStrutturaStateUpdate){
             this.setState({denominazione: struttState.denominazione, via: struttState.via, citta: struttState.citta,
@@ -129,23 +128,10 @@ export default class InserisciStrutturaScreen extends React.Component {
         } 
     }
 
-    _renderItem({item,index}){
-        return (
-          <View style={{ justifyContent:'center',
-            marginLeft:50
-              }}>
-           <Image style={{width:250, height:250}} source = {item.image} />
-            <Text>{item.title}</Text>
-          </View>
-
-        )
-    }
-
     render() {
         var user = this.props.route.params.user;
         var photoList = this.props.route.params.photoList;
-        
-       
+              
         return (
             <View style={styles.maincontainer}>
                 {
@@ -265,7 +251,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                                         numeroAlloggi: this.state.numeroAlloggi,
                                         descrizione: this.state.descrizione,
                                     }
-                                    this.props.navigation.push('ImagePickerMultiple', {user:user, struttura: struttutaState});
+                                    this.props.navigation.push('ImagePickerMultipleStruttura', {user:user, state: struttutaState});
                                 }}
                                 />
                             
