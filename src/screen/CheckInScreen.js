@@ -4,7 +4,8 @@ import HeaderBar from '../components/CustomHeaderBar'
 import RNPickerSelect from 'react-native-picker-select';
 import CustomButton from "../components/CustomButton"
 
-const CheckInScreen = ({navigation}) =>{
+const CheckInScreen = ({route, navigation}) =>{
+    const {user, strutturaId, alloggioId} = route.params;
     const numeroPren = 10;
     const nomeOsp = "Tizio Caio";
     const [typeDoc, setDocType] = useState(null);
@@ -101,7 +102,7 @@ const CheckInScreen = ({navigation}) =>{
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=> navigation.navigate("LaMiaChiave") } />
+                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=> navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId}) } />
                     </View>
                 </View>
             </ScrollView>

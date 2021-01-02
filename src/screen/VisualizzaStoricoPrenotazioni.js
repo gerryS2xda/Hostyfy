@@ -163,6 +163,7 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
             <CustomListViewGeneralPrenotazione
               nav = {navigation}
               itemList={list}
+              user = {user}
             />
           </View>
       </View>
