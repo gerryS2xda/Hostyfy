@@ -5,7 +5,7 @@ import {firebase} from '../config'
 var db = firebase.firestore();
 
 //Create functions: one function for each collection to create
-export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, fotoObj){
+export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, pathVideo, fotoObj){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return alloggioCollectionRef.add({
@@ -14,7 +14,7 @@ export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMax
         numMaxPersone: numMaxPersone,
         piano: piano,
         descrizione: descrizione,
-        pathvideo: '',
+        pathvideo: pathVideo,
         fotoList: fotoObj,
     })
     .then(function() {
@@ -77,7 +77,6 @@ export function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCa
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return alloggioCollectionRef.doc(alloggioId).update({
-        id: alloggioId,
         nomeAlloggio: nomeAlloggio,
         numCamere: numCamere,
         numMaxPersone: numMaxPersone,
@@ -213,6 +212,12 @@ export async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
     }else{
         return Promise.reject("AlloggioModel: No such alloggio document");
     }
+}
+
+export async function getAlloggiByNome(strutturaRef, nomeAlloggio){
+    var alloggioCollectionRef = db.collection("struttura/"+strutturaRef+"/alloggi");
+    let alloggiDocs = await alloggioCollectionRef.where("nomeAlloggio", "==", nomeAlloggio).get();
+    return alloggiDocs.docs;
 }
 
 export async function getChiaviCollectionOfAlloggio(strutturaRef, alloggioRef){
