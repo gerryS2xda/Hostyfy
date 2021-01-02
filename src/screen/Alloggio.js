@@ -115,35 +115,6 @@ export default class AlloggioScreen extends React.Component {
         getAlloggioData(this);
     }  
     
-    //Invocato immediatamente dopo che avviene un aggiornamento del componente. Non viene chiamato per la renderizzazione iniziale.
-    componentDidUpdate() {    
-        if(this.state.IsEditable){
-            this.setState({IsEditable:false});
-        }
-
-        async function getAlloggioData(reference){
-            var strutturaId = reference.props.route.params.strutturaId;
-            var alloggioId = reference.props.route.params.alloggioId;
-
-            //Attendi finche' non ottieni dati dell'alloggio dal DB
-            var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
-            
-            //Riempi carouselList con le foto presenti nel documento appena ottenuto
-            var fotoList = [];
-            var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
-            fotoArray.forEach((value)=>{
-                fotoList.push({image: {uri: value}});
-            });
-            if(fotoList.length == 0){
-                var imageURL = require("../../assets/imagenotfound.png");
-                fotoList.push({image: imageURL});
-            } 
-            //Memorizza l'alloggio, lista foto per carousel nello state
-            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList}); 
-        }
-        getAlloggioData(this);
-    }
-    
     _renderItem({item,index}){
         return (
           <View style={{ justifyContent:'center',
@@ -179,8 +150,8 @@ export default class AlloggioScreen extends React.Component {
                         </View>
                         <View style={styles.middleContainer}>
                             <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.nomeAlloggio}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroCamere}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numeroMassimoPersone}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numCamere}</TextInput>
+                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numMaxPersone}</TextInput>
                             <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.piano}</TextInput>
                             <TextInput style={styles.descrizioneField}
                                 editable={this.state.IsEditable}

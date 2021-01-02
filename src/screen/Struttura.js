@@ -98,6 +98,7 @@ export default class StrutturaScreen extends React.Component {
         this.state = {
           IsEditable: false,
           struttura : {},
+          indirizzo: {},
           carouselItems: [],
           activeIndex:0,
       }
@@ -112,8 +113,8 @@ export default class StrutturaScreen extends React.Component {
 
         )
     }
-
-    //Invocato dopo che il componente è montato (cioè inserito nell’albero del DOM).
+    
+    //Invocato immediatamente dopo che avviene un aggiornamento del componente. Non viene chiamato per la renderizzazione iniziale.
     componentDidMount() {    
         if(this.state.IsEditable){
             this.setState({IsEditable:false});
@@ -123,7 +124,7 @@ export default class StrutturaScreen extends React.Component {
             var strutturaId = reference.props.route.params.strutturaId;
             //Attendi finche' non ottieni dati della struttura dal DB
             var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
-
+            
             //Riempi carouselList con le foto presenti nel documento appena ottenuto
             var fotoList = [];
             var fotoArray = Object.values(strutturaDoc.fotoList); //restituisce gli URL delle foto in un array JS
@@ -134,33 +135,7 @@ export default class StrutturaScreen extends React.Component {
                 var imageURL = require("../../assets/imagenotfound.png");
                 fotoList.push({image: imageURL});
             } 
-            reference.setState({struttura: strutturaDoc, carouselItems: fotoList}); //Memorizza la struttura e la lista foto per carousel nello state
-        }
-        getStrutturaData(this);
-    }  
-    
-    //Invocato immediatamente dopo che avviene un aggiornamento del componente. Non viene chiamato per la renderizzazione iniziale.
-    componentDidUpdate() {    
-        if(this.state.IsEditable){
-            this.setState({IsEditable:false});
-        }
-
-        async function getStrutturaData(reference){
-            var strutturaId = reference.props.route.params.strutturaId;
-            //Attendi finche' non ottieni dati della struttura dal DB
-            var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
-
-            //Riempi carouselList con le foto presenti nel documento appena ottenuto
-            var fotoList = [];
-            var fotoArray = Object.values(strutturaDoc.fotoList); //restituisce gli URL delle foto in un array JS
-            fotoArray.forEach((value)=>{
-                fotoList.push({image: {uri: value}});
-            });
-            if(fotoList.length == 0){
-                var imageURL = require("../../assets/imagenotfound.png");
-                fotoList.push({image: imageURL});
-            } 
-            reference.setState({struttura: strutturaDoc, carouselItems: fotoList}); //Memorizza la struttura e la lista foto per carousel nello state
+            reference.setState({struttura: strutturaDoc, indirizzo: strutturaDoc.indirizzo, carouselItems: fotoList}); //Memorizza la struttura, indirizzo della struttura e la lista foto per carousel nello state
         }
         getStrutturaData(this);
     }
@@ -168,6 +143,7 @@ export default class StrutturaScreen extends React.Component {
 
     render() {
         var user = this.props.route.params.user;
+        
         
         return (
             <View style={styles.maincontainer}>
@@ -188,16 +164,17 @@ export default class StrutturaScreen extends React.Component {
 
                             <View style={styles.fieldContainerTop}>
                                 <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.denominazione}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.via}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.provincia}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.indirizzo.via}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.indirizzo.citta}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.indirizzo.provincia}</TextInput>
                             </View>
                             <View style={styles.twoFieldContainer}>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.cap}</TextInput>
-                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.struttura.nazione}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.indirizzo.cap}</TextInput>
+                                <TextInput style={styles.twoField} editable={this.state.IsEditable}>{this.state.indirizzo.nazione}</TextInput>
                             </View>
                             <View style={styles.fieldContainerBottom}>
                                 <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.tipologia}</TextInput>
-                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.numeroAlloggi}</TextInput>
+                                <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.struttura.numAlloggi}</TextInput>
                                 <TextInput style={styles.descrizioneField} 
                                     multiline={true}
                                     numberOfLines={20}
