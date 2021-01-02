@@ -11,6 +11,7 @@ const PrenotazioneScreen = ({route,navigation}) =>{
     const [alloggio, setAlloggio] = useState({});
     const [prenotazione, setPrenotazione] = useState({});
     const isFocused = useIsFocused();
+    const [canDoCheckIn, setCanDoCheckIn] = useState(false);
     useFocusEffect(
         React.useCallback(() => {
           // Do something when the screen is focused
@@ -21,6 +22,11 @@ const PrenotazioneScreen = ({route,navigation}) =>{
             let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
             setAlloggio(alloggio);
             setPrenotazione(prenotazione);
+            
+            dataOdierna = new Date();
+            dataInizio = new Date(prenotazione.dataInizio*1000);
+            dataFine = new Date(prenotazione.dataFine * 1000);
+            if(dataOdierna >= dataInizio && dataOdierna <= dataFine) setCanDoCheckIn(true);
         }
         console.log(alloggio);
         console.log(prenotazione)
@@ -74,8 +80,8 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                             </View>
                         </View>
                     </View>
-                    {!user.isHost && (
-                    <ButtonContainer navigator={navigation} />)}
+                    {!user.isHost && canDoCheckIn && (
+                    <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user}/>)}
                 </View>
             </ScrollView>
         </View>
@@ -87,19 +93,20 @@ export default PrenotazioneScreen;
 function ButtonContainer(props) {
     const [counter, setCounter] = useState(0);
     console.log("PrenotazioneScreen: counter=" + counter);
-    if(counter==0){
+    if(!props.checkIn){
+        
         return(
             <View style={styles.buttonContainer}>
                 <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
-                    setCounter(counter+1);
-                    props.navigator.navigate('EffettuaCheckIn'); 
+                    PrenotazioneModel.updateCheckInStatusPrenotazione(props.id,true);
+                    props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef}); 
                 }} />
             </View>
         );
     }else{
         return(
             <View style={styles.buttonContainer}>
-                <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave'); }} />
+                <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef}); }} />
                 <CustomButton nome="Servizi camera" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('InfoCamera'); }} />
             </View>
         );

@@ -106,7 +106,7 @@ const HomeGuest = ({route, navigation}) => {
         </View>
         <View style={styles.centerContainer}>
           <CustomImageButton styleBtn={{width:300}} nameIcon={"pencil"} nome= 'Modifica Profilo' onPress={() => navigation.navigate("ModificaProfilo", {user: user})} />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni", {user: user})} />
+          <CustomImageButton styleBtn={{width:300}} nameIcon={"briefcase"} nome= 'Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni", {user: user, isHost: false})} />
           <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} />
         </View>
         <View style={styles.bottomContainer}>
