@@ -82,7 +82,6 @@ export default class AlloggioScreen extends React.Component {
           IsEditable: false,
           alloggio : {},
           carouselItems: [],
-          chiaveIdAlloggio: "",
           activeIndex:0,
       }
     }
@@ -99,16 +98,6 @@ export default class AlloggioScreen extends React.Component {
 
             //Attendi finche' non ottieni dati dell'alloggio dal DB
             var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
-
-            //Attendi finche' non si ottiene l'Id di una chiave attiva per aprire alloggio
-            var chiaviDoc = await AlloggioModel.getChiaviCollectionOfAlloggio(strutturaId, alloggioId);
-            var chiaveId = "";
-            for(const chiaveDoc of chiaviDoc){
-                var chiave = chiaveDoc.data();
-                if(chiave.isActive){
-                    chiaveId = chiaveDoc.id;
-                }
-            }
             
             //Riempi carouselList con le foto presenti nel documento appena ottenuto
             var fotoList = [];
@@ -120,8 +109,8 @@ export default class AlloggioScreen extends React.Component {
                 var imageURL = require("../../assets/imagenotfound.png");
                 fotoList.push({image: imageURL});
             } 
-            //Memorizza l'alloggio, lista foto per carousel e l'id di una chiave attiva nello state
-            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList, chiaveIdAlloggio: chiaveId}); 
+            //Memorizza l'alloggio, lista foto per carousel nello state
+            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList}); 
         }
         getAlloggioData(this);
     }  
@@ -138,16 +127,6 @@ export default class AlloggioScreen extends React.Component {
 
             //Attendi finche' non ottieni dati dell'alloggio dal DB
             var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
-
-            //Attendi finche' non si ottiene l'Id di una chiave attiva per aprire alloggio
-            var chiaviDoc = await AlloggioModel.getChiaviCollectionOfAlloggio(strutturaId, alloggioId);
-            var chiaveId = "";
-            for(const chiaveDoc of chiaviDoc){
-                var chiave = chiaveDoc.data();
-                if(chiave.isActive){
-                    chiaveId = chiaveDoc.id;
-                }
-            }
             
             //Riempi carouselList con le foto presenti nel documento appena ottenuto
             var fotoList = [];
@@ -159,8 +138,8 @@ export default class AlloggioScreen extends React.Component {
                 var imageURL = require("../../assets/imagenotfound.png");
                 fotoList.push({image: imageURL});
             } 
-            //Memorizza l'alloggio, lista foto per carousel e l'id di una chiave attiva nello state
-            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList, chiaveIdAlloggio: chiaveId}); 
+            //Memorizza l'alloggio, lista foto per carousel nello state
+            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList}); 
         }
         getAlloggioData(this);
     }
@@ -247,7 +226,7 @@ export default class AlloggioScreen extends React.Component {
                                 styleBtn={{marginTop: "5%", width:"100%"}}
                                 nome= "Visualizza chiave"
                                 onPress={() => {
-                                        this.props.navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, chiaveId: this.state.chiaveIdAlloggio})
+                                        this.props.navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId})
                                     }
                                 }
                             />

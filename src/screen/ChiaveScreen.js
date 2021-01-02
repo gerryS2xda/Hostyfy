@@ -5,7 +5,7 @@ import HeaderBar from '../components/CustomHeaderBar'
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 
 const ChiaveScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId, chiaveId} = route.params;
+    const {user, strutturaId, alloggioId} = route.params;
     const [alloggio, setAlloggio] = useState({});
     const [chiave, setChiave] = useState({});
     const isFocused = useIsFocused();
@@ -20,9 +20,18 @@ const ChiaveScreen = ({route, navigation}) =>{
                 var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
                 setAlloggio(alloggioDoc); //Memorizza i dati dell'alloggio nello state
 
-                //Attendi finche' non ottieni dati della chiave associata ad un alloggio
-                var chiaveDoc = await AlloggioModel.getChiaveDocumentById(strutturaId, alloggioId, chiaveId);
-                setChiave(chiaveDoc); //Memorizza i dati della chiave nello state
+                //Attendi finche' non si ottiene l'Id di una chiave attiva per aprire alloggio
+                var chiaviDoc = await AlloggioModel.getChiaviCollectionOfAlloggio(strutturaId, alloggioId);
+                var chiaveId = "";
+                for(const chiaveDoc of chiaviDoc){
+                    var chiave = chiaveDoc.data();
+                    if(chiave.isActive){
+                        chiaveId = chiaveDoc.id;
+                        setChiave({id: chiaveId, ...chiave});
+                        break;
+                    }
+                }
+                
             }
             getAlloggioAndChiaveData();
         return () => {
@@ -35,7 +44,7 @@ const ChiaveScreen = ({route, navigation}) =>{
     const setNavigationScreenAfterPressKey = async () =>{
         if(chiave.isFirstAccess){
             //Attendi finche' non viene aggiornato lo stato della chiave relativo al primo access
-            await AlloggioModel.updateFirstAccessChiaveDocument(strutturaId, alloggioId, chiaveId, false);
+            await AlloggioModel.updateFirstAccessChiaveDocument(strutturaId, alloggioId, chiave.id, false);
             navigation.navigate("MoviePlayer");
         }else{
             navigation.navigate("InfoCamera");
