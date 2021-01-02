@@ -19,7 +19,8 @@ export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, al
         emailPren: emailPren, 
         numPersone: numPersone, 
         numTel: numTel, 
-        costo: costo, 
+        costo: costo,
+        doneCheckIn: false 
     })
     .then(function(docRef) {
         console.log("Prenotazione document successfully written!");
@@ -33,7 +34,7 @@ export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, al
 }
 
 //Update functions
-export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){
+export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo, doneCheckIn){
     //Edit all field of prenotazioni document
     return prenotazioniCollectionRef.doc(prenDocId).update({
         hostRef: hostuid,
@@ -46,6 +47,7 @@ export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, struttu
         numPersone: numPersone, 
         numTel: numTel, 
         costo: costo, 
+        doneCheckIn: doneCheckIn,
     })
     .then(function() {
         console.log("Prenotazione document successfully updated!");
@@ -70,6 +72,20 @@ export function updateNumeroPrenotazione(prenDocId, numPren){
     }); 
 }
 
+export function updateCheckInStatusPrenotazione(prenDocId, doneCheckIn){
+    //Edit all field of prenotazioni document
+    return prenotazioniCollectionRef.doc(prenDocId).update({
+        doneCheckIn: doneCheckIn,
+    })
+    .then(function() {
+        console.log("Prenotazione document successfully updated!");
+    })
+    .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating prenotazione document: ", error);
+    }); 
+}
+
 //Delete function
 export function deletePrenotazioniDocument(prenDocId){
     return prenotazioniCollectionRef.doc(prenDocId).delete().then(function() {
@@ -80,6 +96,11 @@ export function deletePrenotazioniDocument(prenDocId){
 }
 
 //Read query functions
+export async function getPrenotazioneById(prenotazioneId){
+    let doc = await db.collection('prenotazioni').doc(prenotazioneId).get();
+    return doc.data();
+}
+
 export async function getPrenotazioniHostQuery(userId, dataOdierna){
     let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).where('dataFine','<=',dataOdierna).get();
     return docs.docs; //Converte i documenti in un array di doc (per evitare di usare il forEach())
@@ -100,7 +121,3 @@ export async function getPrenotazioniAttualiGuestQuery(userId, dataOdierna){
     return docs.docs;
 }
 
-export async function getPrenotazioneById(prenotazioneId){
-    let doc = await db.collection('prenotazioni').doc(prenotazioneId).get();
-    return doc.data();
-}
