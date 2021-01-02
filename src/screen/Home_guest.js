@@ -112,9 +112,9 @@ const HomeGuest = ({route, navigation}) => {
         <View style={styles.bottomContainer}>
           <CustomButton styleBtn={{width:300}} nome="Esci" onPress={() => { 
             firebase.auth().signOut().then(function() {
-              navigation.navigate('Home');
-            }).catch(function(error) {
-              // An error happened.
+              navigation.navigate('Home'); // Sign-out successful.
+            }).catch(function(error) { // An error happened.
+              console.log("Error Sign-out in HomeGuest.js: " + error);
             });
              }} />
         </View>

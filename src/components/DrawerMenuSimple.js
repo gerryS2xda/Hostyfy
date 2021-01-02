@@ -227,7 +227,12 @@ function DrawerContentCustom(props){
                         icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
                         label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
                         onPress={() => {
-                            props.navigation.navigate('Home');
+                            firebase.auth().signOut().then(() => {
+                                // Sign-out successful.
+                                props.navigation.navigate('Home');
+                            }).catch((error) => {
+                                console.log("Error Sign-out in DrawerMenuSimple: " + error);
+                            });
                         }} 
                     />
                 </View>
@@ -322,7 +327,12 @@ function DrawerContentCustom(props){
                         icon={() => (<Icon name="exit-to-app" color={colorIcon} size={sizeIcon} /> )}
                         label={()=>(<Text style={styles.labelDrawerItemStyle}>Sign Out</Text>)}
                         onPress={() => {
-                            props.navigation.navigate('Home');
+                            firebase.auth().signOut().then(() => {
+                                // Sign-out successful.
+                                props.navigation.navigate('Home');
+                            }).catch((error) => {
+                                console.log("Error Sign-out in DrawerMenuSimple.js: " + error);
+                            });
                         }} 
                     />
                 </View>
