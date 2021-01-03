@@ -24,6 +24,7 @@
     22. npm install react-native-modalbox@latest --save
     23. npm i react-native-modalbox
     24. npm i react-native-modal-datetime-picker @react-native-community/datetimepicker
+    25. npm i --save react-native-events-calendar
     Swipe right to open
 */
 import {LogBox} from 'react-native'

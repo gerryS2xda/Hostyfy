@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
 import {View, Text, StyleSheet, ScrollView} from 'react-native'
+import EventCalendar from 'react-native-events-calendar';
+import { Dimensions } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
-import CalendarStrip from 'react-native-calendar-strip';
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -49,130 +53,101 @@ const styles = StyleSheet.create({
     
   })
 
-  const RowHeader = (props) => {
-    return(
-        <View style= {styles.rowViewHeader}>
-            <View style={{width:'11%',height:50}}>
-                
-            </View>
-            <View style={{backgroundColor: props.color, width:'29%', height:50,  alignItems: 'center'  ,borderLeftWidth:1,borderRightWidth:1, justifyContent:'center'}}>
-                <Text>{props.nome1}</Text>
-            </View>
-            <View style={{backgroundColor: props.color ,width:'29%',height:50,  alignItems: 'center', borderRightWidth:1, justifyContent:'center'}}>
-                <Text>{props.nome2}</Text>
-            </View>
-            <View style={{backgroundColor: props.color,width:'31%',height:50,  alignItems: 'center', justifyContent:'center'}}>
-                <Text>{props.nome3}</Text>
-            </View>
-        </View>
-    );
-}
-
-
-
-
-const Row = (props) => {
-    return(
-        <View style= {styles.rowView}>
-            <View style={{width:'11%',height:50,alignItems:'center',justifyContent:'center'}}>
-                <Text>{props.ora}</Text>
-            </View>
-            <View style={{backgroundColor: props.color1, width:'29%', height:50, borderLeftWidth:1,borderRightWidth:1}}>
-               
-            </View>
-            <View style={{backgroundColor: props.color2,width:'29%',height:50,borderRightWidth:1}}>
-                
-            </View>
-            <View style={{backgroundColor: props.color3,width:'31%',height:50}}>
-                
-            </View>
-        </View>
-    );
-}
-
-
-
-
 
 const Visualizza_date_Alloggi = ({route, navigation}) => {
-    const {dataIniziale, dataFinale} = route.params;
-    let datesWhitelist = [{
-        start: dataIniziale,
-        end: dataFinale
-      }];
+    const {user,isHost } = route.params;
+    const windowWidth = Dimensions.get('window').width;
+    const [events, setEvents] = useState([]);
+    const isFocused = useIsFocused();
 
-      const [count,setCount]= useState(0)
-      const [colore1, setColore1] = useState('white')
-      const [colore2, setColore2] = useState('white')
-      const [colore3, setColore3] = useState('white')
+    useFocusEffect(
+        React.useCallback(() => {
+          async function getData(){
+            if(isHost){
+              dataIniziale= new Date();  
+              let docs = await PrenotazioneModel.getPrenotazioniAttualiHostQuery(user.userIdRef, dataIniziale);
+              var events = [];
+              if(docs.length==0){
+                setEvents(events);
+              }
+              else{
+              for(const doc of docs){
+                var prenotazione = doc.data();
+                var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000);
+                var dataFine = new Date(prenotazione.dataFine.seconds * 1000);
+                let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                var day = new Date(dataInizio);
+                //day = new Date(day.getFullYear(), day.getMonth(), day.getDate()) 
+                //console.log(day);
+                while(day <= dataFine){
+                    var temp = new Date(day);
+                    var nextDay = new Date(temp);
+                    nextDay.setDate(temp.getDate() + 1);
+                    
+                    if(day.getTime() === dataInizio.getTime()){
+                        var start = dataInizio;
+                        var end = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 24,0,0)
+                        var event = {
+                        start: start ,
+                        end: end ,
+                        title: alloggio.nomeAlloggio,
+                        }
+                        events.push(event);
+                    }else if(nextDay>dataFine){
+                        var start = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0,0,0);
+                        var end = dataFine;
+                        var event = {
+                        start: start ,
+                        end: end ,
+                        title: alloggio.nomeAlloggio,
+                        }
+                        events.push(event);
+                    } else {
+                        var start = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 0,0,0);
+                        var end = new Date(day.getFullYear(), day.getMonth(), day.getDate(), 24,0,0)
+                        var event = {
+                        start: start ,
+                        end: end ,
+                        title: alloggio.nomeAlloggio,
+                        }
+                        events.push(event);
+                    }
+                    day = nextDay;
+                }            
+                }
+                console.log(events)
+                setEvents(events);
+              }                        
+            } 
+        }
+          getData();
+          return () => {
+            // Do something when the screen is unfocused
+            // Useful for cleanup functions
+          };
+        }, [isFocused])
+      );
 
     return(
         
         <View style={styles.maincontainer}>
             <HeaderBar title="Calendario" navigator={navigation} />
-            <View style={styles.container}>
-                <View style={styles.topContainer}>
-                    <CalendarStrip
-                        calendarAnimation={{type: 'sequence', duration: 30}}
-                        daySelectionAnimation={{type: 'border', duration: 200, borderWidth: 1, borderHighlightColor: 'black'}}
-                        style={{height:100,width:'101%', paddingTop: 20, paddingBottom: 10,borderWidth:1}}
-                        calendarHeaderStyle={{color: '#f2077d'}}
-                        calendarColor={'white'}
-                        dateNumberStyle={{color: '#f2077d'}}
-                        dateNameStyle={{color: '#f2077d'}}
-                        highlightDateNumberStyle={{color: '#f2077d'}}
-                        highlightDateNameStyle={{color: '#f2077d'}}
-                        disabledDateNameStyle={{color: 'grey'}}
-                        disabledDateNumberStyle={{color: 'grey'}}
-                        iconLeft={require('../../assets/left-arrow.png')}
-                        iconRight={require('../../assets/right-arrow.png')}
-                        iconContainer={{flex: 0.1}}
-                        datesWhitelist= {datesWhitelist}
-                        startingDate= {dataIniziale}
-                        onDateSelected={()=>{
-                            if(count == 0){
-                                setColore1("#ffccee")
-                                setColore2("#ffffcc")
-                                setColore3("#ccccff")
-                                setCount(1)
-                            }
-                            else{
-                                setColore1("#ffccee")
-                                setColore2("white")
-                                setColore3("#ccccff")
-                                setCount(0)
-                            }
-                        }}
-                    />
-               </View>
-               <ScrollView contentContainerStyle={styles.bottomContainer}>
-                <RowHeader color='#d9d9d9' nome1='Suite Imperiale' nome2='Camera panoramica' nome3='Camera 3'></RowHeader>
-                <Row ora={0} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={1} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={2} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={3} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={4} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={5} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={6} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={7} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={8} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={9} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={10} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={11} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={12} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={13} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={14} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={15} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={16} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={17} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={18} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={19} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={20} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={21} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={22} color1={colore1} color2={colore2} color3={colore3}></Row>
-                <Row ora={23} color1={colore1} color2={colore2} color3={colore3}></Row>
-               </ScrollView>
-            </View>
+            <EventCalendar
+                format24h={true}
+                eventTapped={() =>{}}
+                // Function on event press
+                events={events}
+                width={windowWidth}
+                // Passing the Array of event
+                // Container width
+                size={60}
+                // number of date will render before and after initDate
+                // (default is 30 will render 30 day before initDate
+                // and 29 day after initDate)
+                // Show initial date (default is today)
+                //scrollToFirst
+                // Scroll to first event of the day (default true)
+        />
         </View>
     );
 }

@@ -175,8 +175,8 @@ const HomeHost = ({route, navigation}) => {
           <CustomButton nome="Visualizza date"
            styleBtn={{width:'80%', marginBottom:50}}
            onPress={() => navigation.navigate("VisualizzaDateAlloggi",{
-             dataIniziale: selectedStartDate,
-             dataFinale: selectedEndDate,
+             user: user,
+             isHost: user.isHost,
            })}></CustomButton>
         </View>
       </ScrollView>
