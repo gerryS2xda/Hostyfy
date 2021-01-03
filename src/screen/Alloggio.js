@@ -197,7 +197,7 @@ export default class AlloggioScreen extends React.Component {
                                 styleBtn={{marginTop: "5%", width:"100%"}}
                                 nome= "Visualizza chiave"
                                 onPress={() => {
-                                        this.props.navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId})
+                                        this.props.navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""})
                                     }
                                 }
                             />

@@ -41,12 +41,11 @@ export function createCalendarioDocument(structId, alloggioId, giornoDisp, meseD
     });
 }
 
-export function createChiaveDocument(structId, alloggioId, isActive, isForCleanService, isFirstAccess){
+export function createChiaveDocument(structId, alloggioId, isActive, isForCleanService){
     // Add a new document in collection "alloggi/alloggio+id/chiave"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return alloggioCollectionRef.doc(alloggioId).collection("chiavi").add({
         isActive: isActive,
-        isFirstAccess: isFirstAccess,
         isForCleanService: isForCleanService
     })
     .then(function() {
@@ -107,27 +106,12 @@ export function updateCalendarioDocument(structId, alloggioId, docId, giornoDisp
     });
 }
 
-export function updateChiaveDocument(structId, alloggioId, chiaveId, isActive, isForCleanService, isFirstAccess){
+export function updateChiaveDocument(structId, alloggioId, chiaveId, isActive, isForCleanService){
     // Add a new document in collection "alloggi/alloggio+id/chiave"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).update({
         isActive: isActive,
-        isFirstAccess: isFirstAccess,
         isForCleanService: isForCleanService
-    })
-    .then(function() {
-        console.log("Chiave document in \"alloggi/alloggio" + alloggioId + " collection\" successfully update!");
-    })
-    .catch(function(error) {
-        console.error("Error writing chiave document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
-    });
-}
-
-export function updateFirstAccessChiaveDocument(structId, alloggioId, chiaveId, isFirstAccess){
-    // Add a new document in collection "alloggi/alloggio+id/chiave"
-    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).update({
-        isFirstAccess: isFirstAccess,
     })
     .then(function() {
         console.log("Chiave document in \"alloggi/alloggio" + alloggioId + " collection\" successfully update!");

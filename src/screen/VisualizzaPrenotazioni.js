@@ -102,18 +102,13 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
       return (
         <View style={styles.maincontainer}>
           <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
-          <ScrollView style={styles.bodyScrollcontainer}>
-            <View style={styles.scrollContent}>
-              <View style={styles.container}>
-                  <CustomListViewGeneralPrenotazione
+          <View style={styles.container}>
+                <CustomListViewGeneralPrenotazione
                     nav = {navigation}
                     itemList={list}
                     user = {user}
-                />
-              </View>
-            </View>
-          </ScrollView>
-          <View style={styles.buttonContainer}>
+                  />
+                <View style={styles.buttonContainer}>
                   <CustomButton
                       styleBtn={{width: "90%"}} 
                       nome="Storico prenotazioni" 
@@ -122,8 +117,9 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                         }
                       }
                     />
-                </View>
-          </View>      
+              </View>
+          </View>
+      </View>      
     );
 }
 
@@ -135,12 +131,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: '#fff',
 	},
-	bodyScrollcontainer: {
-		width: "100%",
-	},
-
   container: {
-    width: "100%",
+    flex: 1,
   },
 
   aggiungiStruttura:{
@@ -159,7 +151,4 @@ const styles = StyleSheet.create({
   }
 
 });
-
-//Async function for query
-
 

@@ -91,14 +91,11 @@ const PrenotazioneScreen = ({route,navigation}) =>{
 export default PrenotazioneScreen;
 
 function ButtonContainer(props) {
-    const [counter, setCounter] = useState(0);
-    console.log("PrenotazioneScreen: counter=" + counter);
+    console.log("CheckIN: " + props.checkIn);
     if(!props.checkIn){
-        
         return(
             <View style={styles.buttonContainer}>
                 <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
-                    PrenotazioneModel.updateCheckInStatusPrenotazione(props.id,true);
                     props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef}); 
                 }} />
             </View>
@@ -106,7 +103,7 @@ function ButtonContainer(props) {
     }else{
         return(
             <View style={styles.buttonContainer}>
-                <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef}); }} />
+                <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id }); }} />
                 <CustomButton nome="Servizi camera" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('InfoCamera'); }} />
             </View>
         );

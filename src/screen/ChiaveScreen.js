@@ -3,37 +3,31 @@ import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
 
 const ChiaveScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId} = route.params;
+    const {user, strutturaId, alloggioId, prenotazioneId} = route.params;
     const [alloggio, setAlloggio] = useState({});
-    const [chiave, setChiave] = useState({});
+    const [doneCheckIn, setDoneCheckIn] = useState(false);
     const isFocused = useIsFocused();
   
     useFocusEffect(
         useCallback(() => {
         // Do something when the screen is focused
         // Ottieni info dell'utente da DB usando lo userId
-            async function getAlloggioAndChiaveData(){
+            async function getAlloggioAndPrenotazioneData(){
 
                 //Attendi finche' non ottieni dati di un alloggio
                 var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
                 setAlloggio(alloggioDoc); //Memorizza i dati dell'alloggio nello state
 
-                //Attendi finche' non si ottiene l'Id di una chiave attiva per aprire alloggio
-                var chiaviDoc = await AlloggioModel.getChiaviCollectionOfAlloggio(strutturaId, alloggioId);
-                var chiaveId = "";
-                for(const chiaveDoc of chiaviDoc){
-                    var chiave = chiaveDoc.data();
-                    if(chiave.isActive){
-                        chiaveId = chiaveDoc.id;
-                        setChiave({id: chiaveId, ...chiave});
-                        break;
-                    }
+                if(prenotazioneId !== ""){
+                    //Attendi finche' non ottieni le informazioni relative a 'doneCheckIn' da una prenotazione
+                    var prenotazioneDoc = await PrenotazioneModel.getPrenotazioneById(prenotazioneId);
+                    setDoneCheckIn(prenotazioneDoc.doneCheckIn);
                 }
-                
             }
-            getAlloggioAndChiaveData();
+            getAlloggioAndPrenotazioneData();
         return () => {
             // Do something when the screen is unfocused
             // Useful for cleanup functions
@@ -42,9 +36,9 @@ const ChiaveScreen = ({route, navigation}) =>{
     );
 
     const setNavigationScreenAfterPressKey = async () =>{
-        if(chiave.isFirstAccess){
-            //Attendi finche' non viene aggiornato lo stato della chiave relativo al primo access
-            await AlloggioModel.updateFirstAccessChiaveDocument(strutturaId, alloggioId, chiave.id, false);
+        if(!doneCheckIn && prenotazioneId !== ""){
+            //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
+            await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId,true);
             navigation.navigate("MoviePlayer");
         }else{
             navigation.navigate("InfoCamera");
