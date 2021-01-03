@@ -30,7 +30,6 @@ const CustomListViewGeneralAlloggio = (props) => {
                     userLogged = {userLogged}
                     strutturaId =  {item.strutturaId}
                     alloggioId = {item.alloggioId}
-                    chiaveId = {item.chiaveId}
                 />
             } />
     </View>   

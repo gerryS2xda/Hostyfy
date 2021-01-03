@@ -44,12 +44,11 @@ const CustomRowGeneralAlloggio = (props) => {
     const userLogged = props.userLogged;
     const strutturaId = props.strutturaId;
     const alloggioId = props.alloggioId;
-    const chiaveId = props.chiaveId;
 
     return (
         <TouchableOpacity 
             onPress = {()=>{ 
-                props.nav.navigate(props.newPage,{user: userLogged, strutturaId: strutturaId, alloggioId: alloggioId, chiaveId: chiaveId});      
+                props.nav.navigate(props.newPage,{user: userLogged, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""});      
             }}>
                 
             <View style={styles.container}>

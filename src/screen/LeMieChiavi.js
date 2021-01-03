@@ -75,7 +75,6 @@ const LeMieChiavi = (props) => {
                       newPage: 'LaMiaChiave',
                       strutturaId: strutturaId,  
                       alloggioId: alloggioId,
-                      chiaveId: chiaveDoc.id,
                     }
                     count++;
                     itemList.push(oggetto);

@@ -102,7 +102,7 @@ const CheckInScreen = ({route, navigation}) =>{
                         </View>
                     </View>
                     <View style={styles.buttonContainer}>
-                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=> navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId}) } />
+                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=> navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) } />
                     </View>
                 </View>
             </ScrollView>
