@@ -117,8 +117,8 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
                     id: prenotazioneId,
                 }
                 itemList.push(oggetto);
+                count++;
               };
-              console.log(itemList);
               setList(itemList)
             } else {
               var dataOdierna = new Date();
@@ -143,8 +143,8 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
                     id: prenotazioneId,
                 }
                 itemList.push(oggetto);
+                count++;
               };
-              console.log(itemList);
               setList(itemList)
             }
           }

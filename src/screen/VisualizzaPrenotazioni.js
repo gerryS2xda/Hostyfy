@@ -14,7 +14,6 @@ import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
       const {user,isHost} = route.params; 
-      console.log(isHost)
       const [list, setList] = useState([]);
       const isFocused = useIsFocused();
 
@@ -28,17 +27,14 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
               var itemList = [];
               var count = 1;
               if(docs.length==0){
-                console.log("loop");
                 setList(itemList);
               }
               else{
-                console.log("Ciao");
               for(const doc of docs){
                 var prenotazione = doc.data();
                 var prenotazioneId = doc.id;
                 var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
-                console.log(prenotazione)
                 let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
                 var oggetto = {
                   key: count, 
@@ -52,7 +48,6 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 count++;
                     
                 }
-                console.log(itemList)
                 setList(itemList);
               }                        
             } else {
@@ -61,17 +56,14 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
               var itemList = [];
               var count = 1;
               if(docs.length==0){
-                console.log("loop");
                 setList(itemList);
               }
               else{
-                console.log("Ciao");
               for(const doc of docs){
                 var prenotazione = doc.data();
                 var prenotazioneId = doc.id;
                 var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
-                console.log(prenotazione)
                 let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
                 var oggetto = {
                   key: count, 
@@ -85,7 +77,6 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 count++;
                     
                 }
-                console.log(itemList)
                 setList(itemList);
             }
           }
@@ -98,7 +89,6 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
         }, [isFocused])
       );
     
-      console.log("lista2: " +list);
       return (
         <View style={styles.maincontainer}>
           <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
