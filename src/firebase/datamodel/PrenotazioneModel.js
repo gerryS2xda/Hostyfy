@@ -121,3 +121,7 @@ export async function getPrenotazioniAttualiGuestQuery(userId, dataOdierna){
     return docs.docs;
 }
 
+export async function getPrenotazioniAttualiHostQueryAlloggio(userId, dataOdierna, alloggioRef){
+    let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).where('dataFine','>=',dataOdierna).where('alloggioRef', '==' , alloggioRef).get();
+    return docs.docs;
+}

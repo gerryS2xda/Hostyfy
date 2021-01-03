@@ -164,7 +164,7 @@ export default class AlloggioScreen extends React.Component {
                                 styleBtn={{width: "100%", marginTop: "5%"}}
                                 nome= "Disponibilità" 
                                 onPress={()=>{
-                                    this.props.navigation.navigate('Calendario_Alloggio',{user: user, id: alloggioId, strutturaId: strutturaId})
+                                    this.props.navigation.navigate("Visualizza_calendario_alloggio",{user: user, isHost: user.isHost, alloggioId: alloggioId})
                                 }}
                         /> 
                         <View style={styles.threeButtonContainer}>

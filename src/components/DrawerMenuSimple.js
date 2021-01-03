@@ -26,7 +26,6 @@ import UpgradeHostScreen from "../screen/UpgradeHostScreen"
 import WelcomeScreen from "../screen/WelcomeScreen"
 import MoviePlayerScreen from "../screen/MediaPlayerScreen"
 import VisualizzaDateAlloggi from "../screen/Visualizza_date_alloggi"
-import CalendarioAlloggio from "../screen/Calendario_alloggio"
 import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
@@ -92,7 +91,6 @@ const DrawerMenuSimple = ({navigation}) =>{
             <Drawer.Screen name="UpgradeHost" component={UpgradeHostScreen} options={{title: 'Upgrade host', swipeEnabled: false}} />
             <Drawer.Screen name="MoviePlayer" component={MoviePlayerScreen} options={{title: 'Movie player', swipeEnabled: false}} />
             <Drawer.Screen name="VisualizzaDateAlloggi" component={VisualizzaDateAlloggi} options={{title: 'Calendario', swipeEnabled: false}} />
-            <Drawer.Screen name="Calendario_Alloggio" component={CalendarioAlloggio} options={{title: 'Calendario', swipeEnabled: false}} />
             <Drawer.Screen name="Visualizza_calendario_alloggio" component={VisualizzaCalendarioAlloggio} options={{title: 'Calendario', swipeEnabled: false}} />
             <Drawer.Screen name="Notifications" component={NotificationScreen} options={{title: 'Notifiche', swipeEnabled: false}} />
             <Drawer.Screen name="CheckOut" component={CheckOutScreen} options={{title: 'CheckOut', swipeEnabled: false}} />

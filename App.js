@@ -61,7 +61,6 @@ import UpgradeHostScreen from "./src/screen/UpgradeHostScreen"
 import WelcomeScreen from "./src/screen/WelcomeScreen"
 import VisualizzaDateAlloggi from "./src/screen/Visualizza_date_alloggi"
 import MoviePlayerScreen from "./src/screen/MediaPlayerScreen"
-import Calendario_alloggio from "./src/screen/Calendario_alloggio"
 import Visualizza_calendario_alloggio from "./src/screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "./src/screen/NotificationScreen"
 import CheckOutScreen from "./src/screen/CheckOutScreen"
@@ -209,11 +208,6 @@ const App = () => {
             name="MoviePlayer" 
             component={MoviePlayerScreen} 
             options={{title: 'Media player'}} 
-          />
-          <Stack.Screen 
-            name="Calendario_Alloggio" 
-            component={Calendario_alloggio} 
-            options={{title: 'Calendario'}} 
           />
           <Stack.Screen 
             name="Visualizza_calendario_alloggio" 

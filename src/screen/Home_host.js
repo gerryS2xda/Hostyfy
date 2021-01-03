@@ -149,28 +149,6 @@ const HomeHost = ({route, navigation}) => {
             nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} 
           />
         </View>
-        <View style={styles.bottomContainer}>
-        <CalendarPicker 
-          allowRangeSelection = {true}
-          minDate={minDate}
-          selectedDayColor = '#cc3881'
-          width = {350}
-          nextTitle = "Successivo"
-          previousTitle = "Precedente"
-          nextTitleStyle = {{color: '#cc3881'}}
-          previousTitleStyle = {{color: '#cc3881'}}
-          onDateChange={(date, type) => {
-            if (type === 'END_DATE') {
-                setSelectedEndDate(date);
-                
-            } else {
-              setSelectedStartDate(date);
-              setSelectedEndDate(null);
-            }
-          }}
-      
-        />
-        </View>
         <View style={styles.buttonContainer}>
           <CustomButton nome="Visualizza date"
            styleBtn={{width:'80%', marginBottom:50}}
