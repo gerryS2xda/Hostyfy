@@ -12,6 +12,7 @@ const PrenotazioneScreen = ({route,navigation}) =>{
     const [prenotazione, setPrenotazione] = useState({});
     const isFocused = useIsFocused();
     const [canDoCheckIn, setCanDoCheckIn] = useState(false);
+    const [showRecensioniBtn, setShowRecensioniBtn] = useState(false);
     useFocusEffect(
         React.useCallback(() => {
           // Do something when the screen is focused
@@ -23,14 +24,13 @@ const PrenotazioneScreen = ({route,navigation}) =>{
             setAlloggio(alloggio);
             setPrenotazione(prenotazione);
             
-            dataOdierna = new Date();
-            dataInizio = new Date(prenotazione.dataInizio*1000);
-            dataFine = new Date(prenotazione.dataFine * 1000);
+            var dataOdierna = new Date();
+            var dataInizio = new Date(prenotazione.dataInizio*1000);
+            var dataFine = new Date(prenotazione.dataFine * 1000);
             if(dataOdierna >= dataInizio && dataOdierna <= dataFine) setCanDoCheckIn(true);
+            if(dataOdierna >= dataFine) setShowRecensioniBtn(true);
         }
-        console.log(alloggio);
-        console.log(prenotazione)
-        getDatiPrenotazione()
+        getDatiPrenotazione();
         return () => {
             // Do something when the screen is unfocused
             // Useful for cleanup functions
@@ -81,7 +81,16 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                         </View>
                     </View>
                     {!user.isHost && canDoCheckIn && (
-                    <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user}/>)}
+                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user}/>)
+                    }
+                    {!user.isHost && showRecensioniBtn && (
+                        <View style={styles.buttonContainer}>
+                            <CustomButton nome="Aggiungi recensione" styleBtn={{width: "100%"}} onPress={() => { 
+                                var prenotazioneObj = {id: prenotazioneId, ...prenotazione};
+                                navigation.navigate('InserisciRecensione', {userId: user.userId, prenotazione: prenotazioneObj}); 
+                            }} />
+                        </View>
+                    )}
                 </View>
             </ScrollView>
         </View>
@@ -91,7 +100,6 @@ const PrenotazioneScreen = ({route,navigation}) =>{
 export default PrenotazioneScreen;
 
 function ButtonContainer(props) {
-    console.log("CheckIN: " + props.checkIn);
     if(!props.checkIn){
         return(
             <View style={styles.buttonContainer}>

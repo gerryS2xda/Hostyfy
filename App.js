@@ -32,7 +32,6 @@ import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as SetupDB from "./src/firebase/setupFirestoreDB"
 // import dedicati per utilizzare font personalizzati
 import { AppLoading } from 'expo';
 import { useFonts } from 'expo-font';
@@ -67,6 +66,7 @@ import CheckOutScreen from "./src/screen/CheckOutScreen"
 import PasswordDimenticata from "./src/screen/PasswordDimenticata"
 import ImagePickerMultipleStruttura from "./src/components/ImagePickerMultipleStruttura"
 import ImagePickerMultipleAlloggio from "./src/components/ImagePickerMultipleAlloggio"
+import InserisciRecensioneScreen from "./src/screen/InserisciRecensioneScreen"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -238,6 +238,11 @@ const App = () => {
             name="ImagePickerMultipleAlloggio" 
             component={ImagePickerMultipleAlloggio} 
             options={{title: 'Selezionate 0 foto', headerShown: true}} 
+          />
+          <Stack.Screen 
+            name="InserisciRecensione" 
+            component={InserisciRecensioneScreen} 
+            options={{title: 'Recensione', headerShown: true}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>

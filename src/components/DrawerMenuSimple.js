@@ -29,6 +29,7 @@ import VisualizzaDateAlloggi from "../screen/Visualizza_date_alloggi"
 import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_alloggio"
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
+import InserisciRecensioneScreen from "../screen/InserisciRecensioneScreen"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
 
@@ -94,6 +95,7 @@ const DrawerMenuSimple = ({navigation}) =>{
             <Drawer.Screen name="Visualizza_calendario_alloggio" component={VisualizzaCalendarioAlloggio} options={{title: 'Calendario', swipeEnabled: false}} />
             <Drawer.Screen name="Notifications" component={NotificationScreen} options={{title: 'Notifiche', swipeEnabled: false}} />
             <Drawer.Screen name="CheckOut" component={CheckOutScreen} options={{title: 'CheckOut', swipeEnabled: false}} />
+            <Drawer.Screen name="InserisciRecensione" component={InserisciRecensioneScreen} options={{title: 'Recensione', swipeEnabled: false}} />
         </Drawer.Navigator>
     );
 }
