@@ -27,14 +27,14 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: "55%",
+    marginTop: "59%",
   },
 
   container_2: {
     width: "100%",
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: "9%",
+    marginTop: "4%",
     marginBottom: "10%"
   },
   paswordDimenticata: {
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: "MontserrantBold",
     fontSize: 26,
     color: '#303a52',
-    marginTop: "12%",
+    marginTop: "15%",
     marginBottom: "3%"
   },
   horizontalContainer: {
@@ -137,7 +137,7 @@ const Login = (props) => {
             <Text>{errore}</Text>
             <CustomButton 
                 nome="Accedi" 
-                styleBtn={{width: "75%"}}
+                styleBtn={{width: "75%", height: "8%"}}
                 onPress={() => {
                     firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user){
                       const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
@@ -163,7 +163,7 @@ const Login = (props) => {
                     <Text style={styles.nonReg}>Non hai un account?</Text>
                     <CustomButton 
                         nome = "Registrati" 
-                        styleBtn={{width: "75%"}}
+                        styleBtn={{width: "75%", height: "26%"}}
                         onPress={() => props.navigation.navigate('Registratione')} 
                     />
                 </View>  
