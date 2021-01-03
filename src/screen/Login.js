@@ -6,18 +6,20 @@ import {firebase} from "../firebase/config"
 
 const styles = StyleSheet.create({
 
-  imageBack:{
-    width: "100%",
-    flex: 1,
-    justifyContent: "center",
-  },
-
   maincontainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    //backgroundColor: "#000000"
   },
+  
+  imageBack:{
+    flex: 1,
+    justifyContent: "center",
+    width: '100%',
+    height: '38%',
+   
+  },
+
   bodyScrollcontainer: {
     width: "100%",
   },
@@ -25,14 +27,14 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: "83%",
+    marginTop: "55%",
   },
 
   container_2: {
     width: "100%",
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: "18%",
+    marginTop: "9%",
     marginBottom: "10%"
   },
   paswordDimenticata: {
@@ -60,7 +62,7 @@ const styles = StyleSheet.create({
     fontFamily: "MontserrantBold",
     fontSize: 26,
     color: '#303a52',
-    marginTop: "15%",
+    marginTop: "12%",
     marginBottom: "3%"
   },
   horizontalContainer: {
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    height: 40,
+    height: "9%",
     width: "75%",
     borderColor: '#666666',
     borderWidth: 1.7,
@@ -90,7 +92,9 @@ const Login = (props) => {
   var passwordref = useRef(null);
 
   return(
-    <KeyboardAvoidingView style={styles.maincontainer}>
+  
+    
+    <KeyboardAvoidingView style = {styles.maincontainer}>
 
     {errore && (<CustomAlert
       stato = {errore}
@@ -104,9 +108,10 @@ const Login = (props) => {
 
      
 
-      <ImageBackground 
+      <ImageBackground
           source = {require("../../assets/Varie/Login.png")}
-          style = {styles.imageBack}>
+          style = {styles.imageBack}
+          resizeMode='stretch' >
       
         <View style={styles.scrollContent}>    
           <View style={styles.container_1}>
@@ -166,7 +171,7 @@ const Login = (props) => {
           </View>
           </ImageBackground>
     </KeyboardAvoidingView>
- 
+  
    
   );
 }

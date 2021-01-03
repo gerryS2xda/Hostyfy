@@ -8,22 +8,23 @@ const WelcomeScreen = ({navigation}) => {
           style = {styles.image}>     
           
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => { navigation.navigate('Home'); }}>
-                
-                <View style={styles.containerLogoTitle}>
-                    <View style={styles.containerLogo}>
-                        <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
+                  <TouchableOpacity onPress={() => { navigation.navigate('Home'); }}>
+                  
+                    <View style={styles.containerLogoTitle}>
+                       
+                            <Image style={styles.logo} source={require("../../assets/HOSTYFY.png")} />
+                        
+                        <View style={styles.containerTitle}>
+                              <Text style={styles.welcometitle}>Hostyfy,
+                                <Text style={styles.welcometitle2}> l'ospitalità intelligente!</Text>
+                              </Text>
+                        </View>
                     </View>
-                    <View style={styles.containerTitle}>
-                          <Text style={styles.welcometitle}>Hostyfy,</Text>
-                          <Text style={styles.welcometitle2}> l'ospitalità intelligente!</Text>
-                    </View>
-                </View>
-                
-                  <View style={styles.containerSwipe}>
-                      <Text style={styles.suggestTxt}>Tocca sullo schermo per continuare </Text>
-                  </View>
-                </TouchableOpacity>
+                    
+                      <View style={styles.containerSwipe}>
+                          <Text style={styles.suggestTxt}>Tocca sullo schermo per continuare </Text>
+                      </View>
+                  </TouchableOpacity>
             </View>
           </ImageBackground>
       
@@ -36,66 +37,75 @@ const styles = StyleSheet.create({
 
     container: {
       flex: 1,
+      flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
+      alignContent: "center",
       backgroundColor: 'rgba(0,0,0,0.4)'
     },
 
     containerLogoTitle: {
-      flex: 1,
-      alignItems: 'center',
+      flex:1,
+      alignItems: "center",
       justifyContent: 'center',
-      marginTop: "60%",
+      alignContent: 'center',
+      marginTop: "60%"
     },
 
-    containerLogo: {
-      width: "100%",
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: '-6%'
-    },
-    
-    logo:{
-      width: "45%" ,
-      height: "55%",
-    },
-
-    containerTitle: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-
-    welcometitle:{
-      textAlign: "center",
-      fontSize: 22,
-      color: "#0692d4",
-      fontFamily: "MontserrantBold",
-    },
-
-    welcometitle2:{
-      textAlign: "center",
-      fontSize: 20,
-      color: "#ffffff",
-      fontFamily: "MontserrantBold",
-    },
-    
     containerSwipe:{
       flex: 1,
       alignItems: 'center',
       justifyContent: 'flex-end',
       marginBottom: 60,
     },
+
+    containerTitle: {
+      flexDirection: 'row', 
+    },
+
+    containerLogo: {
+      width: "10%",
+       
+      backgroundColor: "#000000",
+    },
+
+    logo:{
+      width: "50%",
+      height: "45%",
+      marginBottom: "2%"
+      
+     
+    },
+
+    welcometitle:{
+      textAlign: "center",
+      fontSize: 20,
+      color: "#0692d4",
+      fontFamily: "MontserrantBold",
+     
+    },
+
+    welcometitle2:{
+      textAlign: "center",
+      fontSize: 20,
+      color: "#ffffff",
+      fontFamily: "MontserrantBold"
+    },
+    
     suggestTxt: {
       textAlign: 'center',
-      fontSize: 16,
+      fontSize: 15,
       color: '#ffffff',
       fontFamily: "MontserrantSemiBold"
+    
     },
 
       image:{
         flex:1,
         backgroundColor: "#000000",
         justifyContent: "center",
+       
     }, 
+
+    
   });
