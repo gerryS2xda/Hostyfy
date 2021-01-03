@@ -38,11 +38,6 @@ const styles = StyleSheet.create({
         marginBottom:20,
     },
 
-    carouselStyle: {
-        justifyContent:'center',
-        marginRight:50,
-    },
-
     singleField: {
         height: 40,
         width:"100%",
@@ -105,7 +100,6 @@ export default class InserisciAlloggioScreen extends React.Component {
                 pathvideo: alloggioState.pathvideo, isAlloggioStateUpdate: true});
         }
     }
-
 
     render() {
         var user = this.props.route.params.user;
