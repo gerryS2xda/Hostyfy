@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HeaderBar from '../components/CustomHeaderBar'
 import CustomButton from '../components/CustomButton'
 import CustomImageButton from "../components/CustomImageButton";
+import {firebase} from '../firebase/config'
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
 
