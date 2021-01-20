@@ -6,9 +6,9 @@ var db = firebase.firestore();
 var guestCollectionRef = db.collection("guest"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
+export async function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
-    return guestCollectionRef.doc(uid).set({
+    return await guestCollectionRef.doc(uid).set({
         userId: uid,
         cf: cf,
         cognome: cognome,
@@ -31,10 +31,10 @@ export function createGuestDocument(uid, cf, cognome, nome, dataNasc, sesso, luo
     });
 }
 
-export function createGuestDocumentForRegistration(uid, cognome, nome, emailGuest){
+export async function createGuestDocumentForRegistration(uid, cognome, nome, emailGuest){
     // Add a new document in collection "guest" con set(), se non e' presente, crea il documento
     //email e password vengono gestite da Firebase e sono accesibili mediante userId
-    return guestCollectionRef.doc(uid).set({
+    return await guestCollectionRef.doc(uid).set({
         userId: uid,
         cf: "", 
         cognome: cognome,
@@ -57,9 +57,9 @@ export function createGuestDocumentForRegistration(uid, cognome, nome, emailGues
     });
 }
 
-export function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestatario, dataScadenza){
+export async function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestatario, dataScadenza){
     // Add a new document in collection "guest"
-    return guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).set({
+    return await guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).set({
         numeroCarta: numCreditCard,
         ccv: ccv,
         intestatario: intestatario,
@@ -74,9 +74,9 @@ export function createCreditCardDocumentGuest(uid, numCreditCard, ccv, intestata
 }
 
 //Update functions
-export function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
+export async function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
     //Edit all field of guest document
-    return guestCollectionRef.doc(uid).update({
+    return await guestCollectionRef.doc(uid).update({
         cf: cf,
         cognome: cognome,
         nome: nome,
@@ -99,9 +99,9 @@ export function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luo
     }); 
 }
 
-export function updateisHost(uid, isHost){
+export async function updateisHost(uid, isHost){
     //Edit all field of guest document
-    return guestCollectionRef.doc(uid).update({
+    return await guestCollectionRef.doc(uid).update({
         isHost: isHost
     })
     .then(function() {
@@ -113,9 +113,9 @@ export function updateisHost(uid, isHost){
     }); 
 }
 
-export function updateCreditCardDocument(uid, numCreditCard, ccv, intestatario, dataScadenza){
+export async function updateCreditCardDocument(uid, numCreditCard, ccv, intestatario, dataScadenza){
     //Edit all field of guest document
-    return guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).update({
+    return await guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).update({
         numeroCarta: numCreditCard,
         ccv: ccv,
         intestatario: intestatario,
@@ -130,16 +130,16 @@ export function updateCreditCardDocument(uid, numCreditCard, ccv, intestatario, 
 }
 
 //Delete function
-export function deleteGuestDocument(uid){
-    return guestCollectionRef.doc(uid).delete().then(function() {
+export async function deleteGuestDocument(uid){
+    return await guestCollectionRef.doc(uid).delete().then(function() {
         console.log("Document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);
     });
 }
 
-export function deleteCreditCardDocument(uid){
-    guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).delete().then(function() {
+export async function deleteCreditCardDocument(uid){
+    return await guestCollectionRef.doc(uid).collection("cartaCredito").doc(uid).delete().then(function() {
         console.log("Credit card document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);
@@ -163,4 +163,9 @@ export async function getGuestCreditCardDocument(userId){
     }else{
         return Promise.reject("GuestModel: No such creditcard document");
     }
+}
+
+export async function getGuestDocumentByEmail(email){
+    let docs = await guestCollectionRef.where('email', '==', email).get();
+    return docs.docs;
 }

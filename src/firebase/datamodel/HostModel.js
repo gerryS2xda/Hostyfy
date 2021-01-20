@@ -6,9 +6,9 @@ var db = firebase.firestore();
 var hostCollectionRef = db.collection("host"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createHostDocument(uid, emailWeb, passwordWeb ){
+export async function createHostDocument(uid, emailWeb, passwordWeb ){
     // Add a new document in collection "host" con set(), se non e' presente, crea il documento
-    return hostCollectionRef.doc(uid).set({
+    return await hostCollectionRef.doc(uid).set({
         userIdRef: uid,
         emailWebAlloggiati: emailWeb,
         passwordWebAlloggiati: passwordWeb
@@ -22,9 +22,9 @@ export function createHostDocument(uid, emailWeb, passwordWeb ){
 }
 
 //Update functions
-export function updateHostDocument(uid,  emailWeb, passwordWeb){
+export async function updateHostDocument(uid,  emailWeb, passwordWeb){
     //Edit all field of host document
-    return hostCollectionRef.doc(uid).update({
+    return await hostCollectionRef.doc(uid).update({
         emailWebAlloggiati: emailWeb,
         passwordWebAlloggiati: passwordWeb    
     })
@@ -38,8 +38,8 @@ export function updateHostDocument(uid,  emailWeb, passwordWeb){
 }
 
 //Delete function
-export function deleteHostDocument(uid){
-    return hostCollectionRef.doc(uid).delete().then(function() {
+export async function deleteHostDocument(uid){
+    return await hostCollectionRef.doc(uid).delete().then(function() {
         console.log("Host document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing document: ", error);

@@ -5,10 +5,10 @@ import {firebase} from '../config'
 var db = firebase.firestore();
 
 //Create functions: one function for each collection to create
-export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, pathVideo, fotoObj){
+export async function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, pathVideo, fotoObj){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.add({
+    return await alloggioCollectionRef.add({
         nomeAlloggio: nomeAlloggio,
         numCamere: numCamere,
         numMaxPersone: numMaxPersone,
@@ -25,10 +25,10 @@ export function createAlloggioDocument(structId, nomeAlloggio, numCamere, numMax
     });
 }
 
-export function createCalendarioDocument(structId, alloggioId, giornoDisp, meseDisp, annoDisp){
+export async function createCalendarioDocument(structId, alloggioId, giornoDisp, meseDisp, annoDisp){
     // Add a new document in collection "alloggi/alloggio+id/calendario"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("calendario").add({
+    return await alloggioCollectionRef.doc(alloggioId).collection("calendario").add({
         giorno: giornoDisp,
         mese: meseDisp,
         anno: annoDisp
@@ -41,10 +41,10 @@ export function createCalendarioDocument(structId, alloggioId, giornoDisp, meseD
     });
 }
 
-export function createChiaveDocument(structId, alloggioId, isActive, isForCleanService){
+export async function createChiaveDocument(structId, alloggioId, isActive, isForCleanService){
     // Add a new document in collection "alloggi/alloggio+id/chiave"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("chiavi").add({
+    return await alloggioCollectionRef.doc(alloggioId).collection("chiavi").add({
         isActive: isActive,
         isForCleanService: isForCleanService
     })
@@ -56,10 +56,10 @@ export function createChiaveDocument(structId, alloggioId, isActive, isForCleanS
     });
 }
 
-export function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
+export async function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
     // Add a new document in collection "alloggi/alloggio+id/dispositividomotici"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).set({
+    return await alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).set({
         nome: nomeDevice,
         attivo: isActive,
     })
@@ -72,10 +72,10 @@ export function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
 }
 
 //Update functions
-export function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, pathvideo){
+export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, pathvideo){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).update({
+    return await alloggioCollectionRef.doc(alloggioId).update({
         nomeAlloggio: nomeAlloggio,
         numCamere: numCamere,
         numMaxPersone: numMaxPersone,
@@ -90,10 +90,10 @@ export function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCa
     });
 }
 
-export function updateCalendarioDocument(structId, alloggioId, docId, giornoDisp, meseDisp, annoDisp){
+export async function updateCalendarioDocument(structId, alloggioId, docId, giornoDisp, meseDisp, annoDisp){
     // Add a new document in collection "alloggi/alloggio+id/calendario"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("calendario").doc(docId).update({
+    return await alloggioCollectionRef.doc(alloggioId).collection("calendario").doc(docId).update({
         giorno: giornoDisp,
         mese: meseDisp,
         anno: annoDisp
@@ -106,10 +106,10 @@ export function updateCalendarioDocument(structId, alloggioId, docId, giornoDisp
     });
 }
 
-export function updateChiaveDocument(structId, alloggioId, chiaveId, isActive, isForCleanService){
+export async function updateChiaveDocument(structId, alloggioId, chiaveId, isActive, isForCleanService){
     // Add a new document in collection "alloggi/alloggio+id/chiave"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).update({
+    return await alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).update({
         isActive: isActive,
         isForCleanService: isForCleanService
     })
@@ -121,10 +121,10 @@ export function updateChiaveDocument(structId, alloggioId, chiaveId, isActive, i
     });
 }
 
-export function updateDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
+export async function updateDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
     // Add a new document in collection "alloggi/alloggio+id/dispositividomotici"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).update({
+    return await alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).update({
         nome: nomeDevice,
         attivo: isActive,
     })
@@ -136,10 +136,10 @@ export function updateDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
     });
 }
 
-export function updateFotoField(structId, alloggioId, fotoObj){
+export async function updateFotoField(structId, alloggioId, fotoObj){
     // Add a new document in collection "alloggi/alloggio+id/foto"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).update({
+    return await alloggioCollectionRef.doc(alloggioId).update({
         fotoList: fotoObj,
     })
     .then(function() {
@@ -151,36 +151,36 @@ export function updateFotoField(structId, alloggioId, fotoObj){
 }
 
 //Delete function
-export function deleteAlloggioDocument(structId, alloggioId){
+export async function deleteAlloggioDocument(structId, alloggioId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).delete().then(function() {
+    return await alloggioCollectionRef.doc(alloggioId).delete().then(function() {
         console.log("Alloggio document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio document: ", error);
     });
 }
 
-export function deleteCalendarioDocument(structId, alloggioId, docId){
+export async function deleteCalendarioDocument(structId, alloggioId, docId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("calendario").doc(docId).delete().then(function() {
+    return await alloggioCollectionRef.doc(alloggioId).collection("calendario").doc(docId).delete().then(function() {
         console.log("Alloggio/calendario document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/calendario document: ", error);
     });
 }
 
-export function deleteChiaveDocument(structId, alloggioId, chiaveId){
+export async function deleteChiaveDocument(structId, alloggioId, chiaveId){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).delete().then(function() {
+    return await alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).delete().then(function() {
         console.log("Alloggio/chiave document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/chiave document: ", error);
     });
 }
 
-export function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevice){
+export async function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevice){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).delete().then(function() {
+    return await alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).delete().then(function() {
         console.log("Alloggio/dispositividomotici document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing alloggio/dispositividomotici document: ", error);
@@ -188,6 +188,12 @@ export function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevi
 }
 
 //Read query functions
+export async function getAllAlloggiOfStruttura(strutturaRef){
+    var alloggioCollectionRef = db.collection("struttura/"+strutturaRef+"/alloggi");
+    let alloggiDocs = await alloggioCollectionRef.get();
+    return alloggiDocs.docs;
+}
+
 export async function getAlloggioByStrutturaRef(strutturaRef, alloggioRef){
     var alloggioCollectionRef = db.collection("struttura/"+strutturaRef+"/alloggi");
     let alloggio = await alloggioCollectionRef.doc(alloggioRef).get();

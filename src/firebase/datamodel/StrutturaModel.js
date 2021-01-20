@@ -6,9 +6,9 @@ var db = firebase.firestore();
 var strutturaCollectionRef = db.collection("struttura"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId, fotoObj){
+export async function createStrutturaDocument(uidHost, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia, cleanServiceDocId, fotoObj){
     // Add a new document in collection "Struttura" con set(), se non e' presente, crea il documento
-    return strutturaCollectionRef.add({
+    return await strutturaCollectionRef.add({
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione, 
@@ -29,8 +29,8 @@ export function createStrutturaDocument(uidHost, codiceOtp, denominazione, descr
 }
 
 //Update functions
-export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia){
-    return strutturaCollectionRef.doc(id).update({
+export async function updateStrutturaDocument(id, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia){
+    return await strutturaCollectionRef.doc(id).update({
         codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione,
@@ -48,8 +48,8 @@ export function updateStrutturaDocument(id, codiceOtp, denominazione, descrizion
     }); 
 }
 
-export function updateFotoField(structId, fotoObj){
-    return strutturaCollectionRef.doc(structId).update({
+export async function updateFotoField(structId, fotoObj){
+    return await strutturaCollectionRef.doc(structId).update({
         fotoList: fotoObj, 
     })
     .then(function() {
@@ -61,8 +61,8 @@ export function updateFotoField(structId, fotoObj){
 }
 
 //Delete function
-export function deleteStrutturaDocument(id){
-    return strutturaCollectionRef.doc(id).delete().then(function() {
+export async function deleteStrutturaDocument(id){
+    return await strutturaCollectionRef.doc(id).delete().then(function() {
         console.log("Struttura document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing struttura document: ", error);
@@ -70,6 +70,11 @@ export function deleteStrutturaDocument(id){
 }
 
 //Read query function
+export async function getAllStrutture(){
+    let docs = await strutturaCollectionRef.get();
+    return docs.docs;
+}
+
 export async function getStruttureOfAHostQuery(userId){
     let docs = await strutturaCollectionRef.where('hostRef', '==', userId).get();
     return docs.docs;

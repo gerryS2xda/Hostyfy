@@ -6,10 +6,13 @@ var db = firebase.firestore();
 var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){ 
+export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){ 
+    var prenDocs = await getAllPrenotazioni();
+    console.log("NumeroPrenotazioni" + prenDocs.length);
+
     // Add a new document in collection "prenotazioni" con set(), se non e' presente, crea il documento
-    return prenotazioniCollectionRef.add({
-        numeroPrenotazione: 0,
+    return await prenotazioniCollectionRef.add({
+        numeroPrenotazione: prenDocs.length +1,
         hostRef: hostuid,
         guestRef: guestuid,
         strutturaDocId: strutturaDocId, 
@@ -21,12 +24,8 @@ export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, al
         numTel: numTel, 
         costo: costo,
         doneCheckIn: false 
-    })
-    .then(function(docRef) {
-        console.log("Prenotazione document successfully written!");
-        prenotazioniCollectionRef.get().then((docs)=>{
-            updateNumeroPrenotazione(docRef, docs.size +1);
-        });
+    }).then(function() {
+        console.log("Prenotazione document successfully created!");
     })
     .catch(function(error) {
         console.error("Error writing prenotazione document: ", error);
@@ -34,9 +33,10 @@ export function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, al
 }
 
 //Update functions
-export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo, doneCheckIn){
+export async function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo, doneCheckIn){
+
     //Edit all field of prenotazioni document
-    return prenotazioniCollectionRef.doc(prenDocId).update({
+    return await prenotazioniCollectionRef.doc(prenDocId).update({
         hostRef: hostuid,
         guestRef: guestuid,
         strutturaDocId: strutturaDocId, 
@@ -58,23 +58,9 @@ export function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, struttu
     }); 
 }
 
-export function updateNumeroPrenotazione(prenDocId, numPren){
+export async function updateCheckInStatusPrenotazione(prenDocId, doneCheckIn){
     //Edit all field of prenotazioni document
-    return prenotazioniCollectionRef.doc(prenDocId).update({
-        numeroPrenotazione: numPren,
-    })
-    .then(function() {
-        console.log("Prenotazione document successfully updated!");
-    })
-    .catch(function(error) {
-        // The document probably doesn't exist.
-        console.error("Error updating prenotazione document: ", error);
-    }); 
-}
-
-export function updateCheckInStatusPrenotazione(prenDocId, doneCheckIn){
-    //Edit all field of prenotazioni document
-    return prenotazioniCollectionRef.doc(prenDocId).update({
+    return await prenotazioniCollectionRef.doc(prenDocId).update({
         doneCheckIn: doneCheckIn,
     })
     .then(function() {
@@ -87,8 +73,8 @@ export function updateCheckInStatusPrenotazione(prenDocId, doneCheckIn){
 }
 
 //Delete function
-export function deletePrenotazioniDocument(prenDocId){
-    return prenotazioniCollectionRef.doc(prenDocId).delete().then(function() {
+export async function deletePrenotazioniDocument(prenDocId){
+    return await prenotazioniCollectionRef.doc(prenDocId).delete().then(function() {
         console.log("Prenotazione document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing prenotazione document: ", error);
@@ -96,6 +82,11 @@ export function deletePrenotazioniDocument(prenDocId){
 }
 
 //Read query functions
+export async function getAllPrenotazioni(){
+    let docs = await prenotazioniCollectionRef.get();
+    return docs.docs;
+}
+
 export async function getPrenotazioneById(prenotazioneId){
     let doc = await db.collection('prenotazioni').doc(prenotazioneId).get();
     return doc.data();

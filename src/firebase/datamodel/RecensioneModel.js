@@ -5,8 +5,8 @@ import {firebase} from '../config'
 var db = firebase.firestore();
 
 //Create functions: one function for each collection to create
-export function createRecensioneDocument(structId, alloggioId, prenotazioneRef, guestRef, dataRecensione, dataSoggiorno, punteggio, negativeFeedback, positiveFeedback){
-    return db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").add({
+export async function createRecensioneDocument(structId, alloggioId, prenotazioneRef, guestRef, dataRecensione, dataSoggiorno, punteggio, negativeFeedback, positiveFeedback){
+    return await db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").add({
         prenotazioneRef: prenotazioneRef,
         guestRef: guestRef,
         punteggio: punteggio,
@@ -23,8 +23,8 @@ export function createRecensioneDocument(structId, alloggioId, prenotazioneRef, 
 }
 
 //Update functions
-export function updateRecensioneDocument(structId, alloggioId, recensioneId, prenotazioneRef, guestRef, dataRecensione, dataSoggiorno, punteggio, negativeFeedback, positiveFeedback){
-    return db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").doc(recensioneId).update({
+export async function updateRecensioneDocument(structId, alloggioId, recensioneId, prenotazioneRef, guestRef, dataRecensione, dataSoggiorno, punteggio, negativeFeedback, positiveFeedback){
+    return await db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").doc(recensioneId).update({
         prenotazioneRef: prenotazioneRef,
         guestRef: guestRef,
         punteggio: punteggio,
@@ -41,8 +41,8 @@ export function updateRecensioneDocument(structId, alloggioId, recensioneId, pre
 }
 
 //Delete function
-export function deleteRecensioneDocument(structId, alloggioId, recensioneId){
-    return db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").doc(recensioneId).delete().then(function() {
+export async function deleteRecensioneDocument(structId, alloggioId, recensioneId){
+    return await db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").doc(recensioneId).delete().then(function() {
         console.log("Recensione document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing a recensione document: ", error);
