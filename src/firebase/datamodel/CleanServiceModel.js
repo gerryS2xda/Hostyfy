@@ -6,16 +6,14 @@ var db = firebase.firestore();
 var cleanServiceCollectionRef = db.collection("cleanService"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createCleanServiceDocument(matricola, nome, cognome, email, numeroTelefono, ditta, dataAssunzione){
+export function createCleanServiceDocument(email, numeroTelefono, ditta, dataAssunzione, hostID){
     // Add a new document in collection "cleanService" con set(), se non e' presente, crea il documento
     return cleanServiceCollectionRef.add({
-        matricola: matricola, 
-        nome: nome, 
-        cognome: cognome, 
         email: email, 
         numeroTel: numeroTelefono, 
         ditta: ditta, 
-        dataAssunzione: dataAssunzione 
+        dataAssunzione: dataAssunzione,
+        hostID: hostID
     })
     .then(function() {
         console.log("Clean Service document successfully written!");
@@ -26,15 +24,14 @@ export function createCleanServiceDocument(matricola, nome, cognome, email, nume
 }
 
 //Update functions
-export function updateCleanServiceDocument(matricola, nome, cognome, email, numeroTelefono, ditta, dataAssunzione){
+export function updateCleanServiceDocument(id, email, numeroTelefono, ditta, dataAssunzione, hostID){
     //Edit all field of Clean Service document
-    return cleanServiceCollectionRef.doc(""+matricola).update({
-        nome: nome, 
-        cognome: cognome, 
+    return cleanServiceCollectionRef.doc(id).update({
         email: email, 
         numeroTel: numeroTelefono, 
         ditta: ditta, 
-        dataAssunzione: dataAssunzione 
+        dataAssunzione: dataAssunzione,
+        hostID: hostID
     })
     .then(function() {
         console.log("Clean service document successfully updated!");
@@ -46,10 +43,21 @@ export function updateCleanServiceDocument(matricola, nome, cognome, email, nume
 }
 
 //Delete function
-export function deleteCleanServiceDocument(matricola){
-    return cleanServiceCollectionRef.doc(""+matricola).delete().then(function() {
+export function deleteCleanServiceDocument(id){
+    return cleanServiceCollectionRef.doc(id).delete().then(function() {
         console.log("Clean service document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing clean service document: ", error);
     });
 }
+
+export async function getCleanServiceByHost(hostID){
+    let docs = await cleanServiceCollectionRef.where('hostID','==',hostID).get();
+    return docs.docs; //Converte i documenti in un array di doc (per evitare di usare il forEach())
+}
+
+export async function getCleanServiceById(cleanServiceId){
+    let doc = await db.collection('cleanService').doc(cleanServiceId).get();
+    return doc.data();
+}
+

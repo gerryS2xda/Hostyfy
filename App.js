@@ -67,6 +67,9 @@ import PasswordDimenticata from "./src/screen/PasswordDimenticata"
 import ImagePickerMultipleStruttura from "./src/components/ImagePickerMultipleStruttura"
 import ImagePickerMultipleAlloggio from "./src/components/ImagePickerMultipleAlloggio"
 import InserisciRecensioneScreen from "./src/screen/InserisciRecensioneScreen"
+import VisualizzaCleanServices from "./src/screen/VisualizzaCleanServices"
+import InserisciCleanService from "./src/screen/InserisciCleanService"
+import CleanService from "./src/screen/CleanService"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -243,6 +246,21 @@ const App = () => {
             name="InserisciRecensione" 
             component={InserisciRecensioneScreen} 
             options={{title: 'Recensione', headerShown: true}} 
+          />
+          <Stack.Screen 
+            name="VisualizzaCleanServices" 
+            component={VisualizzaCleanServices} 
+            options={{title: "VisualizzaCleanServices", headerShown: true}} 
+          />
+          <Stack.Screen 
+            name="InserisciCleanService" 
+            component={InserisciCleanService} 
+            options={{title: "InserisciCleanService", headerShown: true}} 
+          />
+          <Stack.Screen 
+            name="CleanService" 
+            component={CleanService} 
+            options={{title: "CleanService", headerShown: true}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>

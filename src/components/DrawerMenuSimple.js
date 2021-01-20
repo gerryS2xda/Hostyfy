@@ -32,6 +32,9 @@ import CheckOutScreen from "../screen/CheckOutScreen"
 import InserisciRecensioneScreen from "../screen/InserisciRecensioneScreen"
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
+import VisualizzaCleanServices from "../screen/VisualizzaCleanServices"
+import InserisciCleanService from "../screen/InserisciCleanService"
+import CleanService from "../screen/CleanService"
 
 //Create Drawer navigator
 const Drawer = createDrawerNavigator();
@@ -96,6 +99,9 @@ const DrawerMenuSimple = ({navigation}) =>{
             <Drawer.Screen name="Notifications" component={NotificationScreen} options={{title: 'Notifiche', swipeEnabled: false}} />
             <Drawer.Screen name="CheckOut" component={CheckOutScreen} options={{title: 'CheckOut', swipeEnabled: false}} />
             <Drawer.Screen name="InserisciRecensione" component={InserisciRecensioneScreen} options={{title: 'Recensione', swipeEnabled: false}} />
+            <Drawer.Screen name="VisualizzaCleanServices" component={VisualizzaCleanServices} options={{title: 'Clean Services', swipeEnabled: false}} />
+            <Drawer.Screen name="InserisciCleanService" component={InserisciCleanService} options={{title: 'Inserisci Clean Service', swipeEnabled: false}} />
+            <Drawer.Screen name="CleanService" component={CleanService} options={{title: 'Clean Service', swipeEnabled: false}} />
         </Drawer.Navigator>
     );
 }
@@ -276,7 +282,9 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="broom" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Clean service</Text>)}
-                                onPress={createNextRealeaseFeatureAlert}
+                                onPress={() => {
+                                    props.navigation.navigate('VisualizzaCleanServices', {user: userLogged});
+                                }}
                             />
                             <DrawerItem 
                                 icon={() => ( <Icon name="currency-usd" color={colorIcon} size={sizeIcon} /> )}
