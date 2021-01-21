@@ -8,6 +8,7 @@ import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel";
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
 import * as GuestModel from "../firebase/datamodel/GuestModel";
+import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel";
 import {Dropdown} from 'sharingan-rn-modal-dropdown';
 
 //npm install react-native-picker-select per la combo box
@@ -78,6 +79,8 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	const [isAlloggioDropDisabled, setAlloggioDropDisabled] = useState(true);
 	const [alloggiList, setAlloggiList] = useState([]);
 	const [alloggioId, setAlloggioId] = useState('');
+	const [cleanServiceId, setCleanServiceId] = useState('');
+	const [cleanServiceList, setCleanServiceList] = useState([]);
 	const [numTel, setNumTelefono] = useState(0);
 	const [numPers, setNumeroPersone] = useState(0);
 	const [email, setEmail] = useState('');
@@ -113,7 +116,26 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 					setStruttureList(itemList);
 				}
 			}
-            getStruttureData();
+			async function getCleanServiceData(){
+				var itemList = [];
+				//Attendi finche' non ottieni tutte le ditte di clean service associate a quell'host
+				var cleanServiceDocs = await CleanServiceModel.getCleanServiceByHost(user.userIdRef); 
+				if(cleanServiceDocs.length == 0){
+					setCleanServiceList(itemList);
+				}else{
+					for(const doc of cleanServiceDocs){
+						var cleanService = doc.data();
+						var oggetto = {
+							value: doc.id, 
+							label: cleanService.ditta,
+						}
+						itemList.push(oggetto);
+					}
+					setCleanServiceList(itemList);
+				}
+			}
+			getStruttureData();
+			getCleanServiceData();
           return () => {
             // Do something when the screen is unfocused
             // Useful for cleanup functions
@@ -124,6 +146,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	//Caricamento dei dati relativi ad un alloggio non appena viene scelta una struttura
 	const onChangeStrutturaDropDown = (value) => {
 		setStrutturaId(value);
+		setAlloggioId(""); //resetta campo alloggio
 		async function getAlloggiData(){
 			var itemList = [];
 			var alloggiDocs = await AlloggioModel.getAllAlloggiOfStruttura(value);
@@ -148,6 +171,10 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	const onChangeAlloggioDropDown = (value) => {
 		setAlloggioId(value);
 	};
+
+	const onChangeCleanServiceDropDown = (value) => {
+		setCleanServiceId(value);
+	};
 	
   	return(
 	<View style={styles.maincontainer}>
@@ -169,6 +196,14 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 						disabled={isAlloggioDropDisabled}
 						value={alloggioId}
 						onChange={onChangeAlloggioDropDown}
+					/>
+					<Dropdown
+						label="Ditta di pulizia"
+						data={cleanServiceList}
+						enableSearch
+						disabled={isAlloggioDropDisabled}
+						value={cleanServiceId}
+						onChange={onChangeCleanServiceDropDown}
 					/>
 				</View>
 				<View style = {styles.middleUpperContainer}>
@@ -247,7 +282,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 								}else{
 									for(const doc of guestDocs){
 										var guest = doc.data();
-										await PrenotazioneModel.createPrenotazioniDocument(user.userIdRef, guest.userId, strutturaId, alloggioId, dateStart, dateEnd, email, numPers, numTel, costo);
+										await PrenotazioneModel.createPrenotazioniDocument(user.userIdRef, guest.userId, strutturaId, alloggioId, dateStart, dateEnd, email, numPers, numTel, costo, cleanServiceId);
 										
 										//Resetta i campi
 										numTelRef.current.clear();  
@@ -258,6 +293,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 										setDateEnd("");
 										setStrutturaId("");
 										setAlloggioId("");
+										setCleanServiceId("");
 										setAlloggioDropDisabled(true);
 										
 
