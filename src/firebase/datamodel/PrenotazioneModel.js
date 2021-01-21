@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var prenotazioniCollectionRef = db.collection("prenotazioni"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo){ 
+export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo, cleanServiceId){ 
     var prenDocs = await getAllPrenotazioni();
     console.log("NumeroPrenotazioni" + prenDocs.length);
 
@@ -23,7 +23,8 @@ export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDoc
         numPersone: numPersone, 
         numTel: numTel, 
         costo: costo,
-        doneCheckIn: false 
+        doneCheckIn: false, 
+        cleanServiceRef: cleanServiceId
     }).then(function() {
         console.log("Prenotazione document successfully created!");
     })
@@ -33,7 +34,7 @@ export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDoc
 }
 
 //Update functions
-export async function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo, doneCheckIn){
+export async function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, strutturaDocId, alloggioDocId, dataInizio, dataFine, emailPren, numPersone, numTel, costo, doneCheckIn, cleanServiceId){
 
     //Edit all field of prenotazioni document
     return await prenotazioniCollectionRef.doc(prenDocId).update({
@@ -48,6 +49,7 @@ export async function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, s
         numTel: numTel, 
         costo: costo, 
         doneCheckIn: doneCheckIn,
+        cleanServiceRef: cleanServiceId
     })
     .then(function() {
         console.log("Prenotazione document successfully updated!");
