@@ -86,7 +86,7 @@ maincontainer: {
 });
 
 const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {  
-      const {user} = route.params; 
+      const {user, isHost} = route.params; 
       const [list, setList] = useState([]);
       const isFocused = useIsFocused();
 
@@ -94,7 +94,7 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
         React.useCallback(() => {
           // Do something when the screen is focused
           async function getStoricoPrenotazioni(){
-            if(user.isHost){
+            if(isHost){
               var dataOdierna = new Date();
               let docs = await PrenotazioneModel.getPrenotazioniHostQuery(user.userIdRef, dataOdierna);
               var itemList = [];

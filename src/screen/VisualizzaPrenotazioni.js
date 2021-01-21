@@ -103,7 +103,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                       styleBtn={{width: "90%"}} 
                       nome="Storico prenotazioni" 
                       onPress={() => {
-                          navigation.navigate("StoricoPrenotazioni", {user:user});
+                          navigation.navigate("StoricoPrenotazioni", {user:user,isHost:isHost});
                         }
                       }
                     />
