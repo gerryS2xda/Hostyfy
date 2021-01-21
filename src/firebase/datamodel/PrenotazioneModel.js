@@ -15,7 +15,7 @@ export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDoc
         numeroPrenotazione: prenDocs.length +1,
         hostRef: hostuid,
         guestRef: guestuid,
-        strutturaDocId: strutturaDocId, 
+        strutturaRef: strutturaDocId, 
         alloggioRef: alloggioDocId,
         dataInizio: new Date(dataInizio),
         dataFine: new Date(dataFine), 
@@ -40,7 +40,7 @@ export async function updatePrenotazioniDocument(prenDocId, hostuid, guestuid, s
     return await prenotazioniCollectionRef.doc(prenDocId).update({
         hostRef: hostuid,
         guestRef: guestuid,
-        strutturaDocId: strutturaDocId, 
+        strutturaRef: strutturaDocId, 
         alloggioRef: alloggioDocId,
         dataInizio: new Date(dataInizio),
         dataFine: new Date(dataFine), 
@@ -92,6 +92,11 @@ export async function getAllPrenotazioni(){
 export async function getPrenotazioneById(prenotazioneId){
     let doc = await db.collection('prenotazioni').doc(prenotazioneId).get();
     return doc.data();
+}
+
+export async function getAllPrenotazioniByHost(userId){
+    let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).get();
+    return docs.docs; //Converte i documenti in un array di doc (per evitare di usare il forEach())
 }
 
 export async function getPrenotazioniHostQuery(userId, dataOdierna){
