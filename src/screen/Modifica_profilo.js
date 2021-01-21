@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     justifyContent: 'center',
+    //backgroundColor: "#000000"
   },
   container: { 
     marginTop: "5%",
@@ -54,9 +55,10 @@ const styles = StyleSheet.create({
   singleTextInput: {
     height: 40,
     width:"90%",
-    borderColor: "#000000",
+    borderColor: "#303a52",
     borderBottomWidth: 1,
     paddingLeft: 5,
+    borderRadius: 0, 
     fontFamily: "Montserrant",
     marginBottom: "2%", 
     color: "#000000"  
@@ -92,6 +94,8 @@ const styles = StyleSheet.create({
 
   singleText:{
     fontFamily: "MontserrantSemiBold",
+    fontSize: 20,
+    marginBottom: "3%"
   }, 
 })
 
@@ -198,6 +202,7 @@ const Modifica_profilo = ({route, navigation}) => {
               placeholder={"Data di nascita"}
               setDate={setDateNascita} 
               disabled={!IsEditable}
+              
             />
            <TextInput
                 style = {styles.singleTextInput}
@@ -310,7 +315,7 @@ const Modifica_profilo = ({route, navigation}) => {
               />
               <DatePickerInputField 
                 styleContainer={{marginBottom: "3%"}} 
-                styleField={{width: "80%"}} 
+                styleField={{width: "82%"}} 
                 date={dateScadenza.toString()} 
                 setDate={setDateScadenza} 
                 placeholder={"Data scadenza"}
@@ -356,7 +361,7 @@ const Modifica_profilo = ({route, navigation}) => {
                       
                         var userLogin = firebase.auth().currentUser;
                         
-                        //viene controllato se entrmabi i campi sono vuoti
+                        //viene controllato se entrambi i campi sono vuoti
                         var tempPassword = "";
                         if(newpassword === "")
                         {
@@ -373,7 +378,7 @@ const Modifica_profilo = ({route, navigation}) => {
                           setEditable(previousState => !previousState)
                         })
                       .catch(function(error) {
-                        if(!updateErrorFailed) setUpdateErrorFailed(true);
+                        if(!updateErrorFailed) console.log(error)
                       })
                     }
                 }     
