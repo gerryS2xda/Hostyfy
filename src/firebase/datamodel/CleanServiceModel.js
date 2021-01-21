@@ -6,9 +6,9 @@ var db = firebase.firestore();
 var cleanServiceCollectionRef = db.collection("cleanService"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export function createCleanServiceDocument(email, numeroTelefono, ditta, dataAssunzione, hostID){
+export async function createCleanServiceDocument(email, numeroTelefono, ditta, dataAssunzione, hostID){
     // Add a new document in collection "cleanService" con set(), se non e' presente, crea il documento
-    return cleanServiceCollectionRef.add({
+    return await cleanServiceCollectionRef.add({
         email: email, 
         numeroTel: numeroTelefono, 
         ditta: ditta, 
@@ -24,9 +24,9 @@ export function createCleanServiceDocument(email, numeroTelefono, ditta, dataAss
 }
 
 //Update functions
-export function updateCleanServiceDocument(id, email, numeroTelefono, ditta, dataAssunzione, hostID){
+export async function updateCleanServiceDocument(id, email, numeroTelefono, ditta, dataAssunzione, hostID){
     //Edit all field of Clean Service document
-    return cleanServiceCollectionRef.doc(id).update({
+    return await cleanServiceCollectionRef.doc(id).update({
         email: email, 
         numeroTel: numeroTelefono, 
         ditta: ditta, 
@@ -43,8 +43,8 @@ export function updateCleanServiceDocument(id, email, numeroTelefono, ditta, dat
 }
 
 //Delete function
-export function deleteCleanServiceDocument(id){
-    return cleanServiceCollectionRef.doc(id).delete().then(function() {
+export async function deleteCleanServiceDocument(id){
+    return await cleanServiceCollectionRef.doc(id).delete().then(function() {
         console.log("Clean service document successfully deleted!");
     }).catch(function(error) {
         console.error("Error removing clean service document: ", error);
