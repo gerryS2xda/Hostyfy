@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     },
     singleField: {
         height: 40,
-        width:"100%",
+        width:"95%",
         borderColor: '#666666',
         borderBottomWidth: 1,
         color: "black",
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     },
     placeholderField: {
         height: 40,
-        width:"100%",
+        width:"95%",
         borderColor: '#666666',
         color: "#C7C7CD",
         borderBottomWidth: 1,

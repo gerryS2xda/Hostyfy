@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import {View, Text, StyleSheet, Alert} from 'react-native'
+import React, { useState, useEffect, useCallback} from 'react'
+import {View, Text, StyleSheet, Alert, Image} from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import CalendarPicker from 'react-native-calendar-picker';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -10,59 +10,63 @@ import CustomButton from "../components/CustomButton";
 import {firebase} from '../firebase/config'
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
+import ButtonMenu from "../components/ButtonMenu"
 
 const styles = StyleSheet.create({
   maincontainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
+    backgroundColor: "#fffefc",
+    justifyContent: 'center',
+    alignItems: 'center',
+    //backgroundColor: "#000000"
   },
-
   container: {
+    flex: 1,
+    width: "100%",
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-  },
-  
-  topContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop:80,
-    height:'20%'
+    marginRight: "3%",
+    marginLeft: "3%",
+    //backgroundColor: "#000000"
   },
 
-  centerContainer: {
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    height:'25%',
-    marginTop:10,
+  firstContainer: {
+    height: "28%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingRight: '4%',
+    paddingLeft: "4%",
+    paddingBottom: "2%",
+    //backgroundColor: "#000000",
+    paddingTop: "4%",
   },
 
-  bottomContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop:40,
-    height:'30%'
+  secondContainer: {
+    height: "28%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    paddingRight: '4%',
+    paddingLeft: "4%",
+    //backgroundColor: "#034000",
+    paddingTop: "2%",
+    paddingBottom: "4%"
+    
   },
 
-  buttonContainer: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height:'30%'
+  topcontainer:{
+    flex:1,
+    justifyContent: 'flex-end',
+    //marginBottom: "5%",
+    //backgroundColor: "#000000"
   },
 
-  testoLogo : {
-    fontSize: 20,
-    color: 'black',
-    marginTop: 10,
-    fontFamily: "MontserrantSemiBold",
-  },
+  image:{
+    marginLeft: "9%",
+    width: "80%",
+    height: "40%",
 
+  },
 })
 
 const HomeHost = ({route, navigation}) => {
@@ -132,34 +136,38 @@ const HomeHost = ({route, navigation}) => {
   return(
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={navigation} />
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.topContainer} >
-          <Icon name= "account-circle-outline" color={"black"} size={100}/>
-          <Text style = {styles.testoLogo}>{user.nome} {user.cognome}</Text>
+        <View style={styles.container}>
+          <View style = {styles.topcontainer}>
+            <Image 
+                source = {require("../../assets/Varie/HomeHost.jpg")}
+                style = {styles.image}/>
+
+            <View style={styles.firstContainer}>    
+              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"home-outline"} 
+                nome= 'Le mie strutture' 
+                onPress={() =>{  navigation.navigate("LeMieStrutture", {user: user}); }} 
+              />
+              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"plus-circle-outline"} 
+                nome= 'Prenotazione' 
+                onPress={() => navigation.navigate("InserisciPrenotazione", {user: user})} 
+              />
+            </View>
+
+            <View style={styles.secondContainer}>
+              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} 
+                nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert}/>
+            
+              <ButtonMenu nome="Visualizza date"
+              styleBtn={{ width: "47%", height: "100%" }}
+              nameIcon={"calendar-month-outline"}
+              onPress={() => navigation.navigate("VisualizzaDateAlloggi",{
+                user: user,
+                isHost: user.isHost,
+              })}/>
+            </View>
         </View>
-        <View style={styles.centerContainer}>
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"home-outline"} 
-            nome= 'Le mie strutture' 
-            onPress={() =>{  navigation.navigate("LeMieStrutture", {user: user}); }} 
-          />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"plus-circle-outline"} 
-            nome= 'Inserisci prenotazione' 
-            onPress={() => navigation.navigate("InserisciPrenotazione", {user: user})} 
-          />
-          <CustomImageButton styleBtn={{width:300}} nameIcon={"emoticon-happy-outline"} 
-            nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert} 
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <CustomButton nome="Visualizza date"
-           styleBtn={{width:'80%', marginBottom:50}}
-           onPress={() => navigation.navigate("VisualizzaDateAlloggi",{
-             user: user,
-             isHost: user.isHost,
-           })}></CustomButton>
-        </View>
-      </ScrollView>
     </View>
+  </View>
   );
 }
 

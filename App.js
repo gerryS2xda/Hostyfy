@@ -33,8 +33,8 @@ import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 // import dedicati per utilizzare font personalizzati
-import { AppLoading } from 'expo';
-import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import { useFonts } from '@use-expo/font';
 // import dedicati per aggiungere schermate allo stack navigator 
 import LoginScreen from "./src/screen/Login"
 import HomeHostScreen from "./src/screen/Home_host"
@@ -85,7 +85,7 @@ const App = () => {
     'MontserrantItalic': require('./assets/fonts/Montserrat-Italic.ttf'),
   });
   if (!fontsLoaded) { //se il font non e' stato caricato correttamente o semplicemente non e' pronto
-    return <AppLoading />; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>
+    return null; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>
   } else {
     return (
       <NavigationContainer>
