@@ -25,14 +25,14 @@ const styles = StyleSheet.create({
 });
 
 const LeMieChiavi = (props) => {  
-      const {user} = props.route.params;
+      const {user, isHost} = props.route.params;
       const [chiaviList, setChiaviList] = useState([]);
       const isFocused = useIsFocused();
 
       useFocusEffect(
         useCallback(() => {
           // Do something when the screen is focused
-          async function getMieChiaviData(){
+          async function getMieChiaviDataHost(){
             var hostId = user.userIdRef;
             var itemList = []; //init lista per chiavi 
             var count = 1;
@@ -84,8 +84,9 @@ const LeMieChiavi = (props) => {
             }
             setChiaviList(itemList);
           }
-          getMieChiaviData();
-
+          if(isHost){
+            getMieChiaviDataHost();
+          }
           return () => {
             // Do something when the screen is unfocused
             // Useful for cleanup functions

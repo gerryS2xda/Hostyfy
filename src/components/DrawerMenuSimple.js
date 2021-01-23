@@ -35,6 +35,9 @@ import * as HostModel from "../firebase/datamodel/HostModel"
 import VisualizzaCleanServices from "../screen/VisualizzaCleanServices"
 import InserisciCleanService from "../screen/InserisciCleanService"
 import CleanService from "../screen/CleanService"
+import RecensioniHostScreen from "../screen/RecensioniHostScreen"
+import RecensioniGuestScreen from "../screen/RecensioniGuestScreen"
+import RecensioneScreen from "../screen/RecensioneScreen"
 
 //Create Drawer navigator
 const Drawer = createDrawerNavigator();
@@ -102,6 +105,9 @@ const DrawerMenuSimple = ({navigation}) =>{
             <Drawer.Screen name="VisualizzaCleanServices" component={VisualizzaCleanServices} options={{title: 'Clean Services', swipeEnabled: false}} />
             <Drawer.Screen name="InserisciCleanService" component={InserisciCleanService} options={{title: 'Inserisci Clean Service', swipeEnabled: false}} />
             <Drawer.Screen name="CleanService" component={CleanService} options={{title: 'Clean Service', swipeEnabled: false}} />
+            <Drawer.Screen name="RecensioniHostScreen" component={RecensioniHostScreen} options={{title: 'Recensioni', swipeEnabled: false}} />
+            <Drawer.Screen name="RecensioniGuestScreen" component={RecensioniGuestScreen} options={{title: 'Recensioni', swipeEnabled: false}} />
+            <Drawer.Screen name="RecensioneScreen" component={RecensioneScreen} options={{title: 'Recensione', swipeEnabled: false}} />
         </Drawer.Navigator>
     );
 }
@@ -179,7 +185,7 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('LeMieChiavi', {user: userLogged});
+                                    props.navigation.navigate('LeMieChiavi', {user: userLogged, isHost: isHost});
                                 }}
                             />
                             {!isRealHost && (
@@ -262,7 +268,7 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('LeMieChiavi', {user: userLogged});
+                                    props.navigation.navigate('LeMieChiavi', {user: userLogged, isHost: isHost});
                                 }}
                             />
                             <DrawerItem 

@@ -85,7 +85,7 @@ const App = () => {
     'MontserrantItalic': require('./assets/fonts/Montserrat-Italic.ttf'),
   });
   if (!fontsLoaded) { //se il font non e' stato caricato correttamente o semplicemente non e' pronto
-    return null; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>
+    return <AppLoading />; //effettua rendering mentre l'app viene caricata usando questo <AppLoading>
   } else {
     return (
       <NavigationContainer>
