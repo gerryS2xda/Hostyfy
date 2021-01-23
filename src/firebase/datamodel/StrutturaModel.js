@@ -70,11 +70,6 @@ export async function deleteStrutturaDocument(id){
 }
 
 //Read query function
-export async function getAllStrutture(){
-    let docs = await strutturaCollectionRef.get();
-    return docs.docs;
-}
-
 export async function getStruttureOfAHostQuery(userId){
     let docs = await strutturaCollectionRef.where('hostRef', '==', userId).get();
     return docs.docs;
