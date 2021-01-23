@@ -52,7 +52,7 @@ const CustomRowGeneralPrenotazione = (props) => {
 return (
 <TouchableOpacity 
     onPress = { () => {
-        props.nav.navigate(props.newPage,{prenotazioneId: props.id, user: props.user})
+        props.nav.navigate(props.newPage,{prenotazioneId: props.id, user: props.user, isHost: props.isHost})
     }}>
            
     <View style={styles.container}>

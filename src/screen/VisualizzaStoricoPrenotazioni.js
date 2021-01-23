@@ -164,6 +164,7 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
               nav = {navigation}
               itemList={list}
               user = {user}
+              isHost = {isHost}
             />
           </View>
       </View>

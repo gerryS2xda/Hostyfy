@@ -97,6 +97,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                     nav = {navigation}
                     itemList={list}
                     user = {user}
+                    isHost = {isHost}
                   />
                 <View style={styles.buttonContainer}>
                   <CustomButton

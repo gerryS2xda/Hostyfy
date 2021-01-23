@@ -14,7 +14,8 @@ const styles = StyleSheet.create({
 const CustomListViewGeneralPrenotazione = (props) => {
     const navigate = props.nav;
     const itemList = props.itemList;
-    const user = props.user
+    const user = props.user;
+    const isHost = props.isHost;
 
 return (
     <View style={styles.container}>
@@ -30,6 +31,7 @@ return (
                     nav= {navigate}
                     id= {item.id}
                     user = {user}
+                    isHost = {isHost}
                     />
             } />
     </View>   

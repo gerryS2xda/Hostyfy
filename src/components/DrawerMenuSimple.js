@@ -179,7 +179,7 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('LeMieChiavi', {user: userLogged});
+                                    props.navigation.navigate('LeMieChiavi', {user: userLogged,isHost:false});
                                 }}
                             />
                             {!isRealHost && (
@@ -262,7 +262,7 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="key-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Le mie chiavi digitali</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('LeMieChiavi', {user: userLogged});
+                                    props.navigation.navigate('LeMieChiavi', {user: userLogged,isHost:true});
                                 }}
                             />
                             <DrawerItem 

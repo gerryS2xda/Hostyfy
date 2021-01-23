@@ -7,7 +7,7 @@ import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const PrenotazioneScreen = ({route,navigation}) =>{
-    const {prenotazioneId, user} = route.params; 
+    const {prenotazioneId, user, isHost} = route.params; 
     const [alloggio, setAlloggio] = useState({});
     const [prenotazione, setPrenotazione] = useState({});
     const isFocused = useIsFocused();
@@ -80,10 +80,10 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                             </View>
                         </View>
                     </View>
-                    {!user.isHost && canDoCheckIn && (
+                    {!isHost && canDoCheckIn && (
                         <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user}/>)
                     }
-                    {!user.isHost && showRecensioniBtn && (
+                    {!isHost && showRecensioniBtn && (
                         <View style={styles.buttonContainer}>
                             <CustomButton nome="Aggiungi recensione" styleBtn={{width: "100%"}} onPress={() => { 
                                 var prenotazioneObj = {id: prenotazioneId, ...prenotazione};
