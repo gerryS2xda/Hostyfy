@@ -155,7 +155,7 @@ const HomeHost = ({route, navigation}) => {
 
             <View style={styles.secondContainer}>
               <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} 
-                nome= 'Recensioni' onPress={createNextRealeaseFeatureAlert}/>
+                nome= 'Recensioni' onPress={() => navigation.navigate("RecensioniHostScreen", {user: user})}/>
             
               <ButtonMenu nome="Visualizza date"
               styleBtn={{ width: "47%", height: "100%" }}

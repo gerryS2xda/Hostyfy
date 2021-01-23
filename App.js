@@ -70,6 +70,9 @@ import InserisciRecensioneScreen from "./src/screen/InserisciRecensioneScreen"
 import VisualizzaCleanServices from "./src/screen/VisualizzaCleanServices"
 import InserisciCleanService from "./src/screen/InserisciCleanService"
 import CleanService from "./src/screen/CleanService"
+import RecensioniHostScreen from "./src/screen/RecensioniHostScreen"
+import RecensioniGuestScreen from "./src/screen/RecensioniGuestScreen"
+import RecensioneScreen from "./src/screen/RecensioneScreen"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -261,6 +264,21 @@ const App = () => {
             name="CleanService" 
             component={CleanService} 
             options={{title: "CleanService", headerShown: true}} 
+          />
+          <Stack.Screen 
+            name="RecensioniHostScreen" 
+            component={RecensioniHostScreen} 
+            options={{title: "Recensioni"}} 
+          />
+          <Stack.Screen 
+            name="RecensioniGuestScreen" 
+            component={RecensioniGuestScreen} 
+            options={{title: "Recensioni"}} 
+          />
+          <Stack.Screen 
+            name="RecensioneScreen" 
+            component={RecensioneScreen} 
+            options={{title: "Recensione"}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>
