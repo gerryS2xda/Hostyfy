@@ -101,7 +101,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
           // Do something when the screen is focused
 			async function getStruttureData(){
 				var itemList = [];
-				var struttureDocs = await StrutturaModel.getAllStrutture();
+				var struttureDocs = await StrutturaModel.getStruttureOfAHostQuery(user.userIdRef);
 				if(struttureDocs.length == 0){
 					setStruttureList(itemList);
 				}else{

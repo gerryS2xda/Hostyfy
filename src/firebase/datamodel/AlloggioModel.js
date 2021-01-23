@@ -41,21 +41,6 @@ export async function createCalendarioDocument(structId, alloggioId, giornoDisp,
     });
 }
 
-export async function createChiaveDocument(structId, alloggioId, isActive, isForCleanService){
-    // Add a new document in collection "alloggi/alloggio+id/chiave"
-    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return await alloggioCollectionRef.doc(alloggioId).collection("chiavi").add({
-        isActive: isActive,
-        isForCleanService: isForCleanService
-    })
-    .then(function() {
-        console.log("Chiave document in \"alloggi/alloggio" + alloggioId + " collection\" successfully written!");
-    })
-    .catch(function(error) {
-        console.error("Error writing chiave document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
-    });
-}
-
 export async function createDispositiviDomoticiDocument(structId, alloggioId, nomeDevice, isActive){
     // Add a new document in collection "alloggi/alloggio+id/dispositividomotici"
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
@@ -103,21 +88,6 @@ export async function updateCalendarioDocument(structId, alloggioId, docId, gior
     })
     .catch(function(error) {
         console.error("Error writing calendario document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
-    });
-}
-
-export async function updateChiaveDocument(structId, alloggioId, chiaveId, isActive, isForCleanService){
-    // Add a new document in collection "alloggi/alloggio+id/chiave"
-    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return await alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).update({
-        isActive: isActive,
-        isForCleanService: isForCleanService
-    })
-    .then(function() {
-        console.log("Chiave document in \"alloggi/alloggio" + alloggioId + " collection\" successfully update!");
-    })
-    .catch(function(error) {
-        console.error("Error writing chiave document in \"alloggi/alloggio" + alloggioId + " collection\": ", error);
     });
 }
 
@@ -169,15 +139,6 @@ export async function deleteCalendarioDocument(structId, alloggioId, docId){
     });
 }
 
-export async function deleteChiaveDocument(structId, alloggioId, chiaveId){
-    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
-    return await alloggioCollectionRef.doc(alloggioId).collection("chiavi").doc(chiaveId).delete().then(function() {
-        console.log("Alloggio/chiave document successfully deleted!");
-    }).catch(function(error) {
-        console.error("Error removing alloggio/chiave document: ", error);
-    });
-}
-
 export async function deleteDispositiviDomoticiDocument(structId, alloggioId, nomeDevice){
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return await alloggioCollectionRef.doc(alloggioId).collection("dispositividomotici").doc(nomeDevice).delete().then(function() {
@@ -213,13 +174,4 @@ export async function getAlloggiByNome(strutturaRef, nomeAlloggio){
 export async function getChiaviCollectionOfAlloggio(strutturaRef, alloggioRef){
     var chiaviDocs = await db.collection("struttura/"+strutturaRef+"/alloggi").doc(alloggioRef).collection("chiavi").get();
     return chiaviDocs.docs;
-}
-
-export async function getChiaveDocumentById(strutturaRef, alloggioRef, chiaveId){
-    let chiaveDoc = await db.collection("struttura/"+strutturaRef+"/alloggi").doc(alloggioRef).collection("chiavi").doc(chiaveId).get();
-    if(chiaveDoc.exists){
-        return chiaveDoc.data();
-    }else{
-        return Promise.reject("AlloggioModel: No such chiave document with this id: " + chiaveId);
-    }
 }
