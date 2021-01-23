@@ -100,8 +100,8 @@ const LeMieChiavi = (props) => {
                   description: "Struttura: \'"+ struttura.denominazione + "\'",
                   image_url: imageURL,  //immagine dell'alloggio
                   newPage: 'LaMiaChiave',
-                  strutturaId: strutturaID,  
-                  alloggioId: alloggioID,
+                  strutturaId: prenotazione.strutturaRef,  
+                  alloggioId: prenotazione.alloggioRef,
                 }
                 itemList.push(oggetto)              
                 count++;
