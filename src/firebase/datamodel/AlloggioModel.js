@@ -171,7 +171,3 @@ export async function getAlloggiByNome(strutturaRef, nomeAlloggio){
     return alloggiDocs.docs;
 }
 
-export async function getChiaviCollectionOfAlloggio(strutturaRef, alloggioRef){
-    var chiaviDocs = await db.collection("struttura/"+strutturaRef+"/alloggi").doc(alloggioRef).collection("chiavi").get();
-    return chiaviDocs.docs;
-}
