@@ -94,6 +94,11 @@ export async function getPrenotazioneById(prenotazioneId){
     return doc.data();
 }
 
+export async function getAllPrenotazioniByGuest(userId){
+    let docs = await prenotazioniCollectionRef.where('guestRef','==',userId).get();
+    return docs.docs; //Converte i documenti in un array di doc (per evitare di usare il forEach())
+}
+
 export async function getAllPrenotazioniByHost(userId){
     let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).get();
     return docs.docs; //Converte i documenti in un array di doc (per evitare di usare il forEach())

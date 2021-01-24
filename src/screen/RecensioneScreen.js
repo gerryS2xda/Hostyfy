@@ -97,7 +97,7 @@ const RecensioneScreen = ({route, navigation}) =>{
                 //Prendi la prima foto presente per l'alloggio e salva nello state
                 var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
                 var imageURL = "";
-                if(fotoArray.length > 0){
+                if(fotoArray.length == 0){
                     imageURL = require("../../assets/imagenotfound.png");
                 }else{
                     imageURL = {uri: fotoArray[0]};
@@ -108,7 +108,6 @@ const RecensioneScreen = ({route, navigation}) =>{
                 var recensione = await RecensioneModel.getRecensioneById(strutturaId, alloggioId, recensioneId);
                 recensione.dataRecensione = new Date(recensione.dataRecensione.seconds * 1000).toDateString();
                 setRecensione(recensione); //salva i dati della recensione nello stato
-                console.log(""+recensione.guestRef);
 
                 //Attendi finche' non ottieni dati dell'utente che ha scritto la recensione
                 var ospite = await GuestModel.getGuestDocument(recensione.guestRef);

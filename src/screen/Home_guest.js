@@ -123,7 +123,7 @@ const HomeGuest = ({ route, navigation }) => {
             </View>
 
             <View style={styles.secondContainer}>
-              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} nome='Recensioni' onPress={createNextRealeaseFeatureAlert} />
+              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} nome='Recensioni' onPress={()=>navigation.navigate("RecensioniGuestScreen", {user: user})} />
               <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"logout"}nome="Logout" onPress={() => {
                 firebase.auth().signOut().then(function () {
                   navigation.navigate('Home'); // Sign-out successful.
