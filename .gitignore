@@ -11,6 +11,7 @@ web-build/
 package-lock.json
 package.json
 debug.log
+android-emulator/**/*
 
 # macOS
 .DS_Store
