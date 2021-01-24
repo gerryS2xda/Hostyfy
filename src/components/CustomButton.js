@@ -4,6 +4,7 @@ import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 const CustomButton = (props) => {
     return(
         <TouchableOpacity
+            disabled={props.disabled}
             style = {[styles.bottoneStyle, props.styleBtn]}
             onPress={props.onPress}>
             <Text style = {styles.testoBottone}>{props.nome}</Text>

@@ -102,7 +102,8 @@ export default class InserisciStrutturaScreen extends React.Component {
             descrizione: "",
             via: "",
             modalUploadVisibility: false,
-            isStrutturaStateUpdate: false,         
+            isStrutturaStateUpdate: false,
+            disableInsertStrutturaButton: false, //per disabilitare il button dopo il click al fine di evitare doppio inserimento           
       }
     }
 
@@ -148,7 +149,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                         </Modal>
                     )
                 }
-                <HeaderBar title="Inserisci struttura" navigator={this.props.navigation} />
+                <HeaderBar title="Nuova struttura" navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.topContainer}>
@@ -266,10 +267,17 @@ export default class InserisciStrutturaScreen extends React.Component {
 
                            
 
-                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=>{
-                                this.onPressAggiungiStruttura(user, photoList, this, this.props.navigation);
-                              } 
-                            } />
+                            <CustomButton 
+                                disabled={this.state.disableInsertStrutturaButton}
+                                styleBtn={{marginTop: 10, width: "100%"}} 
+                                nome="Aggiungi" 
+                                onPress={()=>{
+                                    if(this.validateFormField()){
+                                        this.setState({disableInsertStrutturaButton: true});
+                                        this.onPressAggiungiStruttura(user, photoList, this, this.props.navigation);
+                                    }
+                                } 
+                                } />
                         </View>
                     </View>
                 </ScrollView>
@@ -311,7 +319,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                     reference.setState({modalUploadVisibility: false});
                 }
 
-                Alert.alert("Inserisci struttura", "La nuova struttura e' stata memorizzata con successo!",
+                Alert.alert("Inserimento struttura", "La nuova struttura e' stata memorizzata con successo!",
                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                      { text: "OK", onPress: ()=> {
                         //reset dei field del form
@@ -331,7 +339,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                     { cancelable: false });
             }
         }else{
-            Alert.alert("Inserisci struttura", "La nuova struttura e' stata memorizzata con successo!",
+            Alert.alert("Inserimento struttura", "La nuova struttura e' stata memorizzata con successo!",
                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                 { text: "OK", onPress: ()=> {
                     
@@ -351,6 +359,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                 }}],
                 { cancelable: false });
         }
+        reference.setState({disableInsertStrutturaButton: false}); //resetta lo stato del pulsante "Aggiungi" e rendilo cliccabile
     }
 
     //Function for upload a image and obtain a download URL
@@ -403,4 +412,46 @@ export default class InserisciStrutturaScreen extends React.Component {
         }
         return downloadURL; 
     }
+
+    //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+    validateFormField = () =>{
+        var flag = true; //tutti i campi sono compilati
+        var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+        if(this.state.denominazione === ""){
+            message += "\"Denominazione\"";
+            flag = false;
+        }else if(this.state.citta === ""){
+            message += "\"Città\"";
+            flag = false;
+        }else if(this.state.provincia === ""){
+            message += "\"Provincia\"";
+            flag = false;
+        }else if(this.state.regione === ""){
+            message += "\"Regione\"";
+            flag = false;
+        }else if(this.state.nazione === ""){
+            message += "\"Nazione\"";
+            flag = false;
+        }else if(this.state.tipologia === ""){
+            message += "\"Tipologia\"";
+            flag = false;
+        }else if(this.state.numeroAlloggi === ""){
+            message += "\"Numero alloggi\"";
+            flag = false;
+        }else if(this.state.descrizione === ""){
+            message += "\"Descrizione\"";
+            flag = false;
+        }else if(this.state.via === ""){
+            message += "\"Via\"";
+            flag = false;
+        }
+        if(!flag){
+            Alert.alert("Inserimento struttura", message,
+                        [{ text: "Cancel", style: "cancel"},
+                        { text: "OK" }],
+                        { cancelable: false });
+        }
+        return flag;
+    }
+
 }

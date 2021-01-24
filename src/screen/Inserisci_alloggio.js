@@ -77,7 +77,8 @@ export default class InserisciAlloggioScreen extends React.Component {
           descrizione: '',
           pathvideo:'',
           modalUploadVisibility: false,
-          isAlloggioStateUpdate: false,  
+          isAlloggioStateUpdate: false,
+          disableInsertAlloggioButton: false, //per disabilitare il button dopo il click al fine di evitare doppio inserimento  
         }
     }
 
@@ -88,7 +89,7 @@ export default class InserisciAlloggioScreen extends React.Component {
             this.setState({nomeAlloggio: alloggioState.nomeAlloggio, numCamere: alloggioState.numCamere, 
                 numMaxPersone: alloggioState.numMaxPersone, piano: alloggioState.piano, descrizione: alloggioState.descrizione,
                 pathvideo: alloggioState.pathvideo, isAlloggioStateUpdate: true});
-        }  
+        }
     }  
     
     componentDidUpdate() {    
@@ -122,7 +123,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                         </Modal>
                     )
                 }
-                <HeaderBar title="Inserisci Alloggio" navigator={this.props.navigation} />
+                <HeaderBar title="Nuovo alloggio" navigator={this.props.navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.middleContainer}>
@@ -195,9 +196,17 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                                 { text: "OK", onPress: () => console.log("OK Pressed") }],
                                 { cancelable: false })} />
-                            <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiungi" onPress={()=>{
-                                this.onPressAggiungiAlloggio(user, strutturaId, photoList, this, this.props.navigation);
-                            }} />
+                            <CustomButton 
+                                disabled = {this.state.disableInsertAlloggioButton}
+                                styleBtn={{marginTop: 10, width: "100%"}} 
+                                nome="Aggiungi" 
+                                onPress={()=>{
+                                    if(this.validateFormField()){
+                                        this.setState({disableInsertAlloggioButton: true});
+                                        this.onPressAggiungiAlloggio(user, strutturaId, photoList, this, this.props.navigation);
+                                    }
+                                }} 
+                            />
                         </View>
                     </View>
                 </ScrollView>
@@ -268,6 +277,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                     }}],
                     { cancelable: false });
         }
+        reference.setState({disableInsertAlloggioButton: false}); //resetta lo stato del pulsante "Aggiungi" e rendilo cliccabile
     }
 
     //Function for upload a image and obtain a download URL
@@ -319,5 +329,35 @@ export default class InserisciAlloggioScreen extends React.Component {
             console.log("UploadImageError: " + e);
         }
         return downloadURL; 
+    }
+
+    //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+    validateFormField = () =>{
+
+        var flag = true; //tutti i campi sono compilati
+        var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+        if(this.state.nomeAlloggio === ""){
+            message += "\"Nome alloggio\"";
+            flag = false;
+        }else if(this.state.numCamere === ""){
+            message += "\"Numero camere\"";
+            flag = false;
+        }else if(this.state.numMaxPersone === ""){
+            message += "\"Numero persone \"";
+            flag = false;
+        }else if(this.state.piano === ""){
+            message += "\"Piano\"";
+            flag = false;
+        }else if(this.state.descrizione === ""){
+            message += "\"Descrizione\"";
+            flag = false;
+        }
+        if(!flag){
+            Alert.alert("Inserimento alloggio", message,
+                        [{ text: "Cancel", style: "cancel"},
+                        { text: "OK" }],
+                        { cancelable: false });
+        }
+        return flag;
     }
 }

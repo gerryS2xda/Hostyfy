@@ -87,6 +87,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	const [costo, setCosto] = useState(0);
 	const [dateStart, setDateStart] = useState("");
 	const [dateEnd, setDateEnd] = useState("");
+	const [disableInsertPrenButton, setInsertPrenButtonStatus] = useState(false); //per prevenire doppio click che comporta doppio inserimento
 	const isFocused = useIsFocused();
 
 	//Variabili per 'useRef'
@@ -178,7 +179,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	
   	return(
 	<View style={styles.maincontainer}>
-		<HeaderBar title="Inserisci prenotazione" navigator={navigation} />
+		<HeaderBar title="Nuova prenotazione" navigator={navigation} />
 		<ScrollView style={styles.bodyScrollcontainer}>
             <View style={styles.scrollContent}> 
 				<View style = {styles.topContainer}>
@@ -257,9 +258,16 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 				<View style = {styles.bottomContainer}>
 					<CustomButton 
 						nome="Inserisci" 
+						disabled = {disableInsertPrenButton}
 						styleBtn={{width: "100%"}}
 						onPress={()=>{ 
+							if(!validateFormField(strutturaId, alloggioId, cleanServiceId, numTel, numPers, email, costo, dateStart, dateEnd)){
+								return;
+							}
 							
+
+							setInsertPrenButtonStatus(true); //rendi pulsante non cliccabile se e' stato fatto un primo click
+
 							// Ottieni riferimento dell'utente guest
 							async function createAndSavePrenotazione(){
 								
@@ -312,6 +320,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 										);
 									}
 								}
+								setInsertPrenButtonStatus(false); //rendi pulsante nuovamente cliccabile
 							}
 							createAndSavePrenotazione();
 						}} 
@@ -325,3 +334,44 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 
 export default Inserisci_prenotazione;
 
+//funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+function validateFormField (strutturaId, alloggioId, cleanServiceId, numTel, numPers, email, costo, dateStart, dateEnd){
+
+	var flag = true; //tutti i campi sono compilati
+	var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+	if(strutturaId === ""){
+		message += "\"Struttura\"";
+		flag = false;
+	}else if(alloggioId === ""){
+		message += "\"Alloggio\"";
+		flag = false;
+	}else if(cleanServiceId === ""){
+		message += "\"Ditta di pulizia\"";
+		flag = false;
+	}else if(numTel === "" || numTel == 0){
+		message += "\"N. telefono\"";
+		flag = false;
+	}else if(numPers === "" || numPers == 0){
+		message += "\"N. persone\"";
+		flag = false;
+	}else if(email === ""){
+		message += "\"Email dell'ospite\"";
+		flag = false;
+	}else if(costo === "" || costo == 0){
+		message += "\"Costo\"";
+		flag = false;
+	}else if(dateStart === ""){
+		message += "\"Data di inizio\"";
+		flag = false;
+	}else if(dateEnd === ""){
+		message += "\"Data di fine\"";
+		flag = false;
+	}
+	if(!flag){
+		Alert.alert("Nuova prenotazione", message,
+					[{ text: "Cancel", style: "cancel"},
+					{ text: "OK" }],
+					{ cancelable: false });
+	}
+	return flag;
+}
