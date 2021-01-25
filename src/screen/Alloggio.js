@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import {Text, View, Image,ScrollView, Alert, StyleSheet, TextInput} from 'react-native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
@@ -74,97 +75,95 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class AlloggioScreen extends React.Component {
+const AlloggioScreen = ({route, navigation}) =>{
 
-    constructor(props){
-        super(props);
-        this.state = {
-          IsEditable: false,
-          alloggio : {},
-          carouselItems: [],
-          activeIndex:0,
-      }
-    }
-
-    //Invocato dopo che il componente è montato (cioè inserito nell’albero del DOM).
-    componentDidMount() {
-        if(this.state.IsEditable){
-            this.setState({IsEditable:false});
-        }
-
-        async function getAlloggioData(reference){
-            var strutturaId = reference.props.route.params.strutturaId;
-            var alloggioId = reference.props.route.params.alloggioId;
-
-            //Attendi finche' non ottieni dati dell'alloggio dal DB
-            var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
-            
-            //Riempi carouselList con le foto presenti nel documento appena ottenuto
-            var fotoList = [];
-            var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
-            fotoArray.forEach((value)=>{
-                fotoList.push({image: {uri: value}});
-            });
-            if(fotoList.length == 0){
-                var imageURL = require("../../assets/imagenotfound.png");
-                fotoList.push({image: imageURL});
-            } 
-            //Memorizza l'alloggio, lista foto per carousel nello state
-            reference.setState({alloggio: alloggioDoc, carouselItems: fotoList}); 
-        }
-        getAlloggioData(this);
-    }  
+    const {user, strutturaId, alloggioId} = route.params;
+    const [IsEditable, setIsEditable] = useState(false);
+    const [alloggio, setAlloggio] = useState({});
+    const [carouselItems, setCarouselItems] = useState([]);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const carouselRef = useRef(null);
+    const isFocused = useIsFocused();
     
-    _renderItem({item,index}){
-        return (
-          <View style={{ justifyContent:'center',
-            marginLeft:50
-              }}>
-           <Image style={{width:250, height:250, borderRadius:10}} source = {item.image} />
-            <Text>{item.title}</Text>
-          </View>
+        //Caricamento dei dati non appena inizia il rendering dell'applicazione
+        useFocusEffect(
+            useCallback(() => {
+            // Do something when the screen is focused
+            if(IsEditable){
+                setIsEditable(false);
+            }
+    
+            async function getAlloggioData(){
+               
+                //Attendi finche' non ottieni dati dell'alloggio dal DB
+                var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
+                
+                //Riempi carouselList con le foto presenti nel documento appena ottenuto
+                var fotoList = [];
+                var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
+                fotoArray.forEach((value)=>{
+                    fotoList.push({image: {uri: value}});
+                });
+                if(fotoList.length == 0){
+                    var imageURL = require("../../assets/imagenotfound.png");
+                    fotoList.push({image: imageURL});
+                } 
+                //Memorizza l'alloggio, lista foto per carousel nello state
+                setAlloggio(alloggioDoc);
+                setCarouselItems(fotoList);
+            }
+            getAlloggioData();
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
+            }, [isFocused])
+        );
 
-        )
-    }
-
-    render() {
-        var user = this.props.route.params.user;
-        var strutturaId = this.props.route.params.strutturaId;
-        var alloggioId = this.props.route.params.alloggioId;
+        const _renderItem = ({item,index}) =>{
+            return (
+                <View style={{ justifyContent:'center',
+                  marginLeft:50
+                    }}>
+                 <Image style={{width:250, height:250, borderRadius:10}} source = {item.image} />
+                  <Text>{item.title}</Text>
+                </View>
+            )
+        }
 
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title={this.state.alloggio.nomeAlloggio} navigator={this.props.navigation} />
+                <HeaderBar title={alloggio.nomeAlloggio} navigator={navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.carouselContainer} >
                             <Carousel
                             style= {styles.carouselStyle}
                             layout={"default"}
-                            ref={ref => this.carousel = ref}
-                            data={this.state.carouselItems}
+                            ref={carouselRef}
+                            data={carouselItems}
                             sliderWidth={300}
                             itemWidth={300}
-                            renderItem={this._renderItem}
-                            onSnapToItem = { index => this.setState({activeIndex:index}) } />
+                            renderItem={_renderItem}
+                            onSnapToItem = { index => setActiveIndex(index)} />
                         </View>
                         <View style={styles.middleContainer}>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.nomeAlloggio}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numCamere}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.numMaxPersone}</TextInput>
-                            <TextInput style={styles.singleField} editable={this.state.IsEditable}>{this.state.alloggio.piano}</TextInput>
+                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.nomeAlloggio}</TextInput>
+                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.numCamere}</TextInput>
+                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.numMaxPersone}</TextInput>
+                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.piano}</TextInput>
                             <TextInput style={styles.descrizioneField}
-                                editable={this.state.IsEditable}
+                                editable={IsEditable}
                                 multiline={true}
                                 numberOfLines={15}>
-                                {this.state.alloggio.descrizione}
+                                {alloggio.descrizione}
                              </TextInput>
                         </View>
                         <CustomButton 
                                 styleBtn={{width: "100%", marginTop: "5%"}}
                                 nome= "Disponibilità" 
                                 onPress={()=>{
-                                    this.props.navigation.navigate("Visualizza_calendario_alloggio",{user: user, isHost: user.isHost, alloggioId: alloggioId})
+                                    navigation.navigate("Visualizza_calendario_alloggio",{user: user, isHost: user.isHost, alloggioId: alloggioId})
                                 }}
                         /> 
                         <View style={styles.threeButtonContainer}>
@@ -179,8 +178,8 @@ export default class AlloggioScreen extends React.Component {
                             /> 
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
-                                nome={this.state.IsEditable ? 'Applica modifiche' : "Modifica dati"}   
-                                onPress={()=> {this.state.IsEditable ? this.setState({IsEditable: false}) : this.setState({IsEditable: true})}}
+                                nome={IsEditable ? 'Applica modifiche' : "Modifica dati"}  
+                                onPress={()=> {IsEditable ? setIsEditable(false) : setIsEditable(true)}} 
                             /> 
                         </View>
                         <View style={styles.bottomButtonContainer}> 
@@ -197,7 +196,7 @@ export default class AlloggioScreen extends React.Component {
                                 styleBtn={{marginTop: "5%", width:"100%"}}
                                 nome= "Visualizza chiave"
                                 onPress={() => {
-                                        this.props.navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""})
+                                        navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""})
                                     }
                                 }
                             />
@@ -206,5 +205,7 @@ export default class AlloggioScreen extends React.Component {
                 </ScrollView>
             </View>
         );
-    }
+
 }
+
+export default AlloggioScreen;
