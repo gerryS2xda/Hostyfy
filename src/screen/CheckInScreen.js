@@ -6,7 +6,7 @@ import CustomButton from "../components/CustomButton"
 
 
 const CheckInScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId, numPersone} = route.params;
+    const {user, strutturaId, alloggioId, numPersone, prenotazioneId} = route.params;
     const [nDocument, setNDocument] = useState(1);
     const [documenti,setDocumenti] = useState([]);
     const [visible, setVisible] = useState(false);
@@ -120,10 +120,13 @@ const CheckInScreen = ({route, navigation}) =>{
                                 };
                                 documenti.push(documento);
                                 setDocumenti(documenti);
-                                console.log(documenti)
                                 if(nDocument == numPersone){
                                     setVisible(false);
-                                    //navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) 
+                                    setNDocument(1);
+                                    setLuogoRilascioDoc("");
+                                    setNumeroDoc("");
+                                    setDocumenti([]);
+                                    navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: prenotazioneId}) 
                                 }
                                 else{
                                     setNDocument(nDocument + 1);

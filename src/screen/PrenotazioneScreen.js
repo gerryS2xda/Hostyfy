@@ -29,6 +29,7 @@ const PrenotazioneScreen = ({route,navigation}) =>{
             var dataFine = new Date(prenotazione.dataFine * 1000);
             if(dataOdierna >= dataInizio && dataOdierna <= dataFine) setCanDoCheckIn(true);
             if(dataOdierna >= dataFine) setShowRecensioniBtn(true);
+            else  setShowRecensioniBtn(false);
         }
         getDatiPrenotazione();
         return () => {
@@ -81,7 +82,7 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                         </View>
                     </View>
                     {!isHost && canDoCheckIn && (
-                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user}/>)
+                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user} passata = {showRecensioniBtn}/>)
                     }
                     {!isHost && showRecensioniBtn && (
                         <View style={styles.buttonContainer}>
@@ -100,21 +101,25 @@ const PrenotazioneScreen = ({route,navigation}) =>{
 export default PrenotazioneScreen;
 
 function ButtonContainer(props) {
-    if(!props.checkIn){
-        return(
-            <View style={styles.buttonContainer}>
-                <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
-                    props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone:props.prenotazione.numPersone}); 
-                }} />
-            </View>
-        );
-    }else{
-        return(
-            <View style={styles.buttonContainer}>
-                <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id }); }} />
-                <CustomButton nome="Servizi camera" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('InfoCamera'); }} />
-            </View>
-        );
+    if(!props.passata){
+        if(!props.checkIn){
+            return(
+                <View style={styles.buttonContainer}>
+                    <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
+                        props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone:props.prenotazione.numPersone, prenotazioneId: props.id}); 
+                    }} />
+                </View>
+            );
+        }else{
+            return(
+                <View style={styles.buttonContainer}>
+                    <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id }); }} />
+                    <CustomButton nome="Servizi camera" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('InfoCamera'); }} />
+                </View>
+            );
+        }
+    } else {
+        return (<View></View>);
     }
 }
 
