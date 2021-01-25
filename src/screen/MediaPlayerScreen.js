@@ -37,7 +37,7 @@ const MediaPlayerScreen = (props) => {
         if(playbackStatus.isLoaded){
           if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
             // The player has just finished playing and will stop. Maybe you want to play something else?
-            props.navigation.navigate('InfoCamera');
+            props.navigation.navigate('HomeGuest');
           }
         }
       }}

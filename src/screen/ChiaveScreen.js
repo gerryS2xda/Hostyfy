@@ -41,7 +41,7 @@ const ChiaveScreen = ({route, navigation}) =>{
             await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId,true);
             navigation.navigate("MoviePlayer");
         }else{
-            navigation.navigate("InfoCamera");
+            //navigation.navigate("InfoCamera");
         }
     }
 
