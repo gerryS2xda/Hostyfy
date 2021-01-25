@@ -139,7 +139,7 @@ const RecensioneScreen = ({route, navigation}) =>{
                         </View>
                         <View style={styles.horizontalView}>
                             <Icon name= "minus-circle" color={"black"} size={24}/>
-                            <Text style={styles.feedbacktxt}>{recensione.positiveFeedback}</Text>
+                            <Text style={styles.feedbacktxt}>{recensione.negativeFeedback}</Text>
                         </View>
                     </View>
                     <View style={styles.infoSoggiornoContainer}>
