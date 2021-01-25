@@ -113,8 +113,7 @@ function ButtonContainer(props) {
         }else{
             return(
                 <View style={styles.buttonContainer}>
-                    <CustomButton nome="Chiave" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id }); }} />
-                    <CustomButton nome="Servizi camera" styleBtn={{width: "45%"}} onPress={() => { props.navigator.navigate('InfoCamera'); }} />
+                    <CustomButton nome="Chiave" styleBtn={{width: "100%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id }); }} />
                 </View>
             );
         }
