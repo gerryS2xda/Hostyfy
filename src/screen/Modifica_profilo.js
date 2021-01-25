@@ -107,7 +107,7 @@ const Modifica_profilo = ({route, navigation}) => {
     const [cf, setCodiceFiscale] = useState(user.cf);
     const [nome, setNome] = useState(user.nome);
     const [cognome, setCognome] = useState(user.cognome);
-    const [dateNasc, setDateNascita] = useState(user.dataNascita);
+    const [dateNasc, setDateNascita] = useState( (new Date(user.dataNascita.seconds * 1000)).toLocaleString("it-IT").split(",")[0]);
     const [luogoNasc, setLuogoNascita] = useState(user.luogoNascita);
     const [email, setEmail] = useState(user.email);
     const [numCel, setNumeroCellulare] = useState(user.numCell);

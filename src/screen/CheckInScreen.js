@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput, Alert, Modal } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 import RNPickerSelect from 'react-native-picker-select';
 import CustomButton from "../components/CustomButton"
 
+
 const CheckInScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId} = route.params;
-    const numeroPren = 10;
-    const nomeOsp = "Tizio Caio";
+    const {user, strutturaId, alloggioId, numPersone} = route.params;
+    const [nDocument, setNDocument] = useState(1);
+    const [documenti,setDocumenti] = useState([]);
+    const [visible, setVisible] = useState(false);
     const [typeDoc, setDocType] = useState(null);
     const [numeroDoc, setNumeroDoc] = useState('');
     const [luogoRilascioDoc, setLuogoRilascioDoc] = useState('');
@@ -43,33 +45,39 @@ const CheckInScreen = ({route, navigation}) =>{
             <HeaderBar title="Check-In" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
                 <View style={styles.scrollContent}> 
-                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {numeroPren}</Text>
+                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {0}</Text>
                     <View style={styles.infoCheckIncontainer}>
                         <Image style={styles.checkInImage} source={require("../../assets/hotelExampleStruttura.png")}/>
-                        <Text style={styles.checkIntxt}>Check-In {nomeOsp}</Text>
+                        <Text style={styles.checkIntxt}>Check-In {user.nome + " " + user.cognome}</Text>
                     </View>
                     <View style={styles.fieldSet}>
                         <Text style={styles.legend}>Dati personali e residenza</Text>
                         <View style={styles.fieldSetContent}>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>Enesto</Text>
-                                <Text style={styles.singleField}>Rossi</Text>
+                                <Text style={styles.singleField}>{user.nome}</Text>
+                                <Text style={styles.singleField}>{user.cognome}</Text>
                             </View>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>23/11/1963</Text>
-                                <Text style={styles.singleField}>Italiana</Text>
+                                <Text style={styles.singleField}>{( new Date(user.dataNascita.seconds * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
+                                <Text style={styles.singleField}>{user.nazionalita}</Text>
                             </View>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleFieldRow}>Contrada Sterpellone</Text>
+                                <Text style={styles.singleFieldRow}>{user.indirizzo.via}</Text>
                             </View>
                             <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>Pizzo Calabro</Text>
-                                <Text style={styles.singleField}>8912</Text>
+                                <Text style={styles.singleField}>{user.indirizzo.citta}</Text>
+                                <Text style={styles.singleField}>{user.indirizzo.cap}</Text>
                             </View>
                         </View>
                     </View>
-                    <View style={styles.fieldSet}>
-                        <Text style={styles.legend}>Documento riconoscimento</Text>
+                    <Modal 
+                    animationType="slide"
+                    transparent={true}
+                    visible={visible}
+                    style = {{marginTop:"50%"}}
+                    >
+                    <View style ={styles.modalContainer} >
+                        <Text style={styles.legend}>Documento riconoscimento numero {nDocument}</Text>
                         <View style={styles.fieldSetContent}>
                             <View style={styles.horizontalView}>
                                 <RNPickerSelect
@@ -89,6 +97,7 @@ const CheckInScreen = ({route, navigation}) =>{
                                 <TextInput
                                     style = {styles.textFieldStyle}
                                     placeholder = 'N° documento'
+                                    value = {numeroDoc}
                                     onChangeText = {(numeroDoc) => setNumeroDoc(numeroDoc)}
                                 />
                             </View>
@@ -96,13 +105,43 @@ const CheckInScreen = ({route, navigation}) =>{
                                 <TextInput
                                     style = {[styles.textFieldStyle, styles.textFieldStyleSingleRow]}
                                     placeholder = 'Luogo di rilascio'
+                                    value = {luogoRilascioDoc}
                                     onChangeText = {(luogoRilascioDoc) => setLuogoRilascioDoc(luogoRilascioDoc)}
                                 />
                             </View>
                         </View>
+                        <CustomButton nome="Conferma" styleBtn={{width: "100%"}} onPress={()=>{
+                                console.log("ciao");
+                                console.log(numeroDoc);
+                                var documento = {
+                                    tipoDocumento: typeDoc,
+                                    luogoRilascio: luogoRilascioDoc,
+                                    numeroDocumento: numeroDoc 
+                                };
+                                documenti.push(documento);
+                                setDocumenti(documenti);
+                                console.log(documenti)
+                                if(nDocument == numPersone){
+                                    setVisible(false);
+                                    //navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) 
+                                }
+                                else{
+                                    setNDocument(nDocument + 1);
+                                    setLuogoRilascioDoc("");
+                                    setNumeroDoc("");
+                                    setVisible(false);
+                                    setVisible(true)
+                                }
+                             }
+                         } />
                     </View>
+                    </Modal>
                     <View style={styles.buttonContainer}>
-                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=> navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) } />
+                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=>{
+                                setVisible(true);
+                                //navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) 
+                             }
+                         } />
                     </View>
                 </View>
             </ScrollView>
@@ -125,6 +164,12 @@ const styles = StyleSheet.create({
     scrollContent: {
         marginLeft: 16, 
         marginRight: 16,
+    },
+    modalContainer: {
+        backgroundColor:'#c8c8c8',
+        marginTop:"50%",
+        width: "90%",
+        marginLeft:"5%"
     },
     numprenotazionetxt: {
           textAlign: "left",

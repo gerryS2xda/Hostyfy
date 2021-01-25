@@ -104,7 +104,7 @@ function ButtonContainer(props) {
         return(
             <View style={styles.buttonContainer}>
                 <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
-                    props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef}); 
+                    props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone:props.prenotazione.numPersone}); 
                 }} />
             </View>
         );
