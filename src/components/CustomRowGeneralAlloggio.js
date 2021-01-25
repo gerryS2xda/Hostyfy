@@ -44,6 +44,11 @@ const CustomRowGeneralAlloggio = (props) => {
     const userLogged = props.userLogged;
     const strutturaId = props.strutturaId;
     const alloggioId = props.id;
+    var descrizioneSmall = props.description;
+    
+    if(descrizioneSmall.length > 30){
+        descrizioneSmall = descrizioneSmall.substring(0, 30) + "...";
+    }
 
     return (
         <TouchableOpacity 
@@ -58,7 +63,7 @@ const CustomRowGeneralAlloggio = (props) => {
                         {props.title}
                     </Text>
                     <Text style={styles.description}>
-                        {props.description}
+                        {descrizioneSmall}
                     </Text>
                 </View>
                 <Image

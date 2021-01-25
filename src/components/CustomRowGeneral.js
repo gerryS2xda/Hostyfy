@@ -48,6 +48,11 @@ const CustomRowGeneral = (props) => {
     const codiceOtp = props.otp;
     const [showAlertOtp, setShowAlertOtp] = useState(false);
     const [otp, setOtp] = useState("");
+    var descrizioneSmall = props.description;
+    
+    if(descrizioneSmall.length > 30){
+        descrizioneSmall = descrizioneSmall.substring(0, 30) + "...";
+    }
 
     return (
         <TouchableOpacity 
@@ -72,7 +77,7 @@ const CustomRowGeneral = (props) => {
                         {props.title}
                     </Text>
                     <Text style={styles.description}>
-                        {props.description}
+                        {descrizioneSmall}
                     </Text>
                 </View>
                 <Image
