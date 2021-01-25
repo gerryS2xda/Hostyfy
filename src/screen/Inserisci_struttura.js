@@ -4,6 +4,7 @@ import { TextInput } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel"; 
+import * as NotificationModel from "../firebase/datamodel/NotificheModel";
 import {firebase} from "../firebase/config"
 
 
@@ -272,7 +273,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                                 styleBtn={{marginTop: 10, width: "100%"}} 
                                 nome="Aggiungi" 
                                 onPress={()=>{
-                                    if(this.validateFormField()){
+                                    if(this.validateFormField(photoList)){
                                         this.setState({disableInsertStrutturaButton: true});
                                         this.onPressAggiungiStruttura(user, photoList, this, this.props.navigation);
                                     }
@@ -286,10 +287,16 @@ export default class InserisciStrutturaScreen extends React.Component {
     }
 
     onPressAggiungiStruttura = async (user, photoList, reference, navigation) =>{
+        
+        //Costruzione dell'object javascript 'indirizzo'
         var indirizzo = {via: reference.state.via, citta:reference.state.citta, cap:reference.state.cap, provincia:reference.state.provincia, regione:reference.state.regione, nazione:reference.state.nazione}                                 
+        
+        //Generazione di un codice OTP random
+        var otp = Math.floor(Math.random() * 100000);
+
         //Attendi finche' non completi inserimento della nuova struttura nel DB
-        await StrutturaModel.createStrutturaDocument(user.userIdRef, 0, reference.state.denominazione, reference.state.descrizione, indirizzo, " ", reference.state.numeroAlloggi,reference.state.tipologia, "not specificated", {}); 
-    
+        await StrutturaModel.createStrutturaDocument(user.userIdRef, otp, reference.state.denominazione, reference.state.descrizione, indirizzo, " ", reference.state.numeroAlloggi,reference.state.tipologia, "not specificated", {}); 
+        
         if(photoList.length !=0){
             //Fai comparire il popup per indicare attesa del completamento dell'operazione di upload di immagini
             if(!reference.state.modalUploadVisibility){
@@ -414,7 +421,7 @@ export default class InserisciStrutturaScreen extends React.Component {
     }
 
     //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
-    validateFormField = () =>{
+    validateFormField = (photoList) =>{
         var flag = true; //tutti i campi sono compilati
         var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
         if(this.state.denominazione === ""){
@@ -443,6 +450,9 @@ export default class InserisciStrutturaScreen extends React.Component {
             flag = false;
         }else if(this.state.via === ""){
             message += "\"Via\"";
+            flag = false;
+        }else if(photoList.length == 0){
+            message = "Attenzione!! Per completare l'inserimendo di una struttura è necessario inserire una sua immagine.";
             flag = false;
         }
         if(!flag){

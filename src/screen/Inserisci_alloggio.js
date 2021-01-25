@@ -201,7 +201,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                                 styleBtn={{marginTop: 10, width: "100%"}} 
                                 nome="Aggiungi" 
                                 onPress={()=>{
-                                    if(this.validateFormField()){
+                                    if(this.validateFormField(photoList)){
                                         this.setState({disableInsertAlloggioButton: true});
                                         this.onPressAggiungiAlloggio(user, strutturaId, photoList, this, this.props.navigation);
                                     }
@@ -350,6 +350,9 @@ export default class InserisciAlloggioScreen extends React.Component {
             flag = false;
         }else if(this.state.descrizione === ""){
             message += "\"Descrizione\"";
+            flag = false;
+        }else if(photoList.length == 0){
+            message = "Attenzione!! Per completare l'inserimendo di un alloggio è necessario inserire una sua immagine.";
             flag = false;
         }
         if(!flag){
