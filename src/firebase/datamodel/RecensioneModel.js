@@ -64,3 +64,7 @@ export async function getRecensioneById(structId, alloggioId, recensioneId){
     }
 }
 
+export async function getRecensioniByGuestRef(structId, alloggioId, guestRef){
+    let recensioniDocs = await db.collection("struttura/" + structId + "/alloggi/" + alloggioId + "/recensioni").where('guestRef', '==', guestRef).get();
+    return recensioniDocs.docs;
+}

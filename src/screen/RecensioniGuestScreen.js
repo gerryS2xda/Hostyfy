@@ -60,8 +60,9 @@ const RecensioniGuestScreen = ({route, navigation}) =>{
                     imageURL = {uri: fotoArray[0]};
                 }
 
-                //Attendi finche' non ottieni le recensioni associate ad un alloggio
-                var recensioni = await RecensioneModel.getRecensioniByAlloggioRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                //Attendi finche' non ottieni le recensioni associate ad un alloggio e scritte dall'utente loggato
+                var recensioni = await RecensioneModel.getRecensioniByGuestRef(prenotazione.strutturaRef, prenotazione.alloggioRef, user.userId);
+                
                 for(const rec of recensioni){
                   var recensione = rec.data();
           
