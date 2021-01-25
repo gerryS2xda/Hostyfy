@@ -60,7 +60,7 @@ const LeMieStrutture = (props) => {
                       description: struttura.descrizione,
                       image_url: imageURL, 
                       newPage: 'VisualizzaStruttura',
-                      OTP: 'true',
+                      otp: struttura.codiceOtp,
                       id: doc.id
                     }
                     count++;

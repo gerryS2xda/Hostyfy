@@ -122,9 +122,16 @@ export default class StrutturaScreen extends React.Component {
 
         async function getStrutturaData(reference){
             var strutturaId = reference.props.route.params.strutturaId;
+
             //Attendi finche' non ottieni dati della struttura dal DB
             var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
             
+            //Se abbiamo effettuato il primo accesso alla struttura -> setta OTP a 0 per indicare che il primo accesso è stato eseguito
+            if(strutturaDoc.codiceOtp > 0){
+                await StrutturaModel.updateCodiceOTP(strutturaId, 0);
+                strutturaDoc.codiceOtp=0;
+            }
+
             //Riempi carouselList con le foto presenti nel documento appena ottenuto
             var fotoList = [];
             var fotoArray = Object.values(strutturaDoc.fotoList); //restituisce gli URL delle foto in un array JS

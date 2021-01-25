@@ -1,12 +1,7 @@
-import { useLinkProps } from '@react-navigation/native';
-import React, { Component, useState } from 'react';
-import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Dialog from 'react-native-dialog';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, Alert, TouchableOpacity } from 'react-native';
+import CustomAlertTextInput from "../components/CustomAlertTextInput"
 import {firebase} from '../firebase/config'
-
-var db = firebase.firestore();
-
 
 const styles = StyleSheet.create({
     container: {
@@ -50,11 +45,24 @@ const styles = StyleSheet.create({
 const CustomRowGeneral = (props) => {
     const userLogged = props.userLogged;
     const strutturaId = props.id;
+    const codiceOtp = props.otp;
+    const [showAlertOtp, setShowAlertOtp] = useState(false);
+    const [otp, setOtp] = useState("");
 
     return (
         <TouchableOpacity 
             onPress = {()=>{ 
-                props.nav.navigate("VisualizzaStruttura",{user: userLogged, strutturaId: strutturaId});
+                if(codiceOtp > 0){
+                    Alert.alert("Codice OTP", 
+                    "Per accedere alla nuova struttura occorre inserire il codice OTP ricevuto per posta. Per fini didattici, il codice OTP da inserire è: " + codiceOtp,
+                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                     { text: "OK", onPress: ()=> {
+                        setShowAlertOtp(true);
+                    }}],
+                    { cancelable: false });
+                }else{
+                    props.nav.navigate("VisualizzaStruttura",{user: userLogged, strutturaId: strutturaId});
+                }
             }}>
                 
             <View style={styles.container}>
@@ -72,6 +80,37 @@ const CustomRowGeneral = (props) => {
                         style = {styles.arrow} 
                     />
             </View>
+            {
+                showAlertOtp && (
+                    <CustomAlertTextInput
+                        visibility={showAlertOtp}
+                        setVisibility={setShowAlertOtp}
+                        titolo="Codice OTP"
+                        testo="Inserisci il codice OTP per accedere alla struttura"
+                        buttonName="Ok"
+                        pagina="Home"
+                        placeholder = "OTP"
+                        setTextData={setOtp}
+                        onOkPress={()=>{
+                            if(otp == codiceOtp){
+                                props.nav.navigate("VisualizzaStruttura",{user: userLogged, strutturaId: strutturaId});
+                                setShowAlertOtp(false);
+                            }else{
+                                setShowAlertOtp(false);
+                                Alert.alert("Codice OTP", 
+                                "Il codice OTP inserito non è corretto! Ritenta!",
+                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                { text: "OK", onPress: ()=> {
+                                    setShowAlertOtp(true);
+                                }}],
+                                { cancelable: false });
+                            }
+                        }}
+                        navigator={props.navigation}>
+                    </CustomAlertTextInput>
+                )
+            }
+
         </TouchableOpacity>
 
         );

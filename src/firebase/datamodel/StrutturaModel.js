@@ -60,6 +60,19 @@ export async function updateFotoField(structId, fotoObj){
     });
 }
 
+export async function updateCodiceOTP(id, codiceOtp){
+    return await strutturaCollectionRef.doc(id).update({
+        codiceOtp: codiceOtp, 
+    })
+    .then(function() {
+        console.log("Struttura document successfully updated!");
+    })
+    .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating struttura document: ", error);
+    }); 
+}
+
 //Delete function
 export async function deleteStrutturaDocument(id){
     return await strutturaCollectionRef.doc(id).delete().then(function() {

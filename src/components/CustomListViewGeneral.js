@@ -26,6 +26,7 @@ const CustomListViewGeneral = (props) => {
                         image_url={item.image_url}
                         description = {item.description}
                         newPage = {item.newPage}
+                        otp={item.otp}
                         nav= {navigate}
                         userLogged = {userLogged}
                         id={item.id}
