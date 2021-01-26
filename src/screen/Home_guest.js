@@ -125,7 +125,7 @@ const HomeGuest = ({ route, navigation }) => {
               <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} nome='Recensioni' onPress={()=>navigation.navigate("RecensioniGuestScreen", {user: user})} />
               <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"logout"}nome="Logout" onPress={() => {
                 firebase.auth().signOut().then(function () {
-                  props.navigation.reset({
+                  navigation.reset({
                     index: 0,
                     routes: [{ name: 'Home' }],
                   }); // Sign-out successful.

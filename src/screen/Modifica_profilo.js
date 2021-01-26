@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, StyleSheet, ScrollView, Button, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Button, Dimensions, Alert } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
@@ -174,7 +174,6 @@ const Modifica_profilo = ({ route, navigation }) => {
   const [nazionalita, setNazionalita] = useState(user.nazionalita);
 
   //Credenziali
-  const [password, setPassword] = useState(user.password);
   const [passCompare, setPassCompare] = useState(false);
   const [confermaPassword, setConfermaPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
@@ -201,10 +200,6 @@ const Modifica_profilo = ({ route, navigation }) => {
   const [ccv, setCCV] = useState(user.ccv);
   const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
   const [intestatario, setIntestatario] = useState(user.intestatario);
-
-  console.log(user.nome);
-
-
 
   return (
 
@@ -251,17 +246,6 @@ const Modifica_profilo = ({ route, navigation }) => {
           ref={scrollRef}
           bounces={false}
         >
-
-
-
-
-
-
-
-
-
-
-
           <View style={styles.page}>
             <View style={styles.singolaView}>
             <View style={styles.titoloView}>
@@ -344,42 +328,33 @@ const Modifica_profilo = ({ route, navigation }) => {
                   styleBtn={{ width: "100%", marginRight: "15%" }}
                   nome={IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
                   onPress={() => {
-                    if (!IsEditable) {
-                      setEditable(previousState => !previousState)
-                    }
-                    else {
-                      if (newpassword !== confermaPassword) {
-                        if (!passCompare) setPassCompare(true);
-                      }
-                      else {
+                    async function onPressEditProfile(){
+                      if (!IsEditable) {
+                        setEditable(previousState => !previousState)
+                      }else if (newpassword !== confermaPassword) {
+                          if (!passCompare) setPassCompare(true);
+                        }else {
 
-                        var indirizzo = { via: via, citta: citta, provincia: provincia, cap: cap, regione: regione };
-                        GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, "x", dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, user.isHost, email);
-                        GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
+                          var indirizzo = { via: via, citta: citta, provincia: provincia, cap: cap, regione: regione };
+                          await GuestModel.updateGuestDocument(user.userId, cf, cognome, nome, "x", dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, email);
+                          await GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
 
-                        var userLogin = firebase.auth().currentUser;
+                          var userLogin = firebase.auth().currentUser;
 
-                        //viene controllato se entrambi i campi sono vuoti
-                        var tempPassword = "";
-                        if (newpassword === "") {
-                          tempPassword = password;
+                          if (newpassword !== "") { //se la nuova password è stata inserita ed è soddisfatto il test di conferma
+                            userLogin.updatePassword(newpassword).then(function () {
+
+                              if (!updateErrorSuccess) setUpdateErrorSuccess(true);
+                              setEditable(previousState => !previousState)
+                            })
+                              .catch(function (error) {
+                                if (!updateErrorFailed) console.log(error)
+                              })
+                          }
                         }
-                        else {
-                          tempPassword = newpassword;
-                        }
-
-                        userLogin.updatePassword(tempPassword).then(function () {
-
-                          if (!updateErrorSuccess) setUpdateErrorSuccess(true);
-                          setEditable(previousState => !previousState)
-                        })
-                          .catch(function (error) {
-                            if (!updateErrorFailed) console.log(error)
-                          })
-                      }
-                    }
-                  }
-                  } />
+                      }                    
+                    onPressEditProfile();
+                  }} />
               </View>
               <View style={styles.ButtonContainer}>
                 <CustomButton
@@ -389,23 +364,8 @@ const Modifica_profilo = ({ route, navigation }) => {
               </View>
             </View>
           </View>
-
-
-
-
-
-
-
-
-
-
-
-
           <View style={styles.page}>
-            
-
             <View style={styles.singolaView}>
-
             <View style={styles.titoloView}>
               <Text style={styles.singleText}>
                 Credenziali
@@ -463,7 +423,9 @@ const Modifica_profilo = ({ route, navigation }) => {
                   editable={IsEditable}
                   ref={confermaPasswordRef}
                   style={styles.singleTextInput}
-                  onChangeText={(confermaPassword) => setConfermaPassword(confermaPassword)}
+                  onChangeText={(confermaPassword) =>{
+                      setConfermaPassword(confermaPassword);
+                  }}
                   theme={theme}
                 />
               </View>
@@ -486,21 +448,8 @@ const Modifica_profilo = ({ route, navigation }) => {
                 </View>
               </View>
           </View>
-
-
-
-
-
-
-
-
-
-
           <View style={styles.page}>
-            
-
             <View style={styles.singolaView}>
-
             <View style={styles.titoloView}>
               <Text style={styles.singleText}>
                 Residenza
@@ -575,18 +524,7 @@ const Modifica_profilo = ({ route, navigation }) => {
                 </View>
               </View>
           </View>
-
-
-
-
-
-
-
-
-
           <View style={styles.page}>
-            
-
             <View style={styles.singolaView}>
             <View style={styles.titoloView}>
               <Text style={styles.singleText}>
@@ -648,18 +586,6 @@ const Modifica_profilo = ({ route, navigation }) => {
                 </View>
               </View>
           </View>
-
-
-
-
-
-
-
-
-
-
-
-
         </ScrollView>
       </ScrollView>
     </View>

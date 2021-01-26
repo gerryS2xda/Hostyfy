@@ -74,7 +74,7 @@ export async function createCreditCardDocumentGuest(uid, numCreditCard, ccv, int
 }
 
 //Update functions
-export async function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luogoNasc, numCell, numTel, nazionalita, indirizzobj, isHost, emailGuest){
+export async function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNasc, luogoNasc, numCell, numTel, nazionalita, indirizzobj, emailGuest){
     //Edit all field of guest document
     return await guestCollectionRef.doc(uid).update({
         cf: cf,
@@ -87,7 +87,6 @@ export async function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNas
         numTel: numTel,
         indirizzo: indirizzobj,
         nazionalita: nazionalita,
-        isHost: isHost,
         email: emailGuest
     })
     .then(function() {
