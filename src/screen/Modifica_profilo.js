@@ -1,32 +1,34 @@
 import React, { useState, useRef } from 'react'
-import {View, Text, TextInput, StyleSheet, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, Button, Dimensions } from 'react-native'
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 import DatePickerInputField from "../components/DatePickerInputField";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
-import {firebase} from '../firebase/config';
+import { firebase } from '../firebase/config';
 import CustomAlert from '../components/CustomAlert'
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
+import { TextInput } from 'react-native-paper';
+import { DefaultTheme } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
-  
+
   maincontainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    justifyContent: 'center',
+    backgroundColor: '#344545',
+    //justifyContent: 'center',
     //backgroundColor: "#000000"
   },
-  container: { 
-    marginTop: "5%",
-    flexDirection: 'column', 
+  container: {
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: "#000000"
   },
   topContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: "4%"
-    
+
   },
   upperMiddleContainer: {
     flexDirection: 'column',
@@ -39,7 +41,7 @@ const styles = StyleSheet.create({
     paddingBottom: "5%",
     paddingTop: "5%"
   },
-  lowerMiddleContainer: { 
+  lowerMiddleContainer: {
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
@@ -53,18 +55,12 @@ const styles = StyleSheet.create({
     paddingTop: "3%",
   },
   singleTextInput: {
-    height: 40,
-    width:"90%",
-    borderColor: "#303a52",
-    borderBottomWidth: 1,
-    paddingLeft: 5,
-    borderRadius: 0, 
-    fontFamily: "Montserrant",
-    marginBottom: "2%", 
-    color: "#000000"  
+    height: 45,
+    marginBottom: "2%",
+    fontFamily: "Monsterrant",
   },
 
-  finalContainer:{ 
+  finalContainer: {
     justifyContent: 'space-around',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -86,309 +82,586 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     marginBottom: "4%"
   },
-  
+
   datePickerStyle: {
     width: 200,
     marginTop: 20,
   },
 
-  singleText:{
+  singleText: {
     fontFamily: "MontserrantSemiBold",
-    fontSize: 20,
-    marginBottom: "3%"
-  }, 
+    fontSize: 30,
+    marginBottom: "3%",
+    color: '#303a52',
+  },
+
+  page: {
+    backgroundColor: "#ffffff",
+    flex: 1,
+    width: Dimensions.get('window').width,
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center"
+  },
+
+  singolaView: {
+   
+    paddingBottom: "5%",
+    paddingTop: "5%",
+    maxHeight: 550,
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "90%",
+  
+   
+    borderWidth: 2,
+    borderRadius: 20,
+    borderColor: "#f0f0f0",
+  },
+
+  guidaView: {
+    width: "88%",
+    flexDirection: "row",
+    marginTop: "5%",
+    justifyContent: "space-between",
+    //backgroundColor: "#000000"
+  },
+
+  titoloView: {},
+
+  viewCampi: {
+    width: "90%",
+  },
+
+  ButtonContainer: {
+    width: "100%",
+    //backgroundColor: "#000000",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+
+  },
+
+  keyboard: {
+    flex: 1,
+  },
+
+  secondScroll: {
+    width: Dimensions.get('window').width,
+  }
 })
 
-const Modifica_profilo = ({route, navigation}) => {
-    //Ottieni info utente attualmente connesso
-    const {user} = route.params;
 
-    const [IsEditable, setEditable] = useState(false); 
-    const [cf, setCodiceFiscale] = useState(user.cf);
-    const [nome, setNome] = useState(user.nome);
-    const [cognome, setCognome] = useState(user.cognome);
-    const [dateNasc, setDateNascita] = useState( (new Date(user.dataNascita.seconds * 1000)).toLocaleString("it-IT").split(",")[0]);
-    const [luogoNasc, setLuogoNascita] = useState(user.luogoNascita);
-    const [email, setEmail] = useState(user.email);
-    const [numCel, setNumeroCellulare] = useState(user.numCell);
-    const [numTel, setNumeroTelefono] = useState(user.numTel);
-    const [sesso, setSesso] = useState(user.sesso);
-    const [nazionalita, setNazionalita] = useState(user.nazionalita);
-    const [via, setVia] = useState(user.indirizzo.via);
-    const [citta, setCitta] = useState(user.indirizzo.citta);
-    const [provincia, setProvincia] = useState(user.indirizzo.provincia);
-    const [regione, setRegione] = useState(user.indirizzo.regione);
-    const [cap, setCAP] = useState(user.indirizzo.cap);
-    const [confermaPassword, setConfermaPassword] = useState("");
-    const [newpassword, setNewPassword] = useState("");
 
-    //Dati relativi al pagamento
-    const [numCarta, setNumeroCarta] = useState(user.numeroCarta);
-    const [ccv, setCCV] = useState(user.ccv);
-    const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
-    const [intestatario, setIntestatario] = useState(user.intestatario);
-    const [password, setPassword] = useState(user.password);
-    const [passCompare, setPassCompare] = useState(false);
-    const [updateErrorSuccess, setUpdateErrorSuccess] = useState(false);
-    const [updateErrorFailed, setUpdateErrorFailed] = useState(false);
+const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: {regular: {fontFamily: 'MontserrantSemiBold', fontWeight: 'normal'}}, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
 
-    //Riferimenti ai textInput
-    var nuovaPasswordRef = useRef("");
-    var confermaPasswordRef = useRef("");
-      
-   return(
+
+
+const Modifica_profilo = ({ route, navigation }) => {
+  //Ottieni info utente attualmente connesso
+
+  const scrollRef = useRef();
+
+  const { user } = route.params;
+  const [IsEditable, setEditable] = useState(false);
+
+  //Dati anagrafici
+  const [nome, setNome] = useState(user.nome);
+  const [cognome, setCognome] = useState(user.cognome);
+  const [cf, setCodiceFiscale] = useState(user.cf);
+  const [dateNasc, setDateNascita] = useState(user.dataNascita);
+  const [luogoNasc, setLuogoNascita] = useState(user.luogoNascita);
+  const [nazionalita, setNazionalita] = useState(user.nazionalita);
+
+  //Credenziali
+  const [password, setPassword] = useState(user.password);
+  const [passCompare, setPassCompare] = useState(false);
+  const [confermaPassword, setConfermaPassword] = useState("");
+  const [newpassword, setNewPassword] = useState("");
+  const [email, setEmail] = useState(user.email);
+  const [numCel, setNumeroCellulare] = useState(user.numCell);
+  const [numTel, setNumeroTelefono] = useState(user.numTel);
+
+  //Riferimenti ai textInput
+  var nuovaPasswordRef = useRef("");
+  var confermaPasswordRef = useRef("");
+
+  const [updateErrorSuccess, setUpdateErrorSuccess] = useState(false);
+  const [updateErrorFailed, setUpdateErrorFailed] = useState(false);
+
+  //Residenza
+  const [via, setVia] = useState(user.indirizzo.via);
+  const [citta, setCitta] = useState(user.indirizzo.citta);
+  const [provincia, setProvincia] = useState(user.indirizzo.provincia);
+  const [regione, setRegione] = useState(user.indirizzo.regione);
+  const [cap, setCAP] = useState(user.indirizzo.cap);
+
+  //Dati relativi al pagamento
+  const [numCarta, setNumeroCarta] = useState(user.numeroCarta);
+  const [ccv, setCCV] = useState(user.ccv);
+  const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
+  const [intestatario, setIntestatario] = useState(user.intestatario);
+
+  console.log(user.nome);
+
+
+
+  return (
+
     <View style={styles.maincontainer}>
-      
-          {passCompare && (<CustomAlert
-          stato = {passCompare}
-          setStato = {setPassCompare}
-          titolo = "Password non coincidenti"
-          testo = "Le password inserite non coindono, riprova con l'inserimento"
-          buttonName = "Ok"
-          pagina = "ModificaProfilo"
-          navigator = {navigation}></CustomAlert>)}
 
-          {updateErrorSuccess && (<CustomAlert
-          stato = {updateErrorSuccess}
-          setStato = {setUpdateErrorSuccess}
-          titolo = "Modifica completata"
-          testo = "I dati sono stati modificati con successo!"
-          buttonName = "Ok"
-          pagina = "ModificaProfilo"
-          navigator = {navigation}></CustomAlert>)}
+      {passCompare && (<CustomAlert
+        stato={passCompare}
+        setStato={setPassCompare}
+        titolo="Password non coincidenti"
+        testo="Le password inserite non coindono, riprova con l'inserimento"
+        buttonName="Ok"
+        pagina="ModificaProfilo"
+        navigator={navigation}></CustomAlert>)}
 
-          {updateErrorFailed && (<CustomAlert
-          stato = {updateErrorFailed}
-          setStato = {setUpdateErrorFailed}
-          titolo = "Modifica non completata"
-          testo = "I dati non sono stati modificati con successo, riprova con l'inserimento!"
-          buttonName = "Ok"
-          pagina = "ModificaProfilo"
-          navigator = {navigation}></CustomAlert>)}      
+      {updateErrorSuccess && (<CustomAlert
+        stato={updateErrorSuccess}
+        setStato={setUpdateErrorSuccess}
+        titolo="Modifica completata"
+        testo="I dati sono stati modificati con successo!"
+        buttonName="Ok"
+        pagina="ModificaProfilo"
+        navigator={navigation}></CustomAlert>)}
+
+      {updateErrorFailed && (<CustomAlert
+        stato={updateErrorFailed}
+        setStato={setUpdateErrorFailed}
+        titolo="Modifica non completata"
+        testo="I dati non sono stati modificati con successo, riprova con l'inserimento!"
+        buttonName="Ok"
+        pagina="ModificaProfilo"
+        navigator={navigation}></CustomAlert>)}
 
       <HeaderBar title="Il mio profilo" navigator={navigation} />
-      <ScrollView contentContainerStyle = {styles.container}>
-         
-          <View style = {styles.upperMiddleContainer}>
-          <Text style = {styles.singleText}>
-              Informazioni Personali            
-            </Text>
-            <TextInput
-                disabledInputStyle={{color: "black"}}
-                style = {styles.singleTextInput}
-                placeholder='Nome'
-                editable={IsEditable}
-                value={nome.toString()}
-                onChangeText = {(nome) => setNome(nome)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Cognome'
-                editable={IsEditable}
-                value={cognome.toString()}
-                onChangeText = {(cognome) => setCognome(cognome)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Codice fiscale'
-                editable={IsEditable}
-                value={cf.toString()}
-                onChangeText = {(cf) => setCodiceFiscale(cf)}
-            />
-            <DatePickerInputField 
-              styleContainer={{marginBottom: "2%"}} 
-              styleField={{width: "81.5%"}} 
-              date={dateNasc} 
-              placeholder={"Data di nascita"}
-              setDate={setDateNascita} 
-              disabled={!IsEditable}
-              
-            />
-           <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Luogo nascita'
-                editable={IsEditable}
-                value={luogoNasc.toString()}
-                onChangeText = {(luogoNasc) => setLuogoNascita(luogoNasc)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Email'
-                editable={IsEditable}
-                value={email.toString()}
-                onChangeText = {(email) => setEmail(email)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Numero cellulare'
-                editable={IsEditable}
-                value={numCel.toString()}
-                onChangeText = {(numCel) => setNumeroCellulare(numCel)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Numero telefono'
-                editable={IsEditable}
-                value={numTel.toString()}
-                onChangeText = {(numTel) => setNumeroTelefono(numTel)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Sesso'
-                editable={IsEditable}
-                value={sesso.toString()}
-                onChangeText = {(sesso) => setSesso(sesso)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Nazionalità'
-                editable={IsEditable}
-                value={nazionalita.toString()}
-                onChangeText = {(nazionalita) => setNazionalita(nazionalita)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Via'
-                editable={IsEditable}
-                value={via.toString()}
-                onChangeText = {(via) => setVia(via)}
-            />
-             <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Città'
-                editable={IsEditable}
-                value={citta.toString()}
-                onChangeText = {(citta) => setCitta(citta)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Provincia'
-                editable={IsEditable}
-                value={provincia.toString()}
-                onChangeText = {(provincia) => setProvincia(provincia)}
-            />
-            <TextInput
-                style = {styles.singleTextInput}
-                placeholder='Regione'
-                editable={IsEditable}
-                value={regione.toString()}
-                onChangeText = {(regione) => setRegione(regione)}
-            />
-             <TextInput
-                style = {styles.singleTextInput}
-                placeholder='CAP'
-                editable={IsEditable}
-                value={cap.toString()}
-                onChangeText = {(cap) => setCAP(cap)}
-            />
-          </View>
-          <View style = {styles.lowerMiddleContainer}>
-            <Text style = {styles.singleText}>
-              Modifica Password            
-            </Text>
-            <TextInput
-                style = {styles.singleTextInput}
-                ref = {nuovaPasswordRef}
-                placeholder='Nuova password'
-                editable={IsEditable}
-                secureTextEntry = {true}
-                onChangeText = {(newpassword) => setNewPassword(newpassword)}
-            />
+      <ScrollView
+        style={styles.secondScroll}
+        contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}>
 
-            <TextInput
-                style = {styles.singleTextInput}
-                ref = {confermaPasswordRef}
-                placeholder='Conferma nuova password'
-                editable={IsEditable}
-                secureTextEntry = {true}
-                onChangeText = {(confermaPassword) => setConfermaPassword(confermaPassword)}
-            />
-          </View>
-          <View style = {styles.finalContainer}>
-            <Text style = {styles.singleText}> Dati Pagamento </Text>
-              <TextInput
-                  style = {styles.singleTextInput}
-                  placeholder='Numero Carta'
+
+        <ScrollView
+          pagingEnabled={true}
+          contentContainerStyle={styles.container}
+          showOrizontalScrollIndicator={false}
+          horizontal
+          ref={scrollRef}
+          bounces={false}
+        >
+
+
+
+
+
+
+
+
+
+
+
+          <View style={styles.page}>
+            <View style={styles.singolaView}>
+            <View style={styles.titoloView}>
+              <Text style={styles.singleText}>
+                Dati anagrafici
+            </Text>
+            </View>
+              <View style={styles.viewCampi}>
+
+                <TextInput
+                  mode='outlined'
+                  label='Nome'
+                  disabledInputStyle={{ color: "#303a52" }}
+                  style={styles.singleTextInput}
                   editable={IsEditable}
-                  value={numCarta.toString()}
-                  onChangeText = {(numCarta) => setNumeroCarta(numCarta)}
-              />
-              <DatePickerInputField 
-                styleContainer={{marginBottom: "3%"}} 
-                styleField={{width: "82%"}} 
-                date={dateScadenza.toString()} 
-                setDate={setDateScadenza} 
-                placeholder={"Data scadenza"}
-                disabled={!IsEditable}
-              />
-              <TextInput
-                  style = {styles.singleTextInput}
-                  placeholder='CCV'
+                  value={nome}
+                  onChangeText={(nome) => setNome(nome)}
+                  theme={theme} />
+
+                <TextInput
+                  mode='outlined'
+                  label='Cognome'
+                  disabledInputStyle={{ color: "black" }}
                   editable={IsEditable}
-                  value={ccv.toString()}
-                  onChangeText = {(ccv) => setCCV(ccv)}
-              />
-              <TextInput
-                  style = {styles.singleTextInput}
-                  placeholder='Intestatario'
+                  value={cognome}
+                  style={styles.singleTextInput}
+                  onChangeText={(cognome) => setCognome(cognome)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Codice Fiscale'
+                  disabledInputStyle={{ color: "black" }}
                   editable={IsEditable}
-                  value={intestatario.toString()}
-                  onChangeText = {(intestatario) => setIntestatario(intestatario)}
-              />    
-          </View>
-      </ScrollView>
-      <View style = {styles.bottonContainer}>
-            <CustomButton 
-              styleBtn={{width: "90%"}} 
-              nome = {IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
-              onPress={()=> {
-                if(!IsEditable)
-                {
-                  setEditable(previousState => !previousState)
-                }
-                else
-                {               
-                    if(newpassword!==confermaPassword)
-                    {
-                      if(!passCompare) setPassCompare(true);
+                  value={cf}
+                  style={styles.singleTextInput}
+                  onChangeText={(cf) => setCodiceFiscale(cf)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Data di nascita'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={dateNasc}
+                  style={styles.singleTextInput}
+                  onChangeText={(dateNasc) => setDateNascita(dateNasc)}
+                  theme={theme}
+                  styleBtn={{height: 45}}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Luogo di Nascita'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={luogoNasc}
+                  style={styles.singleTextInput}
+                  onChangeText={(luogoNasc) => setLuogoNascita(luogoNasc)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Nazionalità'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={nazionalita}
+                  style={styles.singleTextInput}
+                  onChangeText={(nazionalita) => setNazionalita(nazionalita)}
+                  theme={theme}
+                />
+              </View>
+            </View>
+            <View style={styles.guidaView}>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginRight: "15%" }}
+                  nome={IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
+                  onPress={() => {
+                    if (!IsEditable) {
+                      setEditable(previousState => !previousState)
                     }
-                    else
-                    {
-                      
-                      var indirizzo = {via: via, citta: citta, provincia: provincia, cap: cap, regione: regione};
-                      GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, sesso, dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, user.isHost, email);
-                      GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza); 
-                      
+                    else {
+                      if (newpassword !== confermaPassword) {
+                        if (!passCompare) setPassCompare(true);
+                      }
+                      else {
+
+                        var indirizzo = { via: via, citta: citta, provincia: provincia, cap: cap, regione: regione };
+                        GuestModel.updateGuestDocument(user.userId, user.cf, cognome, nome, "x", dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, user.isHost, email);
+                        GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
+
                         var userLogin = firebase.auth().currentUser;
-                        
+
                         //viene controllato se entrambi i campi sono vuoti
                         var tempPassword = "";
-                        if(newpassword === "")
-                        {
-                            tempPassword = password;
+                        if (newpassword === "") {
+                          tempPassword = password;
                         }
-                        else
-                        {
-                           tempPassword = newpassword;
+                        else {
+                          tempPassword = newpassword;
                         }
-                        
-                        userLogin.updatePassword(tempPassword).then(function() {
-                          
-                          if(!updateErrorSuccess) setUpdateErrorSuccess(true);
+
+                        userLogin.updatePassword(tempPassword).then(function () {
+
+                          if (!updateErrorSuccess) setUpdateErrorSuccess(true);
                           setEditable(previousState => !previousState)
                         })
-                      .catch(function(error) {
-                        if(!updateErrorFailed) console.log(error)
-                      })
+                          .catch(function (error) {
+                            if (!updateErrorFailed) console.log(error)
+                          })
+                      }
                     }
-                }     
-                nuovaPasswordRef.current.clear();  
-                confermaPasswordRef.current.clear();
-                   
-              }
-              }/>
-              
+                  }
+                  } />
+              </View>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginLeft: "15%" }}
+                  nome={"Credenziali"}
+                  onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) }) }} />
+              </View>
             </View>
+          </View>
+
+
+
+
+
+
+
+
+
+
+
+
+          <View style={styles.page}>
+            
+
+            <View style={styles.singolaView}>
+
+            <View style={styles.titoloView}>
+              <Text style={styles.singleText}>
+                Credenziali
+            </Text>
+            </View>
+              <View style={styles.viewCampi}>
+                <TextInput
+                  mode='outlined'
+                  label='Email'
+                  disabledInputStyle={{ color: "black" }}
+                  style={styles.singleTextInput}
+                  editable={IsEditable}
+                  value={email}
+                  onChangeText={(email) => setEmail(email)}
+                  theme={theme} />
+
+                <TextInput
+                  mode='outlined'
+                  label='Cellulare'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={numCel}
+                  style={styles.singleTextInput}
+                  onChangeText={(numCel) => setNumeroCellulare(numCel)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Telefono'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={numTel}
+                  style={styles.singleTextInput}
+                  onChangeText={(numTel) => setNumeroTelefono(numTel)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Password'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  style={styles.singleTextInput}
+                  ref={nuovaPasswordRef}
+                  secureTextEntry={true}
+                  onChangeText={(newpassword) => setNewPassword(newpassword)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Conferma Password'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  ref={confermaPasswordRef}
+                  style={styles.singleTextInput}
+                  onChangeText={(confermaPassword) => setConfermaPassword(confermaPassword)}
+                  theme={theme}
+                />
+              </View>
+            </View>
+            <View style={styles.guidaView}>
+                <View style={styles.ButtonContainer}>
+                  <CustomButton
+                    styleBtn={{ width: "100%", marginRight: "15%" }}
+                    nome={"Anagrafica"}
+                    onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
+                </View>
+                <View style={styles.ButtonContainer}>
+                  <CustomButton
+                    styleBtn={{ width: "100%", marginLeft: "15%" }}
+                    nome={"Residenza"}
+                    onPress={
+                      () => {
+                        scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 2 });
+                      }} />
+                </View>
+              </View>
+          </View>
+
+
+
+
+
+
+
+
+
+
+          <View style={styles.page}>
+            
+
+            <View style={styles.singolaView}>
+
+            <View style={styles.titoloView}>
+              <Text style={styles.singleText}>
+                Residenza
+            </Text>
+            </View>
+              <View style={styles.viewCampi}>
+                <TextInput
+                  mode='outlined'
+                  label='Via'
+                  disabledInputStyle={{ color: "black" }}
+                  style={styles.singleTextInput}
+                  editable={IsEditable}
+                  value={via}
+                  onChangeText={(via) => setVia(via)}
+                  theme={theme} />
+
+                <TextInput
+                  mode='outlined'
+                  label='Città'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={citta}
+                  style={styles.singleTextInput}
+                  onChangeText={(citta) => setCitta(citta)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Provincia'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={provincia}
+                  style={styles.singleTextInput}
+                  onChangeText={(provincia) => setProvincia(provincia)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Regione'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  style={styles.singleTextInput}
+                  onChangeText={(regione) => setRegione(regione)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='CAP'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  style={styles.singleTextInput}
+                  onChangeText={(cap) => setCAP(cap)}
+                  theme={theme}
+                />
+              </View>
+            </View>
+            <View style={styles.guidaView}>
+                <View style={styles.ButtonContainer}>
+                  <CustomButton
+                    styleBtn={{ width: "100%", marginRight: "15%" }}
+                    nome={"Credenziali"}
+                    onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) }) }} />
+                </View>
+                <View style={styles.ButtonContainer}>
+                  <CustomButton
+                    styleBtn={{ width: "100%", marginLeft: "15%" }}
+                    nome={"Pagamenti"}
+                    onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 4 }) }} />
+                </View>
+              </View>
+          </View>
+
+
+
+
+
+
+
+
+
+          <View style={styles.page}>
+            
+
+            <View style={styles.singolaView}>
+            <View style={styles.titoloView}>
+              <Text style={styles.singleText}>
+                Pagamenti
+            </Text>
+            </View>
+              <View 
+              style={[styles.viewCampi, {paddingBottom: "15%"}]}>
+                <TextInput
+                  mode='outlined'
+                  label='Numero Carta'
+                  disabledInputStyle={{ color: "black" }}
+                  style={styles.singleTextInput}
+                  editable={IsEditable}
+                  value={numCarta}
+                  onChangeText={(numCarta) => setNumeroCarta(numCarta)}
+                  theme={theme}
+                  keyboardType={'numeric'} />
+
+                <DatePickerInputField
+                  styleContainer={{ marginBottom: "3%" }}
+                  styleField={{ width: "82%" }}
+                  date={dateScadenza.toString()}
+                  setDate={setDateScadenza}
+                  placeholder={"Data scadenza"}
+                  disabled={!IsEditable}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='CCV'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  value={ccv}
+                  style={styles.singleTextInput}
+                  onChangeText={(ccv) => setCCV(ccv)}
+                  theme={theme}
+                />
+
+                <TextInput
+                  mode='outlined'
+                  label='Intestatario'
+                  disabledInputStyle={{ color: "black" }}
+                  editable={IsEditable}
+                  style={styles.singleTextInput}
+                  onChangeText={(intestatario) => setIntestatario(intestatario)}
+                  theme={theme}
+                />
+
+              </View>
+            </View>
+
+            <View style={styles.guidaView}>
+                <View style={styles.ButtonContainer}>
+                  <CustomButton
+                    styleBtn={{ width: "100%", marginLeft: "15%", marginRight: "10%" }}
+                    nome={"Torna indietro"}
+                    onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
+                </View>
+              </View>
+          </View>
+
+
+
+
+
+
+
+
+
+
+
+
+        </ScrollView>
+      </ScrollView>
     </View>
   );
 }
