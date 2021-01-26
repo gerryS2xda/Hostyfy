@@ -155,29 +155,14 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 		setCleanServiceDropDisabled(true); 
 		async function getAlloggiData(){
 			var itemList = [];
-			var alloggiDisp = []; //tieni traccia degli alloggi disponibili sulla base della prenotazione
-
+			
 			//Attendi finche' non ottiene tutti gli alloggi di una struttura
 			var alloggiDocs = await AlloggioModel.getAllAlloggiOfStruttura(value);
 
-			//Determina quali sono gli alloggi disponibili
-			var alloggiOccupati = await PrenotazioneModel.getPrenotazioniAttualiHostQuery(user.userIdRef, new Date());
-			for(const doc1 of alloggiDocs){
-				var flag = false; //indica che attualmente alloggio libero
-				for(const doc2 of alloggiOccupati){
-					if(doc1.id === doc2.data().alloggioRef){ //se true -> alloggio occupato
-						flag = true;
-					}
-				}
-				if(!flag){
-					alloggiDisp.push(doc1);
-				}
-			}
-
-			if(alloggiDisp.length == 0){
+			if(alloggiDocs.length == 0){
 				setAlloggiList(itemList);
 			}else{
-				for(const doc of alloggiDisp){
+				for(const doc of alloggiDocs){
 					var alloggio = doc.data();
 					var oggetto = {
 						value: doc.id, 
