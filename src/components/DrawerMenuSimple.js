@@ -210,7 +210,11 @@ function DrawerContentCustom(props){
                         onPress={() => {
                             firebase.auth().signOut().then(() => {
                                 // Sign-out successful.
-                                props.navigation.navigate('Home');
+                                props.navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'Home' }],
+                                  });
+                                
                             }).catch((error) => {
                                 console.log("Error Sign-out in DrawerMenuSimple: " + error);
                             });
@@ -312,7 +316,10 @@ function DrawerContentCustom(props){
                         onPress={() => {
                             firebase.auth().signOut().then(() => {
                                 // Sign-out successful.
-                                props.navigation.navigate('Home');
+                                props.navigation.reset({
+                                    index: 0,
+                                    routes: [{ name: 'Home' }],
+                                  });
                             }).catch((error) => {
                                 console.log("Error Sign-out in DrawerMenuSimple.js: " + error);
                             });
