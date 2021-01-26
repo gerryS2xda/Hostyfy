@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, Text, StyleSheet, Alert, Image } from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HeaderBar from '../components/CustomHeaderBar'
-import CustomButton from '../components/CustomButton'
 import ButtonMenu from "../components/ButtonMenu";
 import { firebase } from '../firebase/config'
 import * as GuestModel from "../firebase/datamodel/GuestModel"
@@ -93,6 +91,7 @@ const HomeGuest = ({ route, navigation }) => {
       // Ottieni info dell'utente da DB usando lo userId
       async function getUserData() {
         var guestDoc = await GuestModel.getGuestDocument(userId);
+        guestDoc.dataNascita = new Date(guestDoc.dataNascita.seconds * 1000).toDateString();
         var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
         if (guestDoc.isHost) { //verifica se guest e' anche un host
           var hostDoc = await HostModel.getHostDocument(userId);

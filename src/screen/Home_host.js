@@ -1,13 +1,7 @@
-import React, { useState, useEffect, useCallback} from 'react'
+import React, { useState, useCallback} from 'react'
 import {View, Text, StyleSheet, Alert, Image} from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import CalendarPicker from 'react-native-calendar-picker';
-import { ScrollView } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar'
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import CustomImageButton from "../components/CustomImageButton";
-import CustomButton from "../components/CustomButton";
-import {firebase} from '../firebase/config'
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
 import ButtonMenu from "../components/ButtonMenu"
@@ -80,6 +74,7 @@ const HomeHost = ({route, navigation}) => {
       // Do something when the screen is focused
       async function getUserData(){
         var guestDoc = await GuestModel.getGuestDocument(userId);
+        guestDoc.dataNascita = new Date(guestDoc.dataNascita.seconds * 1000).toDateString();
         var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
         if(guestDoc.isHost){ //verifica se guest e' anche un host
             var hostDoc = await HostModel.getHostDocument(userId);
