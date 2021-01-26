@@ -128,9 +128,15 @@ function DrawerContentCustom(props){
     const toggleSwitchGuestHost = () => {
         setIsHost(previousState => !previousState);
         if(!isHost){
-            props.navigation.navigate('HomeHost', {userId: userId});
+            props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeHost',  params: { userId: userId }}],
+            }); //resetta lo stack quando si ritorna nella Home
         }else{
-            props.navigation.navigate('HomeGuest', {userId: userId});
+            props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+            }); //resetta lo stack quando si ritorna nella Home
         }
     };
     const [isUpgradePay, setIsUpgradePay] = useState(true); 
@@ -164,7 +170,10 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('HomeGuest', {userId: userId});
+                                    props.navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                                    }); //resetta lo stack quando si ritorna nella Home
                                 }}
                             />
                             <DrawerItem 
@@ -251,7 +260,10 @@ function DrawerContentCustom(props){
                                 icon={() => ( <Icon name="home-outline" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Home</Text>)}
                                 onPress={() => {
-                                    props.navigation.navigate('HomeHost', {userId: userId});
+                                    props.navigation.reset({
+                                        index: 0,
+                                        routes: [{ name: 'HomeHost',  params: { userId: userId }}],
+                                    }); //resetta lo stack quando si ritorna nella Home
                                 }}
                             />
                             <DrawerItem 
@@ -364,8 +376,12 @@ function createDowngradeHostAlert(){
                 setIsHost(previousState=>!previousState);
                 setIsUpgradePay(false);
                 userLogged.isHost = false;
-                console.log("Real: " + isRealHost+" Stato: "+isHost)
-                props.navigation.navigate('HomeGuest', {userId: userId});
+                console.log("Real: " + isRealHost+" Stato: "+isHost);
+                props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                }); //resetta lo stack quando si ritorna nella Home
+                
             } 
         }
         ],

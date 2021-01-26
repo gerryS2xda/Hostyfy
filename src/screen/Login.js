@@ -171,9 +171,15 @@ const Login = (props) => {
               onPress={() => {
                 firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user) {
                   const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
-                  props.navigation.navigate('HomeGuest', { userId: userId });
+                  
                   emailRef.current.clear();
                   passwordref.current.clear();
+
+                  //Dopo il login, viene resettato lo stack navigator e settata come route iniziale la schermata Home
+                  props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                  });
                 }).catch(function (err) {
                   console.log("ERROR in Login.js:" + err);
                   emailRef.current.clear();
