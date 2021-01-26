@@ -77,6 +77,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	const [strutturaId, setStrutturaId] = useState('');
 	const [struttureList, setStruttureList] = useState([]);
 	const [isAlloggioDropDisabled, setAlloggioDropDisabled] = useState(true);
+	const [isCleanServiceDropDisabled, setCleanServiceDropDisabled] = useState(true);
 	const [alloggiList, setAlloggiList] = useState([]);
 	const [alloggioId, setAlloggioId] = useState('');
 	const [cleanServiceId, setCleanServiceId] = useState('');
@@ -91,6 +92,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	const isFocused = useIsFocused();
 
 	//Variabili per 'useRef'
+	const alloggioRef = useRef();
 	const numTelRef = useRef(null);
 	const numPersRef = useRef(null);
 	const emailRef = useRef(null);
@@ -148,13 +150,34 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	const onChangeStrutturaDropDown = (value) => {
 		setStrutturaId(value);
 		setAlloggioId(""); //resetta campo alloggio
+		setAlloggioDropDisabled(true); 
+		setCleanServiceId(""); //resetta campo cleanservice
+		setCleanServiceDropDisabled(true); 
 		async function getAlloggiData(){
 			var itemList = [];
+			var alloggiDisp = []; //tieni traccia degli alloggi disponibili sulla base della prenotazione
+
+			//Attendi finche' non ottiene tutti gli alloggi di una struttura
 			var alloggiDocs = await AlloggioModel.getAllAlloggiOfStruttura(value);
-			if(alloggiDocs.length == 0){
+
+			//Determina quali sono gli alloggi disponibili
+			var alloggiOccupati = await PrenotazioneModel.getPrenotazioniAttualiHostQuery(user.userIdRef, new Date());
+			for(const doc1 of alloggiDocs){
+				var flag = false; //indica che attualmente alloggio libero
+				for(const doc2 of alloggiOccupati){
+					if(doc1.id === doc2.data().alloggioRef){ //se true -> alloggio occupato
+						flag = true;
+					}
+				}
+				if(!flag){
+					alloggiDisp.push(doc1);
+				}
+			}
+
+			if(alloggiDisp.length == 0){
 				setAlloggiList(itemList);
 			}else{
-				for(const doc of alloggiDocs){
+				for(const doc of alloggiDisp){
 					var alloggio = doc.data();
 					var oggetto = {
 						value: doc.id, 
@@ -171,6 +194,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 	
 	const onChangeAlloggioDropDown = (value) => {
 		setAlloggioId(value);
+		setCleanServiceDropDisabled(false);
 	};
 
 	const onChangeCleanServiceDropDown = (value) => {
@@ -202,7 +226,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 						label="Ditta di pulizia"
 						data={cleanServiceList}
 						enableSearch
-						disabled={isAlloggioDropDisabled}
+						disabled={isCleanServiceDropDisabled}
 						value={cleanServiceId}
 						onChange={onChangeCleanServiceDropDown}
 					/>
@@ -215,6 +239,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 							placeholder={"Data di inizio"}
 							setDate={setDateStart} 
 							disabled={false}
+							dateMode={"datetime"}
 						/>
 						<DatePickerInputField  //data fine 
 							styleContainer={{marginTop: 16, marginLeft: -5}}
@@ -223,6 +248,7 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 							setDate={setDateEnd} 
 							placeholder={"Data di fine"}
 							disabled={false}
+							dateMode={"datetime"}
 						/>
 				</View>
 				<View style = {styles.middleLowerContainer}>

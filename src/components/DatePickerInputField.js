@@ -6,6 +6,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 const DatePickerInputField = (props) => {
   const [date, setDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  var dateMode = "date";
+  if(props.dateMode === "datetime"){
+      dateMode="datetime";
+  }
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -18,7 +22,12 @@ const DatePickerInputField = (props) => {
   const handleConfirm = (selectedDate) => {
     const currentDate = selectedDate || date;
     setDate(currentDate);
-    props.setDate(currentDate.toDateString());
+
+    if(props.dateMode === "datetime"){
+        props.setDate(currentDate.toUTCString());
+    }else{
+        props.setDate(currentDate.toDateString());
+    }
     hideDatePicker();
   };
 
@@ -35,7 +44,7 @@ const DatePickerInputField = (props) => {
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     value={date}
-                    mode="date"  //Choose between 'date', 'time', and 'datetime'
+                    mode={dateMode}  //Choose between 'date', 'time', and 'datetime'
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
                     is24Hour={true}
@@ -60,7 +69,7 @@ const DatePickerInputField = (props) => {
                 <DateTimePickerModal
                     isVisible={isDatePickerVisible}
                     value={date}
-                    mode="date"  //Choose between 'date', 'time', and 'datetime'
+                    mode={dateMode}  //Choose between 'date', 'time', and 'datetime'
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
                     is24Hour={true}
