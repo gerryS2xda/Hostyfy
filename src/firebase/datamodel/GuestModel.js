@@ -14,7 +14,7 @@ export async function createGuestDocument(uid, cf, cognome, nome, dataNasc, sess
         cognome: cognome,
         nome: nome,
         sesso: sesso,
-        dataNascita: dataNasc,
+        dataNascita: new Date(dataNasc),
         luogoNascita: luogoNasc,
         nazionalita: nazionalita,
         numCell: numCell,
