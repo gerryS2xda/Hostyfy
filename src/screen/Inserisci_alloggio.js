@@ -252,6 +252,8 @@ export default class InserisciAlloggioScreen extends React.Component {
                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                      { text: "OK", onPress: ()=> {
                         //reset dei field del form
+                        reference.setState({nomeAlloggio: "", numCamere: "", 
+                            numMaxPersone: "", piano: "", descrizione: "", pathvideo: ""});
                         reference.nomeAlloggio.clear();  
                         reference.numCamere.clear();                        
                         reference.numMaxPersone.clear();
@@ -267,6 +269,8 @@ export default class InserisciAlloggioScreen extends React.Component {
                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                      { text: "OK", onPress: ()=> {
                         //reset dei field del form
+                        reference.setState({nomeAlloggio: "", numCamere: "", 
+                            numMaxPersone: "", piano: "", descrizione: "", pathvideo: ""});
                         reference.nomeAlloggio.clear();  
                         reference.numCamere.clear();                        
                         reference.numMaxPersone.clear();

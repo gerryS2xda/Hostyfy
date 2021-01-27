@@ -330,6 +330,8 @@ export default class InserisciStrutturaScreen extends React.Component {
                     [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
                      { text: "OK", onPress: ()=> {
                         //reset dei field del form
+                        reference.setState({denominazione: "", via: "", citta: "",
+                            cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: "", descrizione: ""});
                         reference.denominazione.clear();  
                         reference.regione.clear();                        
                         reference.citta.clear();
@@ -351,6 +353,8 @@ export default class InserisciStrutturaScreen extends React.Component {
                 { text: "OK", onPress: ()=> {
                     
                     //reset dei field del form
+                    reference.setState({denominazione: "", via: "", citta: "",
+                            cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: "", descrizione: ""});
                     reference.denominazione.clear();  
                     reference.regione.clear();                        
                     reference.citta.clear();
