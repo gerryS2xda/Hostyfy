@@ -11,6 +11,33 @@ import CustomButton from '../components/CustomButton';
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 
+//Style
+const styles = StyleSheet.create({
+  maincontainer: {
+		flex: 1,
+		backgroundColor: '#fff',
+	},
+  container: {
+    flex: 1,
+  },
+
+  aggiungiStruttura:{
+    flexDirection: "column-reverse",
+    alignItems: 'flex-end',
+    marginBottom: "5%",
+    marginRight: "3%",
+  },
+
+  buttonContainer: {
+    width: "100%", 
+    alignItems: "center",
+    justifyContent: 'center',
+    marginTop: "5%",
+    marginBottom: "5%",
+  }
+
+});
+
 const VisualizzaPrenotazioni = ({route, navigation}) => {  
 
       const {user,isHost} = route.params; 
@@ -91,7 +118,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
     
       return (
         <View style={styles.maincontainer}>
-          <HeaderBar title="Le tue prenotazioni" navigator={navigation} /> 
+          <HeaderBar title="Prenotazioni" navigator={navigation} /> 
           <View style={styles.container}>
                 <CustomListViewGeneralPrenotazione
                     nav = {navigation}
@@ -115,31 +142,4 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
 }
 
 export default VisualizzaPrenotazioni;
-
-//Style
-const styles = StyleSheet.create({
-  maincontainer: {
-		flex: 1,
-		backgroundColor: '#fff',
-	},
-  container: {
-    flex: 1,
-  },
-
-  aggiungiStruttura:{
-    flexDirection: "column-reverse",
-    alignItems: 'flex-end',
-    marginBottom: "5%",
-    marginRight: "3%",
-  },
-
-  buttonContainer: {
-    width: "100%", 
-    alignItems: "center",
-    justifyContent: 'center',
-    marginTop: "5%",
-    marginBottom: "5%",
-  }
-
-});
 
