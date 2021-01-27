@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
  
   maincontainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    //backgroundColor: 'transparent',
   },
 
   container: {
@@ -22,11 +22,14 @@ const styles = StyleSheet.create({
   },
 
   aggiungiStruttura:{
+    //backgroundColor: "#000000",
     flexDirection: "column-reverse",
     alignItems: 'flex-end',
     marginBottom: "5%",
-    marginRight: "3%",
+    marginRight: "3%",    
   },
+
+  
 });
 
 const LeMieStrutture = (props) => {  
@@ -86,18 +89,22 @@ const LeMieStrutture = (props) => {
                 userLogged = {user}
                 itemList = {struttureList}
               />
-              <View style = {styles.aggiungiStruttura}>
-                <TouchableOpacity 
-                  onPress={() => {
-                    props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], state: {}});
-                  }}>
-                    <Icon
-                      name = "plus-circle-outline"
-                      color = {"#f2077d"}
-                      size = {65}
-                    />
-                    </TouchableOpacity>
-                </View>
+
+              <View 
+                style = {styles.aggiungiStruttura}
+                >
+                  <TouchableOpacity 
+                    onPress={() => {
+                      props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], state: {}});
+                    }}>
+                      <Icon
+                        name = "plus-circle-outline"
+                        color = {"#0692d4"}
+                        size = {65}
+                       
+                      />
+                  </TouchableOpacity>
+              </View>
             </View>
           </View>   
       
