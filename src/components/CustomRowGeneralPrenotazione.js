@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Dialog from 'react-native-dialog';
 import {firebase} from '../firebase/config'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 var db = firebase.firestore();
 
@@ -11,14 +12,16 @@ var db = firebase.firestore();
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        padding: 10,
+        //paddingTop: 6,
+        //paddingLeft: 12,
+        //paddingBottom: 6,
         marginLeft:"4%", //oldvalue: 16
         marginRight:"4%", //oldvalue: 16
         marginTop: "2%", //oldvalue: 8
-        marginBottom: "3%", //oldvalue: 8
-        borderRadius: 3,
-        elevation: 2,
+        borderRadius: 18,
+        borderWidth: 3,
         width: "93%",
+        borderColor: "#e4eded"
         //backgroundColor: 'black'
     },
     title: {
@@ -31,15 +34,19 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         marginLeft: 12,
         justifyContent: 'center',
+        paddingTop: 15,
+        paddingBottom: 15
     },
     description: {
         fontSize: 12,
         fontFamily: 'MontserrantItalic',
     },
     photo: {
-        height: 50,
-        width: 50,
-        borderRadius: 4,
+        borderTopLeftRadius: 16,
+        borderBottomLeftRadius:16,
+        height: "100%",
+        width: 70,
+        
     },
     arrow: {
         alignSelf: 'center',
@@ -65,10 +72,9 @@ return (
                 {props.description}
             </Text>
         </View>
-        <Image
-                source = {require('../../assets/arrow.png')}
-                style = {styles.arrow} 
-            />
+        <Icon name={"chevron-right"} color={"#000000"} size={40} style={styles.arrow} />
+                 
+            
     </View>
 </TouchableOpacity>
 
