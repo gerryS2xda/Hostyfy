@@ -47,10 +47,14 @@ const PrenotazioneScreen = ({route,navigation}) =>{
             <ScrollView style={styles.bodyScrollcontainer}>
                 <View style={styles.scrollContent}> 
                     <Text style={styles.numprenotazionetxt}>Prenotazione n. {prenotazione.numeroPrenotazione}</Text>
+                    
+                    
                     <View style={styles.infoStrutturacontainer}>
                         <Image style={styles.strutturaImage} source={require("../../assets/hotelExampleStruttura.png")}/>
                         
                     </View>
+                    
+                    
                     <View style={styles.fieldSet}>
                         <Text style={styles.legend}>Info prenotazione</Text>
                         <View style={styles.fieldSetContent}>
