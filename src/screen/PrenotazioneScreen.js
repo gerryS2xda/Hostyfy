@@ -7,7 +7,7 @@ import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 
 const PrenotazioneScreen = ({route,navigation}) =>{
-    const {prenotazioneId, user, isHost} = route.params; 
+    const {prenotazioneId, user, isHost, image_url} = route.params; 
     const [alloggio, setAlloggio] = useState({});
     const [prenotazione, setPrenotazione] = useState({});
     const isFocused = useIsFocused();
@@ -50,7 +50,7 @@ const PrenotazioneScreen = ({route,navigation}) =>{
                     
                     
                     <View style={styles.infoStrutturacontainer}>
-                        <Image style={styles.strutturaImage} source={require("../../assets/hotelExampleStruttura.png")}/>
+                        <Image style={styles.strutturaImage} source={image_url}/>
                         
                     </View>
                     

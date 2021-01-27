@@ -63,11 +63,19 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                //Prendi la prima foto presente per l'alloggio e salva nello state
+                var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
+                var imageURL = "";
+                if(fotoArray.length == 0){
+                    imageURL = require("../../assets/imagenotfound.png");
+                }else{
+                    imageURL = {uri: fotoArray[0]};
+                }
                 var oggetto = {
                   key: count, 
                   title: alloggio.nomeAlloggio,
                   description: "" + dataInizio + " - " + dataFine,
-                  image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+                  image_url: imageURL, //alloggio image
                   newPage: 'PrenotazioneDetail',
                   id: prenotazioneId,
                 }
@@ -92,11 +100,19 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                 var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
                 let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                //Prendi la prima foto presente per l'alloggio e salva nello state
+                var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
+                var imageURL = "";
+                if(fotoArray.length == 0){
+                    imageURL = require("../../assets/imagenotfound.png");
+                }else{
+                    imageURL = {uri: fotoArray[0]};
+                }
                 var oggetto = {
                   key: count, 
                   title: alloggio.nomeAlloggio,
                   description: "" + dataInizio + " - " + dataFine,
-                  image_url: require('../../assets/Struttura/struttura1.jpg'), //alloggio image
+                  image_url: imageURL, //alloggio image
                   newPage: 'PrenotazioneDetail',
                   id: prenotazioneId,
                 }

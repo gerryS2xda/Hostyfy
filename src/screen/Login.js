@@ -182,8 +182,6 @@ const Login = (props) => {
                   });
                 }).catch(function (err) {
                   console.log("ERROR in Login.js:" + err);
-                  emailRef.current.clear();
-                  passwordref.current.clear();
                   if (!errore) setErrore(true);
                 });
 
