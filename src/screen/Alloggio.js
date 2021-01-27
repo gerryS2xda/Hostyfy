@@ -84,6 +84,11 @@ const AlloggioScreen = ({route, navigation}) =>{
     const [activeIndex, setActiveIndex] = useState(0);
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
+    const [nomeAlloggio, setNomeAlloggio] = useState("");
+    const [numCamere, setNumCamere] = useState("");
+    const [numMaxPersone, setNumMaxPersone] = useState("");
+    const [piano, setPiano] = useState("");
+    const [descrizione, setDescrizione] = useState("");
     
         //Caricamento dei dati non appena inizia il rendering dell'applicazione
         useFocusEffect(
@@ -109,7 +114,12 @@ const AlloggioScreen = ({route, navigation}) =>{
                     fotoList.push({image: imageURL});
                 } 
                 //Memorizza l'alloggio, lista foto per carousel nello state
-                setAlloggio(alloggioDoc);
+                setNomeAlloggio(alloggioDoc.nomeAlloggio);
+                setNumCamere(alloggioDoc.numCamere);
+                setNumMaxPersone(alloggioDoc.numMaxPersone);
+                setPiano(alloggioDoc.piano);
+                setDescrizione(alloggioDoc.descrizione);
+               
                 setCarouselItems(fotoList);
             }
             getAlloggioData();
@@ -148,15 +158,45 @@ const AlloggioScreen = ({route, navigation}) =>{
                             onSnapToItem = { index => setActiveIndex(index)} />
                         </View>
                         <View style={styles.middleContainer}>
-                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.nomeAlloggio}</TextInput>
-                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.numCamere}</TextInput>
-                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.numMaxPersone}</TextInput>
-                            <TextInput style={styles.singleField} editable={IsEditable}>{alloggio.piano}</TextInput>
-                            <TextInput style={styles.descrizioneField}
+                            <TextInput
+                                style={styles.singleField}
+                                editable={IsEditable}
+                                value = {nomeAlloggio}
+                                onChangeText={(nomeAlloggio)=>{setNomeAlloggio(nomeAlloggio)}}
+                                >
+                             </TextInput>
+
+                            <TextInput 
+                                style={styles.singleField}
+                                editable={IsEditable}
+                                value = {numCamere}
+                                onChangeText={(numCamere)=>{setNumCamere(numCamere)}}
+                                >
+                             </TextInput>
+
+                            <TextInput
+                                style={styles.singleField}
+                                editable={IsEditable}
+                                value = {numMaxPersone}
+                                onChangeText={(numMaxPersone)=>{setNumMaxPersone(numMaxPersone)}}
+                                >
+                            </TextInput>
+
+                            <TextInput
+                                style={styles.singleField} 
+                                editable={IsEditable}
+                                value = {piano}
+                                onChangeText={(piano)=>{setPiano(piano)}}
+                                >
+                                </TextInput>
+                            <TextInput 
+                                style={styles.descrizioneField}
                                 editable={IsEditable}
                                 multiline={true}
-                                numberOfLines={15}>
-                                {alloggio.descrizione}
+                                numberOfLines={15}
+                                value = {descrizione}
+                                onChangeText={(descrizione)=>{setDescrizione(descrizione)}}
+                                >
                              </TextInput>
                         </View>
                         <CustomButton 
@@ -179,7 +219,18 @@ const AlloggioScreen = ({route, navigation}) =>{
                             <CustomButton 
                                 styleBtn={{width: "45%"}} 
                                 nome={IsEditable ? 'Applica modifiche' : "Modifica dati"}  
-                                onPress={()=> {IsEditable ? setIsEditable(false) : setIsEditable(true)}} 
+                                onPress={()=> { 
+                                    async function updateAlloggio(){
+                                        if(IsEditable){
+                                            setIsEditable(false)
+                                            await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, "");
+                                        } else {
+                                            setIsEditable(true)
+                                        }
+                                    }
+                                    updateAlloggio();
+                                }
+                                } 
                             /> 
                         </View>
                         <View style={styles.bottomButtonContainer}> 
