@@ -272,53 +272,97 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 						disabled = {disableInsertPrenButton}
 						styleBtn={{width: "100%"}}
 						onPress={()=>{ 
-							if(!validateFormField(strutturaId, alloggioId, cleanServiceId, numTel, numPers, email, costo, dateStart, dateEnd)){
-								return;
-							}
-							
+							async function carica(){
+								if(!validateFormField(strutturaId, alloggioId, cleanServiceId, numTel, numPers, email, costo, dateStart, dateEnd)){
+									return;
+								}
 
-							setInsertPrenButtonStatus(true); //rendi pulsante non cliccabile se e' stato fatto un primo click
+								var dataOdierna = new Date();
+								var newDateStart = new Date(dateStart);
+								var newDateEnd = new Date(dateEnd);
 
-							// Ottieni riferimento dell'utente guest
-							async function createAndSavePrenotazione(){
-								
-								// Ottieni riferimento dell'utente guest mediante l'email
-								var guestDocs = await GuestModel.getGuestDocumentByEmail(email);
-								if(guestDocs.length == 0){
+								if(newDateStart < dataOdierna){
 									Alert.alert(
-										"Nuova prenotazione",
-										"Non è possibile memorizzare la nuova prenotazione perche' l'utente non utilizza Hostyfy!",
+										"Data non valida",
+										"Non puoi inserire una prenotazione con data di inizio antecedente alla data odierna!",
 										[
-											{
-											text: "Cancel",
-											onPress: () => console.log("Cancel Pressed"),
-											style: "cancel"
-											},
-											{ text: "OK", onPress: () => navigation.navigate('HomeHost') }
+										{ text: "OK", onPress: () => console.log("OK Pressed") }
 										],
 										{ cancelable: false }
 									);
-								}else{
-									for(const doc of guestDocs){
-										var guest = doc.data();
-										await PrenotazioneModel.createPrenotazioniDocument(user.userIdRef, guest.userId, strutturaId, alloggioId, dateStart, dateEnd, email, numPers, numTel, costo, cleanServiceId);
-										
-										//Resetta i campi
-										numTelRef.current.clear();  
-										numPersRef.current.clear();
-										costoRef.current.clear();
-										emailRef.current.clear();
-										setDateStart("");
-										setDateEnd("");
-										setStrutturaId("");
-										setAlloggioId("");
-										setCleanServiceId("");
-										setAlloggioDropDisabled(true);
-										
+									return;
+								}
+								if(newDateEnd < dataOdierna){
+									Alert.alert(
+										"Data non valida",
+										"Non puoi inserire una prenotazione con data di fine antecedente alla data odierna!",
+										[
+										{ text: "OK", onPress: () => console.log("OK Pressed") }
+										],
+										{ cancelable: false }
+									);
+									return;
+								}
+								if(newDateEnd < newDateStart){
+									Alert.alert(
+										"Data non valida",
+										"Non puoi inserire una prenotazione con data di inizio antecedente alla data di fine!",
+										[
+										{ text: "OK", onPress: () => console.log("OK Pressed") }
+										],
+										{ cancelable: false }
+									);
+									return;
+								}
 
+								async function checkInterleaved(newDateStart, newDateEnd) {
+									console.log(newDateEnd);
+									console.log(newDateStart);
+									//controlliamo che non si sovrapponga con una prenotazione gia esistente
+									let prenotazioni = await PrenotazioneModel.getPrenotazioniAttualiHostQueryAlloggio(user.userIdRef, new Date(), alloggioId);
+									
+									console.log(prenotazioni.length)
+									for (const doc of prenotazioni){
+										var pren = doc.data();
+										var prenStart = new Date(pren.dataInizio.seconds * 1000);
+										var prenEnd = new Date(pren.dataFine.seconds * 1000);
+										console.log(prenStart);
+										if((newDateStart >= prenStart) && (newDateStart <= prenEnd)){
+											console.log("hello");
+											return true;
+										}
+										else if ((newDateEnd >= prenStart) && (newDateEnd <= prenEnd)){
+											console.log("ciao");
+											return true;
+										}
+									}
+									return false;
+								}
+
+								let interleaved = await checkInterleaved(newDateStart, newDateEnd);
+								if(interleaved){
+									Alert.alert(
+										"Data non valida",
+										"Questo alloggio è già occupato nelle date selezionate!",
+										[
+										{ text: "OK", onPress: () => console.log("OK Pressed") }
+										],
+										{ cancelable: false }
+									);
+									return;
+								}
+
+								setInsertPrenButtonStatus(true); //rendi pulsante non cliccabile se e' stato fatto un primo click
+
+								// Ottieni riferimento dell'utente guest
+								async function createAndSavePrenotazione(){
+									
+									// Ottieni riferimento dell'utente guest mediante l'email
+									var guestDocs = await GuestModel.getGuestDocumentByEmail(email);
+									if(guestDocs.length == 0){
 										Alert.alert(
 											"Nuova prenotazione",
-											"La nuova prenotazione e' stata memorizzata con successo!",
+											"Non è possibile memorizzare la nuova prenotazione perche' l'utente non utilizza Hostyfy!",
 											[
 												{
 												text: "Cancel",
@@ -329,12 +373,47 @@ const Inserisci_prenotazione = ({route, navigation}) => {
 											],
 											{ cancelable: false }
 										);
+									}else{
+										for(const doc of guestDocs){
+											var guest = doc.data();
+											await PrenotazioneModel.createPrenotazioniDocument(user.userIdRef, guest.userId, strutturaId, alloggioId, dateStart, dateEnd, email, numPers, numTel, costo, cleanServiceId);
+											
+											//Resetta i campi
+											numTelRef.current.clear();  
+											numPersRef.current.clear();
+											costoRef.current.clear();
+											emailRef.current.clear();
+											setDateStart("");
+											setDateEnd("");
+											setStrutturaId("");
+											setAlloggioId("");
+											setCleanServiceId("");
+											setAlloggioDropDisabled(true);
+											
+
+											Alert.alert(
+												"Nuova prenotazione",
+												"La nuova prenotazione e' stata memorizzata con successo!",
+												[
+													{
+													text: "Cancel",
+													onPress: () => console.log("Cancel Pressed"),
+													style: "cancel"
+													},
+													{ text: "OK", onPress: () => navigation.navigate('HomeHost') }
+												],
+												{ cancelable: false }
+											);
+										}
 									}
+									setInsertPrenButtonStatus(false); //rendi pulsante nuovamente cliccabile
 								}
-								setInsertPrenButtonStatus(false); //rendi pulsante nuovamente cliccabile
+								createAndSavePrenotazione();
 							}
-							createAndSavePrenotazione();
-						}} 
+						carica();
+						}
+					
+					} 
 					/>
 				</View>
 			</View>
