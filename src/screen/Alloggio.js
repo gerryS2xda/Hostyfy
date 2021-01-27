@@ -143,7 +143,7 @@ const AlloggioScreen = ({route, navigation}) =>{
 
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title={alloggio.nomeAlloggio} navigator={navigation} />
+                <HeaderBar title={nomeAlloggio} navigator={navigation} />
                 <ScrollView style={styles.bodyScrollcontainer}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.carouselContainer} >
