@@ -17,9 +17,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FCFCFC',
-    borderWidth: 1,
-    borderRadius: 20, 
-    borderColor: '#d3d9e3',
   },
 
   intestazione:{
@@ -157,7 +154,7 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
 
       return (
         <View style={styles.maincontainer}>
-        <HeaderBar title="Prenotazioni passate" navigator={navigation} /> 
+        <HeaderBar title="Pren. Terminate" navigator={navigation} /> 
         
           <View style={styles.container}>
             <CustomListViewGeneralPrenotazione
