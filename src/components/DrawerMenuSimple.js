@@ -39,6 +39,7 @@ import RecensioniHostScreen from "../screen/RecensioniHostScreen"
 import RecensioniGuestScreen from "../screen/RecensioniGuestScreen"
 import RecensioneScreen from "../screen/RecensioneScreen"
 import ModificaStruttura from "../screen/ModificaStruttura"
+import ModificaAlloggio from "../screen/ModificaAlloggio"
 
 //Create Drawer navigator
 const Drawer = createDrawerNavigator();
@@ -110,6 +111,7 @@ const DrawerMenuSimple = ({navigation}) =>{
             <Drawer.Screen name="RecensioniGuestScreen" component={RecensioniGuestScreen} options={{title: 'Le mie recensioni', swipeEnabled: false}} />
             <Drawer.Screen name="RecensioneScreen" component={RecensioneScreen} options={{title: 'Recensioni', swipeEnabled: false}} />
             <Drawer.Screen name="ModificaStruttura" component={ModificaStruttura} options={{title: 'Modifica Struttura', swipeEnabled: false}} />
+            <Drawer.Screen name="ModificaAlloggio" component={ModificaAlloggio} options={{title: 'Modifica Alloggio', swipeEnabled: false}} />
         </Drawer.Navigator>
     );
 }
