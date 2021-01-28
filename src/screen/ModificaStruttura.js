@@ -134,34 +134,12 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
 
-
-
-
-
-
-
-
-
-
-
-
-
-
     scrollContent: {
         flex: 1,
         width: "100%",
         justifyContent: "center",
         alignItems: 'center',
     },
-
-
-
-
-
-
-
-
-
 
     singleTextInput: {
         alignContent: "center",
