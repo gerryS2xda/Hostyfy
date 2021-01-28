@@ -104,7 +104,7 @@ const VisualizzaAlloggi = (props) => {
                   }}>
                     <Icon
                       name = "plus-circle-outline"
-                      color = {"#f2077d"}
+                      color = {"#0692d4"}
                       size = {65}
                     />
                 </TouchableOpacity>
