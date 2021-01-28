@@ -109,8 +109,10 @@ const InserisciRecensioneScreen = ({route, navigation}) =>{
                                         return;
                                     }
 
-                                    setInsertRecButtonStatus(true); //prevenire doppio click
                                     async function onPressAggiungiRecensione(){
+                                        
+                                        setInsertRecButtonStatus(true); //prevenire doppio click
+
                                         var dataRecensione = new Date(); //data odierna
 
                                         //Costruisci oggetto per data di soggiorno mediante data di Iinizio della prenotazione
@@ -123,6 +125,9 @@ const InserisciRecensioneScreen = ({route, navigation}) =>{
                                         await RecensioneModel.createRecensioneDocument(strutturaId, alloggioId, prenotazioneId, userId, dataRecensione, dataSoggiorno, punteggio, feedbackNegative, feedbackPositive);
                                     
                                         //Resetta i campi e stati
+                                        setPunteggio("");
+                                        setFeedbackPositive("");
+                                        setFeedbackNegative("");
                                         punteggioRef.current.clear();  
                                         feedbackPositiveRef.current.clear();
                                         feedbackNegativeRef.current.clear();
