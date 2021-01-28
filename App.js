@@ -27,7 +27,7 @@
     25. npm i --save react-native-events-calendar
     Swipe right to open
 */
-import {LogBox} from 'react-native'
+import { LogBox } from 'react-native'
 import React, { useState } from 'react';
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
@@ -74,11 +74,12 @@ import RecensioniHostScreen from "./src/screen/RecensioniHostScreen"
 import RecensioniGuestScreen from "./src/screen/RecensioniGuestScreen"
 import RecensioneScreen from "./src/screen/RecensioneScreen"
 import ModificaStruttura from "./src/screen/ModificaStruttura"
+import ModificaAlloggio from "./src/screen/ModificaAlloggio"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
 const App = () => {
-  
+
   //SetupDB.createFirestoreDB();
 
   let [fontsLoaded] = useFonts({
@@ -94,200 +95,206 @@ const App = () => {
   } else {
     return (
       <NavigationContainer>
-          <Stack.Navigator screenOptions={{
-            headerShown: false
-          }}>
-          <Stack.Screen 
-            name="DrawerMenuSimple" 
-            component={DrawerMenuSimple} 
-            options={{title: 'Home'}} 
+        <Stack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <Stack.Screen
+            name="DrawerMenuSimple"
+            component={DrawerMenuSimple}
+            options={{ title: 'Home' }}
           />
-          <Stack.Screen 
-            name="WelcomePage" 
-            component={WelcomeScreen} 
-            options={{title: 'Welcome'}} 
+          <Stack.Screen
+            name="WelcomePage"
+            component={WelcomeScreen}
+            options={{ title: 'Welcome' }}
           />
-          <Stack.Screen 
-            name="Home" 
-            component={LoginScreen} 
-            options={{title: 'Home'}} 
+          <Stack.Screen
+            name="Home"
+            component={LoginScreen}
+            options={{ title: 'Home' }}
           />
-          <Stack.Screen 
-            name="HomeHost" 
-            component={HomeHostScreen} 
-            options={{title: 'Home Host'}} 
+          <Stack.Screen
+            name="HomeHost"
+            component={HomeHostScreen}
+            options={{ title: 'Home Host' }}
           />
-          <Stack.Screen 
-            name="Registratione" 
-            component={Registrazione} 
-            options={{title: 'Registrazione'}} 
+          <Stack.Screen
+            name="Registratione"
+            component={Registrazione}
+            options={{ title: 'Registrazione' }}
           />
-          <Stack.Screen 
-            name="InserisciPrenotazione" 
-            component={Inserisci_prenotazione} 
-            options={{title: 'Prenotazione'}} 
+          <Stack.Screen
+            name="InserisciPrenotazione"
+            component={Inserisci_prenotazione}
+            options={{ title: 'Prenotazione' }}
           />
-          <Stack.Screen 
-            name="LeMieStrutture" 
-            component={LeMieStrutture} 
-            options={{title: 'Le mie strutture'}} 
+          <Stack.Screen
+            name="LeMieStrutture"
+            component={LeMieStrutture}
+            options={{ title: 'Le mie strutture' }}
           />
-          <Stack.Screen 
-            name="HomeGuest" 
-            component={HomeGuestScreen} 
-            options={{title: 'Home guest'}} 
+          <Stack.Screen
+            name="HomeGuest"
+            component={HomeGuestScreen}
+            options={{ title: 'Home guest' }}
           />
-          <Stack.Screen 
-            name="VisualizzaStruttura" 
-            component={StrutturaScreen} 
-            options={{title: 'Struttura'}} 
+          <Stack.Screen
+            name="VisualizzaStruttura"
+            component={StrutturaScreen}
+            options={{ title: 'Struttura' }}
           />
-          <Stack.Screen 
-            name="PrenotazioneDetail" 
-            component={PrenotazioneDetailScreen} 
-            options={{title: 'Prenotazione'}} 
+          <Stack.Screen
+            name="PrenotazioneDetail"
+            component={PrenotazioneDetailScreen}
+            options={{ title: 'Prenotazione' }}
           />
-          <Stack.Screen 
-            name="InfoCamera" 
-            component={DomoticaScreen} 
-            options={{title: 'Informazioni camera'}} 
+          <Stack.Screen
+            name="InfoCamera"
+            component={DomoticaScreen}
+            options={{ title: 'Informazioni camera' }}
           />
-          <Stack.Screen 
-            name="LaMiaChiave" 
-            component={ChiaveScreen} 
-            options={{title: 'La mia chiave'}} 
+          <Stack.Screen
+            name="LaMiaChiave"
+            component={ChiaveScreen}
+            options={{ title: 'La mia chiave' }}
           />
-          <Stack.Screen 
-            name="ModificaProfilo" 
-            component={ModificaProfiloScreen} 
-            options={{title: 'Profilo'}} 
+          <Stack.Screen
+            name="ModificaProfilo"
+            component={ModificaProfiloScreen}
+            options={{ title: 'Profilo' }}
           />
-          <Stack.Screen 
-            name="Alloggio" 
-            component={AlloggioScreen} 
-            options={{title: 'Alloggio'}} 
+          <Stack.Screen
+            name="Alloggio"
+            component={AlloggioScreen}
+            options={{ title: 'Alloggio' }}
           />
-          <Stack.Screen 
-            name="Inserisci struttura" 
-            component={InserisciStrutturaScreen} 
-            options={{title: 'Inserisci struttura'}} 
+          <Stack.Screen
+            name="Inserisci struttura"
+            component={InserisciStrutturaScreen}
+            options={{ title: 'Inserisci struttura' }}
           />
-          <Stack.Screen 
-            name="EffettuaCheckIn" 
-            component={CheckInScreen} 
-            options={{title: 'Check-In'}} 
+          <Stack.Screen
+            name="EffettuaCheckIn"
+            component={CheckInScreen}
+            options={{ title: 'Check-In' }}
           />
-          <Stack.Screen 
-            name="VisualizzaAlloggi" 
-            component={VisualizzaAlloggi} 
-            options={{title: 'Visualizza Alloggi'}} 
+          <Stack.Screen
+            name="VisualizzaAlloggi"
+            component={VisualizzaAlloggi}
+            options={{ title: 'Visualizza Alloggi' }}
           />
-          <Stack.Screen 
-            name="InserisciAlloggio" 
-            component={InserisciAlloggio} 
-            options={{title: 'Inserisci Alloggio'}} 
+          <Stack.Screen
+            name="InserisciAlloggio"
+            component={InserisciAlloggio}
+            options={{ title: 'Inserisci Alloggio' }}
           />
-          <Stack.Screen 
-            name="LeMieChiavi" 
-            component={LeMieChiaviScreen} 
-            options={{title: 'Le mie chiavi'}} 
+          <Stack.Screen
+            name="LeMieChiavi"
+            component={LeMieChiaviScreen}
+            options={{ title: 'Le mie chiavi' }}
           />
-          <Stack.Screen 
-            name="VisualizzaPrenotazioni" 
-            component={VisualizzaPrenotazioniScreen} 
-            options={{title: 'Visualizza prenotazioni'}} 
+          <Stack.Screen
+            name="VisualizzaPrenotazioni"
+            component={VisualizzaPrenotazioniScreen}
+            options={{ title: 'Visualizza prenotazioni' }}
           />
-          <Stack.Screen 
-            name="StoricoPrenotazioni" 
-            component={VisualizzaStoricoPrenScreen} 
-            options={{title: 'Storico prenotazioni'}} 
+          <Stack.Screen
+            name="StoricoPrenotazioni"
+            component={VisualizzaStoricoPrenScreen}
+            options={{ title: 'Storico prenotazioni' }}
           />
-          <Stack.Screen 
-            name="UpgradeHost" 
-            component={UpgradeHostScreen} 
-            options={{title: 'Upgrade Host'}} 
+          <Stack.Screen
+            name="UpgradeHost"
+            component={UpgradeHostScreen}
+            options={{ title: 'Upgrade Host' }}
           />
-          <Stack.Screen 
-            name="VisualizzaDateAlloggi" 
-            component={VisualizzaDateAlloggi} 
-            options={{title: 'Calendario'}} 
+          <Stack.Screen
+            name="VisualizzaDateAlloggi"
+            component={VisualizzaDateAlloggi}
+            options={{ title: 'Calendario' }}
           />
-          <Stack.Screen 
-            name="MoviePlayer" 
-            component={MoviePlayerScreen} 
-            options={{title: 'Media player'}} 
+          <Stack.Screen
+            name="MoviePlayer"
+            component={MoviePlayerScreen}
+            options={{ title: 'Media player' }}
           />
-          <Stack.Screen 
-            name="Visualizza_calendario_alloggio" 
-            component={Visualizza_calendario_alloggio} 
-            options={{title: 'Calendario'}} 
+          <Stack.Screen
+            name="Visualizza_calendario_alloggio"
+            component={Visualizza_calendario_alloggio}
+            options={{ title: 'Calendario' }}
           />
-          <Stack.Screen 
-            name="Notifications" 
-            component={NotificationScreen} 
-            options={{title: 'Notifiche'}} 
+          <Stack.Screen
+            name="Notifications"
+            component={NotificationScreen}
+            options={{ title: 'Notifiche' }}
           />
-          <Stack.Screen 
-            name="CheckOut" 
-            component={CheckOutScreen} 
-            options={{title: 'CheckOut'}} 
+          <Stack.Screen
+            name="CheckOut"
+            component={CheckOutScreen}
+            options={{ title: 'CheckOut' }}
           />
-          <Stack.Screen 
-            name="PasswordDimenticata" 
-            component={PasswordDimenticata} 
-            options={{title: 'PasswordDimenticata'}} 
+          <Stack.Screen
+            name="PasswordDimenticata"
+            component={PasswordDimenticata}
+            options={{ title: 'PasswordDimenticata' }}
           />
-          <Stack.Screen 
-            name="ImagePickerMultipleStruttura" 
-            component={ImagePickerMultipleStruttura} 
-            options={{title: 'Selezionate 0 foto', headerShown: true}} 
+          <Stack.Screen
+            name="ImagePickerMultipleStruttura"
+            component={ImagePickerMultipleStruttura}
+            options={{ title: 'Selezionate 0 foto', headerShown: true }}
           />
-          <Stack.Screen 
-            name="ImagePickerMultipleAlloggio" 
-            component={ImagePickerMultipleAlloggio} 
-            options={{title: 'Selezionate 0 foto', headerShown: true}} 
+          <Stack.Screen
+            name="ImagePickerMultipleAlloggio"
+            component={ImagePickerMultipleAlloggio}
+            options={{ title: 'Selezionate 0 foto', headerShown: true }}
           />
-          <Stack.Screen 
-            name="InserisciRecensione" 
-            component={InserisciRecensioneScreen} 
-            options={{title: 'Recensione', headerShown: true}} 
+          <Stack.Screen
+            name="InserisciRecensione"
+            component={InserisciRecensioneScreen}
+            options={{ title: 'Recensione', headerShown: true }}
           />
-          <Stack.Screen 
-            name="VisualizzaCleanServices" 
-            component={VisualizzaCleanServices} 
-            options={{title: "VisualizzaCleanServices", headerShown: true}} 
+          <Stack.Screen
+            name="VisualizzaCleanServices"
+            component={VisualizzaCleanServices}
+            options={{ title: "VisualizzaCleanServices", headerShown: true }}
           />
-          <Stack.Screen 
-            name="InserisciCleanService" 
-            component={InserisciCleanService} 
-            options={{title: "InserisciCleanService", headerShown: true}} 
+          <Stack.Screen
+            name="InserisciCleanService"
+            component={InserisciCleanService}
+            options={{ title: "InserisciCleanService", headerShown: true }}
           />
-          <Stack.Screen 
-            name="CleanService" 
-            component={CleanService} 
-            options={{title: "CleanService", headerShown: true}} 
+          <Stack.Screen
+            name="CleanService"
+            component={CleanService}
+            options={{ title: "CleanService", headerShown: true }}
           />
-          <Stack.Screen 
-            name="RecensioniHostScreen" 
-            component={RecensioniHostScreen} 
-            options={{title: "Recensioni"}} 
+          <Stack.Screen
+            name="RecensioniHostScreen"
+            component={RecensioniHostScreen}
+            options={{ title: "Recensioni" }}
           />
-          <Stack.Screen 
-            name="RecensioniGuestScreen" 
-            component={RecensioniGuestScreen} 
-            options={{title: "Recensioni"}} 
+          <Stack.Screen
+            name="RecensioniGuestScreen"
+            component={RecensioniGuestScreen}
+            options={{ title: "Recensioni" }}
           />
-          <Stack.Screen 
-            name="RecensioneScreen" 
-            component={RecensioneScreen} 
-            options={{title: "Recensione"}} 
+          <Stack.Screen
+            name="RecensioneScreen"
+            component={RecensioneScreen}
+            options={{ title: "Recensione" }}
           />
-          <Stack.Screen 
-            name="Modifica Struttura" 
-            component={ModificaStruttura} 
-            options={{title: "Modifica Struttura"}} 
+          <Stack.Screen
+            name="ModificaStruttura"
+            component={ModificaStruttura}
+            options={{ title: "Modifica Struttura" }}
           />
-        </Stack.Navigator>   
+
+          <Stack.Screen
+            name="ModificaAlloggio"
+            component={ModificaAlloggio}
+            options={{ title: "Modifica Alloggio" }}
+          />
+        </Stack.Navigator>
       </NavigationContainer>
     );
   }
