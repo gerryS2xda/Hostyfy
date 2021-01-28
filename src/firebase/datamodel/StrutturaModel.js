@@ -29,9 +29,8 @@ export async function createStrutturaDocument(uidHost, codiceOtp, denominazione,
 }
 
 //Update functions
-export async function updateStrutturaDocument(id, codiceOtp, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia){
+export async function updateStrutturaDocument(id, denominazione, descrizione, indirizzobj, guida, numAlloggi, tipologia){
     return await strutturaCollectionRef.doc(id).update({
-        codiceOtp: codiceOtp, 
         denominazione: denominazione, 
         descrizione: descrizione,
         indirizzo: indirizzobj, 

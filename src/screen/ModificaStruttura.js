@@ -15,8 +15,8 @@ const styles = StyleSheet.create({
     maincontainer: {
         flex: 1,
         width: "100%",
-        //justifyContent: 'flex-start',
-        //alignItems: 'flex-start',
+        justifyContent: 'center',
+        alignItems: 'center',
         //backgroundColor: "#000"
     },
 
@@ -44,6 +44,8 @@ const styles = StyleSheet.create({
         paddingBottom: "5%",
         alignItems: "center",
         width: "100%",
+        justifyContent: "center",
+        alignItems: "center"
     },
 
     carouselContainer: {
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
         width: "100%",
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom: "2%",
+        marginBottom: "4%",
     },
 
     titoloView: {
@@ -63,11 +65,15 @@ const styles = StyleSheet.create({
 
     singleText: {
         fontSize: 20,
+        alignContent: "center",
+        justifyContent: "center",
         fontFamily: "MontserrantSemiBold"
     },
 
     informationContainer: {
         marginTop: "5%",
+        justifyContent: "center",
+        alignItems: "center"
 
     },
 
@@ -100,7 +106,7 @@ const styles = StyleSheet.create({
         padding: 15,
         fontFamily: "MontserrantSemiBold",
         borderRadius: 15,
-        borderColor: "#e4eded"     
+        borderColor: "#e4eded"
     },
 
     guidaView: {
@@ -153,11 +159,13 @@ const styles = StyleSheet.create({
 
 
 
-    
+
 
 
 
     singleTextInput: {
+        alignContent: "center",
+        justifyContent: "center",
         height: 40,
         marginTop: 1,
         paddingTop: 2,
@@ -185,15 +193,9 @@ const styles = StyleSheet.create({
         width: "100%"
     },
 
-
-
-
-
     viewCampi: {
         width: "90%",
     },
-
-    
 
     keyboard: {
         flex: 1,
@@ -287,10 +289,10 @@ const StrutturaScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.maincontainer}>
-            <HeaderBar title={"Struttura"} navigator={navigation} />
+            <HeaderBar title={"Modifica struttura"} navigator={navigation} />
             <ScrollView
                 style={styles.bodyScrollcontainer}
-                contentContainerStyle={{ justifyContent: "center", alignItems: "flex-start"}}>
+                contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
 
                 <ScrollView
                     pagingEnabled={true}
@@ -309,53 +311,110 @@ const StrutturaScreen = ({ route, navigation }) => {
                                     dataSource={carouselItems}
                                     arrowSize={17}
                                     height={300}
+                                    onPress={() => Alert.alert(
+                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
+                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                        { cancelable: false })}
+                                    caption = "Clicca per modificare le foto"  
                                 />
+
+                                <Text   style={[styles.singleTextInput, {justifyContent: "center", marginLeft: "40%"}]}>Clicca sulla foto per modificarla</Text>
                             </View>
 
-                            <View style={styles.titoloView}>
-                                <Text style={styles.singleText}>
-                                    {denominazione}
-                                </Text>
-                            </View>
+                            <View style={styles.viewCampi}>
+                                <TextInput
+                                    mode='outlined'
+                                    label='Nome'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={denominazione}
+                                    onChangeText={(denominazione) => setDenominazione(denominazione)}
+                                    theme={theme} />
 
-                            <View style={styles.informationContainer}>
+                                <TextInput
+                                    mode='outlined'
+                                    label='Via'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={via}
+                                    onChangeText={(via) => setVia(via)}
+                                    theme={theme} />
 
-                                <View style={styles.information}>
-                                    <Icon name={"map-marker-radius-outline"} color={"#0692d4"} size={40} style={styles.arrow} />
-                                    <Text style={styles.indirizzoText}>{via}</Text>
-                                    <Text style={styles.indirizzoText}>{citta}, {provincia}, {cap}</Text>
-                                </View>
-                                <View style={styles.information}>
-                                    <Icon name={"domain"} color={"#0692d4"} size={40} style={styles.arrow} />
-                                    <Text style={styles.otherText}>{tipologia}</Text>
-                                </View>
-                                <View style={styles.information}>
-                                    <Icon name={"numeric"} color={"#0692d4"} size={40} style={styles.arrow} />
-                                    <Text style={styles.otherText}>Disponibilità: {numAlloggi}</Text>
-                                </View>
-                                <View style={styles.information}>
-                                    <Icon name={"clipboard-text-outline"} color={"#0692d4"} size={40} style={styles.arrow}/>
-                                    <Text style = {styles.scrollStyle}>
-                                        {descrizione}
-                                    </Text>
-                                </View>
-                                <View style={styles.information}>
-                                <TouchableOpacity 
-                                style = {styles.information}
-                                onPress={() => Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })}>
-                                    
-                                    <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow}/>
-                                        <Text 
-                                        style = {styles.otherText} >
-                                                Clicca per la Guida 
-                                        
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
+                                <TextInput
+                                    mode='outlined'
+                                    label='Città'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={citta}
+                                    onChangeText={(citta) => setCitta(citta)}
+                                    theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='Provincia'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={provincia}
+                                    onChangeText={(provincia) => setProvincia(provincia)}
+                                    theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='CAP'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={cap}
+                                    onChangeText={(cap) => setCap(cap)}
+                                    theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='Nazione'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={nazione}
+                                    onChangeText={(nazione) => setNazione(nazione)}
+                                    theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='Tipologia'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={tipologia}
+                                    onChangeText={(tipologia) => setTipologia(tipologia)}
+                                    theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='Numero Alloggi'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={numAlloggi}
+                                    onChangeText={(numAlloggi) => setNumAlloggi(numAlloggi)}
+                                    theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='Descrizione'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.descrizioneField}
+                                    editable={IsEditable}
+                                    multiline={true}
+                                    numberOfLines={40}
+                                    value={descrizione}
+                                    onChangeText={(descrizione) => setDescrizione(descrizione)}
+                                    theme={theme} />
+
                             </View>
 
                         </View>
@@ -363,14 +422,28 @@ const StrutturaScreen = ({ route, navigation }) => {
                             <View style={styles.ButtonContainer}>
                                 <CustomButton
                                     styleBtn={{ width: "100%", marginRight: "15%" }}
-                                    nome={"Modifica"}
-                                    onPress={() => { navigation.navigate("ModificaStruttura", { user: user, strutturaId: strutturaId }); }} />
+                                    nome={"Modifica Guida"}
+                                    onPress={() => Alert.alert(
+                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
+                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                        { cancelable: false })} />
                             </View>
                             <View style={styles.ButtonContainer}>
-                                <CustomButton
-                                    styleBtn={{ width: "100%", marginLeft: "15%" }}
-                                    nome={"Alloggi"}
-                                    onPress={() => { navigation.navigate("VisualizzaAlloggi", { user: user, strutturaId: strutturaId }); }} />
+                            <CustomButton
+                                styleBtn={{ width: "100%" }}
+                                nome={IsEditable ? 'Applica' : "Modifica"}
+                                onPress={() => {
+                                    async function updateStruttura() {
+                                        IsEditable ? setIsEditable(false) : setIsEditable(true);
+                                        if (IsEditable) {
+                                            var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
+                                            await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
+                                        }
+                                    }
+                                    updateStruttura();
+                                }}
+                            />
                             </View>
                         </View>
                     </View>

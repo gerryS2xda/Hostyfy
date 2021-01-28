@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: "#000000"
+    //backgroundColor: "#000000"
   },
   topContainer: {
     flexDirection: 'column',
@@ -105,15 +105,15 @@ const styles = StyleSheet.create({
   },
 
   singolaView: {
-   
+
     paddingBottom: "5%",
     paddingTop: "5%",
     maxHeight: 550,
     justifyContent: "space-around",
     alignItems: "center",
     width: "90%",
-  
-   
+
+
     borderWidth: 2,
     borderRadius: 20,
     borderColor: "#f0f0f0",
@@ -135,7 +135,6 @@ const styles = StyleSheet.create({
 
   ButtonContainer: {
     width: "100%",
-    //backgroundColor: "#000000",
     flex: 1,
     alignItems: "center",
     justifyContent: "space-between",
@@ -148,12 +147,12 @@ const styles = StyleSheet.create({
 
   secondScroll: {
     width: Dimensions.get('window').width,
-  }
+  },
 })
 
 
 
-const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: {regular: {fontFamily: 'MontserrantSemiBold', fontWeight: 'normal'}}, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
+const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
 
 
 
@@ -200,6 +199,8 @@ const Modifica_profilo = ({ route, navigation }) => {
   const [ccv, setCCV] = useState(user.ccv);
   const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
   const [intestatario, setIntestatario] = useState(user.intestatario);
+
+  
 
   return (
 
@@ -248,11 +249,11 @@ const Modifica_profilo = ({ route, navigation }) => {
         >
           <View style={styles.page}>
             <View style={styles.singolaView}>
-            <View style={styles.titoloView}>
-              <Text style={styles.singleText}>
-                Dati anagrafici
+              <View style={styles.titoloView}>
+                <Text style={styles.singleText}>
+                  Dati anagrafici
             </Text>
-            </View>
+              </View>
               <View style={styles.viewCampi}>
 
                 <TextInput
@@ -287,18 +288,17 @@ const Modifica_profilo = ({ route, navigation }) => {
                   theme={theme}
                 />
 
-                <TextInput
-                  mode='outlined'
-                  label='Data di nascita'
-                  disabledInputStyle={{ color: "black" }}
-                  editable={IsEditable}
-                  value={dateNasc}
-                  style={styles.singleTextInput}
-                  onChangeText={(dateNasc) => setDateNascita(dateNasc)}
-                  theme={theme}
-                  styleBtn={{height: 45}}
+                <DatePickerInputField
+                  styleContainer={styles.singleTextInput}
+                  styleField={{ width: "82%" }}
+                  date={dateNasc.toString()}
+                  setDate={setDateNascita}
+                  placeholder={"Data di nascita"}
+                  disabled={!IsEditable}
+                  
                 />
 
+              
                 <TextInput
                   mode='outlined'
                   label='Luogo di Nascita'
@@ -328,31 +328,31 @@ const Modifica_profilo = ({ route, navigation }) => {
                   styleBtn={{ width: "100%", marginRight: "15%" }}
                   nome={IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
                   onPress={() => {
-                    async function onPressEditProfile(){
+                    async function onPressEditProfile() {
                       if (!IsEditable) {
                         setEditable(previousState => !previousState)
-                      }else if (newpassword !== confermaPassword) {
-                          if (!passCompare) setPassCompare(true);
-                        }else {
+                      } else if (newpassword !== confermaPassword) {
+                        if (!passCompare) setPassCompare(true);
+                      } else {
 
-                          var indirizzo = { via: via, citta: citta, provincia: provincia, cap: cap, regione: regione };
-                          await GuestModel.updateGuestDocument(user.userId, cf, cognome, nome, "x", dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, email);
-                          await GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
+                        var indirizzo = { via: via, citta: citta, provincia: provincia, cap: cap, regione: regione };
+                        await GuestModel.updateGuestDocument(user.userId, cf, cognome, nome, "x", dateNasc, luogoNasc, numCel, numTel, nazionalita, indirizzo, email);
+                        await GuestModel.createCreditCardDocumentGuest(user.userId, numCarta, ccv, intestatario, dateScadenza);
 
-                          var userLogin = firebase.auth().currentUser;
+                        var userLogin = firebase.auth().currentUser;
 
-                          if (newpassword !== "") { //se la nuova password è stata inserita ed è soddisfatto il test di conferma
-                            userLogin.updatePassword(newpassword).then(function () {
+                        if (newpassword !== "") { //se la nuova password è stata inserita ed è soddisfatto il test di conferma
+                          userLogin.updatePassword(newpassword).then(function () {
 
-                              if (!updateErrorSuccess) setUpdateErrorSuccess(true);
-                              setEditable(previousState => !previousState)
+                            if (!updateErrorSuccess) setUpdateErrorSuccess(true);
+                            setEditable(previousState => !previousState)
+                          })
+                            .catch(function (error) {
+                              if (!updateErrorFailed) console.log(error)
                             })
-                              .catch(function (error) {
-                                if (!updateErrorFailed) console.log(error)
-                              })
-                          }
                         }
-                      }                    
+                      }
+                    }
                     onPressEditProfile();
                   }} />
               </View>
@@ -366,11 +366,11 @@ const Modifica_profilo = ({ route, navigation }) => {
           </View>
           <View style={styles.page}>
             <View style={styles.singolaView}>
-            <View style={styles.titoloView}>
-              <Text style={styles.singleText}>
-                Credenziali
+              <View style={styles.titoloView}>
+                <Text style={styles.singleText}>
+                  Credenziali
             </Text>
-            </View>
+              </View>
               <View style={styles.viewCampi}>
                 <TextInput
                   mode='outlined'
@@ -423,38 +423,38 @@ const Modifica_profilo = ({ route, navigation }) => {
                   editable={IsEditable}
                   ref={confermaPasswordRef}
                   style={styles.singleTextInput}
-                  onChangeText={(confermaPassword) =>{
-                      setConfermaPassword(confermaPassword);
+                  onChangeText={(confermaPassword) => {
+                    setConfermaPassword(confermaPassword);
                   }}
                   theme={theme}
                 />
               </View>
             </View>
             <View style={styles.guidaView}>
-                <View style={styles.ButtonContainer}>
-                  <CustomButton
-                    styleBtn={{ width: "100%", marginRight: "15%" }}
-                    nome={"Anagrafica"}
-                    onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
-                </View>
-                <View style={styles.ButtonContainer}>
-                  <CustomButton
-                    styleBtn={{ width: "100%", marginLeft: "15%" }}
-                    nome={"Residenza"}
-                    onPress={
-                      () => {
-                        scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 2 });
-                      }} />
-                </View>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginRight: "15%" }}
+                  nome={"Anagrafica"}
+                  onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
               </View>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginLeft: "15%" }}
+                  nome={"Residenza"}
+                  onPress={
+                    () => {
+                      scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 2 });
+                    }} />
+              </View>
+            </View>
           </View>
           <View style={styles.page}>
             <View style={styles.singolaView}>
-            <View style={styles.titoloView}>
-              <Text style={styles.singleText}>
-                Residenza
+              <View style={styles.titoloView}>
+                <Text style={styles.singleText}>
+                  Residenza
             </Text>
-            </View>
+              </View>
               <View style={styles.viewCampi}>
                 <TextInput
                   mode='outlined'
@@ -510,29 +510,29 @@ const Modifica_profilo = ({ route, navigation }) => {
               </View>
             </View>
             <View style={styles.guidaView}>
-                <View style={styles.ButtonContainer}>
-                  <CustomButton
-                    styleBtn={{ width: "100%", marginRight: "15%" }}
-                    nome={"Credenziali"}
-                    onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) }) }} />
-                </View>
-                <View style={styles.ButtonContainer}>
-                  <CustomButton
-                    styleBtn={{ width: "100%", marginLeft: "15%" }}
-                    nome={"Pagamenti"}
-                    onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 4 }) }} />
-                </View>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginRight: "15%" }}
+                  nome={"Credenziali"}
+                  onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) }) }} />
               </View>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginLeft: "15%" }}
+                  nome={"Pagamenti"}
+                  onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 4 }) }} />
+              </View>
+            </View>
           </View>
           <View style={styles.page}>
             <View style={styles.singolaView}>
-            <View style={styles.titoloView}>
-              <Text style={styles.singleText}>
-                Pagamenti
+              <View style={styles.titoloView}>
+                <Text style={styles.singleText}>
+                  Pagamenti
             </Text>
-            </View>
-              <View 
-              style={[styles.viewCampi, {paddingBottom: "15%"}]}>
+              </View>
+              <View
+                style={[styles.viewCampi, { paddingBottom: "15%" }]}>
                 <TextInput
                   mode='outlined'
                   label='Numero Carta'
@@ -578,13 +578,13 @@ const Modifica_profilo = ({ route, navigation }) => {
             </View>
 
             <View style={styles.guidaView}>
-                <View style={styles.ButtonContainer}>
-                  <CustomButton
-                    styleBtn={{ width: "100%", marginLeft: "15%", marginRight: "10%" }}
-                    nome={"Torna indietro"}
-                    onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
-                </View>
+              <View style={styles.ButtonContainer}>
+                <CustomButton
+                  styleBtn={{ width: "100%", marginLeft: "15%", marginRight: "10%" }}
+                  nome={"Torna indietro"}
+                  onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
               </View>
+            </View>
           </View>
         </ScrollView>
       </ScrollView>

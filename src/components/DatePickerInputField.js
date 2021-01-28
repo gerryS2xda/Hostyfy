@@ -107,14 +107,11 @@ const styles = StyleSheet.create({
     singleField: {
         height: 40,
         width:"100%",
-        borderColor: '#666666',
-        borderWidth: 1,
         color: "black",
         marginTop:8,
         paddingTop:5,
         fontFamily: "MontserrantSemiBold",
         paddingLeft: 15,
-        backgroundColor: "#f2f2f2",
         fontSize: 15
     },
     placeholderField: {
