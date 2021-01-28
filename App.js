@@ -73,6 +73,7 @@ import CleanService from "./src/screen/CleanService"
 import RecensioniHostScreen from "./src/screen/RecensioniHostScreen"
 import RecensioniGuestScreen from "./src/screen/RecensioniGuestScreen"
 import RecensioneScreen from "./src/screen/RecensioneScreen"
+import ModificaStruttura from "./src/screen/ModificaStruttura"
 
 const Stack = createStackNavigator();
 LogBox.ignoreAllLogs();
@@ -280,6 +281,11 @@ const App = () => {
             name="RecensioneScreen" 
             component={RecensioneScreen} 
             options={{title: "Recensione"}} 
+          />
+          <Stack.Screen 
+            name="Modifica Struttura" 
+            component={ModificaStruttura} 
+            options={{title: "Modifica Struttura"}} 
           />
         </Stack.Navigator>   
       </NavigationContainer>
