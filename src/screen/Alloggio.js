@@ -1,52 +1,118 @@
 import React, { useState, useCallback, useRef } from 'react';
-import {Text, View, Image,ScrollView, Alert, StyleSheet, TextInput} from 'react-native';
+import {Text, View, Image,ScrollView, Alert, StyleSheet, TextInput, Dimensions} from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
+import Slideshow from 'react-native-image-slider-show';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     maincontainer: {
-		flex: 1,
-		backgroundColor: '#fff',
-		justifyContent: 'center',
-		alignItems: 'center'
+        flex: 1,
+        width: "100%",
 	},
 	bodyScrollcontainer: {
-		width: "100%",
-	},
+        width: Dimensions.get('window').width,
+    },
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    page: {
+        backgroundColor: "#fff",
+        flex: 1,
+        width: Dimensions.get('window').width,
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    singolaView: {
+        //backgroundColor: "#000",
+        paddingBottom: "5%",
+        alignItems: "center",
+        width: "100%",
+    },
+
+    carouselContainer: {
+        flex: 1,
+        width: "100%",
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: "2%",
+    },
+    
+
 	scrollContent: {
         marginLeft:32,
         marginRight:32,
     },
-	
-    carouselContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginRight:50,
-        marginTop:20,
+    titoloView: {
+        width: "90%",
+        alignContent: "center",
+        justifyContent: "center",
+        marginTop: "4%",
     },
 
-    middleContainer: {
+    singleText: {
+        fontSize: 20,
+        fontFamily: "MontserrantSemiBold"
+    },
+    informationContainer: {
+        marginTop: "5%",
+
+    },
+
+    information: {
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        marginTop: "3%",
+        marginBottom: "3%"
+    },
+
+    arrow: {
+      
+
+    },
+    indirizzoText: {
+        fontFamily: "MontserrantSemiBold",
+        fontSize: 16,
+    },
+
+    otherText: {
+        fontFamily: "MontserrantSemiBold",
+        fontSize: 22,
+    },
+
+    scrollStyle: {
+        marginHorizontal: "3%",
+        borderWidth: 2,
+        padding: 15,
+        fontFamily: "MontserrantSemiBold",
+        borderRadius: 15,
+        borderColor: "#e4eded"     
+    },
+
+    guidaView: {
+        width: "88%",
+        flexDirection: "row",
+        marginTop: "2%",
+        paddingBottom: "4%",
+        justifyContent: "space-between",
+        //backgroundColor: "#000000"
+    },
+
+    ButtonContainer: {
         width: "100%",
-    },
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "space-between",
 
-    threeButtonContainer: {
-		marginTop: 20, 
-		flexDirection: 'row',
-		justifyContent: 'space-between',
     },
-
-    bottomButtonContainer: {
-		marginBottom:20,
-    },
-
-    carouselStyle: {
-        justifyContent:'center',
-        marginRight:50,
-    },
-
+	
     singleField: {
         height: 40,
         width:"100%",
@@ -72,7 +138,12 @@ const styles = StyleSheet.create({
 
     singleFieldText:{
         fontFamily: "MontserrantSemiBold",
-    }
+    },
+
+    carouselStyle: {
+        flex: 1,
+        width: "100%"
+    },
 });
 
 const AlloggioScreen = ({route, navigation}) =>{
@@ -89,7 +160,8 @@ const AlloggioScreen = ({route, navigation}) =>{
     const [numMaxPersone, setNumMaxPersone] = useState("");
     const [piano, setPiano] = useState("");
     const [descrizione, setDescrizione] = useState("");
-    
+    const scrollRef = useRef();
+   
         //Caricamento dei dati non appena inizia il rendering dell'applicazione
         useFocusEffect(
             useCallback(() => {
@@ -107,11 +179,11 @@ const AlloggioScreen = ({route, navigation}) =>{
                 var fotoList = [];
                 var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
                 fotoArray.forEach((value)=>{
-                    fotoList.push({image: {uri: value}});
+                    fotoList.push({url: value});
                 });
                 if(fotoList.length == 0){
                     var imageURL = require("../../assets/imagenotfound.png");
-                    fotoList.push({image: imageURL});
+                    fotoList.push({url: imageURL});
                 } 
                 //Memorizza l'alloggio, lista foto per carousel nello state
                 setNomeAlloggio(alloggioDoc.nomeAlloggio);
@@ -130,131 +202,108 @@ const AlloggioScreen = ({route, navigation}) =>{
             }, [isFocused])
         );
 
-        const _renderItem = ({item,index}) =>{
-            return (
-                <View style={{ justifyContent:'center',
-                  marginLeft:50
-                    }}>
-                 <Image style={{width:250, height:250, borderRadius:10}} source = {item.image} />
-                  <Text>{item.title}</Text>
-                </View>
-            )
-        }
-
+       
         return (
             <View style={styles.maincontainer}>
-                <HeaderBar title={nomeAlloggio} navigator={navigation} />
-                <ScrollView style={styles.bodyScrollcontainer}>
-                    <View style={styles.scrollContent}> 
-                        <View style={styles.carouselContainer} >
-                            <Carousel
-                            style= {styles.carouselStyle}
-                            layout={"default"}
-                            ref={carouselRef}
-                            data={carouselItems}
-                            sliderWidth={300}
-                            itemWidth={300}
-                            renderItem={_renderItem}
-                            onSnapToItem = { index => setActiveIndex(index)} />
-                        </View>
-                        <View style={styles.middleContainer}>
-                            <TextInput
-                                style={styles.singleField}
-                                editable={IsEditable}
-                                value = {nomeAlloggio}
-                                onChangeText={(nomeAlloggio)=>{setNomeAlloggio(nomeAlloggio)}}
-                                >
-                             </TextInput>
+            <HeaderBar title={"Alloggio"} navigator={navigation} />
+            <ScrollView
+                style={styles.bodyScrollcontainer}
+                contentContainerStyle={{ justifyContent: "center", alignItems: "flex-start"}}>
 
-                            <TextInput 
-                                style={styles.singleField}
-                                editable={IsEditable}
-                                value = {numCamere}
-                                onChangeText={(numCamere)=>{setNumCamere(numCamere)}}
-                                >
-                             </TextInput>
+                <ScrollView
+                    pagingEnabled={true}
+                    contentContainerStyle={styles.container}
+                    showOrizontalScrollIndicator={false}
+                    horizontal
+                    ref={scrollRef}
+                    bounces={false}>
 
-                            <TextInput
-                                style={styles.singleField}
-                                editable={IsEditable}
-                                value = {numMaxPersone}
-                                onChangeText={(numMaxPersone)=>{setNumMaxPersone(numMaxPersone)}}
-                                >
-                            </TextInput>
+                    <View style={styles.page}>
+                        <View style={styles.singolaView}>
+                            <View style={styles.carouselContainer} >
+                                <Slideshow
+                                    containerStyle={styles.carouselStyle}
+                                    ref={carouselRef}
+                                    dataSource={carouselItems}
+                                    arrowSize={17}
+                                    height={300}
+                                />
+                            </View>
 
-                            <TextInput
-                                style={styles.singleField} 
-                                editable={IsEditable}
-                                value = {piano}
-                                onChangeText={(piano)=>{setPiano(piano)}}
-                                >
-                                </TextInput>
-                            <TextInput 
-                                style={styles.descrizioneField}
-                                editable={IsEditable}
-                                multiline={true}
-                                numberOfLines={15}
-                                value = {descrizione}
-                                onChangeText={(descrizione)=>{setDescrizione(descrizione)}}
-                                >
-                             </TextInput>
-                        </View>
-                        <CustomButton 
-                                styleBtn={{width: "100%", marginTop: "5%"}}
-                                nome= "Disponibilità" 
+                            <View style={styles.titoloView}>
+                                <Text style={styles.singleText}>
+                                    {nomeAlloggio}
+                                </Text>
+                            </View>
+
+                            <View style={styles.informationContainer}>
+
+                            <View style={styles.information}>
+                                    <Icon name={"numeric"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    <Text style={styles.otherText}>N° Camera: {numCamere}</Text>
+                            </View>
+                                
+                                <View style={styles.information}>
+                                    <Icon name={"human-male-female"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    <Text style={styles.otherText}>{numMaxPersone}</Text>
+                                    
+                                </View>
+                                <View style={styles.information}>
+                                    <Icon name={"home-floor-3"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    <Text style={styles.otherText}>Piano: {piano}</Text>
+                                </View>
+
+                                <TouchableOpacity 
+                                style = {styles.information}
                                 onPress={()=>{
                                     navigation.navigate("Visualizza_calendario_alloggio",{user: user, isHost: user.isHost, alloggioId: alloggioId})
-                                }}
-                        /> 
-                        <View style={styles.threeButtonContainer}>
-                            <CustomButton 
-                                styleBtn={{width: "45%", alignItems: 'center', justifyContent: 'center'}}
-                                nome="Modifica foto"  
-                                onPress={()=> Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })} 
-                            /> 
-                            <CustomButton 
-                                styleBtn={{width: "45%"}} 
-                                nome={IsEditable ? 'Applica modifiche' : "Modifica dati"}  
-                                onPress={()=> { 
-                                    async function updateAlloggio(){
-                                        if(IsEditable){
-                                            setIsEditable(false)
-                                            await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, "");
-                                        } else {
-                                            setIsEditable(true)
-                                        }
-                                    }
-                                    updateAlloggio();
-                                }
-                                } 
-                            /> 
-                        </View>
-                        <View style={styles.bottomButtonContainer}> 
-                            <CustomButton 
-                                styleBtn={{marginTop: "5%", width:"100%"}} 
-                                nome="Guida"  
-                                onPress={()=> Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })} 
-                            /> 
-                            <CustomButton 
-                                styleBtn={{marginTop: "5%", width:"100%"}}
-                                nome= "Visualizza chiave"
+                                }}>
+                                    
+                                    <Icon name={"calendar-month-outline"} color={"#0692d4"} size={40} style={styles.arrow}/>
+                                        <Text 
+                                        style = {styles.otherText} >
+                                                Clicca per la Disponibilità
+                                        
+                                        </Text>
+                                    </TouchableOpacity>
+
+                                
+                                
+                                <View style={styles.information}>
+                                    <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow}/>
+                                    <Text style = {styles.scrollStyle}>
+                                        {descrizione}
+                                    </Text>
+                                </View>
+                                <View style={styles.information}>
+                                <TouchableOpacity 
+                                style = {styles.information}
                                 onPress={() => {
-                                        navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""})
-                                    }
-                                }
-                            />
+                                    navigation.navigate('LaMiaChiave', {user: user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""})}}>
+                                    
+                                    <Icon name={"key-wireless"} color={"#0692d4"} size={40} style={styles.arrow}/>
+                                        <Text 
+                                        style = {styles.otherText} >
+                                                Apri alloggio 
+                                        
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+
+                        </View>
+                        <View style={styles.guidaView}>
+                            <View style={styles.ButtonContainer}>
+                                <CustomButton
+                                    styleBtn={{ width: "100%"}}
+                                    nome={"Modifica"}
+                                    onPress={() => { navigation.navigate("ModificaAlloggio", { user: user, strutturaId: strutturaId, alloggioId:alloggioId }); }} />
+                            </View>
                         </View>
                     </View>
                 </ScrollView>
-            </View>
+            </ScrollView>
+        </View>
         );
 
 }
