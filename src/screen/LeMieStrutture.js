@@ -19,6 +19,9 @@ const styles = StyleSheet.create({
 
   container: {
     flex: 1,
+    backgroundColor: '#FCFCFC',
+    borderWidth: 1,
+    borderColor: '#d3d9e3',
   },
 
   aggiungiStruttura:{
