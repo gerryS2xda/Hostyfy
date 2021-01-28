@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
 
 const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
 
-const StrutturaScreen = ({ route, navigation }) => {
+const ModificaStruttura = ({ route, navigation }) => {
 
     //campi 
     const { user, strutturaId } = route.params;
@@ -204,6 +204,7 @@ const StrutturaScreen = ({ route, navigation }) => {
     const [via, setVia] = useState(indirizzo.via);
     const [citta, setCitta] = useState(indirizzo.citta);
     const [provincia, setProvincia] = useState(indirizzo.provincia);
+    const [regione, setRegione] = useState(indirizzo.regione);
 
     const [cap, setCap] = useState(indirizzo.cap);
     const [nazione, setNazione] = useState(indirizzo.nazione);
@@ -250,6 +251,7 @@ const StrutturaScreen = ({ route, navigation }) => {
                 setVia(strutturaDoc.indirizzo.via);
                 setCitta(strutturaDoc.indirizzo.citta);
                 setProvincia(strutturaDoc.indirizzo.provincia);
+                setRegione(strutturaDoc.indirizzo.regione)
                 setCap(strutturaDoc.indirizzo.cap);
                 setNazione(strutturaDoc.indirizzo.nazione);
                 setTipologia(strutturaDoc.tipologia);
@@ -294,10 +296,10 @@ const StrutturaScreen = ({ route, navigation }) => {
                                         [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
                                         { text: "OK", onPress: () => console.log("OK Pressed") }],
                                         { cancelable: false })}
-                                    caption = "Clicca per modificare le foto"  
+                                    caption="Clicca per modificare le foto"
                                 />
 
-                                <Text   style={[styles.singleTextInput, {justifyContent: "center", marginLeft: "40%"}]}>Clicca sulla foto per modificarla</Text>
+                                <Text style={[styles.singleTextInput, { justifyContent: "center", marginLeft: "40%" }]}>Clicca sulla foto per modificarla</Text>
                             </View>
 
                             <View style={styles.viewCampi}>
@@ -350,6 +352,17 @@ const StrutturaScreen = ({ route, navigation }) => {
                                     value={cap}
                                     onChangeText={(cap) => setCap(cap)}
                                     theme={theme} />
+
+                                <TextInput
+                                    mode='outlined'
+                                    label='Regione'
+                                    disabledInputStyle={{ color: "#303a52" }}
+                                    style={styles.singleTextInput}
+                                    editable={IsEditable}
+                                    value={regione}
+                                    onChangeText={(regione) => setRegione(regione)}
+                                    theme={theme} />
+
 
                                 <TextInput
                                     mode='outlined'
@@ -408,20 +421,20 @@ const StrutturaScreen = ({ route, navigation }) => {
                                         { cancelable: false })} />
                             </View>
                             <View style={styles.ButtonContainer}>
-                            <CustomButton
-                                styleBtn={{ width: "100%" }}
-                                nome={IsEditable ? 'Applica' : "Modifica"}
-                                onPress={() => {
-                                    async function updateStruttura() {
-                                        IsEditable ? setIsEditable(false) : setIsEditable(true);
-                                        if (IsEditable) {
-                                            var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
-                                            await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
+                                <CustomButton
+                                    styleBtn={{ width: "100%" }}
+                                    nome={IsEditable ? 'Applica' : "Modifica"}
+                                    onPress={() => {
+                                        async function updateStruttura() {
+                                            IsEditable ? setIsEditable(false) : setIsEditable(true);
+                                            if (!IsEditable) {
+                                                var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
+                                                await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
+                                            }
                                         }
-                                    }
-                                    updateStruttura();
-                                }}
-                            />
+                                        updateStruttura();
+                                    }}
+                                />
                             </View>
                         </View>
                     </View>
@@ -432,4 +445,4 @@ const StrutturaScreen = ({ route, navigation }) => {
 
 }
 
-export default StrutturaScreen;
+export default ModificaStruttura;
