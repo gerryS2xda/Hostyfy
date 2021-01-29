@@ -1,12 +1,10 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Text, View, Image, ScrollView, StyleSheet, Alert, Dimensions } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 import Slideshow from 'react-native-image-slider-show';
-import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -127,36 +125,12 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     scrollContent: {
         flex: 1,
         width: "100%",
         justifyContent: "center",
         alignItems: 'center',
     },
-
-
-
-
-
-
-    
-
-
-
     singleTextInput: {
         height: 40,
         marginTop: 1,
@@ -184,25 +158,15 @@ const styles = StyleSheet.create({
         flex: 1,
         width: "100%"
     },
-
-
-
-
-
     viewCampi: {
         width: "90%",
     },
-
-    
-
     keyboard: {
         flex: 1,
     },
-
     secondScroll: {
         width: Dimensions.get('window').width,
     }
-
 });
 
 const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
@@ -213,24 +177,22 @@ const StrutturaScreen = ({ route, navigation }) => {
     const { user, strutturaId } = route.params;
 
     const [IsEditable, setIsEditable] = useState(false);
-    const [struttura, setStruttura] = useState({});
-    const [indirizzo, setIndirizzo] = useState({});
     const [carouselItems, setCarouselItems] = useState([]);
 
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
 
-    const [denominazione, setDenominazione] = useState(struttura.denominazione);
-    const [via, setVia] = useState(indirizzo.via);
-    const [citta, setCitta] = useState(indirizzo.citta);
-    const [provincia, setProvincia] = useState(indirizzo.provincia);
+    const [denominazione, setDenominazione] = useState("");
+    const [via, setVia] = useState("");
+    const [citta, setCitta] = useState("");
+    const [provincia, setProvincia] = useState("");
 
-    const [cap, setCap] = useState(indirizzo.cap);
-    const [nazione, setNazione] = useState(indirizzo.nazione);
+    const [cap, setCap] = useState("");
+    const [nazione, setNazione] = useState("");
 
-    const [tipologia, setTipologia] = useState(struttura.tipologia);
-    const [numAlloggi, setNumAlloggi] = useState(struttura.numAlloggi);
-    const [descrizione, setDescrizione] = useState(struttura.descrizione);
+    const [tipologia, setTipologia] = useState("");
+    const [numAlloggi, setNumAlloggi] = useState("");
+    const [descrizione, setDescrizione] = useState("");
 
     const scrollRef = useRef();
 

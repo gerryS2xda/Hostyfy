@@ -3,18 +3,14 @@ import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CustomButton from './CustomButton';
 
 const CustomAlertKey = (props) => {
-    
 
-    const statoCorrente = props.stato;
+    const visibility = props.visibility;
 
     return(
 
     <Modal
         transparent={true}
-        visible={statoCorrente}>
-        
-
-
+        visible={visibility}>
 
         <View style = {styles.container}>
             <View style = {styles.containertesto}>
@@ -25,16 +21,15 @@ const CustomAlertKey = (props) => {
                     <CustomButton 
                         styleBtn={{width: "45%"}}
                         nome="Annulla"
-                        onPress={()=>{props.setStato(false)}}
+                        onPress={()=>{props.setVisibility(false);}}
                         />
 
                     <CustomButton 
                         styleBtn={{width: "45%"}}
                         nome={props.buttonName}
-                        onPress={()=>{ pagina
-                            props.setStato(false)
-                            
-                            }}/>
+                        onPress={()=>{ 
+                            props.onOkPress(); 
+                        }}/>
                           
                 </View>
                 

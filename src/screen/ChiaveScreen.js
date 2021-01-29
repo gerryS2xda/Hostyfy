@@ -5,11 +5,13 @@ import HeaderBar from '../components/CustomHeaderBar'
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
 import CustomButton from "../components/CustomButton"
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const ChiaveScreen = ({ route, navigation }) => {
     const { user, strutturaId, alloggioId, prenotazioneId } = route.params;
     const [alloggio, setAlloggio] = useState({});
     const [doneCheckIn, setDoneCheckIn] = useState(false);
+    const [showCustomAlert, setCustomAlertVisibility] = useState(false);
     const isFocused = useIsFocused();
    
     useFocusEffect(
@@ -36,34 +38,6 @@ const ChiaveScreen = ({ route, navigation }) => {
         }, [isFocused])
     );
 
-    const setNavigationScreenAfterPressKey = async () => {
-        if (!doneCheckIn && prenotazioneId !== "") {
-            //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
-            await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
-            navigation.navigate("MoviePlayer");
-        } else {
-            //navigation.navigate("InfoCamera");
-        }
-    }
-
-    const createTwoButtonAlert = () =>
-        Alert.alert(
-            "Ingresso alloggio",
-            "Benvenuto nella camera " + JSON.stringify(alloggio.nomeAlloggio),
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                },
-                {
-                    text: "OK", onPress: () => { setNavigationScreenAfterPressKey() }
-                }
-            ],
-            { cancelable: false }
-        );
-
-
     return (
         <View style={styles.maincontainer}>
             <HeaderBar title="Chiave" navigator={navigation} />
@@ -76,22 +50,31 @@ const ChiaveScreen = ({ route, navigation }) => {
                         styleBtn={styles.buttonStyle}
                         styleTesto={{fontSize: 30, color: "#303a52", fontFamily: "MontserrantBold" }}
                         nome={"Apri"}
-                        onPress={
-                            () => {Alert.alert(
-                                "Ingresso alloggio",
-                                "Benvenuto nella camera " + JSON.stringify(alloggio.nomeAlloggio),
-                                [
-                                    {
-                                        text: "Cancel",
-                                        onPress: () => console.log("Cancel Pressed"),
-                                        style: "cancel"
-                                    },
-                                    {
-                                        text: "OK", onPress: () => { setNavigationScreenAfterPressKey() }
+                        onPress={() => setCustomAlertVisibility(true)} />
+                    {
+                        showCustomAlert && (
+                            <CustomAlertGeneral
+                                visibility={showCustomAlert}
+                                setVisibility={setCustomAlertVisibility}
+                                titolo="Ingresso alloggio"
+                                testo= {"Benvenuto nella camera " + alloggio.nomeAlloggio}
+                                buttonName="Ok"
+                                onOkPress={()=>{
+                                    
+                                    async function setNavigationScreenAfterPressKey () {
+                                        setCustomAlertVisibility(false);
+                                        if (!doneCheckIn && prenotazioneId !== "") {
+                                            //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
+                                            await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
+                                            navigation.navigate("MoviePlayer");
+                                        } else {
+                                            //navigation.navigate("InfoCamera");
+                                        }
                                     }
-                                ],
-                                { cancelable: false }
-                            );}} />
+                                    setNavigationScreenAfterPressKey();
+                                }} />
+                        )
+                    }
                 </View>
             </View>
         </View>

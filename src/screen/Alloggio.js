@@ -150,9 +150,7 @@ const AlloggioScreen = ({route, navigation}) =>{
 
     const {user, strutturaId, alloggioId} = route.params;
     const [IsEditable, setIsEditable] = useState(false);
-    const [alloggio, setAlloggio] = useState({});
     const [carouselItems, setCarouselItems] = useState([]);
-    const [activeIndex, setActiveIndex] = useState(0);
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
     const [nomeAlloggio, setNomeAlloggio] = useState("");

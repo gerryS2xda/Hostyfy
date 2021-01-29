@@ -94,7 +94,6 @@ const CustomRowGeneral = (props) => {
                         titolo="Codice OTP"
                         testo="Inserisci il codice OTP per accedere alla struttura"
                         buttonName="Ok"
-                        pagina="Home"
                         placeholder = "OTP"
                         setTextData={setOtp}
                         onOkPress={()=>{
@@ -111,9 +110,7 @@ const CustomRowGeneral = (props) => {
                                 }}],
                                 { cancelable: false });
                             }
-                        }}
-                        navigator={props.navigation}>
-                    </CustomAlertTextInput>
+                        }} />
                 )
             }
 
