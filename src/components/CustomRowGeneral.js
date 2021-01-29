@@ -7,9 +7,6 @@ import {firebase} from '../firebase/config'
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        //paddingTop: 6,
-        //paddingLeft: 12,
-        //paddingBottom: 6,
         marginLeft:"4%", //oldvalue: 16
         marginRight:"4%", //oldvalue: 16
         marginTop: "2%", //oldvalue: 8
