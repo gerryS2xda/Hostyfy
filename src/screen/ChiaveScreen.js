@@ -1,75 +1,97 @@
 import React, { useState, useCallback } from 'react';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import { StyleSheet, View, Image, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, Alert, Text } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
+import CustomButton from "../components/CustomButton"
 
-const ChiaveScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId, prenotazioneId} = route.params;
+const ChiaveScreen = ({ route, navigation }) => {
+    const { user, strutturaId, alloggioId, prenotazioneId } = route.params;
     const [alloggio, setAlloggio] = useState({});
     const [doneCheckIn, setDoneCheckIn] = useState(false);
     const isFocused = useIsFocused();
-  
+   
     useFocusEffect(
         useCallback(() => {
-        // Do something when the screen is focused
-        // Ottieni info dell'utente da DB usando lo userId
-            async function getAlloggioAndPrenotazioneData(){
+            // Do something when the screen is focused
+            // Ottieni info dell'utente da DB usando lo userId
+            async function getAlloggioAndPrenotazioneData() {
 
                 //Attendi finche' non ottieni dati di un alloggio
                 var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
                 setAlloggio(alloggioDoc); //Memorizza i dati dell'alloggio nello state
 
-                if(prenotazioneId !== ""){
+                if (prenotazioneId !== "") {
                     //Attendi finche' non ottieni le informazioni relative a 'doneCheckIn' da una prenotazione
                     var prenotazioneDoc = await PrenotazioneModel.getPrenotazioneById(prenotazioneId);
                     setDoneCheckIn(prenotazioneDoc.doneCheckIn);
                 }
             }
             getAlloggioAndPrenotazioneData();
-        return () => {
-            // Do something when the screen is unfocused
-            // Useful for cleanup functions
-        };
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
         }, [isFocused])
     );
 
-    const setNavigationScreenAfterPressKey = async () =>{
-        if(!doneCheckIn && prenotazioneId !== ""){
+    const setNavigationScreenAfterPressKey = async () => {
+        if (!doneCheckIn && prenotazioneId !== "") {
             //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
-            await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId,true);
+            await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
             navigation.navigate("MoviePlayer");
-        }else{
+        } else {
             //navigation.navigate("InfoCamera");
         }
     }
 
     const createTwoButtonAlert = () =>
-    Alert.alert(
-      "Ingresso alloggio",
-      "Benvenuto nella camera " + JSON.stringify(alloggio.nomeAlloggio),
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () =>{ setNavigationScreenAfterPressKey()}
-        }
-      ],
-      { cancelable: false }
-    );
+        Alert.alert(
+            "Ingresso alloggio",
+            "Benvenuto nella camera " + JSON.stringify(alloggio.nomeAlloggio),
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                {
+                    text: "OK", onPress: () => { setNavigationScreenAfterPressKey() }
+                }
+            ],
+            { cancelable: false }
+        );
 
 
-    return(
+    return (
         <View style={styles.maincontainer}>
-            <HeaderBar title="La mia chiave" navigator={navigation} />
+            <HeaderBar title="Chiave" navigator={navigation} />
             <View style={styles.bodyViewContent}>
+                <View>
+                    <Text style = {styles.titolo}>Chiave camera {alloggio.numCamere}</Text>
+                </View>
                 <View style={styles.buttonKeyContainer}>
-                    <TouchableOpacity onPress={createTwoButtonAlert} >
-                        <Image style={styles.keyImage} source={require("../../assets/electronicKeyHotel.png")}/>
-                    </TouchableOpacity>
+                    <CustomButton
+                        styleBtn={styles.buttonStyle}
+                        styleTesto={{fontSize: 30, color: "#303a52", fontFamily: "MontserrantBold" }}
+                        nome={"Apri"}
+                        onPress={
+                            () => {Alert.alert(
+                                "Ingresso alloggio",
+                                "Benvenuto nella camera " + JSON.stringify(alloggio.nomeAlloggio),
+                                [
+                                    {
+                                        text: "Cancel",
+                                        onPress: () => console.log("Cancel Pressed"),
+                                        style: "cancel"
+                                    },
+                                    {
+                                        text: "OK", onPress: () => { setNavigationScreenAfterPressKey() }
+                                    }
+                                ],
+                                { cancelable: false }
+                            );}} />
                 </View>
             </View>
         </View>
@@ -88,37 +110,37 @@ const styles = StyleSheet.create({
     },
     bodyViewContent: {
         flex: 1,
-        marginTop: 16,
-        marginBottom: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    keyImageIDcontainer: {
-        marginTop:32,
-        marginBottom: 16,
-    },
-    keyImage: {
-        width: 250,
-        height: 250,
-    },
-    idkeyText: {
-        fontSize: 16,
-        color: "black",
-        textAlign: "center",
-        marginTop: 8
-    },
-    buttonKeyContainer:{
+    buttonKeyContainer: {
         flex: 1, //rimuovi per elimare spazio extra tra ID text e il pulsante
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 24,
-        marginBottom: 24,
     },
-    bottoneStyle : {
-        borderWidth: 1,
-        width: 120,
-        height: 32,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius:8,
-        backgroundColor: '#f2077d',
+    buttonStyle:{
+        width: 220, 
+        height: 220,
+        borderRadius: 300, 
+        borderColor: "#0692d4", 
+        backgroundColor: "#e4eded", 
+        borderWidth:3,
+        shadowColor: "#003780",
+        shadowOffset: {
+            width: 10,
+            height: 5,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 20,
+        elevation: 80,
+        marginBottom: "10%"
     },
+    titolo:
+    {
+        fontFamily: "MontserrantSemiBold",
+        fontSize: 25,
+        color: "#303a52",
+        marginTop: "8%"
+    }
+    
 });
