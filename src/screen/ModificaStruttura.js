@@ -1,15 +1,12 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Text, View, Image, ScrollView, StyleSheet, Alert, Dimensions } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 import Slideshow from 'react-native-image-slider-show';
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -425,9 +422,9 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     styleBtn={{ width: "100%" }}
                                     nome={IsEditable ? 'Applica' : "Modifica"}
                                     onPress={() => {
+                                        IsEditable ? setIsEditable(false) : setIsEditable(true);
                                         async function updateStruttura() {
-                                            IsEditable ? setIsEditable(false) : setIsEditable(true);
-                                            if (!IsEditable) {
+                                            if (IsEditable) {
                                                 var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
                                                 await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
                                             }

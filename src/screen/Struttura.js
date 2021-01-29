@@ -283,7 +283,7 @@ const StrutturaScreen = ({ route, navigation }) => {
                             <View style={styles.informationContainer}>
 
                                 <View style={styles.information}>
-                                    <Icon name={"map-marker-radius-outline"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    <Icon name={"map-marker-radius"} color={"#0692d4"} size={40} style={styles.arrow} />
                                     <Text style={styles.indirizzoText}>{via}</Text>
                                     <Text style={styles.indirizzoText}>{citta}, {provincia}, {cap}</Text>
                                 </View>

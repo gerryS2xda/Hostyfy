@@ -186,12 +186,9 @@ const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { re
 
 const ModificaAlloggio = ({ route, navigation }) => {
 
-    const { user, strutturaId, alloggioId } = route.params;
-    console.log("" + strutturaId + alloggioId)    
+    const { user, strutturaId, alloggioId } = route.params;    
     const [IsEditable, setIsEditable] = useState(false);
-    const [alloggio, setAlloggio] = useState({});
     const [carouselItems, setCarouselItems] = useState([]);
-    const [activeIndex, setActiveIndex] = useState(0);
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
     const [nomeAlloggio, setNomeAlloggio] = useState("");
@@ -329,13 +326,11 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     styleBtn={{width: "100%"}} 
                                     nome={IsEditable ? 'Applica' : "Modifica"}  
                                     onPress={()=> { 
+                                        IsEditable ? setIsEditable(false) : setIsEditable(true);
                                         async function updateAlloggio(){
                                             if(IsEditable){
-                                                setIsEditable(false)
-                                                await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, "");
-                                            } else {
-                                                setIsEditable(true)
-                                            }
+                                                await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, "");
+                                            } 
                                         }
                                         updateAlloggio();
                                     }

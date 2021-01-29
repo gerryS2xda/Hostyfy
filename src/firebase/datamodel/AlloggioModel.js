@@ -57,7 +57,7 @@ export async function createDispositiviDomoticiDocument(structId, alloggioId, no
 }
 
 //Update functions
-export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, pathvideo){
+export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, pathvideo){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return await alloggioCollectionRef.doc(alloggioId).update({
@@ -65,6 +65,7 @@ export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio,
         numCamere: numCamere,
         numMaxPersone: numMaxPersone,
         piano: piano,
+        descrizione: descrizione,
         pathvideo: pathvideo
     })
     .then(function() {
