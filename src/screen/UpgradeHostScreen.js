@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import Dialog from "react-native-dialog";
+import CustomAlertTextInput from "../components/CustomAlertTextInput";
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import CustomButton from "../components/CustomButton";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
@@ -13,12 +15,17 @@ const UpgradeHostScreen = ({route, navigation}) =>{
     const [isVisibleFirstDialog, setFirstDialogVisible] = useState(false);
     const [isVisibleSecondDialog, setSecondDialogVisible] = useState(false);
     const [isVisibleThirdDialog, setThirdDialogVisible] = useState(false);
+    const [showUpgradeAlert, setShowUpgradeAlert] = useState(false);
     const [emailWebAlloggiati, setEmailWebAlloggiati] = useState('');
     const [passwordWebAlloggiati, setPasswordWebAlloggiati] = useState('');
-    const prezzoUpgrade = "80";
+    var prezzoUpgrade = "80";
     const [valueNumCarta, setNumeroCartaValue] = useState('');
     const [valueDataScadenza, setDataScadenzaValue] = useState('');
     const [valueCCVScadenza, setCCVValue] = useState('');
+
+    if(valueDataScadenza !== ""){ //resetta campo per date text input nel CustomAlertTextInput
+        setDataScadenzaValue("");
+    }
 
     return(
         <View style={styles.maincontainer}>
@@ -42,70 +49,83 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                             onPress={()=>{ setFirstDialogVisible(true); }} 
                         />    
                     </View>
-                    <View>
-                        <Dialog.Container visible={isVisibleFirstDialog}>
-                            <Dialog.Title style={styles.styleDialogTitle}>Upgrade Host</Dialog.Title>
-                            <Dialog.Description style={styles.styleDialogDescription}>Inserire le proprie credenziale per continuare il processo </Dialog.Description>
-                            <Dialog.Input style={styles.styleDialogInput} label="E-mail" value={emailWebAlloggiati} onChangeText={setEmailWebAlloggiati} />
-                            <Dialog.Input style={styles.styleDialogInput} label="Password" value={passwordWebAlloggiati} onChangeText={setPasswordWebAlloggiati} secureTextEntry={true}/>
-                            <Dialog.Button style={styles.styleDialogBtnTxt} label="Procedi" onPress={()=>{
-                                setFirstDialogVisible(false);
-                                setSecondDialogVisible(true);
-                            }}/>  
-                            <Dialog.Button style={styles.styleDialogBtnTxt} label="Annulla" onPress={()=>{
-                                setFirstDialogVisible(false);
-                            }}/>            
-                        </Dialog.Container>
-                    </View>
-                    <View>
-                        <Dialog.Container visible={isVisibleSecondDialog}>
-                            <Dialog.Title style={styles.styleDialogTitle}>Upgrade Host</Dialog.Title>
-                            <Dialog.Description style={styles.styleDialogDescription}>Il costo per effettuare l'upgrade e' 80€ </Dialog.Description>
-                            <Dialog.Button style={styles.styleDialogBtnTxt} label="Paga" onPress={()=>{
-                                setSecondDialogVisible(false);
-                                setThirdDialogVisible(true);
-                            }} />   
-                            <Dialog.Button style={styles.styleDialogBtnTxt} label="Annulla" onPress={()=>{
-                                setSecondDialogVisible(false);
-                            }}/>            
-                        </Dialog.Container>
-                    </View>
-                    <View>
-                        <Dialog.Container visible={isVisibleThirdDialog}>
-                            <Dialog.Title style={styles.styleDialogTitle}>Upgrade Host</Dialog.Title>
-                            <Dialog.Description style={styles.styleDialogDescription} >Inserire le informazioni della propria carta di credito </Dialog.Description>
-                            <Dialog.Input style={styles.styleDialogInput} label="Numero carta:" value={valueNumCarta} onChangeText={setNumeroCartaValue} />
-                            <Dialog.Input style={styles.styleDialogInput} label="Data scadenza:" value={valueDataScadenza} onChangeText={setDataScadenzaValue} />
-                            <Dialog.Input style={styles.styleDialogInput} label="CCV:" value={valueCCVScadenza} onChangeText={setCCVValue} />
-                            <Dialog.Button style={styles.styleDialogBtnTxt} label="Conferma" onPress={()=>{
-                                setThirdDialogVisible(false);
-                                Alert.alert(
-                                    "Upgrade Host",
-                                    "Esito dell'operazione positivo! Congratulazioni, ora sei un host!",
-                                    [
-                                    {
-                                        text: "Cancel",
-                                        onPress: () => console.log("Cancel Pressed"),
-                                        style: "cancel"
-                                    },
-                                    { text: "OK", 
-                                    onPress: () => {
-                                            GuestModel.updateisHost(user.userId, true);
-                                            user.isHost=true;
-                                            HostModel.createHostDocument(user.userId, emailWebAlloggiati, passwordWebAlloggiati);
-                                            //user non contiene le info di host, per tale motivo creo la variabile host con le info inserite e aggiungo i valori a 'user'
-                                            var host = {userIdRef: user.userId, emailWebAlloggiati: emailWebAlloggiati, passwordWebAlloggiati: passwordWebAlloggiati};
-                                            navigation.navigate('HomeHost', {user:{...user, ...host}}); 
-                                        }}
-                                    ],
-                                    { cancelable: false }
-                                );
-                            }}/>
-                            <Dialog.Button style={styles.styleDialogBtnTxt} label="Annulla" onPress={()=>{
-                                setThirdDialogVisible(false);
-                            }}/>             
-                        </Dialog.Container>
-                    </View>
+                    {
+                        isVisibleFirstDialog && (
+                            <CustomAlertTextInput
+                                visibility={isVisibleFirstDialog}
+                                setVisibility={setFirstDialogVisible}
+                                titolo="Upgrade Host"
+                                testo="Inserire le proprie credenziale per continuare il processo"
+                                buttonName="Procedi"
+                                placeholder = "E-mail"
+                                setTextData={setEmailWebAlloggiati}
+                                showSecondTxtInput={true}
+                                placeholderSecondInput="Password"
+                                setSecondTextData={setPasswordWebAlloggiati}
+                                onOkPress={()=>{
+                                    setFirstDialogVisible(false);
+                                    setSecondDialogVisible(true);
+                                }} />
+                        )
+                    }
+                    {
+                        isVisibleSecondDialog && (
+                            <CustomAlertGeneral
+                                visibility={isVisibleSecondDialog}
+                                setVisibility={setSecondDialogVisible}
+                                titolo="Upgrade Host"
+                                testo= {"Il costo per effettuare l'upgrade è " + prezzoUpgrade + "€"}
+                                buttonName="Paga"
+                                onOkPress={()=>{
+                                    setSecondDialogVisible(false);
+                                    setThirdDialogVisible(true);
+                                }} />
+                        )
+                    }
+                    {
+                        isVisibleThirdDialog && (
+                            <CustomAlertTextInput
+                                visibility={isVisibleThirdDialog}
+                                setVisibility={setThirdDialogVisible}
+                                titolo="Upgrade Host"
+                                testo="Inserire le informazioni della propria carta di credito per terminare il processo"
+                                buttonName="Conferma"
+                                placeholder = "Numero carta"
+                                setTextData={setNumeroCartaValue}
+                                showDatePickerTxtInput={true}
+                                placeholderDateInput="Data scadenza"
+                                dateValue={valueDataScadenza}
+                                setDateInput={setDataScadenzaValue}
+                                showSecondTxtInput={true}
+                                placeholderSecondInput="CCV"
+                                setSecondTextData={setCCVValue}
+                                onOkPress={()=>{
+                                    setThirdDialogVisible(false);
+                                    setShowUpgradeAlert(true);
+                                }} />
+                        )
+                    }
+                    {
+                        showUpgradeAlert && (
+                            <CustomAlertGeneral
+                                visibility={showUpgradeAlert}
+                                setVisibility={setShowUpgradeAlert}
+                                titolo="Upgrade Host"
+                                testo= {"Esito dell'operazione positivo! Congratulazioni, ora sei un host!"}
+                                buttonName="Ok"
+                                onOkPress={()=>{
+                                    async function upgradeHost(){
+                                        await GuestModel.updateisHost(user.userId, true);
+                                        await HostModel.createHostDocument(user.userId, emailWebAlloggiati, passwordWebAlloggiati);
+                                        navigation.reset({
+                                            index: 0,
+                                            routes: [{ name: 'HomeHost',  params: { userId: user.userId }}],
+                                        }); //resetta lo stack quando si ritorna nella Home
+                                    }
+                                    upgradeHost();
+                                }} />
+                        )
+                    }
                 </View>
             </ScrollView>
         </View>

@@ -1,11 +1,16 @@
 import React, { useState, useRef } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native';
 import CustomButton from './CustomButton';
+import DatePickerInputField from "./DatePickerInputField";
 
 const CustomAlertTextInput = (props) => {
 
     const visibility = props.visibility;
     const textInputRef = useRef(null); 
+    const textInputSecondRef = useRef(null);
+    const [dateInput, setDateInput] = useState("");
+    const isSecondTextInputVisibile = false || props.showSecondTxtInput;
+    const isDatePickerInputVisibile = false || props.showDatePickerTxtInput;
 
     return(
         <Modal
@@ -23,6 +28,26 @@ const CustomAlertTextInput = (props) => {
                         onChangeText={(text) => props.setTextData(text)}
                     />
                     </View>
+                    {isDatePickerInputVisibile && (
+                        <View style = {styles.textInputContainer}>
+                        <DatePickerInputField
+                            styleField={{ width: "82%" }}
+                            date={dateInput.toString()}
+                            setDate={setDateInput}
+                            placeholder={props.placeholderDateInput}
+                        />
+                        </View>
+                    )}
+                    {isSecondTextInputVisibile && (
+                        <View style = {styles.textInputContainer}>
+                        <TextInput
+                            style={styles.input}
+                            ref={textInputSecondRef}
+                            placeholder={props.placeholderSecondInput}
+                            onChangeText={(text) => props.setSecondTextData(text)}
+                        />
+                        </View>
+                    )}
                     <View style = {styles.horizontalbutton}>
                         <CustomButton 
                             styleBtn={{width: "45%"}}
@@ -30,6 +55,12 @@ const CustomAlertTextInput = (props) => {
                             onPress={()=>{    
                                     props.setVisibility(false);
                                     textInputRef.current.clear(); 
+                                    if(isSecondTextInputVisibile){
+                                        textInputSecondRef.current.clear();
+                                    }
+                                    if(isDatePickerInputVisibile){
+                                        props.setDateInput("");
+                                    }
                                 }
                             }
                         />
@@ -38,6 +69,12 @@ const CustomAlertTextInput = (props) => {
                             nome={props.buttonName}
                             onPress={()=>{
                                 textInputRef.current.clear();
+                                if(isSecondTextInputVisibile){
+                                    textInputSecondRef.current.clear();
+                                }
+                                if(isDatePickerInputVisibile){ //viene inviato verso l'esterno il valore della data impostata
+                                    props.setDateInput(dateInput);
+                                }
                                 props.onOkPress(); 
                         }}/> 
                     </View>    
@@ -88,10 +125,9 @@ const styles = StyleSheet.create({
     {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginTop: "10%",
     },
     textInputContainer: {
-        marginTop: 5,
-        marginBottom: 20,
         alignItems: 'center',
     },
     input: {
