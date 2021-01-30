@@ -7,7 +7,7 @@ const CustomButton = (props) => {
             disabled={props.disabled}
             style = {[styles.bottoneStyle, props.styleBtn]}
             onPress={props.onPress}>
-            <Text style = {styles.testoBottone}>{props.nome}</Text>
+            <Text style = {[styles.testoBottone, props.styleTesto]}>{props.nome}</Text>
         </TouchableOpacity>
     );
 }
