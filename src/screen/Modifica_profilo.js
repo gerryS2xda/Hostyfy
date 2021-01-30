@@ -506,6 +506,7 @@ const Modifica_profilo = ({ route, navigation }) => {
                   style={styles.singleTextInput}
                   onChangeText={(cap) => setCAP(cap)}
                   theme={theme}
+                  keyboardType={'numeric'}
                 />
               </View>
             </View>
