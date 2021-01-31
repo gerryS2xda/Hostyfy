@@ -6,7 +6,7 @@ var db = firebase.firestore();
 var notificationCollectionRef = db.collection("notifiche"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export async function createNotificationDocument(categoria, dataCreazione, descrizione, titolo, uid){
+export async function createNotificationDocument(categoria, dataCreazione, titolo, descrizione, uid, prenId){
     // Add a new document in collection "norification" con add(), se non e' presente, crea il documento
     return await notificationCollectionRef.add({
         categoria: categoria,
@@ -15,6 +15,7 @@ export async function createNotificationDocument(categoria, dataCreazione, descr
         isRead: false,
         titolo: titolo,
         userId: uid,
+        prenId: prenId,
     })
     .then(function() {
         console.log("Notification document successfully written!");
@@ -25,7 +26,7 @@ export async function createNotificationDocument(categoria, dataCreazione, descr
 }
 
 //Update functions
-export async function updateNotificationDocument(notificationId, categoria, dataCreazione, descrizione, isRead, titolo, uid){
+export async function updateNotificationDocument(notificationId, categoria, dataCreazione, titolo, descrizione, isRead, uid, prenId){
     //Edit all field of notification document
     return await notificationCollectionRef.doc(notificationId).update({
         categoria: categoria,
@@ -34,6 +35,7 @@ export async function updateNotificationDocument(notificationId, categoria, data
         isRead: isRead,
         titolo: titolo,
         userId: uid,
+        prenId: prenId,
     })
     .then(function() {
         console.log("Notification document successfully updated!");

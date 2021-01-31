@@ -24,6 +24,7 @@ export async function createPrenotazioniDocument(hostuid, guestuid, strutturaDoc
         numTel: numTel, 
         costo: costo,
         doneCheckIn: false, 
+        doneCheckOut: false,
         cleanServiceRef: cleanServiceId
     }).then(function() {
         console.log("Prenotazione document successfully created!");
@@ -64,6 +65,20 @@ export async function updateCheckInStatusPrenotazione(prenDocId, doneCheckIn){
     //Edit all field of prenotazioni document
     return await prenotazioniCollectionRef.doc(prenDocId).update({
         doneCheckIn: doneCheckIn,
+    })
+    .then(function() {
+        console.log("Prenotazione document successfully updated!");
+    })
+    .catch(function(error) {
+        // The document probably doesn't exist.
+        console.error("Error updating prenotazione document: ", error);
+    }); 
+}
+
+export async function updateCheckOutStatusPrenotazione(prenDocId, doneCheckOut){
+    //Edit all field of prenotazioni document
+    return await prenotazioniCollectionRef.doc(prenDocId).update({
+        doneCheckOut: doneCheckOut,
     })
     .then(function() {
         console.log("Prenotazione document successfully updated!");
@@ -126,5 +141,12 @@ export async function getPrenotazioniAttualiGuestQuery(userId, dataOdierna){
 
 export async function getPrenotazioniAttualiHostQueryAlloggio(userId, dataOdierna, alloggioRef){
     let docs = await prenotazioniCollectionRef.where('hostRef','==',userId).where('dataFine','>=',dataOdierna).where('alloggioRef', '==' , alloggioRef).get();
+    return docs.docs;
+}
+
+export async function getPrenotazioniForCheckOut(guestId, dataOdierna){
+    var tsDataOdierna = firebase.firestore.Timestamp.fromDate(dataOdierna);
+    //Confronto data su ">=" in quanto si confronta anche l'ora attuale
+    let docs = await prenotazioniCollectionRef.where('guestRef','==',guestId).where('dataFine','>=',tsDataOdierna).get();
     return docs.docs;
 }

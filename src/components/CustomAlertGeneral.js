@@ -1,48 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CustomButton from './CustomButton';
 
-const CustomAlertKey = (props) => {
+const CustomAlertGeneral = (props) => {
 
     const visibility = props.visibility;
+    const annullaBtnName = props.annullaBtnName || "Annulla";
+    const isNegativeBtnInvisible = props.hideNegativeBtn || false;
+    
 
     return(
-
-    <Modal
-        transparent={true}
-        visible={visibility}>
-
-        <View style = {styles.container}>
-            <View style = {styles.containertesto}>
-                <Text style={styles.titolo}>{props.titolo}</Text>
-                <Text style={styles.testo}>{props.testo}</Text>
-            
-                <View style = {styles.horizontalbutton}>
-                    <CustomButton 
-                        styleBtn={{width: "45%"}}
-                        nome="Annulla"
-                        onPress={()=>{props.setVisibility(false);}}
+        <Modal
+            transparent={true}
+            visible={visibility}>
+            <View style = {styles.container}>
+                <View style = {styles.containertesto}>
+                    <Text style={styles.titolo}>{props.titolo}</Text>
+                    <Text style={styles.testo}>{props.testo}</Text>
+                    {!isNegativeBtnInvisible && (
+                        <View style = {styles.horizontalbutton}>
+                        <CustomButton 
+                            styleBtn={{width: "45%"}}
+                            nome={annullaBtnName}
+                            onPress={()=>{
+                                props.onAnnullaBtn();
+                                props.setVisibility(false);
+                            }}
                         />
-
-                    <CustomButton 
-                        styleBtn={{width: "45%"}}
-                        nome={props.buttonName}
-                        onPress={()=>{ 
-                            props.onOkPress(); 
-                        }}/>
-                          
-                </View>
-                
-                 
-                 </View>         
-            
-        </View>
-    </Modal>  
-      
+                        <CustomButton 
+                            styleBtn={{width: "45%"}}
+                            nome={props.buttonName}
+                            onPress={()=>{ 
+                                props.onOkPress(); 
+                        }}/>      
+                    </View> 
+                    )}
+                    {isNegativeBtnInvisible && (
+                    <View style = {styles.horizontalbutton}>
+                        <CustomButton 
+                            styleBtn={{width: "100%"}}
+                            nome={props.buttonName}
+                            onPress={()=>{ 
+                                props.onOkPress(); 
+                        }}/>      
+                    </View> 
+                    )}
+                        
+                </View>         
+            </View>
+        </Modal>  
     );
 }
 
-export default CustomAlertKey;
+export default CustomAlertGeneral;
 
 const styles = StyleSheet.create({
 

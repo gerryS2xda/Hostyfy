@@ -3,9 +3,13 @@ import { View, Text, StyleSheet, Alert, Image } from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar'
 import ButtonMenu from "../components/ButtonMenu";
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import { firebase } from '../firebase/config'
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
+import * as NotificationModel from "../firebase/datamodel/NotificationModel"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -66,23 +70,10 @@ const styles = StyleSheet.create({
 
 const HomeGuest = ({ route, navigation }) => {
 
-  const createNextRealeaseFeatureAlert = () =>
-    Alert.alert(
-      "Funzionalità non disponibile",
-      "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
-
   const { userId } = route.params;
   const [user, setUser] = useState({});
+  const [checkOut, setCheckOutInfo] = useState({});
+  const [showAlertCheckOut, setAlertCheckOutVisibility] = useState(false);
   const isFocused = useIsFocused();
 
   
@@ -101,7 +92,51 @@ const HomeGuest = ({ route, navigation }) => {
           setUser({ ...guestDoc, ...creditcardDoc });
         }
       }
+      //Verifica se vi sono prenotazioni in scadenza (un'ora associato a data fine), mostra un Alert e crea notifica
+      async function verifyCheckOut(){
+        //Ottieni le prenotazioni in scandenza di quell'ospite
+        var dataOdierna = new Date();
+        var prenotazioniDocs = await PrenotazioneModel.getPrenotazioniForCheckOut(userId, dataOdierna);
+        for(const pren of prenotazioniDocs){
+          var prenotazione = pren.data();
+          if(prenotazione.doneCheckOut) //verifica se il checkout di quella prenotazione è stato già eseguito
+            continue;
+
+          var dataFinepren = prenotazione.dataFine.toDate(); //Convert timestamp JS in Date object 
+          if(dataOdierna.toLocaleDateString() !== dataFinepren.toLocaleDateString()) //considera solo le prenotazioni della data odierna
+            continue;
+
+          //A partire dalla prenotazione trovata, ottieni i dati dell'alloggio 
+          var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+
+          //Verifica se la prenotazione e' in scadenza (un'ora prima)
+          var oraAttuale = dataOdierna.getHours(); 
+          var oraFinePren = dataFinepren.getHours(); 
+          if((oraAttuale+1) == oraFinePren){ //se manca un'ora alla fine della prenotazione
+            
+            //Crea notifica per checkout, prima verifica che non sia stata già creata
+            var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
+            if(notificationDocs.length == 0){ //se non vi sono notifiche
+              await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio+"\"", 
+              "Alle ore " + oraFinePren + " del \""+ dataOdierna.toLocaleDateString('it-IT') + "\" sarà eseguito il check-out...", userId, pren.id);
+            }else{
+              for(const noti of notificationDocs){
+                var notifica = noti.data();
+                if(notifica.prenId !== pren.id){ //non è presente una notifica associata alla prenotazione in scadenza -> aggiungila
+                  await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio+"\"", 
+                    "Alle ore " + oraFinePren + " del \""+ dataOdierna.toLocaleDateString('it-IT') + "\" sarà eseguito il check-out...", userId, pren.id);
+                }
+              }
+            }
+
+            //mostra Alert e salva check-out info
+            setCheckOutInfo({prenId: pren.id, ora: oraFinePren, alloggioName: alloggioDoc.nomeAlloggio});
+            setAlertCheckOutVisibility(true);
+          }
+        }
+      }
       getUserData();
+      verifyCheckOut();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions
@@ -112,7 +147,7 @@ const HomeGuest = ({ route, navigation }) => {
   return (
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={navigation} />
-        <View style={styles.container}>
+      <View style={styles.container}>
           <View style = {styles.topcontainer}>
           <Image 
               source = {require("../../assets/Varie/Homepage.jpg")}
@@ -136,8 +171,24 @@ const HomeGuest = ({ route, navigation }) => {
               }} />
             </View>
             </View>
-          </View>
+            {
+              showAlertCheckOut && (
+                <CustomAlertGeneral
+                  visibility={showAlertCheckOut}
+                  setVisibility={setAlertCheckOutVisibility}
+                  titolo="Check-out"
+                  testo= {"Alle ore " + checkOut.ora + " della data odierna sarà eseguito il check-out per l'alloggio \""+ checkOut.alloggioName + 
+                  "\"! Si invita l'ospite a procede con il check-out!"}
+                  hideNegativeBtn={true}
+                  buttonName="Procedi"
+                  onOkPress={()=>{ 
+                      setAlertCheckOutVisibility(false);    
+                      navigation.navigate("CheckOut", {userId: userId, prenotazioneId: checkOut.prenId})
+                  }} />
+              )
+            }
       </View>
+    </View>
     
   );
 }

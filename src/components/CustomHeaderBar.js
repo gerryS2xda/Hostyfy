@@ -2,19 +2,25 @@ import React, { useState } from'react'
 import {Platform, StyleSheet, Text, View, Image, TouchableOpacity, Alert, StatusBar } from 'react-native';
 import { DrawerActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {firebase} from "../firebase/config"
+import * as NotificationModel from "../firebase/datamodel/NotificationModel"
 
 var showBackButton = false;
 
 const CustomHeaderBar = (props) => {
 
-    var headertitle = props.title;
+    //NOTA: il valore di currentUser e' null alla prima lettura di questa pagina da parte di "App.js", viene settata ogni volta che si apre il drawer menu
+    var userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "unknown user";
 
-    if(headertitle === "Home"){
+    var headertitle = props.title;  //titolo intestazione schermata
+
+    if(headertitle === "Home"){ //gestisci lo stile se deve essere mostrato o meno il pulsante 'back'
       showBackButton = false;
     }else{
       showBackButton = true;
     }
 
+    //STYLE (inserito all'interno del codice per usare valore showBackButton aggiornato)
     const styles = StyleSheet.create({
       headerHeight: Platform.select({    
           ios: {
@@ -151,6 +157,26 @@ const CustomHeaderBar = (props) => {
     }),
   });
 
+    //Gestione icona notifiche
+    const [notificationIcon, setNotificationIcon] = useState(require("../../assets/bell_white.png"));
+    const checkNotification = async () =>{ //controlla se vi sono notifiche da leggere
+      var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
+      var flag = false; //usato per verificare se ci sono notifiche non lette 
+      for(const doc of notificationDocs){
+        var notification = doc.data(); //ottieni i dati di ciascuna notifica e verifica il valore del flag 'isRead'
+        if(!notification.isRead){ //se vi è una notifica da leggere ed è nuova, cambia icona
+          flag= true;
+          setNotificationIcon(require("../../assets/bellbadge_white.png"));
+        }
+      }
+      if(!flag && notificationIcon === require("../../assets/bellbadge_white.png")){ //se le notifiche sono state tutte lette, resetta icona
+        setNotificationIcon(require("../../assets/bell_white.png"));
+      }
+    }
+    if(userId !== "unknown user")
+      checkNotification();
+
+
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
           <StatusBar backgroundColor="#003780" barStyle={'default'} /> 
@@ -165,8 +191,8 @@ const CustomHeaderBar = (props) => {
                 <TouchableOpacity style={styles.drawerMenuButton} onPress={() => props.navigator.dispatch(DrawerActions.toggleDrawer())}>
                   <Image style={styles.drawerIcon} source={require("../../assets/drawerMenu_icon.png")}/>
                 </TouchableOpacity> 
-                <TouchableOpacity style={styles.notificationButton} onPress={() => props.navigator.navigate("Notifications")}>
-                  <Icon name="bell" color={"white"} size={24} />
+                <TouchableOpacity style={styles.notificationButton} onPress={() => props.navigator.navigate("Notifications", {userId: userId})}>
+                  <Image style={styles.notificationIcon} source={notificationIcon} />
                 </TouchableOpacity>
                 <Text style={styles.headertitle}>{headertitle}</Text>
             </View>
@@ -175,21 +201,3 @@ const CustomHeaderBar = (props) => {
 }
 
 export default CustomHeaderBar;
-
-//Alert function
-const createNextRealeaseFeatureAlert = () =>
-      Alert.alert(
-      "Funzionalità non disponibile",
-      "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-      [
-          {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-          },
-          { text: "OK", onPress: () => console.log("OK Pressed") }
-      ],
-      { cancelable: false }
-    );
-
-//Style
