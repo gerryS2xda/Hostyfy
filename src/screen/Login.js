@@ -121,9 +121,13 @@ const Login = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errore, setErrore] = useState(false);
-  var emailRef = useRef(null);
-  var passwordref = useRef(null);
 
+  const resetState = () =>{
+    if(email !== "")
+      setEmail("");
+    if(password !== "")
+      setPassword("");
+  }
 
   return (
     
@@ -151,7 +155,6 @@ const Login = (props) => {
             <Text style={styles.titolo}>Login</Text>
 
             <TextInput
-              ref={emailRef}
               style={styles.input}
               placeholder='Email'
               onChangeText={(email) => setEmail(email)}
@@ -159,7 +162,6 @@ const Login = (props) => {
 
             <TextInput
               style={styles.input}
-              ref={passwordref}
               placeholder='Password'
               onChangeText={(password) => setPassword(password)}
               secureTextEntry={true}
@@ -171,9 +173,9 @@ const Login = (props) => {
               onPress={() => {
                 firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user) {
                   const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
-                  
-                  emailRef.current.clear();
-                  passwordref.current.clear();
+                
+                  //resetta i campi di login resettando lo stato
+                  resetState();
 
                   //Dopo il login, viene resettato lo stack navigator e settata come route iniziale la schermata Home
                   props.navigation.reset({

@@ -3,7 +3,6 @@ import { Text, View, Image, ScrollView, Alert, StyleSheet, Modal, ActivityIndica
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
-import * as NotificationModel from "../firebase/datamodel/NotificheModel";
 import { firebase } from "../firebase/config"
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
