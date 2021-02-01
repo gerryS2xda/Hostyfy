@@ -60,11 +60,11 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                         <View style={styles.fieldSetContent}>
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
-                                <Text style={styles.normalText}>{(new Date(prenotazione.dataInizio * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
+                                <Text style={styles.normalText}>{(new Date(prenotazione.dataInizio * 1000)).toLocaleString("it-IT")}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
-                                <Text style={styles.normalText}>{(new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
+                                <Text style={styles.normalText}>{(new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT")}</Text>
                             </View>
                             <View style={styles.iconView}>
                                 <View style={[styles.singleColumn, { marginLeft: "15%", }]}>
@@ -82,7 +82,7 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                         </View>
                     </View>
                     {!isHost && canDoCheckIn && (
-                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id={prenotazioneId} prenotazione={prenotazione} user={user} passata={showRecensioniBtn} />)
+                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id={prenotazioneId} prenotazione={prenotazione} user={user} passata={showRecensioniBtn} image_url={image_url} />)
                     }
                     {!isHost && showRecensioniBtn && (
                         <View style={styles.buttonContainer}>
@@ -106,7 +106,7 @@ function ButtonContainer(props) {
             return (
                 <View style={styles.buttonContainer}>
                     <CustomButton nome="Check-In" styleBtn={{ width: "100%" }} onPress={() => {
-                        props.navigator.navigate('EffettuaCheckIn', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone: props.prenotazione.numPersone, prenotazioneId: props.id, prenotazione: props.prenotazione});
+                        props.navigator.navigate('EffettuaCheckIn', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone: props.prenotazione.numPersone, prenotazioneId: props.id, prenotazione: props.prenotazione, image_url: props.image_url});
                     }} />
                 </View>
             );

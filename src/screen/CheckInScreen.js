@@ -6,12 +6,14 @@ import CustomButton from "../components/CustomButton"
 
 
 const CheckInScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId, numPersone, prenotazioneId, prenotazione} = route.params;
+    const {user, strutturaId, alloggioId, numPersone, prenotazioneId, prenotazione, image_url} = route.params;
     const [nDocument, setNDocument] = useState(1);
     const [documenti,setDocumenti] = useState([]);
     const [visible, setVisible] = useState(false);
     const [typeDoc, setDocType] = useState(null);
     const [numeroDoc, setNumeroDoc] = useState('');
+    const [nome,setNome] = useState("");
+    const [cognome,setCognome] = useState("");
     const [luogoRilascioDoc, setLuogoRilascioDoc] = useState('');
     const pickerStyle = {
 		inputIOS: {
@@ -47,7 +49,7 @@ const CheckInScreen = ({route, navigation}) =>{
                 <View style={styles.scrollContent}> 
                     <Text style={styles.numprenotazionetxt}>Prenotazione numero:  {prenotazione.numeroPrenotazione}</Text>
                     <View style={styles.infoCheckIncontainer}>
-                        <Image style={styles.checkInImage} source={require("../../assets/hotelExampleStruttura.png")}/>
+                        <Image style={styles.checkInImage} source={image_url}/>
                         <Text style={styles.checkIntxt}>Check-In {user.nome + " " + user.cognome}</Text>
                     </View>
                     <View style={styles.fieldSet}>
@@ -77,8 +79,22 @@ const CheckInScreen = ({route, navigation}) =>{
                     style = {{marginTop:"50%"}}
                     >
                     <View style ={styles.modalContainer} >
-                        <Text style={styles.legend}>Documento riconoscimento numero {nDocument}</Text>
+                        <Text style={styles.legend}>Documento di riconoscimento n. {nDocument}</Text>
                         <View style={styles.fieldSetContent}>
+                            <View style={styles.horizontalView}>
+                            <TextInput
+                                    style = {styles.textFieldStyle}
+                                    placeholder = 'Nome'
+                                    value = {nome}
+                                    onChangeText = {(nome) => setNome(nome)}
+                                />
+                                <TextInput
+                                    style = {styles.textFieldStyle}
+                                    placeholder = 'Cognome'
+                                    value = {cognome}
+                                    onChangeText = {(cognome) => setCognome(cognome)}
+                                />
+                            </View>
                             <View style={styles.horizontalView}>
                                 <RNPickerSelect
                                     style = {pickerStyle}
@@ -114,6 +130,8 @@ const CheckInScreen = ({route, navigation}) =>{
                                 console.log("ciao");
                                 console.log(numeroDoc);
                                 var documento = {
+                                    nome: nome,
+                                    cognome: cognome,
                                     tipoDocumento: typeDoc,
                                     luogoRilascio: luogoRilascioDoc,
                                     numeroDocumento: numeroDoc 
@@ -125,6 +143,8 @@ const CheckInScreen = ({route, navigation}) =>{
                                     setNDocument(1);
                                     setLuogoRilascioDoc("");
                                     setNumeroDoc("");
+                                    setCognome("");
+                                    setNome("");
                                     setDocumenti([]);
                                     navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: prenotazioneId}) 
                                 }
@@ -132,6 +152,8 @@ const CheckInScreen = ({route, navigation}) =>{
                                     setNDocument(nDocument + 1);
                                     setLuogoRilascioDoc("");
                                     setNumeroDoc("");
+                                    setCognome("");
+                                    setNome("");
                                     setVisible(false);
                                     setVisible(true)
                                 }

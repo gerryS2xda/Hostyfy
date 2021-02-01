@@ -336,7 +336,7 @@ export default class InserisciAlloggioScreen extends React.Component {
     }
 
     //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
-    validateFormField = () =>{
+    validateFormField = (photoList) =>{
 
         var flag = true; //tutti i campi sono compilati
         var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
