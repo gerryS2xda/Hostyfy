@@ -392,7 +392,9 @@ export default class InserisciStrutturaScreen extends React.Component {
                                             nome={"Completa l'inserimento"}
                                             onPress={() => { 
                                                     this.state.scrollRef.current.scrollTo({ x: (Dimensions.get('window').width)})
-                                                    this.state.scrollRefVerticalScrollView.current.scrollTo({y: 0})}} />
+                                                    this.state.scrollRefVerticalScrollView.current.scrollTo({y: 0})
+                                                    }
+                                            } />
                                     </View>
                                 </View>
                             </View>
@@ -446,13 +448,21 @@ export default class InserisciStrutturaScreen extends React.Component {
                                     <View style={styles.inserimento}>
                                         <TouchableOpacity
                                             style={styles.information}
-                                            onPress={this.state.showCustomAlert && ( <CustomAlertGeneral
-                                                visibility={this.state.showCustomAlert}
-                                                setVisibility={setCustomAlertVisibility}
-                                                titolo="Inserisci Foto"
-                                                testo= {"Funzionalità non ancora disponibile!"}
-                                                buttonName="Ok"
-                                                onOkPress={()=>{console.log("Cancel Pressed")}}/>)}>
+                                            onPress={()=>{
+                                                var struttutaState = {
+                                                    denominazione: this.state.denominazione,
+                                                    via: this.state.via,
+                                                    citta: this.state.citta,
+                                                    cap: this.state.cap,
+                                                    provincia: this.state.provincia,
+                                                    regione: this.state.regione,
+                                                    nazione: this.state.nazione,
+                                                    tipologia: this.state.tipologia,
+                                                    numeroAlloggi: this.state.numeroAlloggi,
+                                                    descrizione: this.state.descrizione,
+                                                }
+                                                this.props.navigation.push('ImagePickerMultipleStruttura', {user:user, state: struttutaState});
+                                            }} >
                                             <Icon name={"camera-plus-outline"} color={"#0692d4"} size={40} style={styles.arrow} />
                                             <Text
                                                 style={styles.otherText} >
@@ -462,13 +472,11 @@ export default class InserisciStrutturaScreen extends React.Component {
 
                                         <TouchableOpacity
                                             style={[styles.information]}
-                                            onPress={this.state.showCustomAlert && ( <CustomAlertGeneral
-                                                visibility={this.state.showCustomAlert}
-                                                setVisibility={setCustomAlertVisibility}
-                                                titolo="Inserisci Guida"
-                                                testo= {"Funzionalità non ancora disponibile!"}
-                                                buttonName="Ok"
-                                                onOkPress={()=>{console.log("Cancel Pressed")}}/>)}>
+                                            onPress={()=> Alert.alert(
+                                                "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
+                                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
+                                                { text: "OK", onPress: () => console.log("OK Pressed") }],
+                                                { cancelable: false })}>
                                             <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow} />
                                             <Text
                                                 style={styles.otherText} >
@@ -489,15 +497,12 @@ export default class InserisciStrutturaScreen extends React.Component {
                                     <CustomButton
                                         styleBtn={{ width: "90%" }}
                                         nome={"Inserisci Struttura"}
+                                        disabled={this.state.disableInsertStrutturaButton}
                                         onPress={() => {
-                                            async function updateStruttura() {
-                                                IsEditable ? setIsEditable(false) : setIsEditable(true);
-                                                if (!IsEditable) {
-                                                    var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
-                                                    await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
-                                                }
+                                            if(this.validateFormField(photoList)){
+                                                this.setState({disableInsertStrutturaButton: true});
+                                                this.onPressAggiungiStruttura(user, photoList, this, this.props.navigation);
                                             }
-                                            updateStruttura();
                                         }} />
                                 </View>
                             </View>
