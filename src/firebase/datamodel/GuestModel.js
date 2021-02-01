@@ -81,7 +81,7 @@ export async function updateGuestDocument(uid, cf, cognome, nome, sesso, dataNas
         cognome: cognome,
         nome: nome,
         sesso: sesso,
-        dataNascita: dataNasc,
+        dataNascita: new Date(dataNasc),
         luogoNascita: luogoNasc,
         numCell: numCell,
         numTel: numTel,

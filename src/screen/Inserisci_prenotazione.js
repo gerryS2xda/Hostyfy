@@ -233,9 +233,8 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						itemTextStyle={{ fontFamily: "MontserrantSemiBold" }}
 						selectedItemViewStyle={{ fontFamily: "MontserrantSemiBold" }}
 						borderRadius={20}
-						label="Alloggio"
 						style={styles.dropdownStyle}
-						label="Struttura"
+						label={"Struttura"}
 						data={struttureList}
 						enableSearch
 						value={strutturaId}
@@ -275,7 +274,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<DatePickerInputField  //data inizio
 							styleContainer={{ borderColor: '#303a52', borderRadius: 25 }}
 							styleField={{ width: "85%" }}
-							date={dateStart}
+							date={(dateStart == "") ? ""  : (new Date(dateStart)).toLocaleString("it-IT")}
 							placeholder={"Data di inizio"}
 							setDate={setDateStart}
 							disabled={false}
@@ -284,7 +283,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<DatePickerInputField  //data fine 
 							styleContainer={{ borderColor: '#303a52', borderRadius: 25, marginTop: 14 }}
 							styleField={{ width: "85%" }}
-							date={dateEnd}
+							date={(dateEnd == "") ? "" : (new Date(dateEnd)).toLocaleString("it-IT")}
 							setDate={setDateEnd}
 							placeholder={"Data di fine"}
 							disabled={false}

@@ -43,7 +43,7 @@ const ChiaveScreen = ({ route, navigation }) => {
             <HeaderBar title="Chiave" navigator={navigation} />
             <View style={styles.bodyViewContent}>
                 <View>
-                    <Text style = {styles.titolo}>Chiave camera {alloggio.numCamere}</Text>
+                    <Text style = {styles.titolo}>Chiave {alloggio.nomeAlloggio}</Text>
                 </View>
                 <View style={styles.buttonKeyContainer}>
                     <CustomButton

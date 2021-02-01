@@ -83,7 +83,6 @@ const HomeGuest = ({ route, navigation }) => {
       // Ottieni info dell'utente da DB usando lo userId
       async function getUserData() {
         var guestDoc = await GuestModel.getGuestDocument(userId);
-        guestDoc.dataNascita = new Date(guestDoc.dataNascita).toDateString();
         var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
         if (guestDoc.isHost) { //verifica se guest e' anche un host
           var hostDoc = await HostModel.getHostDocument(userId);
