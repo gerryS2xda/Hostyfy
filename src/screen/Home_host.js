@@ -74,7 +74,6 @@ const HomeHost = ({route, navigation}) => {
       // Do something when the screen is focused
       async function getUserData(){
         var guestDoc = await GuestModel.getGuestDocument(userId);
-        guestDoc.dataNascita = new Date(guestDoc.dataNascita.seconds * 1000).toDateString();
         var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
         if(guestDoc.isHost){ //verifica se guest e' anche un host
             var hostDoc = await HostModel.getHostDocument(userId);

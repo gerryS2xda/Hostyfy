@@ -159,16 +159,19 @@ const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { re
 const Modifica_profilo = ({ route, navigation }) => {
   //Ottieni info utente attualmente connesso
 
+  
   const scrollRef = useRef();
 
   const { user } = route.params;
   const [IsEditable, setEditable] = useState(false);
 
+  console.log(user);
+
   //Dati anagrafici
   const [nome, setNome] = useState(user.nome);
   const [cognome, setCognome] = useState(user.cognome);
   const [cf, setCodiceFiscale] = useState(user.cf);
-  const [dateNasc, setDateNascita] = useState(user.dataNascita);
+  const [dateNasc, setDateNascita] = useState((new Date(user.dataNascita.seconds*1000)).toLocaleString("it-IT").split(",")[0]);
   const [luogoNasc, setLuogoNascita] = useState(user.luogoNascita);
   const [nazionalita, setNazionalita] = useState(user.nazionalita);
 
