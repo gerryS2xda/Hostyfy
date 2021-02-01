@@ -77,19 +77,16 @@ const styles = StyleSheet.create({
         marginBottom: "3%"
     },
 
-    arrow: {
-        marginBottom: 5,
-
-    },
-
     indirizzoText: {
         fontFamily: "MontserrantSemiBold",
         fontSize: 16,
+        color: "#303a52"
     },
 
     otherText: {
         fontFamily: "MontserrantSemiBold",
         fontSize: 22,
+        color: "#303a52"
     },
 
     scrollStyle: {
@@ -293,7 +290,7 @@ const StrutturaScreen = ({ route, navigation }) => {
                                 </View>
                                 <View style={styles.information}>
                                     <Icon name={"numeric"} color={"#0692d4"} size={40} style={styles.arrow} />
-                                    <Text style={styles.otherText}>Disponibilità: {numAlloggi}</Text>
+                                    <Text style={styles.otherText}>Disponibilità alloggi: {numAlloggi}</Text>
                                 </View>
                                 <View style={styles.information}>
                                     <Icon name={"clipboard-text-outline"} color={"#0692d4"} size={40} style={styles.arrow}/>
