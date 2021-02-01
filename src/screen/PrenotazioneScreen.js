@@ -1,13 +1,14 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const PrenotazioneScreen = ({route,navigation}) =>{
-    const {prenotazioneId, user, isHost, image_url} = route.params; 
+const PrenotazioneScreen = ({ route, navigation }) => {
+    const { prenotazioneId, user, isHost, image_url } = route.params;
     const [alloggio, setAlloggio] = useState({});
     const [prenotazione, setPrenotazione] = useState({});
     const isFocused = useIsFocused();
@@ -15,84 +16,79 @@ const PrenotazioneScreen = ({route,navigation}) =>{
     const [showRecensioniBtn, setShowRecensioniBtn] = useState(false);
     useFocusEffect(
         React.useCallback(() => {
-          // Do something when the screen is focused
-            async function getDatiPrenotazione(){
-            let prenotazione = await PrenotazioneModel.getPrenotazioneById(prenotazioneId);
-            prenotazione.dataInizio = prenotazione.dataInizio.seconds; 
-            prenotazione.dataFine = prenotazione.dataFine.seconds;
-            let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
-            setAlloggio(alloggio);
-            setPrenotazione(prenotazione);
-            
-            var dataOdierna = new Date();
-            var dataInizio = new Date(prenotazione.dataInizio*1000);
-            var dataFine = new Date(prenotazione.dataFine * 1000);
-            if(dataOdierna >= dataInizio && dataOdierna <= dataFine) setCanDoCheckIn(true);
-            if(dataOdierna >= dataFine) setShowRecensioniBtn(true);
-            else  setShowRecensioniBtn(false);
-        }
-        getDatiPrenotazione();
-        return () => {
-            // Do something when the screen is unfocused
-            // Useful for cleanup functions
-          };
+            // Do something when the screen is focused
+            async function getDatiPrenotazione() {
+                let prenotazione = await PrenotazioneModel.getPrenotazioneById(prenotazioneId);
+                prenotazione.dataInizio = prenotazione.dataInizio.seconds;
+                prenotazione.dataFine = prenotazione.dataFine.seconds;
+                let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                setAlloggio(alloggio);
+                setPrenotazione(prenotazione);
+
+                var dataOdierna = new Date();
+                var dataInizio = new Date(prenotazione.dataInizio * 1000);
+                var dataFine = new Date(prenotazione.dataFine * 1000);
+                if (dataOdierna >= dataInizio && dataOdierna <= dataFine) setCanDoCheckIn(true);
+                if (dataOdierna >= dataFine) setShowRecensioniBtn(true);
+                else setShowRecensioniBtn(false);
+            }
+            getDatiPrenotazione();
+            return () => {
+                // Do something when the screen is unfocused
+                // Useful for cleanup functions
+            };
         }, [isFocused])
-      );
+    );
 
 
 
-    return(
+    return (
         <View style={styles.maincontainer}>
-            <HeaderBar title="Prenotazione" navigator={navigation} /> 
+            <HeaderBar title="Prenotazione" navigator={navigation} />
             <ScrollView style={styles.bodyScrollcontainer}>
-                <View style={styles.scrollContent}> 
-                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {prenotazione.numeroPrenotazione}</Text>
-                    
-                    
+                <View style={styles.scrollContent}>
+                    <Text style={styles.numprenotazionetxt}>Numero Prenotazione: {prenotazione.numeroPrenotazione}</Text>
+
+
                     <View style={styles.infoStrutturacontainer}>
-                        <Image style={styles.strutturaImage} source={image_url}/>
-                        
+                        <Image style={styles.strutturaImage} source={image_url} />
                     </View>
-                    
-                    
+
+
                     <View style={styles.fieldSet}>
-                        <Text style={styles.legend}>Info prenotazione</Text>
+                        <Text style={styles.legend}>Informazione prenotazione</Text>
                         <View style={styles.fieldSetContent}>
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
-                                <Text style={styles.normalText}>{( new Date(prenotazione.dataInizio*1000)).toLocaleString("it-IT").split(",")[0]}</Text>
+                                <Text style={styles.normalText}>{(new Date(prenotazione.dataInizio * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
-                                <Text style={styles.normalText}>{( new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
+                                <Text style={styles.normalText}>{(new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
                             </View>
-                            <View style={styles.costoTotContainer}>
-                                <Text style={styles.categoryText}>Costo totale: </Text>
-                                <Text style={styles.normalText}>{prenotazione.costo}€</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <View style={styles.fieldSet}>
-                        <Text style={styles.legend}>Informazioni sulla camera</Text>
-                        <View style={styles.fieldSetContent}>
-                            <View style={styles.horizontalViewInfoCamera}>
-                                <Text style={styles.categoryText}>Camera: </Text>
-                                <Text style={styles.normalText}>{alloggio.descrizione}</Text>
-                            </View>
-                            <View style={styles.horizontalViewInfoCamera}>
-                                <Image style={styles.userIcon} source={require("../../assets/user.png")} />
-                                <Text style={styles.normalText}>{prenotazione.numPersone}</Text>
+                            <View style={styles.iconView}>
+                                <View style={[styles.singleColumn, { marginLeft: "15%", }]}>
+                                    <Icon name={"account-multiple"} color={"#0692d4"} size={50} style={styles.arrow} />
+                                    <Text style={[styles.textIcon, { fontFamily: "MontserrantSemiBold" }]}>{prenotazione.numPersone}</Text>
+                                </View>
+
+                                <View style={[styles.singleColumn, { marginRight: "20%", }]}>
+                                    <Icon name={"currency-eur"} color={"#0692d4"} size={50} style={styles.arrow} />
+                                    <Text style={[styles.textIcon, { fontFamily: "MontserrantSemiBold", marginLeft: "6%" }]}>{prenotazione.costo}</Text>
+                                </View>
+
+
                             </View>
                         </View>
                     </View>
                     {!isHost && canDoCheckIn && (
-                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id = {prenotazioneId} prenotazione = {prenotazione} user = {user} passata = {showRecensioniBtn}/>)
+                        <ButtonContainer navigator={navigation} checkIn={prenotazione.doneCheckIn} id={prenotazioneId} prenotazione={prenotazione} user={user} passata={showRecensioniBtn} />)
                     }
                     {!isHost && showRecensioniBtn && (
                         <View style={styles.buttonContainer}>
-                            <CustomButton nome="Aggiungi recensione" styleBtn={{width: "100%"}} onPress={() => { 
-                                var prenotazioneObj = {id: prenotazioneId, ...prenotazione};
-                                navigation.navigate('InserisciRecensione', {userId: user.userId, prenotazione: prenotazioneObj}); 
+                            <CustomButton nome="Aggiungi recensione" styleBtn={{ width: "100%" }} onPress={() => {
+                                var prenotazioneObj = { id: prenotazioneId, ...prenotazione };
+                                navigation.navigate('InserisciRecensione', { userId: user.userId, prenotazione: prenotazioneObj });
                             }} />
                         </View>
                     )}
@@ -105,19 +101,19 @@ const PrenotazioneScreen = ({route,navigation}) =>{
 export default PrenotazioneScreen;
 
 function ButtonContainer(props) {
-    if(!props.passata){
-        if(!props.checkIn){
-            return(
+    if (!props.passata) {
+        if (!props.checkIn) {
+            return (
                 <View style={styles.buttonContainer}>
-                    <CustomButton nome="Check-In" styleBtn={{width: "100%"}} onPress={() => { 
-                        props.navigator.navigate('EffettuaCheckIn', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone:props.prenotazione.numPersone, prenotazioneId: props.id}); 
+                    <CustomButton nome="Check-In" styleBtn={{ width: "100%" }} onPress={() => {
+                        props.navigator.navigate('EffettuaCheckIn', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone: props.prenotazione.numPersone, prenotazioneId: props.id, prenotazione: props.prenotazione});
                     }} />
                 </View>
             );
-        }else{
-            return(
+        } else {
+            return (
                 <View style={styles.buttonContainer}>
-                    <CustomButton nome="Chiave" styleBtn={{width: "100%"}} onPress={() => { props.navigator.navigate('LaMiaChiave', {user:props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id }); }} />
+                    <CustomButton nome="Chiave" styleBtn={{ width: "100%" }} onPress={() => { props.navigator.navigate('LaMiaChiave', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id, prenotazione: props.prenotazione}); }} />
                 </View>
             );
         }
@@ -128,13 +124,13 @@ function ButtonContainer(props) {
 
 const styles = StyleSheet.create({
     maincontainer: {
-      flex: 1,
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center'
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     bodyScrollcontainer: {
-      width: "100%",
+        width: "100%",
     },
     numprenotazionetxt: {
         textAlign: "left",
@@ -144,56 +140,59 @@ const styles = StyleSheet.create({
         marginBottom: 16,
         fontFamily: "MontserrantSemiBold",
     },
-    infoStrutturacontainer:{
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginBottom: 16
+    infoStrutturacontainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: 16
     },
-    strutturaImage:{
-        width: 192,
-        height: 192,
+    strutturaImage: {
+        width: "100%",
+        height: 220,
+        borderRadius: 20
     },
     nameStruttura: {
-      fontSize: 16,
-      color: "black",
-      textAlign: "center",
-      marginTop: 4,
-      fontFamily: "MontserrantSemiBold",
+        fontSize: 16,
+        color: "black",
+        textAlign: "center",
+        marginTop: 4,
+        fontFamily: "MontserrantSemiBold",
     },
     checkInContainer: {
-      marginTop: 16,
+        marginTop: "10%",
     },
     checkOutContainer: {
         marginTop: 16,
     },
     costoTotContainer: {
-      flexDirection: 'row', //imposta orientamento orizzontale degli elementi
-      backgroundColor: '#fff',
-      marginTop: 16,
+        flexDirection: 'row', //imposta orientamento orizzontale degli elementi
+        backgroundColor: '#fff',
+        marginTop: 16,
     },
-    horizontalView:{
-      flexDirection: 'row',
+    horizontalView: {
+        flexDirection: 'row',
     },
-    horizontalViewInfoCamera:{
-      flexDirection: 'row',
-      marginTop: 16,
-      marginBottom: 4,
+    horizontalViewInfoCamera: {
+        flexDirection: 'row',
+        marginTop: 16,
+        marginBottom: 4,
     },
     userIcon: {
-        width: 24, 
+        width: 24,
         height: 24,
         marginRight: 10,
     },
-    fieldSet:{
+    fieldSet: {
         margin: 10,
-        paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
         paddingBottom: 10,
         borderRadius: 5,
-        borderWidth: 1,
+        borderWidth: 2,
         alignItems: 'center',
-        borderColor: '#000'
+        borderColor: '#e4eded',
+        
     },
-    legend:{
+    legend: {
         position: 'absolute',
         top: -16,
         left: 10,
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFFFFF',
         fontSize: 16,
         padding: 4,
-        color: '#f2077d',
+        color: '#303a52',
     },
     fieldSetContent: {
         alignSelf: "baseline",
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     },
     categoryText: {
         fontSize: 16,
-        color: "black",
+        color: "#303a52",
         fontFamily: "MontserrantBold",
     },
     normalText: {
@@ -217,17 +216,41 @@ const styles = StyleSheet.create({
         color: "black",
         fontFamily: "Montserrant",
     },
-    buttonContainer:{
-      flex: 1,
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      margin: 10,
-      marginBottom: 20
+    buttonContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        margin: 10,
+        marginBottom: 20
     },
     scrollContent: {
-        marginLeft:16,
-        marginRight:16,
+        marginLeft: 16,
+        marginRight: 16,
     },
+
+    iconView: {
+       
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: "8%",
+        //backgroundColor: "#000000",
+        width: "100%"
+    },
+
+    singleColumn: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+
+    arrow: {
+       
+    },
+
+    textIcon:{
+        fontSize: 25
+    }
 });
 
