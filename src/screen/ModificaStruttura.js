@@ -7,6 +7,7 @@ import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 import Slideshow from 'react-native-image-slider-show';
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -186,30 +187,24 @@ const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { re
 
 const ModificaStruttura = ({ route, navigation }) => {
 
-    //campi 
+    //Dichiarazione variabili e init dello stato
     const { user, strutturaId } = route.params;
-
     const [IsEditable, setIsEditable] = useState(false);
-    const [struttura, setStruttura] = useState({});
-    const [indirizzo, setIndirizzo] = useState({});
     const [carouselItems, setCarouselItems] = useState([]);
-
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
-
-    const [denominazione, setDenominazione] = useState(struttura.denominazione);
-    const [via, setVia] = useState(indirizzo.via);
-    const [citta, setCitta] = useState(indirizzo.citta);
-    const [provincia, setProvincia] = useState(indirizzo.provincia);
-    const [regione, setRegione] = useState(indirizzo.regione);
-
-    const [cap, setCap] = useState(indirizzo.cap);
-    const [nazione, setNazione] = useState(indirizzo.nazione);
-
-    const [tipologia, setTipologia] = useState(struttura.tipologia);
-    const [numAlloggi, setNumAlloggi] = useState(struttura.numAlloggi);
-    const [descrizione, setDescrizione] = useState(struttura.descrizione);
-
+    const [denominazione, setDenominazione] = useState("");
+    const [via, setVia] = useState("");
+    const [citta, setCitta] = useState("");
+    const [provincia, setProvincia] = useState("");
+    const [regione, setRegione] = useState("");
+    const [cap, setCap] = useState("");
+    const [nazione, setNazione] = useState("");
+    const [tipologia, setTipologia] = useState("");
+    const [numAlloggi, setNumAlloggi] = useState("");
+    const [descrizione, setDescrizione] = useState("");
+    const [showAlertDelete, setShowAlertDelete] = useState(false);
+    const [showAlertNoFeature, setShowAlertNoFeature] = useState(false);
     const scrollRef = useRef();
 
 
@@ -288,11 +283,9 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     dataSource={carouselItems}
                                     arrowSize={17}
                                     height={300}
-                                    onPress={() => Alert.alert(
-                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                        { cancelable: false })}
+                                    onPress={() =>{
+                                        setShowAlertNoFeature(true);
+                                    }}
                                     caption="Clicca per modificare le foto"
                                 />
 
@@ -406,16 +399,20 @@ const ModificaStruttura = ({ route, navigation }) => {
                             </View>
 
                         </View>
+                        <View style={styles.ButtonContainer}>
+                                <CustomButton
+                                    styleBtn={{ width: "90%", marginRight: "4%" }}
+                                    nome={"Elimina"}
+                                    onPress={() =>{
+                                        setShowAlertDelete(true);
+                                    }} />
+                            </View>
                         <View style={styles.guidaView}>
                             <View style={styles.ButtonContainer}>
                                 <CustomButton
                                     styleBtn={{ width: "100%", marginRight: "15%" }}
                                     nome={"Modifica Guida"}
-                                    onPress={() => Alert.alert(
-                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                        { cancelable: false })} />
+                                    onPress={() =>{setShowAlertNoFeature(true)}} />
                             </View>
                             <View style={styles.ButtonContainer}>
                                 <CustomButton
@@ -437,6 +434,30 @@ const ModificaStruttura = ({ route, navigation }) => {
                     </View>
                 </ScrollView>
             </ScrollView>
+            <CustomAlertGeneral
+                  visibility={showAlertDelete}
+                  setVisibility={setShowAlertDelete}
+                  titolo="Eliminazione"
+                  testo= "Confermi di voler procedere con la rimozione della struttura?"
+                  buttonName="Procedi"
+                  onOkPress={()=>{ 
+                    async function deleteStruttura(){     
+                        await StrutturaModel.deleteStrutturaDocument(strutturaId);
+                        setShowAlertDelete(false);
+                        navigation.navigate("LeMieStrutture", {user: user});
+                    }
+                    deleteStruttura();   
+                  }} />
+            <CustomAlertGeneral
+                visibility={showAlertNoFeature}
+                setVisibility={setShowAlertNoFeature}
+                titolo="Funzionalità non disponibile"
+                testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
+                hideNegativeBtn={true}
+                buttonName="Ok"
+                onOkPress={()=>{ 
+                    setShowAlertNoFeature(false);  
+                  }} />
         </View>
     );
 

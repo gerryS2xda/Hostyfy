@@ -1,13 +1,13 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { Text, View, Image, ScrollView, Alert, StyleSheet, Dimensions } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
-import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
 import { DefaultTheme } from '@react-navigation/native';
 import Slideshow from 'react-native-image-slider-show';
 import { TextInput } from 'react-native-paper';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -186,7 +186,8 @@ const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { re
 
 const ModificaAlloggio = ({ route, navigation }) => {
 
-    const { user, strutturaId, alloggioId } = route.params;    
+    const { user, strutturaId, alloggioId } = route.params;  
+    const [showAlertDelete, setShowAlertDelete] = useState(false);  
     const [IsEditable, setIsEditable] = useState(false);
     const [carouselItems, setCarouselItems] = useState([]);
     const carouselRef = useRef(null);
@@ -196,6 +197,7 @@ const ModificaAlloggio = ({ route, navigation }) => {
     const [numMaxPersone, setNumMaxPersone] = useState("");
     const [piano, setPiano] = useState("");
     const [descrizione, setDescrizione] = useState("");
+    const [showAlertNoFeature, setShowAlertNoFeature] = useState(false);
     const scrollRef = useRef();
     //Caricamento dei dati non appena inizia il rendering dell'applicazione
     useFocusEffect(
@@ -263,11 +265,7 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     dataSource={carouselItems}
                                     arrowSize={17}
                                     height={300}
-                                    onPress={() => Alert.alert(
-                                        "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                                        { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                        { cancelable: false })}
+                                    onPress={() => setShowAlertNoFeature(true)}
                                     caption="Clicca per modificare le foto"
                                 />
 
@@ -323,6 +321,14 @@ const ModificaAlloggio = ({ route, navigation }) => {
                         <View style={styles.guidaView}>
                             <View style={styles.ButtonContainer}>
                                 <CustomButton
+                                    styleBtn={{width: "100%", marginRight: "15%"}} 
+                                    nome={"Elimina"}
+                                    onPress={() =>{
+                                        setShowAlertDelete(true);
+                                    }}  />
+                            </View>
+                            <View style={styles.ButtonContainer}>
+                                <CustomButton
                                     styleBtn={{width: "100%"}} 
                                     nome={IsEditable ? 'Applica' : "Modifica"}  
                                     onPress={()=> { 
@@ -340,6 +346,30 @@ const ModificaAlloggio = ({ route, navigation }) => {
                     </View>
                 </ScrollView>
             </ScrollView>
+            <CustomAlertGeneral
+                  visibility={showAlertDelete}
+                  setVisibility={setShowAlertDelete}
+                  titolo="Eliminazione"
+                  testo= "Confermi di voler procedere con la rimozione di questo alloggio?"
+                  buttonName="Procedi"
+                  onOkPress={()=>{ 
+                    async function deleteAlloggio(){     
+                        await AlloggioModel.deleteAlloggioDocument(strutturaId, alloggioId);
+                        setShowAlertDelete(false);
+                        navigation.navigate("VisualizzaAlloggi", { user: user, strutturaId: strutturaId });
+                    }
+                    deleteAlloggio();   
+                  }} />
+            <CustomAlertGeneral
+                visibility={showAlertNoFeature}
+                setVisibility={setShowAlertNoFeature}
+                titolo="Funzionalità non disponibile"
+                testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
+                hideNegativeBtn={true}
+                buttonName="Ok"
+                onOkPress={()=>{ 
+                    setShowAlertNoFeature(false);  
+                  }} />
         </View>
     );
 
