@@ -37,6 +37,9 @@ const NotificationScreen = ({ route, navigation }) => {
             var itemList = [];
             var count = 1;
 
+            //Verifica se vi sono notifiche da cancellare in base alla data di fine della loro validità
+            await NotificationModel.deleteNotificationDocumentScaduteByUserId(userId, new Date());
+
             var notiDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
             if(notiDocs.length == 0){
                 setNoItemVisibility(true);
@@ -50,7 +53,7 @@ const NotificationScreen = ({ route, navigation }) => {
                             notiDocs.pop(j);
                         }
                     }
-                }
+                };
 
                 for(const doc of notiDocs){
                     var notification = doc.data(); //ottieni i dati di una notification

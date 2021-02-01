@@ -40,7 +40,7 @@ export async function createGuestDocumentForRegistration(uid, cognome, nome, ema
         cognome: cognome,
         nome: nome,
         sesso: "",
-        dataNascita: "",
+        dataNascita: new Date(),
         luogoNascita: "",
         nazionalita: "",
         numCell: "",
@@ -63,7 +63,7 @@ export async function createCreditCardDocumentGuest(uid, numCreditCard, ccv, int
         numeroCarta: numCreditCard,
         ccv: ccv,
         intestatario: intestatario,
-        dataScadenza: dataScadenza
+        dataScadenza: new Date(dataScadenza)
     })
     .then(function() {
         console.log("CreditCard document in guest collection successfully written!");
@@ -118,7 +118,7 @@ export async function updateCreditCardDocument(uid, numCreditCard, ccv, intestat
         numeroCarta: numCreditCard,
         ccv: ccv,
         intestatario: intestatario,
-        dataScadenza: dataScadenza
+        dataScadenza: new Date(dataScadenza)
     })
     .then(function() {
         console.log("CreditCard document in guest collection successfully written!");

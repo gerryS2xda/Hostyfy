@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as NotificationModel from "../firebase/datamodel/NotificationModel"
@@ -27,10 +27,11 @@ const styles = StyleSheet.create({
     container_text: {
         flex: 1,
         flexDirection: 'column',
-        marginLeft: 12,
+        marginLeft: 10,
         justifyContent: 'center',
         paddingTop: 10,
-        paddingBottom: 10
+        paddingBottom: 10,
+        marginRight: 10,
     },
     description: {
         fontSize: 12,
@@ -57,21 +58,23 @@ const CustomRowNotification = (props) => {
     const userId = props.userId;
     const prenId = props.prenId;
     const notificationId = props.notificationId;
+    const [notificationIcon, setNotificationIcon] = useState(props.iconName);
 
     return (
         <TouchableOpacity 
             onPress = {()=>{ 
                 async function updateNotificationStatus(){
                     await NotificationModel.updateisRead(notificationId, true);
+                    setNotificationIcon(require("../../assets/bell_black.png"));
                 }
                 if(props.iconName === require("../../assets/bell_badge_black.png"))
                     updateNotificationStatus();     
-                props.nav.navigate(props.newPage,{userId: userId, prenotazioneId: prenId}); 
+                //props.nav.navigate(props.newPage,{userId: userId, prenotazioneId: prenId}); 
             }}>
                 
             <View style={styles.container}>
                 <View style={styles.photo}>   
-                    <Image source={props.iconName} style={styles.bellIcon} />
+                    <Image source={notificationIcon} style={styles.bellIcon} />
                 </View>
                 <View style={styles.container_text}>
                     <Text style={styles.title}>
@@ -81,7 +84,7 @@ const CustomRowNotification = (props) => {
                         {props.description}
                     </Text>
                 </View>
-                <Icon name={"chevron-right"} color={"#000000"} size={40} style={styles.arrow} />
+                
             </View>
         </TouchableOpacity>
     );

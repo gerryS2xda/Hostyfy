@@ -98,32 +98,42 @@ const HomeGuest = ({ route, navigation }) => {
         var prenotazioniDocs = await PrenotazioneModel.getPrenotazioniForCheckOut(userId, dataOdierna);
         for(const pren of prenotazioniDocs){
           var prenotazione = pren.data();
-          if(prenotazione.doneCheckOut) //verifica se il checkout di quella prenotazione è stato già eseguito
-            continue;
-
-          var dataFinepren = prenotazione.dataFine.toDate(); //Convert timestamp JS in Date object 
+          var dataFinepren = prenotazione.dataFine.toDate(); //Convert timestamp JS in Date object
+          var oraAttuale = dataOdierna.getHours(); 
+          var oraFinePren = dataFinepren.getHours();  
+          
           if(dataOdierna.toLocaleDateString() !== dataFinepren.toLocaleDateString()) //considera solo le prenotazioni della data odierna
+            continue;
+          
+          //Verifica che se la prenotazione è terminata => rimuovi le notifiche associate a questo check-out
+          if(oraAttuale > oraFinePren){ //significa che il checkout è stato eseguito automaticamente
+            var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
+            for(const noti of notificationDocs){
+              if(noti.data().prenId === pren.id)
+                await NotificationModel.deleteNotificationDocument(noti.id);
+            }
+          }
+
+          if(prenotazione.doneCheckOut) //verifica se il checkout di quella prenotazione è stato già eseguito
             continue;
 
           //A partire dalla prenotazione trovata, ottieni i dati dell'alloggio 
           var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
 
           //Verifica se la prenotazione e' in scadenza (un'ora prima)
-          var oraAttuale = dataOdierna.getHours(); 
-          var oraFinePren = dataFinepren.getHours(); 
           if((oraAttuale+1) == oraFinePren){ //se manca un'ora alla fine della prenotazione
             
             //Crea notifica per checkout, prima verifica che non sia stata già creata
             var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
             if(notificationDocs.length == 0){ //se non vi sono notifiche
               await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio+"\"", 
-              "Alle ore " + oraFinePren + " del \""+ dataOdierna.toLocaleDateString('it-IT') + "\" sarà eseguito il check-out...", userId, pren.id);
+              "Alle ore " + oraFinePren + " della data odierna sarà eseguito il check-out di questo alloggio.", userId, pren.id, dataFinepren);
             }else{
               for(const noti of notificationDocs){
                 var notifica = noti.data();
                 if(notifica.prenId !== pren.id){ //non è presente una notifica associata alla prenotazione in scadenza -> aggiungila
                   await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio+"\"", 
-                    "Alle ore " + oraFinePren + " del \""+ dataOdierna.toLocaleDateString('it-IT') + "\" sarà eseguito il check-out...", userId, pren.id);
+                    "Alle ore " + oraFinePren + " della data odierna sarà eseguito il check-out di questo alloggio.", userId, pren.id, dataFinepren);
                 }
               }
             }
@@ -179,10 +189,14 @@ const HomeGuest = ({ route, navigation }) => {
                   testo= {"Alle ore " + checkOut.ora + " della data odierna sarà eseguito il check-out per l'alloggio \""+ checkOut.alloggioName + 
                   "\"! Si invita l'ospite a procede con il check-out!"}
                   hideNegativeBtn={true}
-                  buttonName="Procedi"
+                  buttonName="Ok"
                   onOkPress={()=>{ 
-                      setAlertCheckOutVisibility(false);    
-                      navigation.navigate("CheckOut", {userId: userId, prenotazioneId: checkOut.prenId})
+                      async function hideAlertCheckOut(){
+                        //Setta doneCheckout flag a true in prenotazione per indicare che l'utente ha letto l'alert di checkOut
+                        await PrenotazioneModel.updateCheckOutStatusPrenotazione(checkOut.prenId, true);
+                        setAlertCheckOutVisibility(false);   
+                      }
+                      hideAlertCheckOut(); 
                   }} />
               )
             }

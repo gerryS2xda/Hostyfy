@@ -6,11 +6,12 @@ var db = firebase.firestore();
 var notificationCollectionRef = db.collection("notifiche"); //ottieni riferimento della collection a cui accedere 
 
 //Create functions: one function for each collection to create
-export async function createNotificationDocument(categoria, dataCreazione, titolo, descrizione, uid, prenId){
+export async function createNotificationDocument(categoria, dataCreazione, titolo, descrizione, uid, prenId, dataFine){
     // Add a new document in collection "norification" con add(), se non e' presente, crea il documento
     return await notificationCollectionRef.add({
         categoria: categoria,
         dataCreazione: dataCreazione,
+        dataFine: dataFine, //data in cui la notifica dovrà essere rimossa
         descrizione: descrizione,
         isRead: false,
         titolo: titolo,
@@ -26,7 +27,7 @@ export async function createNotificationDocument(categoria, dataCreazione, titol
 }
 
 //Update functions
-export async function updateNotificationDocument(notificationId, categoria, dataCreazione, titolo, descrizione, isRead, uid, prenId){
+export async function updateNotificationDocument(notificationId, categoria, dataCreazione, titolo, descrizione, isRead, uid, prenId, dataFine){
     //Edit all field of notification document
     return await notificationCollectionRef.doc(notificationId).update({
         categoria: categoria,
@@ -36,6 +37,7 @@ export async function updateNotificationDocument(notificationId, categoria, data
         titolo: titolo,
         userId: uid,
         prenId: prenId,
+        dataFine: dataFine, //data in cui la notifica dovrà essere rimossa
     })
     .then(function() {
         console.log("Notification document successfully updated!");
@@ -66,6 +68,14 @@ export async function deleteNotificationDocument(notificationId){
     }).catch(function(error) {
         console.error("Error removing notification document: ", error);
     });
+}
+
+export async function deleteNotificationDocumentScaduteByUserId(userId, dataFine){
+    let docs = await notificationCollectionRef.where('userId', '==', userId).where('dataFine','<',dataFine).get();
+    for(const noti of docs.docs){
+        await deleteNotificationDocument(noti.id);
+    }
+    
 }
 
 //Read query functions
