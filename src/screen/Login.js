@@ -185,6 +185,7 @@ const Login = (props) => {
                 }).catch(function (err) {
                   console.log("ERROR in Login.js:" + err);
                   if (!errore) setErrore(true);
+                  resetState();
                 });
 
               }} />

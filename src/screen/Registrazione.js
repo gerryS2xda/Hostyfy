@@ -119,11 +119,19 @@ const Registrazione = (props) => {
   const [errore, setErrore] = useState(false);
   const [confermaPassword, setConfermaPassword] = useState('');
 
-  var nomeRef = useRef(null);
-  var cognomeRef = useRef(null);
-  var passwordRef = useRef(null);
-  var emailRef = useRef(null);
-  var confermaPasswordRef = useRef(null);
+  const resetState = () =>{
+    if(nome !== "")
+      setNome("");
+    if(cognome !== "")
+      setCognome("");
+    if(email !== "")
+      setEmail("");
+    if(password !== "")
+      setPassword("");
+    if(confermaPassword !== "")
+      setConfermaPassword("");
+    
+  }
 
   return (
 
@@ -153,26 +161,22 @@ const Registrazione = (props) => {
                 style={styles.input}
                 placeholder='Nome'
                 onChangeText={(nome) => setNome(nome)}
-                ref={nomeRef}
               />
               <TextInput
                 style={styles.input}
                 placeholder='Cognome'
                 onChangeText={(cognome) => setCognome(cognome)}
-                ref={cognomeRef}
               />
               <TextInput
                 style={styles.input}
                 placeholder='Email'
                 onChangeText={(email) => setEmail(email)}
-                ref={emailRef}
               />
               <TextInput
                 style={styles.input}
                 placeholder='Password'
                 onChangeText={(password) => setPassword(password)}
                 secureTextEntry={true}
-                ref={passwordRef}
               />
 
               <TextInput
@@ -180,7 +184,6 @@ const Registrazione = (props) => {
                 placeholder='Conferma Password'
                 onChangeText={(confermaPassword) => setConfermaPassword(confermaPassword)}
                 secureTextEntry={true}
-                ref={confermaPasswordRef}
               />
 
               <View style={styles.buttonCustomizzato}>
@@ -189,35 +192,24 @@ const Registrazione = (props) => {
                   styleBtn={{ width: "85%" }}
                   onPress={() => {
                     if (password === confermaPassword) {
-                      firebase.auth().createUserWithEmailAndPassword(email, confermaPassword).then((user) => {
+                      firebase.auth().createUserWithEmailAndPassword(email, confermaPassword).then(async (user) => {
                         const userId = firebase.auth().currentUser.uid;
-                        console.log("Registrazione - uid:" + userId);
-                        GuestModel.createGuestDocumentForRegistration(userId, cognome, nome, email, confermaPassword);
-                        GuestModel.createCreditCardDocumentGuest(userId, 0, 0, "", "");
+                        
+                        await GuestModel.createGuestDocumentForRegistration(userId, cognome, nome, email);
+                        await GuestModel.createCreditCardDocumentGuest(userId, 0, 0, "", new Date());
+                        
+                        //resetta i campi di login resettando lo stato
+                         resetState();
 
-                        db.collection("guest").doc(userId).get().then(function (guestdoc) {
-                          var guest = guestdoc.data();
-                          db.collection("guest").doc(userId).collection("cartaCredito").doc(userId).get().then(function (creditcarddoc) {
-                            var creditcard = creditcarddoc.data();
-                            props.navigation.navigate('HomeGuest', { user: { ...guest, ...creditcard } });
+                        //Dopo il login, viene resettato lo stack navigator e settata come route iniziale la schermata Home
+                        props.navigation.reset({
+                          index: 0,
+                          routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                        });
 
-                            nomeRef.current.clear();
-                            cognomeRef.current.clear();
-                            emailRef.current.clear();
-                            passwordref.current.clear();
-                            confermaPasswordRef.clear();
-
-                          }).catch(function (err) { console.log("ERROR with read guest/creditcard in Login.js:" + err); });
-                        }).catch(function (err) { console.log("ERROR with read guest in Login.js:" + err); });
                       }).catch(function (error) {
-
                         if (!errore) setErrore(true);
-                        nomeRef.current.clear();
-                        cognomeRef.current.clear();
-                        emailRef.current.clear();
-                        passwordref.current.clear();
-                        confermaPasswordRef.clear();
-
+                        resetState();
                       });
                     }
                   }
