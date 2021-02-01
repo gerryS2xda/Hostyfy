@@ -6,7 +6,7 @@ import CustomButton from "../components/CustomButton"
 
 
 const CheckInScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId, numPersone, prenotazioneId} = route.params;
+    const {user, strutturaId, alloggioId, numPersone, prenotazioneId, prenotazione} = route.params;
     const [nDocument, setNDocument] = useState(1);
     const [documenti,setDocumenti] = useState([]);
     const [visible, setVisible] = useState(false);
@@ -45,7 +45,7 @@ const CheckInScreen = ({route, navigation}) =>{
             <HeaderBar title="Check-In" navigator={navigation} /> 
             <ScrollView style={styles.bodyScrollcontainer}>
                 <View style={styles.scrollContent}> 
-                    <Text style={styles.numprenotazionetxt}>Prenotazione n. {0}</Text>
+                    <Text style={styles.numprenotazionetxt}>Prenotazione numero:  {prenotazione.numeroPrenotazione}</Text>
                     <View style={styles.infoCheckIncontainer}>
                         <Image style={styles.checkInImage} source={require("../../assets/hotelExampleStruttura.png")}/>
                         <Text style={styles.checkIntxt}>Check-In {user.nome + " " + user.cognome}</Text>
@@ -176,8 +176,8 @@ const styles = StyleSheet.create({
     },
     numprenotazionetxt: {
           textAlign: "left",
-          fontSize: 16,
-          color: "black",
+          fontSize: 18,
+          color: "#303a52",
           marginTop: 16,
           marginBottom: 16,
           fontFamily: "MontserrantSemiBold",
@@ -188,15 +188,16 @@ const styles = StyleSheet.create({
         marginBottom: 16
     },
     checkInImage:{
-          width: 192,
-          height: 192,
+        width: "100%",
+        height: 220,
+        borderRadius: 20
     },
     checkIntxt: {
-        fontSize: 16,
+        fontSize: 20,
         color: "black",
         textAlign: "center",
         fontFamily: "MontserrantSemiBold",
-        marginTop: 4
+        marginTop: "5%"
     },
     fieldSet:{
         margin: 10,
