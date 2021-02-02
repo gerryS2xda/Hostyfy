@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react'
-import { View, Text, TextInput, StyleSheet, ScrollView, Alert } from 'react-native'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { View, Text, TextInput, StyleSheet, ScrollView, Alert, BackHandler } from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from "../components/CustomButton";
@@ -11,6 +11,7 @@ import * as GuestModel from "../firebase/datamodel/GuestModel";
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel";
 import { Dropdown } from 'sharingan-rn-modal-dropdown';
 import { DefaultTheme } from '@react-navigation/native';
+import CustomAlertGeneral from "../components/CustomAlertGeneral";
 
 //npm install react-native-picker-select per la combo box
 
@@ -123,6 +124,10 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 	const [dateStart, setDateStart] = useState("");
 	const [dateEnd, setDateEnd] = useState("");
 	const [disableInsertPrenButton, setInsertPrenButtonStatus] = useState(false); //per prevenire doppio click che comporta doppio inserimento
+	const [showAlertInsert, setShowAlertInsert] = useState(false);
+	const [showAlertErrorField, setShowAlertErrorField] = useState(false);
+	const [messageAlert, setMessageAlert] = useState("");
+	const [showAlertBackButton, setShowAlertBackButton] = useState(false);
 	const isFocused = useIsFocused();
 
 	//Variabili per 'useRef'
@@ -219,6 +224,55 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 	const onChangeCleanServiceDropDown = (value) => {
 		setCleanServiceId(value);
 	};
+
+	//funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+	const validateFormField= ()=> { 
+		var flag = true; //tutti i campi sono compilati
+		var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+		if (strutturaId === "") {
+					message += "\"Struttura\"";
+			flag = false;
+		} else if (alloggioId === "") {
+					message += "\"Alloggio\"";
+			flag = false;
+		} else if (cleanServiceId === "") {
+					message += "\"Ditta di pulizia\"";
+			flag = false;
+		} else if (numTel === "" || numTel == 0) {
+					message += "\"N. telefono\"";
+			flag = false;
+		} else if (numPers === "" || numPers == 0) {
+					message += "\"N. persone\"";
+			flag = false;
+		} else if (email === "") {
+					message += "\"Email dell'ospite\"";
+			flag = false;
+		} else if (costo === "" || costo == 0) {
+					message += "\"Costo\"";
+			flag = false;
+		} else if (dateStart === "") {
+					message += "\"Data di inizio\"";
+			flag = false;
+		} else if (dateEnd === "") {
+					message += "\"Data di fine\"";
+			flag = false;
+		}
+		if (!flag) {
+			setMessageAlert(message);
+			setShowAlertErrorField(true);  
+		}
+		return flag;
+	}
+
+	//Resetta stato
+	const resetState = ()=>{
+		setDateStart("");
+		setDateEnd("");
+		setStrutturaId("");
+		setAlloggioId("");
+		setCleanServiceId("");
+		setAlloggioDropDisabled(true);
+	}
 
 	return (
 		<View style={styles.maincontainer}>
@@ -328,7 +382,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 							styleBtn={{ width: "100%"}}
 							onPress={() => {
 								async function carica() {
-									if (!validateFormField(strutturaId, alloggioId, cleanServiceId, numTel, numPers, email, costo, dateStart, dateEnd)) {
+									if (!validateFormField()) {
 										return;
 									}
 
@@ -337,36 +391,18 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 									var newDateEnd = new Date(dateEnd);
 
 									if (newDateStart < dataOdierna) {
-										Alert.alert(
-											"Data non valida",
-											"Non puoi inserire una prenotazione con data di inizio antecedente alla data odierna!",
-											[
-												{ text: "OK", onPress: () => console.log("OK Pressed") }
-											],
-											{ cancelable: false }
-										);
+										setMessageAlert("Non puoi inserire una prenotazione con data di inizio antecedente alla data odierna!");
+										setShowAlertErrorField(true);
 										return;
 									}
 									if (newDateEnd < dataOdierna) {
-										Alert.alert(
-											"Data non valida",
-											"Non puoi inserire una prenotazione con data di fine antecedente alla data odierna!",
-											[
-												{ text: "OK", onPress: () => console.log("OK Pressed") }
-											],
-											{ cancelable: false }
-										);
+										setMessageAlert("Non puoi inserire una prenotazione con data di fine antecedente alla data odierna!");
+										setShowAlertErrorField(true);
 										return;
 									}
 									if (newDateEnd < newDateStart) {
-										Alert.alert(
-											"Data non valida",
-											"Non puoi inserire una prenotazione con data di inizio antecedente alla data di fine!",
-											[
-												{ text: "OK", onPress: () => console.log("OK Pressed") }
-											],
-											{ cancelable: false }
-										);
+										setMessageAlert("Non puoi inserire una prenotazione con data di inizio antecedente alla data di fine!");
+										setShowAlertErrorField(true);
 										return;
 									}
 
@@ -396,14 +432,8 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 
 									let interleaved = await checkInterleaved(newDateStart, newDateEnd);
 									if (interleaved) {
-										Alert.alert(
-											"Data non valida",
-											"Questo alloggio è già occupato nelle date selezionate!",
-											[
-												{ text: "OK", onPress: () => console.log("OK Pressed") }
-											],
-											{ cancelable: false }
-										);
+										setMessageAlert("Questo alloggio è già occupato nelle date selezionate!");
+										setShowAlertErrorField(true);
 										return;
 									}
 
@@ -415,50 +445,18 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 										// Ottieni riferimento dell'utente guest mediante l'email
 										var guestDocs = await GuestModel.getGuestDocumentByEmail(email);
 										if (guestDocs.length == 0) {
-											Alert.alert(
-												"Nuova prenotazione",
-												"Non è possibile memorizzare la nuova prenotazione perche' l'utente non utilizza Hostyfy!",
-												[
-													{
-														text: "Cancel",
-														onPress: () => console.log("Cancel Pressed"),
-														style: "cancel"
-													},
-													{ text: "OK", onPress: () => navigation.navigate('HomeHost') }
-												],
-												{ cancelable: false }
-											);
+											setMessageAlert("Non è possibile memorizzare la nuova prenotazione perche' l'utente non utilizza Hostyfy!");
+											setShowAlertInsert(true);
 										} else {
 											for (const doc of guestDocs) {
 												var guest = doc.data();
 												await PrenotazioneModel.createPrenotazioniDocument(user.userIdRef, guest.userId, strutturaId, alloggioId, dateStart, dateEnd, email, numPers, numTel, costo, cleanServiceId);
 
 												//Resetta i campi
-												numTelRef.current.clear();
-												numPersRef.current.clear();
-												costoRef.current.clear();
-												emailRef.current.clear();
-												setDateStart("");
-												setDateEnd("");
-												setStrutturaId("");
-												setAlloggioId("");
-												setCleanServiceId("");
-												setAlloggioDropDisabled(true);
+												resetState();
 
-
-												Alert.alert(
-													"Nuova prenotazione",
-													"La nuova prenotazione e' stata memorizzata con successo!",
-													[
-														{
-															text: "Cancel",
-															onPress: () => console.log("Cancel Pressed"),
-															style: "cancel"
-														},
-														{ text: "OK", onPress: () => navigation.navigate('HomeHost') }
-													],
-													{ cancelable: false }
-												);
+												setMessageAlert("La nuova prenotazione è stata registrata con successo!");
+												setShowAlertInsert(true);
 											}
 										}
 										setInsertPrenButtonStatus(false); //rendi pulsante nuovamente cliccabile
@@ -473,50 +471,47 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 					</View>
 					</View>
 			</ScrollView>
+			<CustomAlertGeneral
+                  visibility={showAlertInsert}
+                  titolo="Nuova prenotazione"
+                  testo= {messageAlert}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+					setShowAlertInsert(false);
+					navigation.reset({
+						index: 0,
+						routes: [{ name: 'HomeHost',  params: { userId: user.userIdRef }}],
+					}); //resetta lo stack quando si ritorna nella Home
+                  }} />
+            <CustomAlertGeneral
+                  visibility={showAlertErrorField}
+                  titolo="Nuova prenotazione"
+                  testo= {messageAlert}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{
+					  setShowAlertErrorField(false);  
+                  }} />
+			<CustomAlertGeneral
+                  visibility={showAlertBackButton}
+                  titolo="Attenzione!"
+                  testo= "Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+					setShowAlertBackButton(false);
+                  }}
+                  buttonName="Sì"
+                  onOkPress={()=>{ 
+                    //Resetta i campi
+					resetState();
+                    navigation.reset({
+						index: 0,
+						routes: [{ name: 'HomeHost',  params: { userId: user.userIdRef }}],
+					}); //resetta lo stack quando si ritorna nella Home
+                  }} />
 		</View>
 	);
 }
 
 export default Inserisci_prenotazione;
-
-//funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
-function validateFormField(strutturaId, alloggioId, cleanServiceId, numTel, numPers, email, costo, dateStart, dateEnd) {
-
-	var flag = true; //tutti i campi sono compilati
-	var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
-	if (strutturaId === "") {
-				message += "\"Struttura\"";
-		flag = false;
-	} else if (alloggioId === "") {
-				message += "\"Alloggio\"";
-		flag = false;
-	} else if (cleanServiceId === "") {
-				message += "\"Ditta di pulizia\"";
-		flag = false;
-	} else if (numTel === "" || numTel == 0) {
-				message += "\"N. telefono\"";
-		flag = false;
-	} else if (numPers === "" || numPers == 0) {
-				message += "\"N. persone\"";
-		flag = false;
-	} else if (email === "") {
-				message += "\"Email dell'ospite\"";
-		flag = false;
-	} else if (costo === "" || costo == 0) {
-				message += "\"Costo\"";
-		flag = false;
-	} else if (dateStart === "") {
-				message += "\"Data di inizio\"";
-		flag = false;
-	} else if (dateEnd === "") {
-				message += "\"Data di fine\"";
-		flag = false;
-	}
-	if (!flag) {
-				Alert.alert("Nuova prenotazione", message,
-					[{ text: "Cancel", style: "cancel" },
-					{ text: "OK" }],
-					{ cancelable: false });
-	}
-	return flag;
-}
