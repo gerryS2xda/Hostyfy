@@ -14,6 +14,8 @@ const PrenotazioneScreen = ({ route, navigation }) => {
     const isFocused = useIsFocused();
     const [canDoCheckIn, setCanDoCheckIn] = useState(false);
     const [showRecensioniBtn, setShowRecensioniBtn] = useState(false);
+    const [checkIn, setCheckIn] = useState("");
+    const [checkOut, setCheckOut] = useState("");
     useFocusEffect(
         React.useCallback(() => {
             // Do something when the screen is focused
@@ -31,6 +33,18 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                 if (dataOdierna >= dataInizio && dataOdierna <= dataFine) setCanDoCheckIn(true);
                 if (dataOdierna >= dataFine) setShowRecensioniBtn(true);
                 else setShowRecensioniBtn(false);
+
+                var checkIn = (new Date(prenotazione.dataInizio * 1000)).toLocaleString("it-IT");
+                var stringhe = checkIn.split(':');
+                checkIn = stringhe[0]+":"+stringhe[1];
+                setCheckIn(checkIn);
+
+                var checkOut = (new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT");
+                stringhe = checkOut.split(':');
+                checkOut = stringhe[0]+":"+stringhe[1];
+                setCheckOut(checkOut);
+                
+
             }
             getDatiPrenotazione();
             return () => {
@@ -60,11 +74,11 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                         <View style={styles.fieldSetContent}>
                             <View style={styles.checkInContainer}>
                                 <Text style={styles.categoryText}>Check in</Text>
-                                <Text style={styles.normalText}>{(new Date(prenotazione.dataInizio * 1000)).toLocaleString("it-IT")}</Text>
+                                <Text style={styles.normalText}>{checkIn}</Text>
                             </View>
                             <View style={styles.checkOutContainer}>
                                 <Text style={styles.categoryText}>Check out</Text>
-                                <Text style={styles.normalText}>{(new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT")}</Text>
+                                <Text style={styles.normalText}>{checkOut}</Text>
                             </View>
                             <View style={styles.iconView}>
                                 <View style={[styles.singleColumn, { marginLeft: "15%", }]}>
