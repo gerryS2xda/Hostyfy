@@ -1,218 +1,63 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, TextInput, Alert, Modal } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert, Modal, Dimensions } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
-import RNPickerSelect from 'react-native-picker-select';
 import CustomButton from "../components/CustomButton"
-
-
-const CheckInScreen = ({route, navigation}) =>{
-    const {user, strutturaId, alloggioId, numPersone, prenotazioneId, prenotazione, image_url} = route.params;
-    const [nDocument, setNDocument] = useState(1);
-    const [documenti,setDocumenti] = useState([]);
-    const [visible, setVisible] = useState(false);
-    const [typeDoc, setDocType] = useState(null);
-    const [numeroDoc, setNumeroDoc] = useState('');
-    const [nome,setNome] = useState("");
-    const [cognome,setCognome] = useState("");
-    const [luogoRilascioDoc, setLuogoRilascioDoc] = useState('');
-    const pickerStyle = {
-		inputIOS: {
-			paddingHorizontal: 10,
-			borderColor: '#cc3881',
-			height:40,
-			width:"96%",
-			alignItems: 'center',
-            marginTop: 8,
-            marginRight: 12,
-            fontFamily: 'Montserrant',
-            borderBottomWidth: 1,
-		},
-		placeholder: {},
-		inputAndroid: {
-			paddingHorizontal: 10,
-			borderColor: '#cc3881',
-			height:40,
-			width:"96%",
-			alignItems: 'center',
-            color:'#000000',
-            marginTop: 8,
-            marginRight: 12,
-            fontFamily: 'Montserrant',
-            borderBottomWidth: 1,
-		},
-	};
-
-    return(
-        <View style={styles.maincontainer}>
-            <HeaderBar title="Check-In" navigator={navigation} /> 
-            <ScrollView style={styles.bodyScrollcontainer}>
-                <View style={styles.scrollContent}> 
-                    <Text style={styles.numprenotazionetxt}>Prenotazione numero:  {prenotazione.numeroPrenotazione}</Text>
-                    <View style={styles.infoCheckIncontainer}>
-                        <Image style={styles.checkInImage} source={image_url}/>
-                        <Text style={styles.checkIntxt}>Check-In {user.nome + " " + user.cognome}</Text>
-                    </View>
-                    <View style={styles.fieldSet}>
-                        <Text style={styles.legend}>Dati personali e residenza</Text>
-                        <View style={styles.fieldSetContent}>
-                            <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>{user.nome}</Text>
-                                <Text style={styles.singleField}>{user.cognome}</Text>
-                            </View>
-                            <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>{( new Date(user.dataNascita.seconds * 1000)).toLocaleString("it-IT").split(",")[0]}</Text>
-                                <Text style={styles.singleField}>{user.nazionalita}</Text>
-                            </View>
-                            <View style={styles.horizontalView}>
-                                <Text style={styles.singleFieldRow}>{user.indirizzo.via}</Text>
-                            </View>
-                            <View style={styles.horizontalView}>
-                                <Text style={styles.singleField}>{user.indirizzo.citta}</Text>
-                                <Text style={styles.singleField}>{user.indirizzo.cap}</Text>
-                            </View>
-                        </View>
-                    </View>
-                    <Modal 
-                    animationType="slide"
-                    transparent={true}
-                    visible={visible}
-                    style = {{marginTop:"50%"}}
-                    >
-                    <View style ={styles.modalContainer} >
-                        <Text style={styles.legend}>Documento di riconoscimento n. {nDocument}</Text>
-                        <View style={styles.fieldSetContent}>
-                            <View style={styles.horizontalView}>
-                            <TextInput
-                                    style = {styles.textFieldStyle}
-                                    placeholder = 'Nome'
-                                    value = {nome}
-                                    onChangeText = {(nome) => setNome(nome)}
-                                />
-                                <TextInput
-                                    style = {styles.textFieldStyle}
-                                    placeholder = 'Cognome'
-                                    value = {cognome}
-                                    onChangeText = {(cognome) => setCognome(cognome)}
-                                />
-                            </View>
-                            <View style={styles.horizontalView}>
-                                <RNPickerSelect
-                                    style = {pickerStyle}
-                                    onValueChange = {(typeDoc) => {setDocType(typeDoc); console.log(typeDoc);}}
-                                    value={typeDoc}
-                                    placeholder = {{
-                                        label: 'Tipo documento',
-                                        value: null,
-                                    }}
-                                    items={[
-                                        { label: 'Carta d\'Identità', value: 'Carta d\'Identità' },
-                                        { label: 'Patente di guida', value: 'Patente di guida' },
-                                    ]}
-                                    useNativeAndroidPickerStyle={false}
-                                />
-                                <TextInput
-                                    style = {styles.textFieldStyle}
-                                    placeholder = 'N° documento'
-                                    value = {numeroDoc}
-                                    onChangeText = {(numeroDoc) => setNumeroDoc(numeroDoc)}
-                                />
-                            </View>
-                            <View style={styles.horizontalView}>
-                                <TextInput
-                                    style = {[styles.textFieldStyle, styles.textFieldStyleSingleRow]}
-                                    placeholder = 'Luogo di rilascio'
-                                    value = {luogoRilascioDoc}
-                                    onChangeText = {(luogoRilascioDoc) => setLuogoRilascioDoc(luogoRilascioDoc)}
-                                />
-                            </View>
-                        </View>
-                        <CustomButton nome="Conferma" styleBtn={{width: "100%"}} onPress={()=>{
-                                console.log("ciao");
-                                console.log(numeroDoc);
-                                var documento = {
-                                    nome: nome,
-                                    cognome: cognome,
-                                    tipoDocumento: typeDoc,
-                                    luogoRilascio: luogoRilascioDoc,
-                                    numeroDocumento: numeroDoc 
-                                };
-                                documenti.push(documento);
-                                setDocumenti(documenti);
-                                if(nDocument == numPersone){
-                                    setVisible(false);
-                                    setNDocument(1);
-                                    setLuogoRilascioDoc("");
-                                    setNumeroDoc("");
-                                    setCognome("");
-                                    setNome("");
-                                    setDocumenti([]);
-                                    navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: prenotazioneId}) 
-                                }
-                                else{
-                                    setNDocument(nDocument + 1);
-                                    setLuogoRilascioDoc("");
-                                    setNumeroDoc("");
-                                    setCognome("");
-                                    setNome("");
-                                    setVisible(false);
-                                    setVisible(true)
-                                }
-                             }
-                         } />
-                    </View>
-                    </Modal>
-                    <View style={styles.buttonContainer}>
-                        <CustomButton nome="La mia chiave" styleBtn={{width: "100%"}} onPress={()=>{
-                                setVisible(true);
-                                //navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) 
-                             }
-                         } />
-                    </View>
-                </View>
-            </ScrollView>
-       </View> 
-    );
-}
-
-export default CheckInScreen;
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { TextInput, RadioButton } from 'react-native-paper';
+import { DefaultTheme } from '@react-navigation/native';
+import { Dropdown } from 'sharingan-rn-modal-dropdown';
+import RadioButtonRN from 'radio-buttons-react-native';
 
 const styles = StyleSheet.create({
     maincontainer: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
+
+    maincontainerGray: {
+        flex: 1,
+        backgroundColor: '#a9a9a9aa',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
     bodyScrollcontainer: {
         width: "100%",
     },
     scrollContent: {
-        marginLeft: 16, 
+        marginLeft: 16,
         marginRight: 16,
+
     },
     modalContainer: {
-        backgroundColor:'#c8c8c8',
-        marginTop:"50%",
+        backgroundColor: '#fff',
+        marginTop: "20%",
         width: "90%",
-        marginLeft:"5%"
+        marginLeft: "5%",
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: "#e4eded"
     },
     numprenotazionetxt: {
-          textAlign: "left",
-          fontSize: 18,
-          color: "#303a52",
-          marginTop: 16,
-          marginBottom: 16,
-          fontFamily: "MontserrantSemiBold",
+        textAlign: "left",
+        fontSize: 20,
+        color: "#303a52",
+        marginBottom: 20,
+        fontFamily: "MontserrantSemiBold",
     },
-    infoCheckIncontainer:{
+    infoCheckIncontainer: {
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 16
     },
-    checkInImage:{
+    checkInImage: {
         width: "100%",
-        height: 220,
-        borderRadius: 20
+        height: 300,
+        opacity: 12,
+
+
     },
     checkIntxt: {
         fontSize: 20,
@@ -221,24 +66,29 @@ const styles = StyleSheet.create({
         fontFamily: "MontserrantSemiBold",
         marginTop: "5%"
     },
-    fieldSet:{
+    fieldSet: {
         margin: 10,
         paddingHorizontal: 10,
         paddingBottom: 10,
-        borderRadius: 5,
         borderWidth: 1,
         alignItems: 'center',
-        borderColor: '#000',
+        borderColor: '#e4eded',
+        borderRadius: 15,
+        backgroundColor: "#fff",
     },
-    legend:{
+    legend: {
         position: 'absolute',
         top: -16,
         left: 10,
         fontFamily: "MontserrantSemiBold",
-        backgroundColor: '#FFFFFF',
         fontSize: 16,
-        padding: 4,
-        color: '#f2077d',
+        padding: 5,
+        color: '#303a52',
+        borderRadius: 10,
+        borderColor: "#e4eded",
+        borderWidth: 1,
+        backgroundColor: "#ffffff"
+
     },
     fieldSetContent: {
         alignSelf: "baseline",
@@ -246,56 +96,361 @@ const styles = StyleSheet.create({
     },
     singleField: {
         height: 40,
-        width: "45%", //oldvalue: 120
-        borderColor: '#cc3881',
-        marginTop:8,
-        paddingTop:9,
+        width: "100%", //oldvalue: 120
+        marginTop: 8,
+        paddingTop: 9,
         marginRight: 12,
         paddingLeft: 8,
         fontFamily: 'Montserrant',
         color: "black",
-        borderBottomWidth: 1,
-        
+        fontSize: 17
     },
     singleFieldRow: {
         height: 40,
         width: "96%", //oldvalue: 120
-        borderColor: '#cc3881',
-        marginTop:8,
-        paddingTop:9,
+        marginTop: 8,
+        paddingTop: 9,
         marginRight: 12,
         paddingLeft: 8,
         fontFamily: 'Montserrant',
-        borderBottomWidth: 1,
     },
     horizontalView: {
+        width: "100%",
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginTop: 10,
         marginBottom: 8
     },
+    horizontalViewModal: {
+        width: "100%",
+        flexDirection: 'row',
+        marginBottom: 8,
+        paddingRight: "5%",
+        justifyContent: "center",
+        marginLeft: 4,
+        paddingLeft: "4%",
+        //backgroundColor: "#000"
+    },
+
     comboBoxStyle: {
         marginTop: 8,
         marginRight: 8,
     },
     textFieldStyle: {
+
         height: 40,
-        width:"40%",
+        width: "50%",
         borderColor: '#cc3881',
-        marginTop:8,
+        marginTop: "9%",
         marginRight: 12,
         paddingLeft: 8,
         fontFamily: 'Montserrant',
-        borderBottomWidth: 1,
+
+    },
+
+    textFieldStyleModal: {
+        height: 40,
+        width: "50%",
+        borderColor: '#cc3881',
+        marginTop: "9%",
+        marginRight: 10,
+        marginLeft: 4,
+        paddingLeft: 10,
+        fontFamily: 'Montserrant',
+
+
     },
     textFieldStyleSingleRow: {
         width: "96%", //settare 100% per ottenere tutto lo spazio disponibile
     },
-    buttonContainer:{
+    buttonContainer: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 10,
         marginBottom: 20
     },
+
+    testo: {
+        fontFamily: "Montserrant",
+        fontSize: 18
+    },
+
+    generalita: {
+        marginTop: 6,
+        marginLeft: "5%"
+    },
+    dropdownStyle: {
+        fontFamily: "MontserrantSemiBold"
+    },
+
+    tipoDocumento: {
+        width: "90%",
+        marginTop: 14
+    },
+
+    fieldSetContentModal: {
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    numeroDocumento: {
+        width: "90%",
+        marginTop: "3%"
+
+    },
+    textFieldStyleGeneralModal: {
+        width: "100%",
+        height: 40,
+        marginTop: "5%",
+        //ackgroundColor: "#000"
+    },
+
+    radioButton: {
+        borderRadius: 15,
+        borderWidth: 2,
+        borderColor: "#e4eded",
+    },
+
+    secondContainer: {
+        //backgroundColor: "#000000aa"
+    },
+
+    modalView: {
+        //backgroundColor: "#000000aa",
+       
+
+    }
+
+
 });
+const CheckInScreen = ({ route, navigation }) => {
+    const { user, strutturaId, alloggioId, numPersone, prenotazioneId, prenotazione, image_url } = route.params;
+    const [nDocument, setNDocument] = useState(1);
+    const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } };
+    const [IsEditable, setEditable] = useState(true);
+    const [documenti, setDocumenti] = useState([]);
+    const [visible, setVisible] = useState(false);
+    const [typeDoc, setDocType] = useState("");
+    const [numeroDoc, setNumeroDoc] = useState('');
+    const [nome, setNome] = useState("");
+    const [cognome, setCognome] = useState("");
+    const [luogoRilascioDoc, setLuogoRilascioDoc] = useState('');
+    const [valori, setValori] = useState([{ label: 'Carta d\'identità' }, { label: 'Passaporto' }]);
+    const [checked, setChecked] = useState(true);
+    
+    const pickerStyle = {
+        inputIOS: {
+            paddingHorizontal: 10,
+            borderColor: '#cc3881',
+            height: 40,
+            width: "96%",
+            alignItems: 'center',
+            marginTop: 8,
+            marginRight: 12,
+            fontFamily: 'Montserrant',
+            borderBottomWidth: 1,
+        },
+        placeholder: {},
+        inputAndroid: {
+            paddingHorizontal: 10,
+            borderColor: '#cc3881',
+            height: 40,
+            width: "96%",
+            alignItems: 'center',
+            color: '#000000',
+            marginTop: 8,
+            marginRight: 12,
+            fontFamily: 'Montserrant',
+            borderBottomWidth: 1,
+        },
+    };
+
+    return (
+        <View style={checked ? styles.maincontainer : styles.maincontainerGray}>
+            <HeaderBar title="Check-In" navigator={navigation} />
+
+            <ScrollView style={styles.bodyScrollcontainer}>
+                <View style={styles.secondContainer}>
+                    <View style={styles.infoCheckIncontainer}>
+                        <Image style={styles.checkInImage} source={image_url} />
+                    </View>
+                    <View style={styles.scrollContent}>
+                        <Text style={styles.numprenotazionetxt}>Prenotazione numero:  {prenotazione.numeroPrenotazione}</Text>
+
+                        {checked && (<View style={styles.fieldSet}>
+                            <Text style={styles.legend}>Dati personali e residenza</Text>
+                            <View style={styles.fieldSetContent}>
+                                <View style={[styles.horizontalView, { marginTop: 20 }]}>
+                                    <View style={styles.icon}>
+                                        <Icon name={"account"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    </View>
+                                    <View style={styles.generalita}>
+                                        <Text style={styles.testo}>
+                                            {user.nome} {user.cognome}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.horizontalView}>
+                                    <View style={styles.icon}>
+                                        <Icon name={"gift-outline"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    </View>
+                                    <View style={styles.generalita}>
+                                        <Text style={styles.testo}>
+                                            {(new Date(user.dataNascita.seconds * 1000)).toLocaleString("it-IT").split(",")[0]}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.horizontalView}>
+                                    <View style={styles.icon}>
+                                        <Icon name={"flag"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    </View>
+                                    <View style={styles.generalita}>
+                                        <Text style={styles.testo}>
+                                            {user.nazionalita}
+                                        </Text>
+                                    </View>
+                                </View>
+                                <View style={styles.horizontalView}>
+                                    <View style={styles.icon}>
+                                        <Icon name={"map-marker-radius"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    </View>
+                                    <View style={styles.generalita}>
+                                        <Text style={styles.testo}>
+                                            {user.indirizzo.citta}, {user.indirizzo.cap}
+                                        </Text>
+                                    </View>
+                                </View>
+
+
+                            </View>
+                        </View>)}
+                        </View>
+
+
+
+                    <View style={styles.modalView}>
+                        <Modal
+                            animationType="slide"
+                            transparent={true}
+                            visible={visible}
+                            style={{ marginTop: "80%" }}>
+
+                            <View style={styles.modalContainer} >
+                                <Text style={styles.legend}>Documento numero: {nDocument}</Text>
+                                <View style={styles.fieldSetContentModal}>
+                                    <View style={styles.horizontalViewModal}>
+                                        <TextInput
+                                            mode='outlined'
+                                            label='Nome'
+                                            disabledInputStyle={{ color: "#303a52" }}
+                                            style={styles.textFieldStyleModal}
+                                            editable={IsEditable}
+                                            value={nome}
+                                            onChangeText={(nome) => setNome(nome)}
+                                            theme={theme}
+                                        />
+                                        <TextInput
+                                            mode='outlined'
+                                            label='Cognome'
+                                            disabledInputStyle={{ color: "#303a52" }}
+                                            style={styles.textFieldStyleModal}
+                                            editable={IsEditable}
+                                            value={cognome}
+                                            onChangeText={(cognome) => setCognome(cognome)}
+                                            theme={theme} />
+                                    </View>
+
+                                    <View style={styles.tipoDocumento}>
+
+                                        <View>
+                                            <RadioButtonRN
+                                                data={valori}
+                                                selectedBtn={(e) => { setDocType(e) }}
+                                                box={true}
+                                                animationType={["shake"]}
+                                                boxStyle={styles.radioButton}
+                                                textStyle={{ fontFamily: "MontserrantSemiBold" }}
+
+                                            />
+                                        </View>
+
+                                    </View>
+                                    <View style={styles.numeroDocumento}>
+                                        <TextInput
+                                            mode='outlined'
+                                            label='Numero Documento'
+                                            disabledInputStyle={{ color: "#303a52" }}
+                                            style={styles.textFieldStyleGeneralModal}
+                                            editable={IsEditable}
+                                            value={numeroDoc}
+                                            onChangeText={(numeroDoc) => setNumeroDoc(numeroDoc)}
+                                            theme={theme} />
+                                    </View>
+                                    <View style={styles.horizontalViewModal}>
+                                        <TextInput
+                                            mode='outlined'
+                                            label='Luogo di rilascio'
+                                            disabledInputStyle={{ color: "#303a52" }}
+                                            style={styles.textFieldStyleGeneralModal}
+                                            editable={IsEditable}
+                                            value={luogoRilascioDoc}
+                                            onChangeText={(luogoRilascioDoc) => setLuogoRilascioDoc(luogoRilascioDoc)}
+                                            theme={theme} />
+                                    </View>
+                                </View>
+
+                                <CustomButton nome="Conferma" styleBtn={{ width: "90%", alignItems: "center", justifyContent: "center", marginLeft: "5%", marginTop: "5%", marginBottom: "5%" }} onPress={() => {
+                                    console.log("ciao");
+                                    console.log(numeroDoc);
+                                    var documento = {
+                                        nome: nome,
+                                        cognome: cognome,
+                                        tipoDocumento: typeDoc,
+                                        luogoRilascio: luogoRilascioDoc,
+                                        numeroDocumento: numeroDoc
+                                    };
+                                    documenti.push(documento);
+                                    setDocumenti(documenti);
+                                    if (nDocument == numPersone) {
+                                        setVisible(false);
+                                        setNDocument(1);
+                                        setLuogoRilascioDoc("");
+                                        setNumeroDoc("");
+                                        setCognome("");
+                                        setNome("");
+                                        setDocumenti([]);
+                                        setChecked(true);
+                                        navigation.navigate("LaMiaChiave", { user: user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: prenotazioneId })
+                                    }
+                                    else {
+                                        setNDocument(nDocument + 1);
+                                        setLuogoRilascioDoc("");
+                                        setNumeroDoc("");
+                                        setCognome("");
+                                        setNome("");
+                                        setVisible(false);
+                                        setVisible(true);
+                                        setChecked(true)
+                                    }
+                                }
+                                } />
+                            </View>
+                        </Modal>
+
+                        <View style={styles.buttonContainer}>
+                            <CustomButton nome="Prosegui con il check-in" styleBtn={{ width: "90%" }} onPress={() => {
+                                setChecked(false);
+                                setVisible(true);
+
+                                //navigation.navigate("LaMiaChiave", {user:user, strutturaId: strutturaId, alloggioId: alloggioId, prenotazioneId: ""}) 
+                            }
+                            } />
+                        </View>
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
+    );
+}
+
+export default CheckInScreen;
+
