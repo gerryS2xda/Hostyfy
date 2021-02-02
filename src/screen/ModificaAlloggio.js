@@ -348,9 +348,12 @@ const ModificaAlloggio = ({ route, navigation }) => {
             </ScrollView>
             <CustomAlertGeneral
                   visibility={showAlertDelete}
-                  setVisibility={setShowAlertDelete}
                   titolo="Eliminazione"
                   testo= "Confermi di voler procedere con la rimozione di questo alloggio?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+                    setShowAlertDelete(false);
+                  }}
                   buttonName="Procedi"
                   onOkPress={()=>{ 
                     async function deleteAlloggio(){     
@@ -362,7 +365,6 @@ const ModificaAlloggio = ({ route, navigation }) => {
                   }} />
             <CustomAlertGeneral
                 visibility={showAlertNoFeature}
-                setVisibility={setShowAlertNoFeature}
                 titolo="Funzionalità non disponibile"
                 testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
                 hideNegativeBtn={true}

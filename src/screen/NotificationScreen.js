@@ -102,7 +102,6 @@ const NotificationScreen = ({ route, navigation }) => {
             {showNoItem && (
                 <CustomAlertGeneral
                 visibility={showNoItem}
-                setVisibility={setNoItemVisibility}
                 titolo="Notifiche"
                 testo= "Nessuna notifica da leggere!"
                 hideNegativeBtn={true}

@@ -72,9 +72,12 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                         isVisibleSecondDialog && (
                             <CustomAlertGeneral
                                 visibility={isVisibleSecondDialog}
-                                setVisibility={setSecondDialogVisible}
                                 titolo="Upgrade Host"
                                 testo= {"Il costo per effettuare l'upgrade è " + prezzoUpgrade + "€"}
+                                annullaBtnName="Annulla"
+                                onAnnullaBtn={()=>{
+                                    setSecondDialogVisible(false);
+                                }}
                                 buttonName="Paga"
                                 onOkPress={()=>{
                                     setSecondDialogVisible(false);
@@ -109,9 +112,9 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                         showUpgradeAlert && (
                             <CustomAlertGeneral
                                 visibility={showUpgradeAlert}
-                                setVisibility={setShowUpgradeAlert}
                                 titolo="Upgrade Host"
                                 testo= {"Esito dell'operazione positivo! Congratulazioni, ora sei un host!"}
+                                hideNegativeBtn={true}
                                 buttonName="Ok"
                                 onOkPress={()=>{
                                     async function upgradeHost(){

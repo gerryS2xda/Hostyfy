@@ -142,7 +142,7 @@ export default CleanService = ({route, navigation}) =>{
                         <View style={styles.bottomButtonContainer}>
                             <CustomButton styleBtn={{marginTop: 10, width: "100%"}} nome="Aggiorna" onPress={()=>{
                                 CleanServiceModel.updateCleanServiceDocument(id,email,telefono,ditta, new Date(), user.userIdRef);
-                                navigation.navigate('CleanService', {user: user, id: id});
+                                navigation.navigate('CleanService', {user: user});
                               } 
                             } />
                         </View>

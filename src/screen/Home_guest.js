@@ -180,26 +180,21 @@ const HomeGuest = ({ route, navigation }) => {
               }} />
             </View>
             </View>
-            {
-              showAlertCheckOut && (
-                <CustomAlertGeneral
-                  visibility={showAlertCheckOut}
-                  setVisibility={setAlertCheckOutVisibility}
-                  titolo="Check-out"
-                  testo= {"Alle ore " + checkOut.ora + " della data odierna sarà eseguito il check-out per l'alloggio \""+ checkOut.alloggioName + 
+            <CustomAlertGeneral
+              visibility={showAlertCheckOut}
+              titolo="Check-out"
+              testo= {"Alle ore " + checkOut.ora + " della data odierna sarà eseguito il check-out per l'alloggio \""+ checkOut.alloggioName + 
                   "\"! Si invita l'ospite a procede con il check-out!"}
-                  hideNegativeBtn={true}
-                  buttonName="Ok"
-                  onOkPress={()=>{ 
-                      async function hideAlertCheckOut(){
-                        //Setta doneCheckout flag a true in prenotazione per indicare che l'utente ha letto l'alert di checkOut
-                        await PrenotazioneModel.updateCheckOutStatusPrenotazione(checkOut.prenId, true);
-                        setAlertCheckOutVisibility(false);   
-                      }
-                      hideAlertCheckOut(); 
-                  }} />
-              )
-            }
+              hideNegativeBtn={true}
+              buttonName="Ok"
+              onOkPress={()=>{ 
+                  async function hideAlertCheckOut(){
+                    //Setta doneCheckout flag a true in prenotazione per indicare che l'utente ha letto l'alert di checkOut
+                    await PrenotazioneModel.updateCheckOutStatusPrenotazione(checkOut.prenId, true);
+                    setAlertCheckOutVisibility(false);   
+                  }
+                  hideAlertCheckOut(); 
+              }} />
       </View>
     </View>
     

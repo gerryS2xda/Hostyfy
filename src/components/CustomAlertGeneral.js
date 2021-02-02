@@ -23,10 +23,7 @@ const CustomAlertGeneral = (props) => {
                             styleBtn={{width: "45%"}}
                             nome={annullaBtnName}
                             onPress={()=>{
-                                if(annullaBtnName !== "Annulla"){ //Comportamento di default di 'Annulla' è nascondere l'alert
-                                     props.onAnnullaBtn();
-                                }
-                                props.setVisibility(false);
+                               props.onAnnullaBtn();
                             }}
                         />
                         <CustomButton 

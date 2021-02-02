@@ -436,9 +436,12 @@ const ModificaStruttura = ({ route, navigation }) => {
             </ScrollView>
             <CustomAlertGeneral
                   visibility={showAlertDelete}
-                  setVisibility={setShowAlertDelete}
                   titolo="Eliminazione"
                   testo= "Confermi di voler procedere con la rimozione della struttura?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+                    setShowAlertDelete(false);
+                  }}
                   buttonName="Procedi"
                   onOkPress={()=>{ 
                     async function deleteStruttura(){     
@@ -450,7 +453,6 @@ const ModificaStruttura = ({ route, navigation }) => {
                   }} />
             <CustomAlertGeneral
                 visibility={showAlertNoFeature}
-                setVisibility={setShowAlertNoFeature}
                 titolo="Funzionalità non disponibile"
                 testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
                 hideNegativeBtn={true}

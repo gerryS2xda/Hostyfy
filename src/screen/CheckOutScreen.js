@@ -76,27 +76,23 @@ const CheckOutScreen = ({route, navigation}) =>{
                       }
                     />
             </View>
-            {
-              showAlertCheckOut && (
-                <CustomAlertGeneral
-                  visibility={showAlertCheckOut}
-                  setVisibility={setAlertCheckOutVisibility}
-                  titolo="Check-out"
-                  testo= "Procedura completata! La ringraziamo per la sua ospitalità e desideriamo che lei rilasci una recensione."
-                  annullaBtnName="Non ora"
-                  onAnnullaBtn={()=>{
-                    navigation.reset({
-                        index: 0,
-                        routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
-                    }); //resetta lo stack quando si ritorna nella Home
-                  }}
-                  buttonName="Recensione"
-                  onOkPress={()=>{ 
-                      setAlertCheckOutVisibility(false);    
-                      navigation.navigate("InserisciRecensione", {userId: userId, prenotazione: checkOut.prenotazioneDoc});
-                  }} />
-              )
-            }
+            <CustomAlertGeneral
+                visibility={showAlertCheckOut}
+                titolo="Check-out"
+                testo= "Procedura completata! La ringraziamo per la sua ospitalità e desideriamo che lei rilasci una recensione."
+                annullaBtnName="Non ora"
+                onAnnullaBtn={()=>{
+                  setAlertCheckOutVisibility(false);  
+                  navigation.reset({
+                      index: 0,
+                      routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                  }); //resetta lo stack quando si ritorna nella Home
+                }}
+                buttonName="Recensione"
+                onOkPress={()=>{ 
+                    setAlertCheckOutVisibility(false);    
+                    navigation.navigate("InserisciRecensione", {userId: userId, prenotazione: checkOut.prenotazioneDoc});
+                }} />
         </View>
     );
 }

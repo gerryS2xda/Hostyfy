@@ -51,30 +51,22 @@ const ChiaveScreen = ({ route, navigation }) => {
                         styleTesto={{fontSize: 30, color: "#303a52", fontFamily: "MontserrantBold" }}
                         nome={"Apri"}
                         onPress={() => setCustomAlertVisibility(true)} />
-                    {
-                        showCustomAlert && (
-                            <CustomAlertGeneral
-                                visibility={showCustomAlert}
-                                setVisibility={setCustomAlertVisibility}
-                                titolo="Ingresso alloggio"
-                                testo= {"Benvenuto nella camera " + alloggio.nomeAlloggio}
-                                buttonName="Ok"
-                                onOkPress={()=>{
-                                    
-                                    async function setNavigationScreenAfterPressKey () {
-                                        setCustomAlertVisibility(false);
-                                        if (!doneCheckIn && prenotazioneId !== "") {
-                                            //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
-                                            await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
-                                            navigation.navigate("MoviePlayer");
-                                        } else {
-                                            //navigation.navigate("InfoCamera");
-                                        }
-                                    }
-                                    setNavigationScreenAfterPressKey();
-                                }} />
-                        )
-                    }
+                    <CustomAlertGeneral
+                        visibility={showCustomAlert}
+                        titolo="Ingresso alloggio"
+                        testo= {"Benvenuto nella camera " + alloggio.nomeAlloggio}
+                        buttonName="Ok"
+                        onOkPress={()=>{            
+                            async function setNavigationScreenAfterPressKey () {
+                                setCustomAlertVisibility(false);
+                                if (!doneCheckIn && prenotazioneId !== "") {
+                                    //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
+                                    await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
+                                    navigation.navigate("MoviePlayer");
+                                } //else{navigation.navigate("InfoCamera");} //rimosso nella versione base
+                            }  
+                            setNavigationScreenAfterPressKey();
+                    }} />
                 </View>
             </View>
         </View>
