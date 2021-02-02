@@ -11,13 +11,29 @@
     - https://docs.expo.io/versions/v39.0.0/sdk/av/
 */
 
-import React, {useState, useRef} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import React, {useState, useRef, useEffect } from 'react';
+import {SafeAreaView, StyleSheet, Text, View, BackHandler} from 'react-native';
 import { Video } from 'expo-av';
 import VideoPlayer from 'expo-video-player'
 
 
-const MediaPlayerScreen = (props) => {
+const MediaPlayerScreen = ({ route, navigation }) => {
+
+  const {user} = route.params;
+
+  useEffect(() => {
+    const backAction = () => {
+      //nessuna azione quando si preme il tasto back di Android
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   return(
     <View style={styles.container}>
@@ -37,7 +53,10 @@ const MediaPlayerScreen = (props) => {
         if(playbackStatus.isLoaded){
           if (playbackStatus.didJustFinish && !playbackStatus.isLooping) {
             // The player has just finished playing and will stop. Maybe you want to play something else?
-            props.navigation.navigate('HomeGuest');
+            navigation.reset({
+              index: 0,
+              routes: [{ name: 'HomeGuest',  params: { userId: user.userIdRef }}],
+            }); //resetta lo stack quando si ritorna nella Home
           }
         }
       }}

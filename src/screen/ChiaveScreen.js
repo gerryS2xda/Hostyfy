@@ -62,7 +62,7 @@ const ChiaveScreen = ({ route, navigation }) => {
                                 if (!doneCheckIn && prenotazioneId !== "") {
                                     //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
                                     await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
-                                    navigation.navigate("MoviePlayer");
+                                    navigation.navigate("MoviePlayer", {user: user});
                                 } //else{navigation.navigate("InfoCamera");} //rimosso nella versione base
                             }  
                             setNavigationScreenAfterPressKey();
