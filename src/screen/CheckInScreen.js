@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
         color: "#303a52",
         marginBottom: 20,
         fontFamily: "MontserrantSemiBold",
+        marginLeft: 4
     },
     infoCheckIncontainer: {
         alignItems: 'center',
@@ -184,7 +185,6 @@ const styles = StyleSheet.create({
 
     tipoDocumento: {
         width: "90%",
-        marginTop: 14
     },
 
     fieldSetContentModal: {
@@ -194,8 +194,6 @@ const styles = StyleSheet.create({
 
     numeroDocumento: {
         width: "90%",
-        marginTop: "3%"
-
     },
     textFieldStyleGeneralModal: {
         width: "100%",
@@ -217,6 +215,14 @@ const styles = StyleSheet.create({
     modalView: {
         //backgroundColor: "#000000aa",
        
+
+    },
+
+    titolo:{
+        fontFamily: "MontserrantSemiBold",
+        fontSize: 18,
+        marginTop: "3%",
+
 
     }
 
@@ -335,8 +341,9 @@ const CheckInScreen = ({ route, navigation }) => {
                             style={{ marginTop: "80%" }}>
 
                             <View style={styles.modalContainer} >
-                                <Text style={styles.legend}>Documento numero: {nDocument}</Text>
+                               
                                 <View style={styles.fieldSetContentModal}>
+                                <Text style={styles.titolo}>Documento numero: {nDocument}</Text>
                                     <View style={styles.horizontalViewModal}>
                                         <TextInput
                                             mode='outlined'
