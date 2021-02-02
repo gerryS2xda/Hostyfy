@@ -36,14 +36,14 @@ const PrenotazioneScreen = ({ route, navigation }) => {
 
                 var checkIn = (new Date(prenotazione.dataInizio * 1000)).toLocaleString("it-IT");
                 var stringhe = checkIn.split(':');
-                checkIn = stringhe[0]+":"+stringhe[1];
+                checkIn = stringhe[0] + ":" + stringhe[1];
                 setCheckIn(checkIn);
 
                 var checkOut = (new Date(prenotazione.dataFine * 1000)).toLocaleString("it-IT");
                 stringhe = checkOut.split(':');
-                checkOut = stringhe[0]+":"+stringhe[1];
+                checkOut = stringhe[0] + ":" + stringhe[1];
                 setCheckOut(checkOut);
-                
+
 
             }
             getDatiPrenotazione();
@@ -61,13 +61,10 @@ const PrenotazioneScreen = ({ route, navigation }) => {
             <HeaderBar title="Prenotazione" navigator={navigation} />
             <ScrollView style={styles.bodyScrollcontainer}>
                 <View style={styles.scrollContent}>
-                    <Text style={styles.numprenotazionetxt}>Numero Prenotazione: {prenotazione.numeroPrenotazione}</Text>
-
-
                     <View style={styles.infoStrutturacontainer}>
                         <Image style={styles.strutturaImage} source={image_url} />
                     </View>
-
+                    <Text style={styles.numprenotazionetxt}>Numero Prenotazione: {prenotazione.numeroPrenotazione}</Text>
 
                     <View style={styles.fieldSet}>
                         <Text style={styles.legend}>Informazione prenotazione</Text>
@@ -81,12 +78,12 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                                 <Text style={styles.normalText}>{checkOut}</Text>
                             </View>
                             <View style={styles.iconView}>
-                                <View style={[styles.singleColumn, { marginLeft: "15%", }]}>
+                                <View style={[styles.singleColumn, { marginLeft: "35%", }]}>
                                     <Icon name={"account-multiple"} color={"#0692d4"} size={50} style={styles.arrow} />
                                     <Text style={[styles.textIcon, { fontFamily: "MontserrantSemiBold" }]}>{prenotazione.numPersone}</Text>
                                 </View>
 
-                                <View style={[styles.singleColumn, { marginRight: "20%", }]}>
+                                <View style={[styles.singleColumn]}>
                                     <Icon name={"currency-eur"} color={"#0692d4"} size={50} style={styles.arrow} />
                                     <Text style={[styles.textIcon, { fontFamily: "MontserrantSemiBold", marginLeft: "6%" }]}>{prenotazione.costo}</Text>
                                 </View>
@@ -120,14 +117,14 @@ function ButtonContainer(props) {
             return (
                 <View style={styles.buttonContainer}>
                     <CustomButton nome="Check-In" styleBtn={{ width: "100%" }} onPress={() => {
-                        props.navigator.navigate('EffettuaCheckIn', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone: props.prenotazione.numPersone, prenotazioneId: props.id, prenotazione: props.prenotazione, image_url: props.image_url});
+                        props.navigator.navigate('EffettuaCheckIn', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone: props.prenotazione.numPersone, prenotazioneId: props.id, prenotazione: props.prenotazione, image_url: props.image_url });
                     }} />
                 </View>
             );
         } else {
             return (
                 <View style={styles.buttonContainer}>
-                    <CustomButton nome="Chiave" styleBtn={{ width: "100%" }} onPress={() => { props.navigator.navigate('LaMiaChiave', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id, prenotazione: props.prenotazione}); }} />
+                    <CustomButton nome="Chiave" styleBtn={{ width: "100%" }} onPress={() => { props.navigator.navigate('LaMiaChiave', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, prenotazioneId: props.id, prenotazione: props.prenotazione }); }} />
                 </View>
             );
         }
@@ -148,9 +145,9 @@ const styles = StyleSheet.create({
     },
     numprenotazionetxt: {
         textAlign: "left",
-        fontSize: 16,
+        fontSize: 18,
         color: "black",
-        marginTop: 16,
+        marginTop: 10,
         marginBottom: 16,
         fontFamily: "MontserrantSemiBold",
     },
@@ -160,8 +157,8 @@ const styles = StyleSheet.create({
         marginBottom: 16
     },
     strutturaImage: {
-        width: "100%",
-        height: 220,
+        width: "118%",
+        height: 300,
         borderRadius: 20
     },
     nameStruttura: {
@@ -172,9 +169,11 @@ const styles = StyleSheet.create({
         fontFamily: "MontserrantSemiBold",
     },
     checkInContainer: {
+        alignItems: "center",
         marginTop: "10%",
     },
     checkOutContainer: {
+        alignItems: "center",
         marginTop: 16,
     },
     costoTotContainer: {
@@ -204,7 +203,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         alignItems: 'center',
         borderColor: '#e4eded',
-        
+
     },
     legend: {
         position: 'absolute',
@@ -217,16 +216,17 @@ const styles = StyleSheet.create({
         color: '#303a52',
     },
     fieldSetContent: {
-        alignSelf: "baseline",
-        marginLeft: 16,
+        justifyContent: "center",
+        alignItems: "center",
+       
     },
     categoryText: {
-        fontSize: 16,
+        fontSize: 19,
         color: "#303a52",
         fontFamily: "MontserrantBold",
     },
     normalText: {
-        fontSize: 16,
+        fontSize: 17,
         color: "black",
         fontFamily: "Montserrant",
     },
@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
     },
 
     iconView: {
-       
+
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -260,10 +260,10 @@ const styles = StyleSheet.create({
     },
 
     arrow: {
-       
+
     },
 
-    textIcon:{
+    textIcon: {
         fontSize: 25
     }
 });
