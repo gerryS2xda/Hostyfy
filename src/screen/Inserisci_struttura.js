@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Image, ScrollView, Alert, StyleSheet, Modal, ActivityIndicator, Dimensions } from 'react-native';
+import { Text, View, Image, ScrollView, Alert, StyleSheet, Modal, ActivityIndicator, Dimensions, BackHandler } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
@@ -236,8 +236,19 @@ export default class InserisciStrutturaScreen extends React.Component {
             IsEditable: true,
             showCustomAlert: false,
             scrollRefVerticalScrollView : React.createRef(),
+            showAlertInsertSuccess: false,
+            showAlertNextFeature: false,
+            showAlertErrorField: false,
+            showAlertBackButton: false,
+            messageError: ""
         }
     }
+
+    //Intercetto della pressione del tasto back per avvisare utente di annullamento dell'operazione
+    backAction = () => {
+        this.setState({showAlertBackButton: true});
+        return true;
+    };
 
     componentDidMount() {
         var struttState = this.props.route.params.state;
@@ -264,7 +275,7 @@ export default class InserisciStrutturaScreen extends React.Component {
             });
         }
     }
-
+    
     render() {
         var user = this.props.route.params.user;
         var photoList = this.props.route.params.photoList;
@@ -472,11 +483,7 @@ export default class InserisciStrutturaScreen extends React.Component {
 
                                         <TouchableOpacity
                                             style={[styles.information]}
-                                            onPress={()=> Alert.alert(
-                                                "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                                { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                                { cancelable: false })}>
+                                            onPress={()=> this.setState({showAlertNextFeature: true})}>
                                             <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow} />
                                             <Text
                                                 style={styles.otherText} >
@@ -509,6 +516,56 @@ export default class InserisciStrutturaScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </ScrollView>
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertInsertSuccess}
+                  titolo="Inserimento struttura"
+                  testo= "Il nuovo alloggio e' stata memorizzato con successo!"
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    //reset dei field del form
+                    this.setState({
+                        denominazione: "", via: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", 
+                            tipologia: "", numeroAlloggi: "", descrizione: "", showAlertInsertSuccess: false});
+                    this.state.scrollRef.current.scrollTo({ x: 0})
+                    this.props.navigation.navigate("LeMieStrutture", { user: user });
+                  }} />
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertNextFeature}
+                  titolo="Funzionalità non disponibile"
+                  testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    this.setState({showAlertNextFeature: false});  
+                  }} />
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertErrorField}
+                  titolo="Inserimento struttura"
+                  testo= {this.state.messageError}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    this.state.scrollRef.current.scrollTo({ x: 0});
+                    this.setState({showAlertErrorField: false});  
+                  }} />
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertBackButton}
+                  titolo="Attenzione!"
+                  testo= "Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+                    this.setState({showAlertBackButton: false});
+                  }}
+                  buttonName="Sì"
+                  onOkPress={()=>{ 
+                    //reset dei field del form
+                    this.setState({
+                        denominazione: "", via: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", 
+                            tipologia: "", numeroAlloggi: "", descrizione: "", showAlertBackButton: false});
+                    this.state.scrollRef.current.scrollTo({ x: 0})
+                    this.props.navigation.goBack();
+                  }} />
             </View >
         );
     }
@@ -553,57 +610,16 @@ export default class InserisciStrutturaScreen extends React.Component {
                     reference.setState({ modalUploadVisibility: false });
                 }
 
-                Alert.alert("Inserimento struttura", "La nuova struttura e' stata memorizzata con successo!",
-                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                    {
-                        text: "OK", onPress: () => {
-                            //reset dei field del form
-                            reference.setState({
-                                denominazione: "", via: "", citta: "",
-                                cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: "", descrizione: ""
-                            });
-                            reference.denominazione.clear();
-                            reference.regione.clear();
-                            reference.citta.clear();
-                            reference.provincia.clear();
-                            reference.descrizione.clear();
-                            reference.alloggi.clear();
-                            reference.tipologia.clear();
-                            reference.nazione.clear();
-                            reference.cap.clear();
-                            reference.via.clear();
-
-                            navigation.navigate("LeMieStrutture", { user: user });
-                        }
-                    }],
-                    { cancelable: false });
+                //Mostra Alert personalizzato per indicare esito positivo dell'operazione
+                if(!reference.state.showAlertInsertSuccess){
+                    reference.setState({showAlertInsertSuccess: true});
+                }
             }
         } else {
-            Alert.alert("Inserimento struttura", "La nuova struttura e' stata memorizzata con successo!",
-                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                {
-                    text: "OK", onPress: () => {
-
-                        //reset dei field del form
-                        reference.setState({
-                            denominazione: "", via: "", citta: "",
-                            cap: "", provincia: "", regione: "", nazione: "", tipologia: "", numeroAlloggi: "", descrizione: ""
-                        });
-                        reference.denominazione.clear();
-                        reference.regione.clear();
-                        reference.citta.clear();
-                        reference.provincia.clear();
-                        reference.descrizione.clear();
-                        reference.alloggi.clear();
-                        reference.tipologia.clear();
-                        reference.nazione.clear();
-                        reference.cap.clear();
-                        reference.via.clear();
-
-                        navigation.navigate("LeMieStrutture", { user: user });
-                    }
-                }],
-                { cancelable: false });
+            //Mostra Alert personalizzato per indicare esito positivo dell'operazione
+            if(!reference.state.showAlertInsertSuccess){
+                reference.setState({showAlertInsertSuccess: true});
+            }
         }
         reference.setState({ disableInsertStrutturaButton: false }); //resetta lo stato del pulsante "Aggiungi" e rendilo cliccabile
     }
@@ -695,10 +711,7 @@ export default class InserisciStrutturaScreen extends React.Component {
             flag = false;
         }
         if (!flag) {
-            Alert.alert("Inserimento struttura", message,
-                [{ text: "Cancel", style: "cancel" },
-                { text: "OK" }],
-                { cancelable: false });
+            this.setState({messageError: message, showAlertErrorField: true});
         }
         return flag;
     }

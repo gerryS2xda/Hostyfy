@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, ScrollView, StyleSheet, Alert, Modal, ActivityIndicator,  Dimensions} from 'react-native';
+import {View, Text, ScrollView, StyleSheet, Alert, Modal, ActivityIndicator, Dimensions, BackHandler} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
@@ -8,6 +8,7 @@ import {firebase} from "../firebase/config"
 import { DefaultTheme } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CustomAlertGeneral from "../components/CustomAlertGeneral";
 
 //Firebase
 var storageRef = firebase.storage().ref(); // create a storage reference from our storage service
@@ -227,8 +228,19 @@ export default class InserisciAlloggioScreen extends React.Component {
           theme: { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } },
           scrollRef: React.createRef(),
           scrollRefVerticalScrollView: React.createRef(),
+          showAlertInsertSuccess: false,
+          showAlertNextFeature: false,
+          showAlertErrorField: false,
+          showAlertBackButton: false,
+          messageError: ""
         }
     }
+
+    //Intercetto della pressione del tasto back per avvisare utente di annullamento dell'operazione
+    backAction = () => {
+        this.setState({showAlertBackButton: true});
+        return true;
+    };
 
     componentDidMount() {    
         var alloggioState = this.props.route.params.state;
@@ -398,11 +410,7 @@ export default class InserisciAlloggioScreen extends React.Component {
 
                                         <TouchableOpacity
                                             style={[styles.information]}
-                                            onPress={()=> Alert.alert(
-                                                "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                                [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                                { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                                { cancelable: false })}>
+                                            onPress={()=> this.setState({showAlertNextFeature: true})}>
                                             <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow} />
                                             <Text
                                                 style={styles.otherText} >
@@ -435,6 +443,52 @@ export default class InserisciAlloggioScreen extends React.Component {
                         </View>
                     </ScrollView>
                 </ScrollView>
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertInsertSuccess}
+                  titolo="Inserimento alloggio"
+                  testo= "Il nuovo alloggio è stato memorizzato con successo!"
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    this.setState({nomeAlloggio: "", numCamere: "", 
+                        numMaxPersone: "", piano: "", descrizione: "", pathvideo: "", showAlertInsertSuccess: false});
+                    this.state.scrollRef.current.scrollTo({ x: 0});
+                    this.props.navigation.navigate("VisualizzaAlloggi", {user: user, strutturaId: strutturaId});  
+                  }} />
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertNextFeature}
+                  titolo="Funzionalità non disponibile"
+                  testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    this.setState({showAlertNextFeature: false});  
+                  }} />
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertErrorField}
+                  titolo="Inserimento alloggio"
+                  testo= {this.state.messageError}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    this.state.scrollRef.current.scrollTo({ x: 0})
+                    this.setState({showAlertErrorField: false});  
+                  }} />
+                <CustomAlertGeneral
+                  visibility={this.state.showAlertBackButton}
+                  titolo="Attenzione!"
+                  testo= "Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+                    this.setState({showAlertBackButton: false});
+                  }}
+                  buttonName="Sì"
+                  onOkPress={()=>{ 
+                    this.setState({nomeAlloggio: "", numCamere: "", 
+                        numMaxPersone: "", piano: "", descrizione: "", pathvideo: "", showAlertBackButton: false});
+                    this.state.scrollRef.current.scrollTo({ x: 0});
+                    this.props.navigation.goBack();
+                  }} />
             </View >
         );
     }
@@ -473,38 +527,17 @@ export default class InserisciAlloggioScreen extends React.Component {
                     reference.setState({modalUploadVisibility: false});
                 }
 
-                //Alert.alert("Inserimento alloggio", "Il nuovo alloggio e' stata memorizzato con successo!",
-                    //[{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                     //{ text: "OK", onPress: ()=> {
-                        //reset dei field del form
-                        reference.setState({nomeAlloggio: "", numCamere: "", 
-                            numMaxPersone: "", piano: "", descrizione: "", pathvideo: ""});
-                        reference.nomeAlloggio.clear();  
-                        reference.numCamere.clear();                        
-                        reference.numMaxPersone.clear();
-                        reference.piano.clear(); 
-                        reference.descrizione.clear(); 
+                //Mostra Alert personalizzato per indicare esito positivo dell'operazione
+                if(!reference.state.showAlertInsertSuccess){
+                    reference.setState({showAlertInsertSuccess: true});
+                }
 
-                        navigation.navigate("VisualizzaAlloggi", {user: user, strutturaId: strutturaId});
-                    //}}],
-                   // { cancelable: false });
             }
         }else{
-            Alert.alert("Inserimento alloggio", "Il nuovo alloggio e' stata memorizzato con successo!",
-                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                     { text: "OK", onPress: ()=> {
-                        //reset dei field del form
-                        reference.setState({nomeAlloggio: "", numCamere: "", 
-                            numMaxPersone: "", piano: "", descrizione: "", pathvideo: ""});
-                        reference.nomeAlloggio.clear();  
-                        reference.numCamere.clear();                        
-                        reference.numMaxPersone.clear();
-                        reference.piano.clear(); 
-                        reference.descrizione.clear(); 
-
-                        navigation.navigate("VisualizzaAlloggi", {user: user, strutturaId: strutturaId});
-                    }}],
-                    { cancelable: false });
+            //Mostra Alert personalizzato per indicare esito positivo dell'operazione
+            if(!reference.state.showAlertInsertSuccess){
+                reference.setState({showAlertInsertSuccess: true});
+            }
         }
         reference.setState({disableInsertAlloggioButton: false}); //resetta lo stato del pulsante "Aggiungi" e rendilo cliccabile
     }
@@ -585,10 +618,7 @@ export default class InserisciAlloggioScreen extends React.Component {
             flag = false;
         }
         if(!flag){
-            Alert.alert("Inserimento alloggio", message,
-                        [{ text: "Cancel", style: "cancel"},
-                        { text: "OK" }],
-                        { cancelable: false });
+            this.setState({messageError: message, showAlertErrorField: true});
         }
         return flag;
     }

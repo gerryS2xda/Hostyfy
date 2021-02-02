@@ -1,8 +1,9 @@
-import React, {useState, useRef} from 'react';
-import {View, Text, ScrollView, StyleSheet, TextInput, Alert} from 'react-native';
+import React, {useState, useRef, useEffect} from 'react';
+import {View, Text, ScrollView, StyleSheet, TextInput, Alert, BackHandler} from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as RecensioneModel from "../firebase/datamodel/RecensioneModel"
+import CustomAlertGeneral from "../components/CustomAlertGeneral";
 
 //Styles
 const styles = StyleSheet.create({
@@ -65,9 +66,45 @@ const InserisciRecensioneScreen = ({route, navigation}) =>{
     const [feedbackPositive, setFeedbackPositive] = useState("");
     const [feedbackNegative, setFeedbackNegative] = useState("");
     const [disableInsertRecButton, setInsertRecButtonStatus] = useState(false); //per prevenire doppio click che comporta doppio inserimento
+    const [showAlertInsert, setShowAlertInsert] = useState(false);
+    const [showAlertErrorField, setShowAlertErrorField] = useState(false);
+    const [showAlertBackButton, setShowAlertBackButton] = useState(false);
+    const [messageAlert, setMessageAlert] = useState("");
     var punteggioRef = useRef(null);
     var feedbackPositiveRef = useRef(null);
     var feedbackNegativeRef = useRef(null);
+
+    //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+    const validateFormField = () =>{
+
+        var flag = true; //tutti i campi sono compilati
+        var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+        if(punteggio === ""){
+            message += "\"Punteggio\"";
+            flag = false;
+        }else if(feedbackPositive === ""){
+            message += "\"Cosa ti è piaciuto?\"";
+            flag = false;
+        }else if(feedbackNegative === ""){
+            message += "\"Cosa non ti è piaciuto?\"";
+            flag = false;
+        }
+        if(!flag){
+            setMessageAlert(message);
+            setShowAlertErrorField(true);
+        }
+        return flag;
+    }
+
+    //Resetta stato
+	const resetState = ()=>{
+        punteggioRef.current.clear();  
+        feedbackPositiveRef.current.clear();
+        feedbackNegativeRef.current.clear();
+		setPunteggio("");
+        setFeedbackPositive("");
+        setFeedbackNegative("");
+	}
 
     return(
         <View style={styles.maincontainer}>
@@ -105,7 +142,7 @@ const InserisciRecensioneScreen = ({route, navigation}) =>{
                                 disabled={disableInsertRecButton}
                                 onPress={()=>{
 
-                                    if(!validateFormField(punteggio, feedbackNegative, feedbackPositive)){
+                                    if(!validateFormField()){
                                         return;
                                     }
 
@@ -125,21 +162,12 @@ const InserisciRecensioneScreen = ({route, navigation}) =>{
                                         await RecensioneModel.createRecensioneDocument(strutturaId, alloggioId, prenotazioneId, userId, dataRecensione, dataSoggiorno, punteggio, feedbackNegative, feedbackPositive);
                                     
                                         //Resetta i campi e stati
-                                        setPunteggio("");
-                                        setFeedbackPositive("");
-                                        setFeedbackNegative("");
-                                        punteggioRef.current.clear();  
-                                        feedbackPositiveRef.current.clear();
-                                        feedbackNegativeRef.current.clear();
+                                        resetState();
                                         setInsertRecButtonStatus(false);
 
                                         //Mostra Alert per mostrare esito positivo operazione e torna nella pagina precedente
-                                        Alert.alert("Nuova recensione", "La recensione e' stata memorizzata con successo!",
-                                        [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                                        { text: "OK", onPress: ()=> {
-                                            navigation.goBack();
-                                        }}],
-                                        { cancelable: false });
+                                        setMessageAlert("La recensione e' stata memorizzata con successo!");
+                                        setShowAlertInsert(true);
                                     }
                                     onPressAggiungiRecensione();
                             }} />
@@ -147,32 +175,41 @@ const InserisciRecensioneScreen = ({route, navigation}) =>{
                     </View>
                 </View>
             </ScrollView>
+            <CustomAlertGeneral
+                  visibility={showAlertInsert}
+                  titolo="Nuova recensione"
+                  testo= {messageAlert}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    setShowAlertInsert(false);
+					navigation.goBack();
+            }} />
+            <CustomAlertGeneral
+                  visibility={showAlertErrorField}
+                  titolo="Nuova recensione"
+                  testo= {messageAlert}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{
+					  setShowAlertErrorField(false);  
+            }} />
+            <CustomAlertGeneral
+                  visibility={showAlertBackButton}
+                  titolo="Attenzione!"
+                  testo= "Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+					setShowAlertBackButton(false);
+                  }}
+                  buttonName="Sì"
+                  onOkPress={()=>{ 
+                    //Resetta i campi
+					resetState();
+                    navigation.goBack();
+            }} />
         </View>
     );
 }
 
 export default InserisciRecensioneScreen;
-
-//funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
-function validateFormField (punteggio, feedbackPositive, feedbackNegative){
-
-	var flag = true; //tutti i campi sono compilati
-	var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
-	if(punteggio === ""){
-		message += "\"Punteggio\"";
-		flag = false;
-	}else if(feedbackPositive === ""){
-		message += "\"Cosa ti è piaciuto?\"";
-		flag = false;
-	}else if(feedbackNegative === ""){
-		message += "\"Cosa non ti è piaciuto?\"";
-		flag = false;
-	}
-	if(!flag){
-		Alert.alert("Nuova recensione", message,
-					[{ text: "Cancel", style: "cancel"},
-					{ text: "OK" }],
-					{ cancelable: false });
-	}
-	return flag;
-}
