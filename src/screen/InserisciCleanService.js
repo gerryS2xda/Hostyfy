@@ -1,83 +1,61 @@
 import React, { useState, useEffect } from 'react'
 import { View,ScrollView, StyleSheet, Alert, BackHandler} from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel"; 
 import CustomAlertGeneral from "../components/CustomAlertGeneral";
+import { TextInput } from 'react-native-paper';
+import { DefaultTheme } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     maincontainer: {
-		flex: 1,
-		backgroundColor: '#fff',
-		justifyContent: 'center',
-		alignItems: 'center'
-	},
-	bodyScrollcontainer: {
-		width: "100%",
-	},
-	scrollContent: {
-        marginLeft:32,
-        marginRight:32,
-    },
-	topContainer: {
-		width: "100%",
-    },
-    
-    twoFieldContainer: {
-		marginTop: 16, 
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-    
-    },
-
-    threeButtonContainer: {
-		marginTop: 16, 
-		flexDirection: 'row',
-		justifyContent: 'space-between',
-    },
-
-    bottomButtonContainer: {
-        marginBottom:20,
-    },
-
-    singleField: {
-        height: 40,
-        width:"100%",
-        borderColor: '#cc3881',
-        borderBottomWidth: 1.4,
-        marginTop:8,
-        fontFamily: "MontserrantSemiBold",
-        paddingLeft: 5,
-        marginTop: 16,
-    },
-
-    descrizioneField: {
-        height: 200,
-        width:"100%",
-        borderColor: '#cc3881',
-        borderBottomWidth: 1.4,
-        marginTop:8,
-        paddingBottom:160,
-        fontFamily: "MontserrantSemiBold",
-        paddingLeft: 5,
-        marginTop: 16,
-        backgroundColor: '#f5f5f2',
-    },
-
-    middleTextInput: {
-		height: 40,
-		width:"45%",
-		borderColor: '#cc3881',
-		borderBottomWidth: 1.4,
-		fontFamily: "MontserrantSemiBold",
-    	paddingLeft: 5
+        flex: 1,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        alignItems: 'center'
       },
-      carouselStyle: {
-        justifyContent:'center',
-        marginRight:50,
+      bodyScrollcontainer: {
+       
+        width: "100%",
+       
+      },
+      scrollContent: {
+        flex:1,
+        width: "90%",
+        borderWidth: 2,
+        borderColor: "#e4eded",
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 15,
+        marginTop: "20%",
+      },
+      topContainer: {
+        
+        paddingTop: "5%",
+        width: "100%",
+        paddingHorizontal: "5%",
+        justifyContent: 'center',
+      },
+    
+      bottomButtonContainer: {
+        width: "90%",
+        marginBottom: 20,
+      },
+    
+      singleField: {
+        height: 45,
+        marginBottom: "2%",
+        fontFamily: "Monsterrant",
+      },
+    
+      container:{
+        justifyContent: 'center',
+        alignItems: 'center',
+    
     },
-  });
+});
+
+const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
 
 export default InserisciCleanService = ({route, navigation}) =>{
 
@@ -86,6 +64,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
     const [ditta,setDitta] = useState("");
     const [email,setEmail] = useState("");
     const [telefono,setTelefono] = useState("");
+    const [data, setData] = useState("");
     const [disableInsertCSButton, setInsertCSButtonStatus] = useState(false); //per prevenire doppio click che comporta doppio inserimento
     const [showAlertInsert, setShowAlertInsert] = useState(false);
     const [showAlertErrorField, setShowAlertErrorField] = useState(false);
@@ -106,6 +85,9 @@ export default InserisciCleanService = ({route, navigation}) =>{
         }else if(telefono === ""){
             message += "\"Telefono\"";
             flag = false;
+        }else if(data === ""){
+            message += "\"Data assunzione\"";
+            flag = false;
         }
         if(!flag){
             setMessageAlert(message);
@@ -119,31 +101,55 @@ export default InserisciCleanService = ({route, navigation}) =>{
 		setDitta("");
         setEmail("");
         setTelefono("");
+        setData("");
 	}
     
-        return (
+    return (
             <View style={styles.maincontainer}>
                 <HeaderBar title="Nuova ditta di pulizie" navigator={navigation} />
-                <ScrollView style={styles.bodyScrollcontainer}>
+                <ScrollView 
+                    style={styles.bodyScrollcontainer}
+                    contentContainerStyle={styles.container}>
                     <View style={styles.scrollContent}> 
                         <View style={styles.topContainer}>
-                            <TextInput 
+                            <TextInput
+                                mode='outlined'
+                                label='Dittà'
                                 style={styles.singleField}
-                                placeholder='Ditta'
-                                onChangeText = {(testo) => setDitta(testo)}
                                 value={ditta}
+                                onChangeText={(testo) => setDitta(testo)}
+                                theme={theme}
+                                placeholder='Ditta'
                             />
-                            <TextInput 
+
+                            <TextInput
+                                mode='outlined'
+                                label='Email'
                                 style={styles.singleField}
-                                placeholder='Email'
-                                onChangeText = {(testo) => setEmail(testo)}
                                 value={email}
+                                onChangeText={(testo) => setEmail(testo)}
+                                theme={theme}
+                                placeholder='Email'
                             />
-                            <TextInput 
+
+                            <TextInput
+                                mode='outlined'
+                                label='Telefono'
                                 style={styles.singleField}
-                                placeholder='Telefono'
-                                onChangeText = {(testo) => setTelefono(testo)}
                                 value={telefono}
+                                onChangeText={(testo) => setTelefono(testo)}
+                                theme={theme}
+                                placeholder='Telefono'
+                            />
+
+                            <TextInput
+                                mode='outlined'
+                                label='Data Assunzione'
+                                style={styles.singleField}
+                                value={data}
+                                onChangeText={(testo) => setData(testo)}
+                                theme={theme}
+                                placeholder='Data Assunzione'
                             />
                         </View>
                         <View style={styles.bottomButtonContainer}>

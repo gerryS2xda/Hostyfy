@@ -6,6 +6,7 @@ import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel";
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const styles = StyleSheet.create({
   maincontainer: {
@@ -65,7 +66,9 @@ export default ModificaCleanService = ({ route, navigation }) => {
   const [ditta, setDitta] = useState("");
   const [email, setEmail] = useState("");
   const [telefono, setTelefono] = useState("");
-  const [IsEditable, setEditable] = useState(false);
+  const [IsEditable, setIsEditable] = useState(false);
+  const [message, setMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
   const [data, setData] = useState("");
 
 
@@ -90,7 +93,7 @@ export default ModificaCleanService = ({ route, navigation }) => {
 
   return (
     <View style={styles.maincontainer}>
-      <HeaderBar title="Inserisci ditta" navigator={navigation} />
+      <HeaderBar title="Ditta pulizie" navigator={navigation} />
       <ScrollView 
           style={styles.bodyScrollcontainer}
           contentContainerStyle={styles.container}>
@@ -145,14 +148,34 @@ export default ModificaCleanService = ({ route, navigation }) => {
             />
           </View>
           <View style={styles.bottomButtonContainer}>
-            <CustomButton styleBtn={{ marginTop: 10, width: "100%" }} nome="Aggiorna" onPress={() => {
-              CleanServiceModel.updateCleanServiceDocument(id, email, telefono, ditta, new Date(), user.userIdRef);
-              navigation.navigate('ModificaCleanService', { user: user });
-            }
+            <CustomButton 
+              styleBtn={{ marginTop: 10, width: "100%" }} 
+              nome= {IsEditable ? 'Applica' : "Modifica"}
+              onPress={() => {
+                IsEditable ? setIsEditable(false) : setIsEditable(true);
+                async function updateCleanService() {
+                  if (IsEditable) {
+                      await CleanServiceModel.updateCleanServiceDocument(id, email, telefono, ditta, new Date(), user.userIdRef);
+                      setMessage("Le modifiche sono state apportate correttamente!");
+                      setShowAlert(true);
+                  }
+                }
+                updateCleanService();
+              }
             } />
           </View>
         </View>
       </ScrollView>
+      <CustomAlertGeneral
+        visibility={showAlert}
+        titolo="Modifica ditta pulizie"
+        testo= {message}
+        hideNegativeBtn={true}
+        buttonName="Ok"
+        onOkPress={()=>{ 
+          setShowAlert(false); 
+          navigation.goBack();
+        }} />
     </View>
   )
 }
