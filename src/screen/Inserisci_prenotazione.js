@@ -92,10 +92,10 @@ const styles = StyleSheet.create({
 		fontFamily: "MontserrantSemiBold"
 	},
 
-	viewContainer:{
+	viewContainer: {
 		width: "90%",
 		marginTop: "3%",
-		flex:1,
+		flex: 1,
 		justifyContent: 'center',
 		alignItems: "center",
 		borderColor: '#e4eded',
@@ -227,46 +227,46 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 	};
 
 	//funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
-	const validateFormField= ()=> { 
+	const validateFormField = () => {
 		var flag = true; //tutti i campi sono compilati
 		var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
 		if (strutturaId === "") {
-					message += "\"Struttura\"";
+			message += "\"Struttura\"";
 			flag = false;
 		} else if (alloggioId === "") {
-					message += "\"Alloggio\"";
+			message += "\"Alloggio\"";
 			flag = false;
 		} else if (cleanServiceId === "") {
-					message += "\"Ditta di pulizia\"";
+			message += "\"Ditta di pulizia\"";
 			flag = false;
 		} else if (numTel === "" || numTel == 0) {
-					message += "\"N. telefono\"";
+			message += "\"N. telefono\"";
 			flag = false;
 		} else if (numPers === "" || numPers == 0) {
-					message += "\"N. persone\"";
+			message += "\"N. persone\"";
 			flag = false;
 		} else if (email === "") {
-					message += "\"Email dell'ospite\"";
+			message += "\"Email dell'ospite\"";
 			flag = false;
 		} else if (costo === "" || costo == 0) {
-					message += "\"Costo\"";
+			message += "\"Costo\"";
 			flag = false;
 		} else if (dateStart === "") {
-					message += "\"Data di inizio\"";
+			message += "\"Data di inizio\"";
 			flag = false;
 		} else if (dateEnd === "") {
-					message += "\"Data di fine\"";
+			message += "\"Data di fine\"";
 			flag = false;
 		}
 		if (!flag) {
 			setMessageAlert(message);
-			setShowAlertErrorField(true);  
+			setShowAlertErrorField(true);
 		}
 		return flag;
 	}
 
 	//Resetta stato
-	const resetState = ()=>{
+	const resetState = () => {
 		setDateStart("");
 		setDateEnd("");
 		setStrutturaId("");
@@ -289,7 +289,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						itemTextStyle={{ fontFamily: "MontserrantSemiBold" }}
 						selectedItemViewStyle={{ fontFamily: "MontserrantSemiBold" }}
 						borderRadius={20}
-						style={styles.dropdownStyle}
+						style={[styles.dropdownStyle, { fontFamily: "MontserrantSemiBold" }]}
 						label={"Struttura"}
 						data={struttureList}
 						enableSearch
@@ -301,6 +301,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						itemTextStyle={{ fontFamily: "MontserrantSemiBold" }}
 						selectedItemViewStyle={{ fontFamily: "MontserrantSemiBold" }}
 						mainContainerStyle={{ fontFamily: "MontserrantSemiBold" }}
+						mainContainerStyle={{ fontFamily: "MontserrantSemiBold" , color: "red"}}
 						borderRadius={10}
 						label="Alloggio"
 						style={styles.dropdownStyle}
@@ -330,7 +331,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<DatePickerInputField  //data inizio
 							styleContainer={{ borderColor: '#303a52', borderRadius: 25 }}
 							styleField={{ width: "85%" }}
-							date={(dateStart == "") ? ""  : ((new Date(dateStart)).toLocaleString("it-IT").split(':'))[0] +":"+((new Date(dateStart)).toLocaleString("it-IT").split(':'))[1]}
+							date={(dateStart == "") ? "" : ((new Date(dateStart)).toLocaleString("it-IT").split(':'))[0] + ":" + ((new Date(dateStart)).toLocaleString("it-IT").split(':'))[1]}
 							placeholder={"Data di inizio"}
 							setDate={setDateStart}
 							disabled={false}
@@ -339,7 +340,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<DatePickerInputField  //data fine 
 							styleContainer={{ borderColor: '#303a52', borderRadius: 25, marginTop: 14 }}
 							styleField={{ width: "85%" }}
-							date={(dateEnd == "") ? "" : ((new Date(dateEnd)).toLocaleString("it-IT").split(':'))[0]+":"+((new Date(dateEnd)).toLocaleString("it-IT").split(':'))[1]}
+							date={(dateEnd == "") ? "" : ((new Date(dateEnd)).toLocaleString("it-IT").split(':'))[0] + ":" + ((new Date(dateEnd)).toLocaleString("it-IT").split(':'))[1]}
 							setDate={setDateEnd}
 							placeholder={"Data di fine"}
 							disabled={false}
@@ -381,7 +382,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<CustomButton
 							nome="Inserisci"
 							disabled={disableInsertPrenButton}
-							styleBtn={{ width: "100%"}}
+							styleBtn={{ width: "100%", borderRadius: 20}}
 							onPress={() => {
 								async function carica() {
 									if (!validateFormField()) {
@@ -471,47 +472,47 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 							}
 						/>
 					</View>
-					</View>
+				</View>
 			</KeyboardAwareScrollView>
 			<CustomAlertGeneral
-                  visibility={showAlertInsert}
-                  titolo="Nuova prenotazione"
-                  testo= {messageAlert}
-                  hideNegativeBtn={true}
-                  buttonName="Ok"
-                  onOkPress={()=>{ 
+				visibility={showAlertInsert}
+				titolo="Nuova prenotazione"
+				testo={messageAlert}
+				hideNegativeBtn={true}
+				buttonName="Ok"
+				onOkPress={() => {
 					setShowAlertInsert(false);
 					navigation.reset({
 						index: 0,
-						routes: [{ name: 'HomeHost',  params: { userId: user.userIdRef }}],
+						routes: [{ name: 'HomeHost', params: { userId: user.userIdRef } }],
 					}); //resetta lo stack quando si ritorna nella Home
-                  }} />
-            <CustomAlertGeneral
-                  visibility={showAlertErrorField}
-                  titolo="Nuova prenotazione"
-                  testo= {messageAlert}
-                  hideNegativeBtn={true}
-                  buttonName="Ok"
-                  onOkPress={()=>{
-					  setShowAlertErrorField(false);  
-                  }} />
+				}} />
 			<CustomAlertGeneral
-                  visibility={showAlertBackButton}
-                  titolo="Attenzione!"
-                  testo= "Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
-                  annullaBtnName="Annulla"
-                  onAnnullaBtn={()=>{
+				visibility={showAlertErrorField}
+				titolo="Nuova prenotazione"
+				testo={messageAlert}
+				hideNegativeBtn={true}
+				buttonName="Ok"
+				onOkPress={() => {
+					setShowAlertErrorField(false);
+				}} />
+			<CustomAlertGeneral
+				visibility={showAlertBackButton}
+				titolo="Attenzione!"
+				testo="Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
+				annullaBtnName="Annulla"
+				onAnnullaBtn={() => {
 					setShowAlertBackButton(false);
-                  }}
-                  buttonName="Sì"
-                  onOkPress={()=>{ 
-                    //Resetta i campi
+				}}
+				buttonName="Sì"
+				onOkPress={() => {
+					//Resetta i campi
 					resetState();
-                    navigation.reset({
+					navigation.reset({
 						index: 0,
-						routes: [{ name: 'HomeHost',  params: { userId: user.userIdRef }}],
+						routes: [{ name: 'HomeHost', params: { userId: user.userIdRef } }],
 					}); //resetta lo stack quando si ritorna nella Home
-                  }} />
+				}} />
 		</View>
 	);
 }
