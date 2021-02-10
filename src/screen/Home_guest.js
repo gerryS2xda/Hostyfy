@@ -50,21 +50,20 @@ const styles = StyleSheet.create({
     //backgroundColor: "#034000",
     paddingTop: "2%",
     paddingBottom: "4%"
-    
+
   },
 
-  topcontainer:{
-    flex:1,
+  topcontainer: {
+    flex: 1,
     justifyContent: 'flex-end',
     //marginBottom: "5%",
     //backgroundColor: "#000000"
   },
 
-  image:{
-    marginLeft: "7%",
-    width: "80%",
+  image: {
+    width: "90%",
     height: "40%",
-
+    marginLeft: "4%"
   },
 })
 
@@ -76,7 +75,7 @@ const HomeGuest = ({ route, navigation }) => {
   const [showAlertCheckOut, setAlertCheckOutVisibility] = useState(false);
   const isFocused = useIsFocused();
 
-  
+
   useFocusEffect(
     useCallback(() => {
       // Do something when the screen is focused
@@ -92,54 +91,56 @@ const HomeGuest = ({ route, navigation }) => {
         }
       }
       //Verifica se vi sono prenotazioni in scadenza (un'ora associato a data fine), mostra un Alert e crea notifica
-      async function verifyCheckOut(){
+      async function verifyCheckOut() {
         //Ottieni le prenotazioni in scandenza di quell'ospite
         var dataOdierna = new Date();
         var prenotazioniDocs = await PrenotazioneModel.getPrenotazioniForCheckOut(userId, dataOdierna);
-        for(const pren of prenotazioniDocs){
+        for (const pren of prenotazioniDocs) {
           var prenotazione = pren.data();
           var dataFinepren = prenotazione.dataFine.toDate(); //Convert timestamp JS in Date object
-          var oraAttuale = dataOdierna.getHours(); 
-          var oraFinePren = dataFinepren.getHours();  
-          
-          if(dataOdierna.toLocaleDateString() !== dataFinepren.toLocaleDateString()) //considera solo le prenotazioni della data odierna
+          var oraAttuale = dataOdierna.getHours();
+          var oraFinePren = dataFinepren.getHours();
+
+          if (dataOdierna.toLocaleDateString() !== dataFinepren.toLocaleDateString()) //considera solo le prenotazioni della data odierna
             continue;
-          
+
           //Verifica che se la prenotazione è terminata => rimuovi le notifiche associate a questo check-out
-          if(oraAttuale > oraFinePren){ //significa che il checkout è stato eseguito automaticamente
+          if (oraAttuale > oraFinePren) { //significa che il checkout è stato eseguito automaticamente
             var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
-            for(const noti of notificationDocs){
-              if(noti.data().prenId === pren.id)
+            for (const noti of notificationDocs) {
+              if (noti.data().prenId === pren.id) {
+                await PrenotazioneModel.updateCheckOutStatusPrenotazione(pren.id, true);
                 await NotificationModel.deleteNotificationDocument(noti.id);
+              }
             }
           }
 
-          if(prenotazione.doneCheckOut) //verifica se il checkout di quella prenotazione è stato già eseguito
+          if (prenotazione.doneCheckOut) //verifica se il checkout di quella prenotazione è stato già eseguito
             continue;
 
           //A partire dalla prenotazione trovata, ottieni i dati dell'alloggio 
           var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
 
           //Verifica se la prenotazione e' in scadenza (un'ora prima)
-          if((oraAttuale+1) == oraFinePren){ //se manca un'ora alla fine della prenotazione
-            
+          if ((oraAttuale + 1) == oraFinePren) { //se manca un'ora alla fine della prenotazione
+
             //Crea notifica per checkout, prima verifica che non sia stata già creata
             var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
-            if(notificationDocs.length == 0){ //se non vi sono notifiche
-              await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio+"\"", 
-              "Alle ore " + oraFinePren + " della data odierna sarà eseguito il check-out di questo alloggio.", userId, pren.id, dataFinepren);
-            }else{
-              for(const noti of notificationDocs){
+            if (notificationDocs.length == 0) { //se non vi sono notifiche
+              await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio + "\"",
+                "Alle ore " + oraFinePren + " della data odierna sarà eseguito il check-out di questo alloggio.", userId, pren.id, dataFinepren);
+            } else {
+              for (const noti of notificationDocs) {
                 var notifica = noti.data();
-                if(notifica.prenId !== pren.id){ //non è presente una notifica associata alla prenotazione in scadenza -> aggiungila
-                  await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio+"\"", 
+                if (notifica.prenId !== pren.id) { //non è presente una notifica associata alla prenotazione in scadenza -> aggiungila
+                  await NotificationModel.createNotificationDocument("checkout", dataOdierna, "Check-out \"" + alloggioDoc.nomeAlloggio + "\"",
                     "Alle ore " + oraFinePren + " della data odierna sarà eseguito il check-out di questo alloggio.", userId, pren.id, dataFinepren);
                 }
               }
             }
 
             //mostra Alert e salva check-out info
-            setCheckOutInfo({prenId: pren.id, ora: oraFinePren, alloggioName: alloggioDoc.nomeAlloggio});
+            setCheckOutInfo({ prenId: pren.id, ora: oraFinePren, alloggioName: alloggioDoc.nomeAlloggio });
             setAlertCheckOutVisibility(true);
           }
         }
@@ -157,47 +158,47 @@ const HomeGuest = ({ route, navigation }) => {
     <View style={styles.maincontainer}>
       <HeaderBar title="Home" navigator={navigation} />
       <View style={styles.container}>
-          <View style = {styles.topcontainer}>
-          <Image 
-              source = {require("../../assets/Varie/Homepage.jpg")}
-              style = {styles.image}/>
-            <View style={styles.firstContainer}>
-              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"pencil"} nome='Modifica Profilo' onPress={() => navigation.navigate("ModificaProfilo", { user: user })} />
-              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"briefcase"} nome='Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni", { user: user, isHost: false })} />
-            </View>
+        <View style={styles.topcontainer}>
+          <Image
+            source={require("../../assets/Varie/Homepage.jpg")}
+            style={styles.image} />
+          <View style={styles.firstContainer}>
+            <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"pencil"} nome='Modifica Profilo' onPress={() => navigation.navigate("ModificaProfilo", { user: user })} />
+            <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"briefcase"} nome='Prenotazioni' onPress={() => navigation.navigate("VisualizzaPrenotazioni", { user: user, isHost: false })} />
+          </View>
 
-            <View style={styles.secondContainer}>
-              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} nome='Recensioni' onPress={()=>navigation.navigate("RecensioniGuestScreen", {user: user})} />
-              <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"logout"}nome="Logout" onPress={() => {
-                firebase.auth().signOut().then(function () {
-                  navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Home' }],
-                  }); // Sign-out successful.
-                }).catch(function (error) { // An error happened.
-                  console.log("Error Sign-out in HomeGuest.js: " + error);
-                });
-              }} />
-            </View>
-            </View>
-            <CustomAlertGeneral
-              visibility={showAlertCheckOut}
-              titolo="Check-out"
-              testo= {"Alle ore " + checkOut.ora + " della data odierna sarà eseguito il check-out per l'alloggio \""+ checkOut.alloggioName + 
-                  "\"! Si invita l'ospite a procede con il check-out!"}
-              hideNegativeBtn={true}
-              buttonName="Ok"
-              onOkPress={()=>{ 
-                  async function hideAlertCheckOut(){
-                    //Setta doneCheckout flag a true in prenotazione per indicare che l'utente ha letto l'alert di checkOut
-                    await PrenotazioneModel.updateCheckOutStatusPrenotazione(checkOut.prenId, true);
-                    setAlertCheckOutVisibility(false);   
-                  }
-                  hideAlertCheckOut(); 
-              }} />
+          <View style={styles.secondContainer}>
+            <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"emoticon-happy-outline"} nome='Recensioni' onPress={() => navigation.navigate("RecensioniGuestScreen", { user: user })} />
+            <ButtonMenu styleBtn={{ width: "47%", height: "100%" }} nameIcon={"logout"} nome="Logout" onPress={() => {
+              firebase.auth().signOut().then(function () {
+                navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Home' }],
+                }); // Sign-out successful.
+              }).catch(function (error) { // An error happened.
+                console.log("Error Sign-out in HomeGuest.js: " + error);
+              });
+            }} />
+          </View>
+        </View>
+        <CustomAlertGeneral
+          visibility={showAlertCheckOut}
+          titolo="Check-out"
+          testo={"Alle ore " + checkOut.ora + " della data odierna sarà eseguito il check-out per l'alloggio \"" + checkOut.alloggioName +
+            "\"! Si invita l'ospite a procede con il check-out!"}
+          hideNegativeBtn={true}
+          buttonName="Ok"
+          onOkPress={() => {
+            async function hideAlertCheckOut() {
+              //Setta doneCheckout flag a true in prenotazione per indicare che l'utente ha letto l'alert di checkOut
+              await PrenotazioneModel.updateCheckOutStatusPrenotazione(checkOut.prenId, true);
+              setAlertCheckOutVisibility(false);
+            }
+            hideAlertCheckOut();
+          }} />
       </View>
     </View>
-    
+
   );
 }
 
