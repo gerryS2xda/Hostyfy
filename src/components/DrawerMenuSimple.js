@@ -34,7 +34,7 @@ import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
 import VisualizzaCleanServices from "../screen/VisualizzaCleanServices"
 import InserisciCleanService from "../screen/InserisciCleanService"
-import CleanService from "../screen/CleanService"
+import ModificaCleanService from "../screen/ModificaCleanService"
 import RecensioniHostScreen from "../screen/RecensioniHostScreen"
 import RecensioniGuestScreen from "../screen/RecensioniGuestScreen"
 import RecensioneScreen from "../screen/RecensioneScreen"
@@ -106,7 +106,7 @@ const DrawerMenuSimple = ({navigation}) =>{
             <Drawer.Screen name="InserisciRecensione" component={InserisciRecensioneScreen} options={{title: 'Recensione', swipeEnabled: false}} />
             <Drawer.Screen name="VisualizzaCleanServices" component={VisualizzaCleanServices} options={{title: 'Clean Services', swipeEnabled: false}} />
             <Drawer.Screen name="InserisciCleanService" component={InserisciCleanService} options={{title: 'Inserisci Clean Service', swipeEnabled: false}} />
-            <Drawer.Screen name="CleanService" component={CleanService} options={{title: 'Clean Service', swipeEnabled: false}} />
+            <Drawer.Screen name="ModificaCleanService" component={ModificaCleanService} options={{title: 'Clean Service', swipeEnabled: false}} />
             <Drawer.Screen name="RecensioniHostScreen" component={RecensioniHostScreen} options={{title: 'Recensioni', swipeEnabled: false}} />
             <Drawer.Screen name="RecensioniGuestScreen" component={RecensioniGuestScreen} options={{title: 'Le mie recensioni', swipeEnabled: false}} />
             <Drawer.Screen name="RecensioneScreen" component={RecensioneScreen} options={{title: 'Recensioni', swipeEnabled: false}} />
