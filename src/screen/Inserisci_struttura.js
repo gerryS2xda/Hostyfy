@@ -290,7 +290,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                             <View style={{ flex: 1, backgroundColor: "#000000aa", justifyContent: "center", alignItems: "center" }}>
                                 <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
                                     <Text style={styles.progressHeader}>Loading...</Text>
-                                    <ActivityIndicator size="large" color="#f35588" />
+                                    <ActivityIndicator size="large" color="#0692d4" />
                                 </View>
                             </View>
                         </Modal>

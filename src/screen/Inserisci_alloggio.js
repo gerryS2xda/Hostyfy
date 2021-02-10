@@ -278,7 +278,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                             <View style={{ flex: 1, backgroundColor: "#000000aa", justifyContent: "center", alignItems: "center" }}>
                                 <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
                                     <Text style={styles.progressHeader}>Loading...</Text>
-                                    <ActivityIndicator size="large" color="#f35588" />
+                                    <ActivityIndicator size="large" color="#0692d4" />
                                 </View>
                             </View>
                         </Modal>
@@ -525,8 +525,8 @@ export default class InserisciAlloggioScreen extends React.Component {
         
 
         //Caricamento del video di benvenuto
-        var photoVideo = "struttura/"+strutturaId+"/alloggi/" + reference.state.nomeAlloggio + "/video/welcomevideo";
-        let downloadVideoURL = await this.uploadMediaAndGetDownloadURL(reference.state.pathvideo, photoVideo);
+        var pathVideo = "struttura/"+strutturaId+"/alloggi/" + reference.state.nomeAlloggio + "/video/welcomevideo";
+        let downloadVideoURL = await this.uploadMediaAndGetDownloadURL(reference.state.pathvideo, pathVideo);
         console.log("downloadVideo")
         if(downloadVideoURL === ""){
             this.setState({messageError: "Si è verificato un problema durante il caricamento del video. Si prega di riprovare o controllare lo stato della connessione.", 
