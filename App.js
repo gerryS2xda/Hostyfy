@@ -69,7 +69,7 @@ import ImagePickerMultipleAlloggio from "./src/components/ImagePickerMultipleAll
 import InserisciRecensioneScreen from "./src/screen/InserisciRecensioneScreen"
 import VisualizzaCleanServices from "./src/screen/VisualizzaCleanServices"
 import InserisciCleanService from "./src/screen/InserisciCleanService"
-import CleanService from "./src/screen/CleanService"
+import ModificaCleanService from "./src/screen/ModificaCleanService"
 import RecensioniHostScreen from "./src/screen/RecensioniHostScreen"
 import RecensioniGuestScreen from "./src/screen/RecensioniGuestScreen"
 import RecensioneScreen from "./src/screen/RecensioneScreen"
@@ -264,9 +264,9 @@ const App = () => {
             options={{ title: "InserisciCleanService", headerShown: true }}
           />
           <Stack.Screen
-            name="CleanService"
-            component={CleanService}
-            options={{ title: "CleanService", headerShown: true }}
+            name="ModificaCleanService"
+            component={ModificaCleanService}
+            options={{ title: "ModificaCleanService", headerShown: true }}
           />
           <Stack.Screen
             name="RecensioniHostScreen"
