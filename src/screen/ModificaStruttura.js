@@ -8,6 +8,9 @@ import Slideshow from 'react-native-image-slider-show';
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
 import CustomAlertGeneral from "../components/CustomAlertGeneral"
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as ImagePicker from 'expo-image-picker';
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -179,6 +182,25 @@ const styles = StyleSheet.create({
 
     secondScroll: {
         width: Dimensions.get('window').width,
+    },
+    iconContainer:
+    {
+        width: "80%",
+        marginTop: "5%",
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        alignItems: "center",
+        //backgroundColor: "#000"
+    },
+    iconButton: {
+        width: "100%",
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    textIcon: {
+        fontFamily: "MontserrantSemiBold"
+
     }
 
 });
@@ -205,9 +227,9 @@ const ModificaStruttura = ({ route, navigation }) => {
     const [descrizione, setDescrizione] = useState("");
     const [showAlertDelete, setShowAlertDelete] = useState(false);
     const [showAlertNoFeature, setShowAlertNoFeature] = useState(false);
+    const [message, setMessage] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
     const scrollRef = useRef();
-
-
 
     //Caricamento dei dati non appena inizia il rendering dell'applicazione
     useFocusEffect(
@@ -397,23 +419,28 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     theme={theme} />
 
                             </View>
-
-                        </View>
-                        <View style={styles.ButtonContainer}>
-                                <CustomButton
-                                    styleBtn={{ width: "90%", marginRight: "4%" }}
-                                    nome={"Elimina"}
-                                    onPress={() =>{
+                            <View style={styles.iconContainer}>
+                                <TouchableOpacity
+                                    style={styles.iconButton}
+                                    disabled={!IsEditable}
+                                    onPress={()=>{
                                         setShowAlertDelete(true);
-                                    }} />
+                                }} >
+                                    <Icon name={"delete-outline"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                    <Text style={styles.textIcon} > Elimina struttura </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.iconButton}
+                                    disabled={!IsEditable}
+                                    onPress={()=>{
+                                        setShowAlertNoFeature(true)
+                                    } }>
+                                        <Icon name={"book-plus"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                        <Text style={styles.textIcon} > Modifica guida </Text>
+                                </TouchableOpacity>
                             </View>
+                        </View>
                         <View style={styles.guidaView}>
-                            <View style={styles.ButtonContainer}>
-                                <CustomButton
-                                    styleBtn={{ width: "100%", marginRight: "15%" }}
-                                    nome={"Modifica Guida"}
-                                    onPress={() =>{setShowAlertNoFeature(true)}} />
-                            </View>
                             <View style={styles.ButtonContainer}>
                                 <CustomButton
                                     styleBtn={{ width: "100%" }}
@@ -424,6 +451,8 @@ const ModificaStruttura = ({ route, navigation }) => {
                                             if (IsEditable) {
                                                 var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
                                                 await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
+                                                setMessage("Le modifiche sono state apportate correttamente!");
+                                                setShowAlert(true);
                                             }
                                         }
                                         updateStruttura();
@@ -459,6 +488,16 @@ const ModificaStruttura = ({ route, navigation }) => {
                 buttonName="Ok"
                 onOkPress={()=>{ 
                     setShowAlertNoFeature(false);  
+                  }} />
+            <CustomAlertGeneral
+                  visibility={showAlert}
+                  titolo="Modifica struttura"
+                  testo= {message}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    setShowAlert(false); 
+                    navigation.navigate("LeMieStrutture", {user: user});
                   }} />
         </View>
     );

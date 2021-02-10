@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Text, View, Image, ScrollView, Alert, StyleSheet, Dimensions } from 'react-native';
+import { Text, View, Image, ScrollView, Alert, StyleSheet, Dimensions, Modal, ActivityIndicator } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import {firebase} from "../firebase/config"
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
@@ -8,6 +9,12 @@ import { DefaultTheme } from '@react-navigation/native';
 import Slideshow from 'react-native-image-slider-show';
 import { TextInput } from 'react-native-paper';
 import CustomAlertGeneral from "../components/CustomAlertGeneral"
+import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as ImagePicker from 'expo-image-picker';
+
+//Firebase
+var storageRef = firebase.storage().ref(); // create a storage reference from our storage service
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -179,6 +186,25 @@ const styles = StyleSheet.create({
 
     secondScroll: {
         width: Dimensions.get('window').width,
+    },
+    iconContainer:
+    {
+        width: "80%",
+        marginTop: "5%",
+        flexDirection: 'row',
+        justifyContent: "space-between",
+        alignItems: "center",
+        //backgroundColor: "#000"
+    },
+    iconButton: {
+        width: "100%",
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    },
+    textIcon: {
+        fontFamily: "MontserrantSemiBold"
+
     }
 });
 
@@ -197,8 +223,14 @@ const ModificaAlloggio = ({ route, navigation }) => {
     const [numMaxPersone, setNumMaxPersone] = useState("");
     const [piano, setPiano] = useState("");
     const [descrizione, setDescrizione] = useState("");
+    const [pathVideoURI, setPathVideoURI] = useState("");
     const [showAlertNoFeature, setShowAlertNoFeature] = useState(false);
+    const [message, setMessage] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+    const [modalUploadVisibility, setModalUploadVisibility] = useState(false);
     const scrollRef = useRef();
+
+
     //Caricamento dei dati non appena inizia il rendering dell'applicazione
     useFocusEffect(
         useCallback(() => {
@@ -239,10 +271,51 @@ const ModificaAlloggio = ({ route, navigation }) => {
         }, [isFocused])
     );
 
+    //funzione per caricare video di benvenuto per l'alloggio
+    const selectWelcomeVideoToUpload = async () =>{
+        //verifica se sono stati concessi i permessi per accedere alla galleria
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+            setMessage("Sono necessari i permessi di accesso alla fotocamera e galleria per poter inserire contenuti multimediali!");
+            setShowAlert(true);
+            return;
+        }
+
+        //Seleziona il video da caricare
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Videos, //accetta solo video
+            allowsEditing: false,
+            allowsMultipleSelection: false, //funziona solo su web
+            aspect: [4, 3],
+            quality: 1,
+        });
+      
+        if (result.cancelled) {
+            setMessage("Si è verificato un problema durante il caricamento del video. Riprova di nuovo.");
+            setShowAlert(true);
+        }else{
+            setPathVideoURI(result.uri); //verrà rimpiazzato con il download link quando verranno rese effettive le modifiche
+        }
+    }
+
 
 
     return (
         <View style={styles.maincontainer}>
+            {
+                modalUploadVisibility && (
+                    <Modal
+                        transparent={true}
+                        visible={modalUploadVisibility}>
+                        <View style={{ flex: 1, backgroundColor: "#000000aa", justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
+                                <Text style={styles.progressHeader}>Loading...</Text>
+                                <ActivityIndicator size="large" color="#0692d4" />
+                            </View>
+                        </View>
+                    </Modal>
+                )
+            }
             <HeaderBar title={"Modifica alloggio"} navigator={navigation} />
             <ScrollView
                 style={styles.bodyScrollcontainer}
@@ -316,17 +389,29 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     theme={theme} />
 
                             </View>
-
-                        </View>
-                        <View style={styles.guidaView}>
-                            <View style={styles.ButtonContainer}>
-                                <CustomButton
-                                    styleBtn={{width: "100%", marginRight: "15%"}} 
-                                    nome={"Elimina"}
-                                    onPress={() =>{
+                            <View style={styles.iconContainer}>
+                                <TouchableOpacity
+                                    style={styles.iconButton}
+                                    disabled={!IsEditable}
+                                    onPress={()=>{
                                         setShowAlertDelete(true);
-                                    }}  />
+                                    }}>
+                                        <Icon name={"delete-outline"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                        <Text style={styles.textIcon} > Elimina alloggio </Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    style={styles.iconButton}
+                                    disabled={!IsEditable}
+                                    onPress={()=>{
+                                        selectWelcomeVideoToUpload();
+                                    } }>
+                                        <Icon name={"video-plus"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                        <Text style={styles.textIcon} > Modifica video </Text>
+                                </TouchableOpacity>
                             </View>
+                        </View>
+                        
+                        <View style={styles.guidaView}>
                             <View style={styles.ButtonContainer}>
                                 <CustomButton
                                     styleBtn={{width: "100%"}} 
@@ -335,7 +420,23 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                         IsEditable ? setIsEditable(false) : setIsEditable(true);
                                         async function updateAlloggio(){
                                             if(IsEditable){
-                                                await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, "");
+                                                if(!modalUploadVisibility){
+                                                    setModalUploadVisibility(true);
+                                                }
+                                                
+                                                await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione);
+
+                                                var videoURL = "";
+                                                if(pathVideoURI !== ""){
+                                                    var pathVideo = "struttura/"+strutturaId+"/alloggi/" + nomeAlloggio + "/video/welcomevideo";
+                                                    videoURL = await uploadMediaAndGetDownloadURL(pathVideoURI, pathVideo);
+                                                    await AlloggioModel.updateVideoField(strutturaId, alloggioId, videoURL);
+                                                }
+                                                if(!modalUploadVisibility){
+                                                    setModalUploadVisibility(false);
+                                                }
+                                                setMessage("Le modifiche sono state apportate correttamente!");
+                                                setShowAlert(true);
                                             } 
                                         }
                                         updateAlloggio();
@@ -372,9 +473,66 @@ const ModificaAlloggio = ({ route, navigation }) => {
                 onOkPress={()=>{ 
                     setShowAlertNoFeature(false);  
                   }} />
+            <CustomAlertGeneral
+                  visibility={showAlert}
+                  titolo="Modifica alloggio"
+                  testo= {message}
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                    setShowAlert(false); 
+                    navigation.navigate("VisualizzaAlloggi", { user: user, strutturaId: strutturaId });
+                  }} />
         </View>
     );
 
 }
 
 export default ModificaAlloggio;
+
+//Function for upload a multimedia content and obtain a download URL
+async function uploadMediaAndGetDownloadURL(uri, pathMedia){
+    var downloadURL = "";
+    const response = await fetch(uri);
+    const blob = await response.blob(); 
+    var ref = storageRef.child(pathMedia);
+
+    // Upload file and metadata to the object
+    var uploadTask= ref.put(blob);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        (snapshot)=> {
+            switch (snapshot.state) {
+                case firebase.storage.TaskState.RUNNING: // or 'paused'
+                    break;
+                case firebase.storage.TaskState.SUCCESS: 
+                    break;
+                case firebase.storage.TaskState.ERROR: 
+                console.log("Si è verificato un problema durante il caricamento dell'immagine o video. Si prega di riprovare o controllare lo stato della connessione.");
+                break;
+            }
+        }, (error)=> {
+        switch (error.code) {
+        case 'storage/unauthorized': 
+            console.log("User doesn't have permission to access the object");
+            break;
+        case 'storage/canceled':
+            console.log("User canceled the upload");
+            break;
+        case 'storage/unknown':
+            console.log("Unknown error occurred, inspect error.serverResponse");
+            break;
+        }
+    });
+
+    try {
+        await uploadTask;  //attendi completamento di upload Task
+        // Upload completed successfully, now we can get the download URL
+        downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+        console.log('File available at', downloadURL);
+      } catch (e) {
+        console.log("UploadImageError: " + e);
+    }
+    return downloadURL; 
+}

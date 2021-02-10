@@ -57,7 +57,7 @@ export async function createDispositiviDomoticiDocument(structId, alloggioId, no
 }
 
 //Update functions
-export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione, pathvideo){
+export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione){
     // Add a new document in collection "alloggio" con set(), se non e' presente, crea il documento
     var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
     return await alloggioCollectionRef.doc(alloggioId).update({
@@ -66,7 +66,6 @@ export async function updateAlloggioDocument(structId, alloggioId, nomeAlloggio,
         numMaxPersone: numMaxPersone,
         piano: piano,
         descrizione: descrizione,
-        pathvideo: pathvideo
     })
     .then(function() {
         console.log("Alloggio document successfully update!");
@@ -118,6 +117,19 @@ export async function updateFotoField(structId, alloggioId, fotoObj){
     })
     .catch(function(error) {
         console.error("Error writing foto document in \"alloggi/alloggio" + alloggioId + " : ", error);
+    });
+}
+
+export async function updateVideoField(structId, alloggioId, pathVideo){
+    var alloggioCollectionRef = db.collection("struttura/"+structId+"/alloggi");
+    return await alloggioCollectionRef.doc(alloggioId).update({
+        pathvideo: pathVideo,
+    })
+    .then(function() {
+        console.log("Video field document in \"alloggi/alloggio" + alloggioId + " successfully update!");
+    })
+    .catch(function(error) {
+        console.error("Error writing video field document in \"alloggi/alloggio" + alloggioId + " : ", error);
     });
 }
 
