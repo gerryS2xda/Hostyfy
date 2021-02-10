@@ -362,7 +362,7 @@ const Modifica_profilo = ({ route, navigation }) => {
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginLeft: "15%" }}
-                  nome={"Credenziali"}
+                  nome={"Avanti"}
                   onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) }) }} />
               </View>
             </View>
@@ -437,13 +437,13 @@ const Modifica_profilo = ({ route, navigation }) => {
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginRight: "15%" }}
-                  nome={"Anagrafica"}
+                  nome={"Indietro"}
                   onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
               </View>
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginLeft: "15%" }}
-                  nome={"Residenza"}
+                  nome={"Avanti"}
                   onPress={
                     () => {
                       scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 2 });
@@ -517,13 +517,13 @@ const Modifica_profilo = ({ route, navigation }) => {
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginRight: "15%" }}
-                  nome={"Credenziali"}
+                  nome={"Indietro"}
                   onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) }) }} />
               </View>
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginLeft: "15%" }}
-                  nome={"Pagamenti"}
+                  nome={"Avanti"}
                   onPress={() => { scrollRef.current.scrollTo({ x: (Dimensions.get('window').width) * 4 }) }} />
               </View>
             </View>
@@ -585,7 +585,7 @@ const Modifica_profilo = ({ route, navigation }) => {
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginLeft: "15%", marginRight: "10%" }}
-                  nome={"Torna indietro"}
+                  nome={"Torna all'inizio"}
                   onPress={() => { scrollRef.current.scrollTo({ x: 0 }) }} />
               </View>
             </View>

@@ -144,7 +144,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                   />
                 <View style={styles.buttonContainer}>
                   <CustomButton
-                      styleBtn={{width: "90%"}} 
+                      styleBtn={{width: "90%", borderRadius: 20}} 
                       nome="Storico prenotazioni" 
                       onPress={() => {
                           navigation.navigate("StoricoPrenotazioni", {user:user,isHost:isHost});

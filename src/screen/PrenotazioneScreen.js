@@ -97,7 +97,7 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                     }
                     {!isHost && showRecensioniBtn && (
                         <View style={styles.buttonContainer}>
-                            <CustomButton nome="Aggiungi recensione" styleBtn={{ width: "100%" }} onPress={() => {
+                            <CustomButton nome="Aggiungi recensione" styleBtn={{ width: "100%", borderRadius: 20}} onPress={() => {
                                 var prenotazioneObj = { id: prenotazioneId, ...prenotazione };
                                 navigation.navigate('InserisciRecensione', { userId: user.userId, prenotazione: prenotazioneObj });
                             }} />
@@ -116,7 +116,7 @@ function ButtonContainer(props) {
         if (!props.checkIn) {
             return (
                 <View style={styles.buttonContainer}>
-                    <CustomButton nome="Check-In" styleBtn={{ width: "100%" }} onPress={() => {
+                    <CustomButton nome="Check-In" styleBtn={{ width: "100%", borderRadius: 20 }} onPress={() => {
                         props.navigator.navigate('EffettuaCheckIn', { user: props.user, strutturaId: props.prenotazione.strutturaRef, alloggioId: props.prenotazione.alloggioRef, numPersone: props.prenotazione.numPersone, prenotazioneId: props.id, prenotazione: props.prenotazione, image_url: props.image_url });
                     }} />
                 </View>

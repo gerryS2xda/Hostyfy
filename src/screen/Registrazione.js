@@ -189,7 +189,7 @@ const Registrazione = (props) => {
               <View style={styles.buttonCustomizzato}>
                 <CustomButton
                   nome="Registrati"
-                  styleBtn={{ width: "85%" }}
+                  styleBtn={{ width: "85%", borderRadius: 20}}
                   onPress={() => {
                     if (password === confermaPassword) {
                       firebase.auth().createUserWithEmailAndPassword(email, confermaPassword).then(async (user) => {
