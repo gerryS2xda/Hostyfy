@@ -121,7 +121,7 @@ const RecensioneScreen = ({ route, navigation }) => {
 
                 //Attendi finche' non ottieni dati di una recensione
                 var recensione = await RecensioneModel.getRecensioneById(strutturaId, alloggioId, recensioneId);
-                recensione.dataRecensione = new Date(recensione.dataRecensione.seconds * 1000).toDateString();
+                recensione.dataRecensione = ((new Date(recensione.dataRecensione.seconds * 1000)).toLocaleString("it-IT").split(','))[0];
                 setRecensione(recensione); //salva i dati della recensione nello stato
 
                 //Attendi finche' non ottieni dati dell'utente che ha scritto la recensione
@@ -149,8 +149,7 @@ const RecensioneScreen = ({ route, navigation }) => {
 
                     <View style={styles.infoSoggiornoContainer}>
                         <Text style={styles.infoSoggiornotxt}>Data recensione: {recensione.dataRecensione}</Text>
-                        <Text style={styles.infoSoggiornotxt}>Ha soggiornato nel mese di {recensione.dataSoggiorno}</Text>
-                        <Text style={styles.infoSoggiornotxt}>Recensitore: {ospite.nome} {ospite.cognome}</Text>
+                        <Text style={styles.infoSoggiornotxt}>Recensione scritta da: {ospite.nome} {ospite.cognome}</Text>
                     </View>
 
                     <Text style={styles.punteggiotxt}>Punteggio giudizio: {recensione.punteggio}</Text>

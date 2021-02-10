@@ -12,6 +12,7 @@ import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel";
 import { Dropdown } from 'sharingan-rn-modal-dropdown';
 import { DefaultTheme } from '@react-navigation/native';
 import CustomAlertGeneral from "../components/CustomAlertGeneral";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 //npm install react-native-picker-select per la combo box
 
@@ -277,7 +278,8 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 	return (
 		<View style={styles.maincontainer}>
 			<HeaderBar title="Nuova prenotazione" navigator={navigation} />
-			<ScrollView
+			<KeyboardAwareScrollView
+				resetScrollToCoords={{ x: 0, y: 0 }}
 				style={styles.bodyScrollcontainer}
 				contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
 
@@ -328,7 +330,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<DatePickerInputField  //data inizio
 							styleContainer={{ borderColor: '#303a52', borderRadius: 25 }}
 							styleField={{ width: "85%" }}
-							date={(dateStart == "") ? ""  : (new Date(dateStart)).toLocaleString("it-IT")}
+							date={(dateStart == "") ? ""  : ((new Date(dateStart)).toLocaleString("it-IT").split(':'))[0] +":"+((new Date(dateStart)).toLocaleString("it-IT").split(':'))[1]}
 							placeholder={"Data di inizio"}
 							setDate={setDateStart}
 							disabled={false}
@@ -337,7 +339,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						<DatePickerInputField  //data fine 
 							styleContainer={{ borderColor: '#303a52', borderRadius: 25, marginTop: 14 }}
 							styleField={{ width: "85%" }}
-							date={(dateEnd == "") ? "" : (new Date(dateEnd)).toLocaleString("it-IT")}
+							date={(dateEnd == "") ? "" : ((new Date(dateEnd)).toLocaleString("it-IT").split(':'))[0]+":"+((new Date(dateEnd)).toLocaleString("it-IT").split(':'))[1]}
 							setDate={setDateEnd}
 							placeholder={"Data di fine"}
 							disabled={false}
@@ -470,7 +472,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 						/>
 					</View>
 					</View>
-			</ScrollView>
+			</KeyboardAwareScrollView>
 			<CustomAlertGeneral
                   visibility={showAlertInsert}
                   titolo="Nuova prenotazione"
