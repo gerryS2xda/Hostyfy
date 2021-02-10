@@ -199,7 +199,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
                   onOkPress={()=>{ 
                     //Resetta i campi
                     resetState();
-                    navigation.navigate('CleanService', {user: user, id: id});
+                    navigation.navigate('ModificaCleanService', {user: user, id: id});
                   }} />
             </View>
         )

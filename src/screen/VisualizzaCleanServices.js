@@ -26,7 +26,7 @@ const VisualizzaCleanServices = ({route, navigation}) => {
                     var oggetto = {
                         key: count, 
                         title: doc.data().ditta,
-                        newPage: 'CleanService',
+                        newPage: 'ModificaCleanService',
                         cleanServiceId: doc.id,
                     }
                     itemList.push(oggetto)              
