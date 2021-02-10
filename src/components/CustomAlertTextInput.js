@@ -45,6 +45,7 @@ const CustomAlertTextInput = (props) => {
                             ref={textInputSecondRef}
                             placeholder={props.placeholderSecondInput}
                             onChangeText={(text) => props.setSecondTextData(text)}
+                            secureTextEntry={true}
                         />
                         </View>
                     )}
@@ -107,7 +108,7 @@ const styles = StyleSheet.create({
     {
         fontSize: 18,
         fontFamily: 'MontserrantBold',
-        color: "#000000"
+        color: "#303a52"
     },
 
     testo:
@@ -132,14 +133,15 @@ const styles = StyleSheet.create({
     },
     input: {
         minHeight: 30,
-        height: 40,
+        height: 50,
         width: "100%",
         borderColor: '#303a52',
-        borderWidth: 1.7,
-        borderRadius: 20,
+        borderWidth: 1,
+        borderRadius: 25,
         fontFamily: 'MontserrantSemiBold',
         paddingLeft: "5%",
-        marginTop: "4%",
+        marginTop: "5%",
+        marginBottom: "3%",
         paddingRight: "5%",
       },
     }

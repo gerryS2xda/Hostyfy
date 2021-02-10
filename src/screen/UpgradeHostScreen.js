@@ -45,7 +45,7 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                     <View style={styles.buttonContainer}>
                         <CustomButton 
                             nome="Effettua upgrade" 
-                            styleBtn={{width: 150}} 
+                            styleBtn={{width: "90%"}} 
                             onPress={()=>{ setFirstDialogVisible(true); }} 
                         />    
                     </View>
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     categoryTxt:{
         textAlign: "left",
         fontSize: 18,
-        color: "black",
+        color: "#303a52",
         marginTop: 16,
         marginBottom: 16,
         fontFamily: "MontserrantBold",
