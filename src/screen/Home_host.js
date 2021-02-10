@@ -4,6 +4,9 @@ import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar'
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import * as HostModel from "../firebase/datamodel/HostModel"
+import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
+import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
+import * as NotificationModel from "../firebase/datamodel/NotificationModel"
 import ButtonMenu from "../components/ButtonMenu"
 
 const styles = StyleSheet.create({
@@ -81,8 +84,45 @@ const HomeHost = ({route, navigation}) => {
           setUser({...guestDoc, ...creditcardDoc});
         }
       }
-      getUserData();
+      //Verifica se vi sono prenotazioni in scadenza (un'ora associato a data fine), mostra un Alert e crea notifica
+      async function verifyCheckOut() {
+        //Ottieni le prenotazioni in scandenza relative al guest
+        var dataOdierna = new Date();
+        var prenotazioniDocs = await PrenotazioneModel.getPrenotazioniAttualiHostQuery(userId, dataOdierna);
+        for (const pren of prenotazioniDocs) {
+          var prenotazione = pren.data();
 
+          //A partire dalla prenotazione trovata, ottieni i dati dell'alloggio 
+          var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+
+          //Verifica che se la prenotazione è terminata 
+          if (prenotazione.doneCheckOut) { //significa che l'alloggio per quella prenotazione è libero
+            var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
+            if (notificationDocs.length == 0) { //se non vi sono notifiche
+              await NotificationModel.createNotificationDocument("alloggio", dataOdierna, alloggioDoc.nomeAlloggio,
+                "L'alloggio \"" + alloggioDoc.nomeAlloggio + "\" è di nuovo disponibile.", userId, pren.id, new Date());
+            } else {
+              for (const noti of notificationDocs) {
+                var notifica = noti.data();
+                if (notifica.prenId !== pren.id) { //non è presente una notifica associata all'alloggio che e' stato liberato -> aggiungila
+                  await NotificationModel.createNotificationDocument("alloggio", dataOdierna, alloggioDoc.nomeAlloggio,
+                    "L'alloggio \"" + alloggioDoc.nomeAlloggio + "\" è di nuovo disponibile.", userId, pren.id, new Date());
+                }
+              }
+            }
+          }else{ //l'alloggio è stato prenotato e quindi non è più disponibile
+            var notificationDocs = await NotificationModel.getNotificationDocumentByUserId(userId);
+            for (const noti of notificationDocs) {
+              var notifica = noti.data();
+              if(notifica.categoria === "alloggio" && notifica.titolo === alloggioDoc.nomeAlloggio && notifica.prenId === pren.id){
+                await NotificationModel.deleteNotificationDocument(noti.id);
+              }
+            }
+          }
+        }
+      }
+      getUserData();
+      verifyCheckOut();
       return () => {
         // Do something when the screen is unfocused
         // Useful for cleanup functions

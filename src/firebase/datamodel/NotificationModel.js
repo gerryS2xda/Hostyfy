@@ -14,7 +14,7 @@ export async function createNotificationDocument(categoria, dataCreazione, titol
         dataFine: dataFine, //data in cui la notifica dovrà essere rimossa
         descrizione: descrizione,
         isRead: false,
-        titolo: titolo,
+        titolo: titolo, //NOTA: per notifiche relative alla categoria 'alloggio', il titolo è rappresentato dal nome dell'alloggio
         userId: uid,
         prenId: prenId,
     })
@@ -73,9 +73,17 @@ export async function deleteNotificationDocument(notificationId){
 export async function deleteNotificationDocumentScaduteByUserId(userId, dataFine){
     let docs = await notificationCollectionRef.where('userId', '==', userId).where('dataFine','<',dataFine).get();
     for(const noti of docs.docs){
+        var notification = noti.data();
+        if(notification.categoria !== "alloggio") //le notifiche dell'alloggio non usano la data di fine per essere rimosse
+            await deleteNotificationDocument(noti.id);
+    } 
+}
+
+export async function deleteNotificationDocumentForAlloggioByTitle(userId, nomeAlloggio){
+    let docs = await notificationCollectionRef.where('userId', '==', userId).where('titolo', '==', nomeAlloggio).get();
+    for(const noti of docs.docs){
         await deleteNotificationDocument(noti.id);
-    }
-    
+    } 
 }
 
 //Read query functions
@@ -92,3 +100,4 @@ export async function getNotificationDocumentByUserId(userId){
     let docs = await notificationCollectionRef.where('userId', '==', userId).get();
     return docs.docs;
 }
+

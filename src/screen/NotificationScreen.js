@@ -68,7 +68,25 @@ const NotificationScreen = ({ route, navigation }) => {
                             title: notification.titolo, 
                             description: notification.descrizione,
                             iconName: iconName, //mostra icona nuova notifica se essa non è stata letta, altrimenti quella di default 
-                            newPage: "CheckOut",
+                            newPage: "CheckOut", //non viene usata questa proprietà, si è deciso di rimanere per sviluppi futuri
+                            prenId: notification.prenId,
+                            notificationId: doc.id,
+                        }
+                        count++;
+                        itemList.push(oggetto);
+                    }
+                    if(notification.categoria === "alloggio"){
+                        //prendi i dati della prenotazione per ottenere riferimento relativo alla pagina dell'alloggio
+                        var iconName = require("../../assets/bell_black.png");
+                        if(!notification.isRead){ //se vi è una notifica da leggere ed è nuova, cambia icona
+                            iconName=require("../../assets/bell_badge_black.png");
+                        }
+                        var oggetto = {
+                            key: count, 
+                            title: notification.titolo, 
+                            description: notification.descrizione,
+                            iconName: iconName, //mostra icona nuova notifica se essa non è stata letta, altrimenti quella di default 
+                            newPage: "VisualizzaAlloggi", //non viene usata questa proprietà, si è deciso di rimanere per sviluppi futuri
                             prenId: notification.prenId,
                             notificationId: doc.id,
                         }

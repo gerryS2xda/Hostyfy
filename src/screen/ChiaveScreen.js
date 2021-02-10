@@ -55,6 +55,7 @@ const ChiaveScreen = ({ route, navigation }) => {
                         visibility={showCustomAlert}
                         titolo="Ingresso alloggio"
                         testo= {"Benvenuto nella camera " + alloggio.nomeAlloggio}
+                        hideNegativeBtn={true}
                         buttonName="Ok"
                         onOkPress={()=>{            
                             async function setNavigationScreenAfterPressKey () {

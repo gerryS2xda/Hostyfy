@@ -9,6 +9,7 @@ import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
 import * as GuestModel from "../firebase/datamodel/GuestModel";
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel";
+import * as NotificationModel from "../firebase/datamodel/NotificationModel"
 import { Dropdown } from 'sharingan-rn-modal-dropdown';
 import { DefaultTheme } from '@react-navigation/native';
 import CustomAlertGeneral from "../components/CustomAlertGeneral";
@@ -457,6 +458,10 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 
 												//Resetta i campi
 												resetState();
+
+												//Procedi con la cancellazione delle notifiche se vi sono presenti per quell'alloggio in base al nome
+												var alloggio = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
+												await NotificationModel.deleteNotificationDocumentForAlloggioByTitle(user.userIdRef, alloggio.nomeAlloggio);
 
 												setMessageAlert("La nuova prenotazione è stata registrata con successo!");
 												setShowAlertInsert(true);
