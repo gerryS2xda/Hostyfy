@@ -43,7 +43,7 @@ const ChiaveScreen = ({ route, navigation }) => {
             <HeaderBar title="Chiave" navigator={navigation} />
             <View style={styles.bodyViewContent}>
                 <View>
-                    <Text style = {styles.titolo}>Chiave {alloggio.nomeAlloggio}</Text>
+                    <Text style = {styles.titolo}>{alloggio.nomeAlloggio}</Text>
                 </View>
                 <View style={styles.buttonKeyContainer}>
                     <CustomButton
@@ -62,7 +62,7 @@ const ChiaveScreen = ({ route, navigation }) => {
                                 if (!doneCheckIn && prenotazioneId !== "") {
                                     //Attendi finche' non viene aggiornato lo stato di doneCheckIn per indicare che e' stato fatto il primo accesso all'alloggio
                                     await PrenotazioneModel.updateCheckInStatusPrenotazione(prenotazioneId, true);
-                                    navigation.navigate("MoviePlayer", {user: user});
+                                    navigation.navigate("MoviePlayer", {user: user, uriVideo: alloggio.pathvideo});
                                 } //else{navigation.navigate("InfoCamera");} //rimosso nella versione base
                             }  
                             setNavigationScreenAfterPressKey();
@@ -115,7 +115,10 @@ const styles = StyleSheet.create({
         fontFamily: "MontserrantSemiBold",
         fontSize: 25,
         color: "#303a52",
-        marginTop: "8%"
+        marginTop: "8%",
+        marginLeft: "10%",
+        marginRight: "10%",
+        textAlign: "center",
     }
     
 });

@@ -9,6 +9,7 @@ import { DefaultTheme } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CustomAlertGeneral from "../components/CustomAlertGeneral";
+import * as ImagePicker from 'expo-image-picker';
 
 //Firebase
 var storageRef = firebase.storage().ref(); // create a storage reference from our storage service
@@ -325,6 +326,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                                         onChangeText ={(testo) => {this.setState({numCamere: testo})}}
                                         theme={this.state.theme}
                                         ref = {input => { this.numCamere = input }}
+                                        keyboardType={'numeric'}
                                     />
                                     <TextInput
                                         mode='outlined'
@@ -336,6 +338,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                                         onChangeText ={(testo) => {this.setState({numMaxPersone: testo})}}
                                         theme={this.state.theme}
                                         ref = {input => { this.numMaxPersone = input }} 
+                                        keyboardType={'numeric'}
                                     />
                                     <TextInput
                                         mode='outlined'
@@ -410,11 +413,13 @@ export default class InserisciAlloggioScreen extends React.Component {
 
                                         <TouchableOpacity
                                             style={[styles.information]}
-                                            onPress={()=> this.setState({showAlertNextFeature: true})}>
-                                            <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow} />
+                                            onPress={()=>{
+                                                this.selectWelcomeVideoToUpload(this);
+                                            } }>
+                                            <Icon name={"video-plus"} color={"#0692d4"} size={40} style={styles.arrow} />
                                             <Text
                                                 style={styles.otherText} >
-                                                Inserisci guida
+                                                Inserisci video 
                                         </Text>
                                         </TouchableOpacity>
                                     </View>
@@ -494,62 +499,67 @@ export default class InserisciAlloggioScreen extends React.Component {
     }
 
     onPressAggiungiAlloggio = async (user, strutturaId, photoList, reference, navigation) =>{
-        //Attendi finche' non completa inserimento del nuovo alloggio nel DB
-        await alloggioModel.createAlloggioDocument(strutturaId, reference.state.nomeAlloggio, reference.state.numCamere, reference.state.numMaxPersone, reference.state.piano, reference.state.descrizione, reference.state.pathvideo, {});
         
-        if(photoList.length !=0){
-            //Fai comparire il popup per indicare attesa del completamento dell'operazione di upload di immagini
-            if(!reference.state.modalUploadVisibility){
-                reference.setState({modalUploadVisibility: true});
-            }
+        //Fai comparire il popup per indicare attesa del completamento dell'operazione di upload di immagini
+        if(!reference.state.modalUploadVisibility){
+            reference.setState({modalUploadVisibility: true});
+        }
 
-            //Attendi completamento dell'esecuzione della query per ottenere gli alloggio in base al nome
-            var alloggiDocs = await alloggioModel.getAlloggiByNome(strutturaId, reference.state.nomeAlloggio);
-            for(const doc of alloggiDocs){
-                var alloggio = doc.data();
-                var alloggioId = doc.id;
-                var fotoArray =  Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS
-                var fotoCount = fotoArray.length + 1;
+        //Inserimento delle foto nello storage e ottenimento link per inserirle nel DB
+        var fotoArray =  [];
+        var fotoCount = 1;
 
-                for(const photo of photoList){ //Finche' bisogna caricare una foto nello storage
-                    var photoPath = "struttura/"+strutturaId+"/alloggi/" + alloggio.nomeAlloggio + "/"+fotoCount;
-                    //Attendi finche' non ottieni download URL dell'immagine caricata nello storage
-                    let downloadURL = await this.uploadImageAndGetDownloadURL(photo.uri, photoPath);
-                    if(downloadURL !== "")
-                        fotoArray.push(downloadURL);
-                    fotoCount++;
-                }
-                //Attendi completamento dell'aggiornamento del campo foto di quell'alloggio
-                await alloggioModel.updateFotoField(strutturaId, alloggioId, Object.assign({}, fotoArray));
-
-                //Quando caricamento delle immagini nello storage e nei doc della struttura, rendi invisibile il popup
-                if(reference.state.modalUploadVisibility){
-                    reference.setState({modalUploadVisibility: false});
-                }
-
-                //Mostra Alert personalizzato per indicare esito positivo dell'operazione
-                if(!reference.state.showAlertInsertSuccess){
-                    reference.setState({showAlertInsertSuccess: true});
-                }
-
-            }
-        }else{
-            //Mostra Alert personalizzato per indicare esito positivo dell'operazione
-            if(!reference.state.showAlertInsertSuccess){
-                reference.setState({showAlertInsertSuccess: true});
+        for(const photo of photoList){ //Finche' bisogna caricare una foto nello storage
+            var photoPath = "struttura/"+strutturaId+"/alloggi/" + reference.state.nomeAlloggio + "/immagini/"+fotoCount;
+            //Attendi finche' non ottieni download URL dell'immagine caricata nello storage
+            let downloadURL = await this.uploadMediaAndGetDownloadURL(photo.uri, photoPath);
+            if(downloadURL !== ""){
+                fotoArray.push(downloadURL);
+                fotoCount++;
+            }else{
+                this.setState({messageError: "Si è verificato un problema durante il caricamento delle immagini. Si prega di riprovare o controllare lo stato della connessione.", 
+                    showAlertErrorField: true});
+                    return;
             }
         }
+        
+
+        //Caricamento del video di benvenuto
+        var photoVideo = "struttura/"+strutturaId+"/alloggi/" + reference.state.nomeAlloggio + "/video/welcomevideo";
+        let downloadVideoURL = await this.uploadMediaAndGetDownloadURL(reference.state.pathvideo, photoVideo);
+        console.log("downloadVideo")
+        if(downloadVideoURL === ""){
+            this.setState({messageError: "Si è verificato un problema durante il caricamento del video. Si prega di riprovare o controllare lo stato della connessione.", 
+                showAlertErrorField: true});
+                return;    
+        }
+
+        //Attendi finche' non completa inserimento del nuovo alloggio nel DB
+        await alloggioModel.createAlloggioDocument(strutturaId, reference.state.nomeAlloggio, reference.state.numCamere, 
+            reference.state.numMaxPersone, reference.state.piano, reference.state.descrizione, downloadVideoURL, Object.assign({}, fotoArray));
+        
+
+        //Quando caricamento delle immagini e video nello storage e nei doc della struttura, rendi invisibile il popup
+        if(reference.state.modalUploadVisibility){
+            reference.setState({modalUploadVisibility: false});
+        }
+
+        //Mostra Alert personalizzato per indicare esito positivo dell'operazione
+        if(!reference.state.showAlertInsertSuccess){
+            reference.setState({showAlertInsertSuccess: true});
+        }
+    
         reference.setState({disableInsertAlloggioButton: false}); //resetta lo stato del pulsante "Aggiungi" e rendilo cliccabile
     }
 
-    //Function for upload a image and obtain a download URL
-    uploadImageAndGetDownloadURL = async(uri, pathImage) => {
+    //Function for upload a multimedia content and obtain a download URL
+    uploadMediaAndGetDownloadURL = async(uri, pathMedia) => {
         var downloadURL = "";
         const response = await fetch(uri);
         const blob = await response.blob(); 
-        var ref = storageRef.child(pathImage);
+        var ref = storageRef.child(pathMedia);
 
-        // Upload file and metadata to the object 'images/mountains.jpg'
+        // Upload file and metadata to the object
         var uploadTask= ref.put(blob);
 
         // Listen for state changes, errors, and completion of the upload.
@@ -560,12 +570,9 @@ export default class InserisciAlloggioScreen extends React.Component {
                         break;
                     case firebase.storage.TaskState.SUCCESS: 
                         break;
-                    case firebase.storage.TaskState.ERROR: // or 'paused'
-                        Alert.alert("Immagini", "Si è verificato un problema durante il caricamento delle immagini! Si prega di riprovare o controllare lo stato della connessione.",
-                        [   { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel"},
-                            { text: "OK", onPress: () => console.log("OK - error image Upload Pressed")}
-                        ],
-                        { cancelable: false });
+                    case firebase.storage.TaskState.ERROR: 
+                    this.setState({messageError: "Si è verificato un problema durante il caricamento dell'immagine o video. Si prega di riprovare o controllare lo stato della connessione.", 
+                        showAlertErrorField: true});
                     break;
                 }
             }, (error)=> {
@@ -593,6 +600,31 @@ export default class InserisciAlloggioScreen extends React.Component {
         return downloadURL; 
     }
 
+    //funzione per caricare video di benvenuto per l'alloggio
+    selectWelcomeVideoToUpload = async (reference) =>{
+        //verifica se sono stati concessi i permessi per accedere alla galleria
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+            reference.setState({messageError: "Sono necessari i permessi di accesso alla fotocamera e galleria per poter inserire contenuti multimediali!", showAlertErrorField: true});
+            return;
+        }
+
+        //Seleziona il video da caricare
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Videos, //accetta solo video
+            allowsEditing: false,
+            allowsMultipleSelection: false, //funziona solo su web
+            aspect: [4, 3],
+            quality: 1,
+        });
+      
+        if (result.cancelled) {
+            reference.setState({messageError: "Si è verificato un problema durante il caricamento del video. Riprova di nuovo.", showAlertErrorField: true});
+        }else{
+            reference.setState({pathvideo: result.uri});
+        }
+    }
+
     //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
     validateFormField = (photoList) =>{
 
@@ -614,7 +646,10 @@ export default class InserisciAlloggioScreen extends React.Component {
             message += "\"Descrizione\"";
             flag = false;
         }else if(photoList.length == 0){
-            message = "Attenzione!! Per completare l'inserimendo di un alloggio è necessario inserire una sua immagine.";
+            message = "Attenzione!! Per completare l'inserimento di un alloggio è necessario inserire almeno una sua immagine.";
+            flag = false;
+        }else if(this.state.pathvideo === ""){
+            message = "Attenzione!! Per completare l'inserimendo di un alloggio è necessario inserire un video di benvenuto.";
             flag = false;
         }
         if(!flag){

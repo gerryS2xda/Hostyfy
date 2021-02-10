@@ -8,6 +8,7 @@ import Slideshow from 'react-native-image-slider-show';
 import { DefaultTheme } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -191,6 +192,8 @@ const StrutturaScreen = ({ route, navigation }) => {
     const [numAlloggi, setNumAlloggi] = useState("");
     const [descrizione, setDescrizione] = useState("");
 
+    const [showAlertNextFeature, setShowAlertNextFeature] = useState(false);
+
     const scrollRef = useRef();
 
 
@@ -301,11 +304,7 @@ const StrutturaScreen = ({ route, navigation }) => {
                                 <View style={styles.information}>
                                 <TouchableOpacity 
                                 style = {styles.information}
-                                onPress={() => Alert.alert(
-                                    "Funzionalità non disponibile", "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-                                    [{ text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }],
-                                    { cancelable: false })}>
+                                onPress={() => setShowAlertNextFeature(true)}>
                                     
                                     <Icon name={"book-open"} color={"#0692d4"} size={40} style={styles.arrow}/>
                                         <Text 
@@ -335,6 +334,15 @@ const StrutturaScreen = ({ route, navigation }) => {
                     </View>
                 </ScrollView>
             </ScrollView>
+            <CustomAlertGeneral
+                  visibility={showAlertNextFeature}
+                  titolo="Funzionalità non disponibile"
+                  testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                      setShowAlertNextFeature(false); 
+                  }} />
         </View>
     );
 

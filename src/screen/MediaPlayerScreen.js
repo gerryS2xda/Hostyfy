@@ -19,7 +19,11 @@ import VideoPlayer from 'expo-video-player'
 
 const MediaPlayerScreen = ({ route, navigation }) => {
 
-  const {user} = route.params;
+  const {user, uriVideo} = route.params;
+  var videoPath = require("../../assets/video/example.mp4");
+  if(uriVideo !== ""){
+    videoPath = {uri: uriVideo};
+  }
 
   useEffect(() => {
     const backAction = () => {
@@ -41,7 +45,7 @@ const MediaPlayerScreen = ({ route, navigation }) => {
         videoProps={{
           shouldPlay: true, //video in play automaticamente
           resizeMode: Video.RESIZE_MODE_CONTAIN,
-          source: require("../../assets/video/example.mp4"),
+          source: videoPath,
           rate:1.0,
           volume:1.0,
           isMuted: false,
