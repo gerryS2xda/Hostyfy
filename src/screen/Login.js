@@ -169,7 +169,7 @@ const Login = (props) => {
 
             <CustomButton
               nome="Accedi"
-              styleBtn={{ width: "75%", height: "8%", minHeight:40, marginTop: "5%", borderRadius: 20}}
+              styleBtn={{ width: "75%", height: "7%", minHeight:40, marginTop: "5%", borderRadius: 20}}
               onPress={() => {
                 firebase.auth().signInWithEmailAndPassword(email.trim(), password).then(function (user) {
                   const userId = firebase.auth().currentUser.uid; //user id si può usare nella collezione di un documento il cui id è uid
@@ -200,7 +200,7 @@ const Login = (props) => {
               <Text style={styles.nonReg}>Non hai un account?</Text>
               <CustomButton
                 nome="Registrati"
-                styleBtn={{ width: "75%", height: 35, borderRadius: 20 }}
+                styleBtn={{ width: "75%", height: 40, borderRadius: 20 }}
                 onPress={() => props.navigation.navigate('Registratione')} />
             </View>
           </View>
