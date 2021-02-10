@@ -29,16 +29,17 @@ export default ButtonMenu;
 
 const styles = StyleSheet.create({
     bottoneStyle: {
-        borderWidth: 1,
+        borderWidth: 2,
         width: "100%",
         height: 40,
         alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
+        borderRadius: 15,
         backgroundColor: '#0692d4',
         shadowColor: '#fff',
+        borderColor: "#e4eded",
         shadowOffset: {
             width: 1,
             height: 1,
