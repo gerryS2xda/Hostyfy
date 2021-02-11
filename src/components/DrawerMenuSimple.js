@@ -3,6 +3,11 @@ import { StyleSheet, Text, View, Image, Alert, Switch } from 'react-native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import {firebase} from "../firebase/config"
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import * as GuestModel from "../firebase/datamodel/GuestModel"
+import * as HostModel from "../firebase/datamodel/HostModel"
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
+
+//Import delle schermate da aggiungere al drawer navigator
 import LoginScreen from "../screen/Login"
 import HomeHostScreen from "../screen/Home_host"
 import Registrazione from "../screen/Registrazione"
@@ -30,8 +35,6 @@ import VisualizzaCalendarioAlloggio from "../screen/Visualizza_calendario_allogg
 import NotificationScreen from "../screen/NotificationScreen"
 import CheckOutScreen from "../screen/CheckOutScreen"
 import InserisciRecensioneScreen from "../screen/InserisciRecensioneScreen"
-import * as GuestModel from "../firebase/datamodel/GuestModel"
-import * as HostModel from "../firebase/datamodel/HostModel"
 import VisualizzaCleanServices from "../screen/VisualizzaCleanServices"
 import InserisciCleanService from "../screen/InserisciCleanService"
 import ModificaCleanService from "../screen/ModificaCleanService"
@@ -126,11 +129,16 @@ export default DrawerMenuSimple;
 
 function DrawerContentCustom(props){
     
+    //Parametri ricevuti
     var userId = props.userId;
     var userLogged = props.userProps;
     var isRealHost = userLogged.isHost;
 
-    //<Icon>
+    //Gestione dello stato dei CustomAlert
+    const [showAlertNextFeature, setShowAlertNextFeature] = useState(false);
+    const [showAlertDowngrade, setShowAlertDowngrade] = useState(false);
+
+    //Style delle icone del menu
     const colorIcon = "black";
     const sizeIcon = 24;
     
@@ -154,8 +162,6 @@ function DrawerContentCustom(props){
         setIsHost(false);
     }
 
-    const [isUpgradePay, setIsUpgradePay] = useState(true); 
-
     if(!isHost){
         return(
             <View style={styles.drawerContainer}>
@@ -172,7 +178,6 @@ function DrawerContentCustom(props){
                                     trackColor={{ false: "#767577", true: "#81b0ff" }}
                                     thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
                                     ios_backgroundColor="#3e3e3e"
-                                    disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
                                     onValueChange={toggleSwitchGuestHost}
                                     value={isHost}
                                 />
@@ -216,9 +221,7 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => (<Icon name="arrow-up-bold-circle" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Upgrade host</Text>)}
-                                onPress={() => {
-                                        
-                                        setIsUpgradePay(true); //per la demo (si dovra' gestire in altro modo questo)   
+                                onPress={() => { 
                                         props.navigation.navigate('UpgradeHost', {user: userLogged});
                                     }
                                 }
@@ -256,19 +259,17 @@ function DrawerContentCustom(props){
                             <View style={styles.avaterAndTxtContainer}>
                                 <Text style={styles.userInfo}>Ciao, {userLogged.nome}</Text>
                             </View>                           
-                                        <View style={styles.horizontalViewSwitch}>
-                                            <Text style={styles.labelSwitchTxt}>Guest</Text>
-                                                <Switch style={styles.switchStyle}
-                                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                                    thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
-                                                    ios_backgroundColor="#3e3e3e"
-                                                    disabled={!isUpgradePay} //logica inversa in quanto se disabled= true, rendi non accessibile lo switch
-                                                    onValueChange={toggleSwitchGuestHost}
-                                                    value={isHost}
-                                                />
-                                            <Text style={styles.labelSwitchTxt}>Host</Text>
-                                        </View>
-                        
+                            <View style={styles.horizontalViewSwitch}>
+                                <Text style={styles.labelSwitchTxt}>Guest</Text>
+                                <Switch style={styles.switchStyle}
+                                    trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                    thumbColor={isHost ? "#f5dd4b" : "#f4f3f4"}
+                                    ios_backgroundColor="#3e3e3e"
+                                    onValueChange={toggleSwitchGuestHost}
+                                    value={isHost}
+                                />
+                                <Text style={styles.labelSwitchTxt}>Host</Text>
+                            </View>
                         </View>
                         <View style={styles.drawerSection}>
                             <DrawerItem 
@@ -326,12 +327,12 @@ function DrawerContentCustom(props){
                             <DrawerItem 
                                 icon={() => ( <Icon name="currency-usd" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Servizi premium</Text>)}
-                                onPress={createNextRealeaseFeatureAlert}
+                                onPress={()=> setShowAlertNextFeature(true)}
                             />
                             <DrawerItem 
                                 icon={() => (<Icon name="arrow-down-bold-circle" color={colorIcon} size={sizeIcon} /> )}
                                 label={()=>(<Text style={styles.labelDrawerItemStyle}>Downgrade host</Text>)}
-                                onPress={createDowngradeHostAlert}
+                                onPress={()=> setShowAlertDowngrade(true)}
                             />
                         </View>
                     </View>
@@ -353,55 +354,39 @@ function DrawerContentCustom(props){
                         }} 
                     />
                 </View>
+                <CustomAlertGeneral
+                  visibility={showAlertNextFeature}
+                  titolo="Funzionalità non disponibile"
+                  testo= "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!"
+                  hideNegativeBtn={true}
+                  buttonName="Ok"
+                  onOkPress={()=>{ 
+                        setShowAlertNextFeature(false); 
+                  }} />
+                <CustomAlertGeneral
+                  visibility={showAlertDowngrade}
+                  titolo="Downgrade host"
+                  testo= "Procedendo si perdono tutti i servizi dedicati all'host e quindi si ritorna ad essere un guest. Continuare?"
+                  annullaBtnName="No"
+                  onAnnullaBtn={()=>{
+                    setShowAlertDowngrade(false);
+                  }}
+                  buttonName="Sì"
+                  onOkPress={()=>{ 
+                    async function effettuaDowngrade(){     
+                        await GuestModel.updateisHost(userId, false);
+                        await HostModel.deleteHostDocument(userId);
+                        setShowAlertDowngrade(false);
+                        props.navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                        }); //resetta lo stack quando si ritorna nella Home
+                    }
+                    effettuaDowngrade();   
+                  }} />
             </View>
         );
     }
-}
-
-//Alert function
-function createNextRealeaseFeatureAlert(){
-    Alert.alert(
-        "Funzionalità non disponibile",
-        "Questa funzionalità sarà disponibile a seguito di sviluppi futuri!",
-        [
-            {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-            },
-            { text: "Conferma", onPress: () => console.log("OK Pressed") }
-        ],
-        { cancelable: false }
-    );
-}
-
-function createDowngradeHostAlert(){
-    Alert.alert(
-        "Downgrade host",
-        "Procedendo si perdono tutti i servizi dedicati all'host e quindi si ritorna ad essere un guest. Premi Ok per continuare",
-        [
-        {
-            text: "Cancel",
-            onPress: () => console.log("Cancel Pressed"),
-            style: "cancel"
-        },
-        { text: "Conferma", onPress: () => {
-                GuestModel.updateisHost(userLogged.userId,false);
-                isRealHost = false;
-                setIsHost(previousState=>!previousState);
-                setIsUpgradePay(false);
-                userLogged.isHost = false;
-                console.log("Real: " + isRealHost+" Stato: "+isHost);
-                props.navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
-                }); //resetta lo stack quando si ritorna nella Home
-                
-            } 
-        }
-        ],
-        { cancelable: false }
-    );
 }
 
 //Style 
