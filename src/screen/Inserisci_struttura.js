@@ -534,7 +534,13 @@ export default class InserisciStrutturaScreen extends React.Component {
                         denominazione: "", via: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", 
                             tipologia: "", numeroAlloggi: "", descrizione: "", showAlertInsertSuccess: false});
                     this.state.scrollRef.current.scrollTo({ x: 0})
-                    this.props.navigation.navigate("LeMieStrutture", { user: user });
+
+                    //NOTA: Si è deciso di far ritornare l'utente alla 'Home' siccome si utilizza 'reset' per cancellare tutte le schermate create (pop non funziona)
+                    this.props.navigation.reset({
+						index: 0,
+						routes: [{ name: 'HomeHost', params: { userId: user.userIdRef } }],
+					}); //resetta lo stack quando si ritorna nella Home
+                    //this.props.navigation.navigate("LeMieStrutture", { user: user });
                   }} />
                 <CustomAlertGeneral
                   visibility={this.state.showAlertNextFeature}
