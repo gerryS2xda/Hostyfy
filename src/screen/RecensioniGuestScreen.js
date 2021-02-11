@@ -3,6 +3,7 @@ import { View, StyleSheet, Alert } from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomListViewRecensione from "../components/CustomListViewRecensione"
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel";
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel";
@@ -34,6 +35,8 @@ const RecensioniGuestScreen = ({ route, navigation }) => {
   //Dichiarazione variabili
   const { user } = route.params;
   const [recensioniList, setRecensioniList] = useState([]);
+  const [showAlertNoResult, setShowAlertNoResult] = useState(false);
+  const [messageAlert, setMessageAlert] = useState("");
   const isFocused = useIsFocused();
 
   //Caricamento dei dati non appena inizia il rendering dell'applicazione
@@ -85,19 +88,8 @@ const RecensioniGuestScreen = ({ route, navigation }) => {
         }
 
         if (itemList.length == 0) {
-          Alert.alert(
-            "Recensioni",
-            "Nessun recensione da mostrare!!",
-            [
-              {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-              },
-              { text: "OK", onPress: () => navigation.goBack() }
-            ],
-            { cancelable: false }
-          );
+          setMessageAlert("Nessun recensione da mostrare!!");
+          setShowAlertNoResult(true);
         } else {
           setRecensioniList(itemList);
         }
@@ -123,6 +115,16 @@ const RecensioniGuestScreen = ({ route, navigation }) => {
           />
         </View>
       </View>
+      <CustomAlertGeneral
+        visibility={showAlertNoResult}
+        titolo="Recensioni"
+        testo= {messageAlert}
+        hideNegativeBtn={true}
+        buttonName="Ok"
+        onOkPress={()=>{
+          setShowAlertNoResult(false);  
+          navigation.goBack();
+      }} />
     </View>
   );
 }

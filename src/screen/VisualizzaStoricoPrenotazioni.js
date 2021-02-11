@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar'
 import CustomListViewGeneralPrenotazione from '../components/CustomListViewGeneralPrenotazione';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
 
@@ -85,6 +86,8 @@ maincontainer: {
 const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {  
       const {user, isHost} = route.params; 
       const [list, setList] = useState([]);
+      const [noResultVisibility, setNoResultVisibility] = useState(true);
+      const [showAlertNoResult, setShowAlertNoResult] = useState(false);
       const isFocused = useIsFocused();
 
       useFocusEffect(
@@ -97,70 +100,78 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
               var itemList = [];
               var count = 1;
               if(docs.lenght==0){
-                setList(itemList)
+                setList(itemList);
+                setShowAlertNoResult(true);
+              }else{
+                for(const doc of docs){
+                  var prenotazione = doc.data();
+                  var prenotazioneId = doc.id;
+                  var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                  var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                  let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                  //Prendi la prima foto presente per l'alloggio e salva nello state
+                  var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
+                  var imageURL = "";
+                  if(fotoArray.length == 0){
+                      imageURL = require("../../assets/imagenotfound.png");
+                  }else{
+                      imageURL = {uri: fotoArray[0]};
+                  }
+                  var oggetto = {
+                      key: count, 
+                      title: alloggio.nomeAlloggio,
+                      description: "" + dataInizio + " - " + dataFine,
+                      image_url: imageURL, //alloggio image
+                      newPage: 'PrenotazioneDetail',
+                      id: prenotazioneId,
+                  }
+                  itemList.push(oggetto);
+                  count++;
+                };
+                setList(itemList);
+                setNoResultVisibility(false);
               }
-              for(const doc of docs){
-                var prenotazione = doc.data();
-                var prenotazioneId = doc.id;
-                var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
-                var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
-                let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
-                //Prendi la prima foto presente per l'alloggio e salva nello state
-                var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
-                var imageURL = "";
-                if(fotoArray.length == 0){
-                    imageURL = require("../../assets/imagenotfound.png");
-                }else{
-                    imageURL = {uri: fotoArray[0]};
-                }
-                var oggetto = {
-                    key: count, 
-                    title: alloggio.nomeAlloggio,
-                    description: "" + dataInizio + " - " + dataFine,
-                    image_url: imageURL, //alloggio image
-                    newPage: 'PrenotazioneDetail',
-                    id: prenotazioneId,
-                }
-                itemList.push(oggetto);
-                count++;
-              };
-              setList(itemList)
             } else {
               var dataOdierna = new Date();
               let docs = await PrenotazioneModel.getPrenotazioniGuestQuery(user.userId, dataOdierna);
               var itemList = [];
               var count = 1;
               if(docs.lenght==0){
-                setList(itemList)
+                setList(itemList);
+                setShowAlertNoResult(true);
+              }else{
+                for(const doc of docs){
+                  var prenotazione = doc.data();
+                  var prenotazioneId = doc.id;
+                  var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                  var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
+                  let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
+                  //Prendi la prima foto presente per l'alloggio e salva nello state
+                  var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
+                  var imageURL = "";
+                  if(fotoArray.length == 0){
+                      imageURL = require("../../assets/imagenotfound.png");
+                  }else{
+                      imageURL = {uri: fotoArray[0]};
+                  }
+                  var oggetto = {
+                      key: count, 
+                      title: alloggio.nomeAlloggio,
+                      description: "" + dataInizio + "-" + dataFine,
+                      image_url: imageURL, //alloggio image
+                      newPage: 'PrenotazioneDetail',
+                      id: prenotazioneId,
+                  }
+                  itemList.push(oggetto);
+                  count++;
+                };
+                setList(itemList);
+                setNoResultVisibility(false);
               }
-              for(const doc of docs){
-                var prenotazione = doc.data();
-                var prenotazioneId = doc.id;
-                var dataInizio = new Date(prenotazione.dataInizio.seconds * 1000).toLocaleString("it-IT").split(",")[0];
-                var dataFine = new Date(prenotazione.dataFine.seconds * 1000).toLocaleString("it-IT").split(",")[0];
-                let alloggio = await AlloggioModel.getAlloggioByStrutturaRef(prenotazione.strutturaRef, prenotazione.alloggioRef);
-                //Prendi la prima foto presente per l'alloggio e salva nello state
-                var fotoArray = Object.values(alloggio.fotoList); //restituisce gli URL delle foto in un array JS                         
-                var imageURL = "";
-                if(fotoArray.length == 0){
-                    imageURL = require("../../assets/imagenotfound.png");
-                }else{
-                    imageURL = {uri: fotoArray[0]};
-                }
-                var oggetto = {
-                    key: count, 
-                    title: alloggio.nomeAlloggio,
-                    description: "" + dataInizio + "-" + dataFine,
-                    image_url: imageURL, //alloggio image
-                    newPage: 'PrenotazioneDetail',
-                    id: prenotazioneId,
-                }
-                itemList.push(oggetto);
-                count++;
-              };
-              setList(itemList)
             }
           }
+          if(!noResultVisibility)  //resetta lo stato relativo ai risultati da mostrare
+            setNoResultVisibility(true);
           getStoricoPrenotazioni();
           return () => {
             // Do something when the screen is unfocused
@@ -171,19 +182,37 @@ const VisualizzaStoricoPrenotazioni = ({route, navigation}) => {
       return (
         <View style={styles.maincontainer}>
         <HeaderBar title="Pren. Terminate" navigator={navigation} /> 
-        
           <View style={styles.container}>
-            <CustomListViewGeneralPrenotazione
+            {!noResultVisibility && (
+              <CustomListViewGeneralPrenotazione
               nav = {navigation}
               itemList={list}
               user = {user}
               isHost = {isHost}
             />
+            )}
           </View>
+          <CustomAlertGeneral
+            visibility={showAlertNoResult}
+            titolo="Pren. Terminate"
+            testo= {"Nessuna prenotazione da mostrare!"}
+            hideNegativeBtn={true}
+            buttonName="Home"
+            onOkPress={()=>{
+              setShowAlertNoResult(false);  
+              if(isHost){
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeHost',  params: { userId: user.userId }}],
+                }); //resetta lo stack quando si ritorna nella Home
+              }else{
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'HomeGuest',  params: { userId: user.userId }}],
+                }); //resetta lo stack quando si ritorna nella Home
+              }
+          }} />
       </View>
-
-      
-      
     );
 }
 

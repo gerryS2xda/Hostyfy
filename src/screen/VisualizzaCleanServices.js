@@ -5,11 +5,14 @@ import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel"
 import CustomListViewGeneralCleanServices from '../components/CustomListViewGeneralCleanServices';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const VisualizzaCleanServices = ({route, navigation}) => {  
 
       const {user,isHost} = route.params; 
       const [list, setList] = useState([]);
+      const [noResultVisibility, setNoResultVisibility] = useState(true);
+      const [showAlertNoResult, setShowAlertNoResult] = useState(false);
       const isFocused = useIsFocused();
 
       useFocusEffect(
@@ -20,6 +23,7 @@ const VisualizzaCleanServices = ({route, navigation}) => {
               var count = 1;
               if(docs.length==0){
                 setList(itemList);
+                setShowAlertNoResult(true);
               }
               else{
                 for(const doc of docs){
@@ -33,10 +37,12 @@ const VisualizzaCleanServices = ({route, navigation}) => {
                     count++;
                     
                 }
-                console.log(itemList);
                 setList(itemList);
+                setNoResultVisibility(false);
               }                        
-        }
+          }
+          if(!noResultVisibility)  //resetta lo stato relativo ai risultati da mostrare
+            setNoResultVisibility(true);
           getData();
           return () => {
             // Do something when the screen is unfocused
@@ -49,6 +55,8 @@ const VisualizzaCleanServices = ({route, navigation}) => {
         <View style={styles.maincontainer}>
           <HeaderBar title="Clean Services" navigator={navigation} /> 
           <View style={styles.container}>
+            {!noResultVisibility && (
+              <View style={styles.container}>
                 <CustomListViewGeneralCleanServices
                     nav = {navigation}
                     itemList={list}
@@ -63,8 +71,24 @@ const VisualizzaCleanServices = ({route, navigation}) => {
                         }
                       }
                     />
+                </View>  
               </View>
+            )}
           </View>
+          <CustomAlertGeneral
+              visibility={showAlertNoResult}
+              titolo="Clean Services"
+              testo= "Nessuna ditta delle pulizie da mostrare! Desidera inserirne una nuova?"
+              annullaBtnName="Torna indietro"
+              onAnnullaBtn={()=>{
+                setShowAlertNoResult(false);  
+                navigation.goBack();
+              }}
+              buttonName="Inserisci"
+              onOkPress={()=>{ 
+                setShowAlertNoResult(false);
+                navigation.navigate("InserisciCleanService", {user:user});
+              }} />
       </View>      
     );
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import CustomListViewGeneral from '../components/CustomListViewGeneral'
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import {
   StyleSheet,
   View,
@@ -38,6 +39,8 @@ const styles = StyleSheet.create({
 const LeMieStrutture = (props) => {  
       const {user} = props.route.params;
       const [struttureList, setStruttureList] = useState([]);
+      const [noResultVisibility, setNoResultVisibility] = useState(true);
+      const [showAlertNoResult, setShowAlertNoResult] = useState(false);
       const isFocused = useIsFocused();
 
       useFocusEffect(
@@ -49,6 +52,7 @@ const LeMieStrutture = (props) => {
               var struttureDocs = await StrutturaModel.getStruttureOfAHostQuery(user.userIdRef);
               if(struttureDocs.length == 0){
                 setStruttureList(itemList);
+                setShowAlertNoResult(true);
               }else{
                 for(const doc of struttureDocs){
                   var struttura = doc.data();
@@ -73,8 +77,11 @@ const LeMieStrutture = (props) => {
                     itemList.push(oggetto);
                 }
                 setStruttureList(itemList);
+                setNoResultVisibility(false);
               }
             }
+            if(!noResultVisibility)
+              setNoResultVisibility(true); //resetta lo stato
             getMieStruttureData();
           return () => {
             // Do something when the screen is unfocused
@@ -87,28 +94,48 @@ const LeMieStrutture = (props) => {
       <View style={styles.maincontainer}>
         <HeaderBar title="Le tue Strutture" navigator={props.navigation} /> 
             <View style={styles.container}>
-              <CustomListViewGeneral 
-                nav= {props.navigation}
-                userLogged = {user}
-                itemList = {struttureList}
-              />
+            {
+              !noResultVisibility && (
+                <View style={styles.container}>
+                  <CustomListViewGeneral 
+                    nav= {props.navigation}
+                    userLogged = {user}
+                    itemList = {struttureList}
+                  />
 
-              <View 
-                style = {styles.aggiungiStruttura}
-                >
-                  <TouchableOpacity 
-                    onPress={() => {
-                      props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], state: {}});
-                    }}>
-                      <Icon
-                        name = "plus-circle-outline"
-                        color = {"#0692d4"}
-                        size = {65}
-                       
-                      />
-                  </TouchableOpacity>
-              </View>
+                  <View 
+                    style = {styles.aggiungiStruttura}
+                    >
+                      <TouchableOpacity 
+                        onPress={() => {
+                          props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], state: {}});
+                        }}>
+                          <Icon
+                            name = "plus-circle-outline"
+                            color = {"#0692d4"}
+                            size = {65}
+                          
+                          />
+                      </TouchableOpacity>
+                  </View>
+                </View>
+              )
+            }
             </View>
+            <CustomAlertGeneral
+              visibility={showAlertNoResult}
+              titolo="Le tue Strutture"
+              testo= "Nessuna struttura da mostrare! Desidera inserire una nuova struttura?"
+              annullaBtnName="Torna indietro"
+              onAnnullaBtn={()=>{
+                  setShowAlertNoResult(false);
+                  props.navigation.goBack();
+              }}
+              buttonName="Inserisci"
+              onOkPress={()=>{ 
+                setShowAlertNoResult(false);
+                props.navigation.navigate('Inserisci struttura', {user:user, photoList: [], state: {}});
+              }} />
           </View>   
       
     );

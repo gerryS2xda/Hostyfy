@@ -2,7 +2,7 @@ import React, { useState, useCallback, useRef } from 'react'
 import { View, Text, TextInput, StyleSheet, ScrollView, Alert } from 'react-native'
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar';
-import CustomButton from "../components/CustomButton";
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import { Dropdown } from 'sharingan-rn-modal-dropdown';
 import CustomListViewRecensione from "../components/CustomListViewRecensione"
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel";
@@ -92,6 +92,8 @@ const RecensioniHostScreen = ({ route, navigation }) => {
   const [alloggiList, setAlloggiList] = useState([]);
   const [alloggioId, setAlloggioId] = useState('');
   const [recensioniList, setRecensioniList] = useState([]);
+  const [showAlertNoResult, setShowAlertNoResult] = useState(false);
+  const [messageAlert, setMessageAlert] = useState("");
   const isFocused = useIsFocused();
 
   //Caricamento dei dati non appena inizia il rendering dell'applicazione
@@ -164,19 +166,8 @@ const RecensioniHostScreen = ({ route, navigation }) => {
           }
         }
         if (itemList.length == 0) {
-          Alert.alert(
-            "Recensioni",
-            "Nessun alloggio risulta essere stato prenotato!! Nessun risultato da mostrare!!",
-            [
-              {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel"
-              },
-              { text: "OK", onPress: () => setNoResultVisibility(true) }
-            ],
-            { cancelable: false }
-          );
+          setMessageAlert("Nessun alloggio risulta essere stato prenotato. Nessun risultato da mostrare!!");
+          setShowAlertNoResult(true);
         } else {
           setAlloggiList(itemList);
           setAlloggioDropVisibility(true);
@@ -290,6 +281,16 @@ const RecensioniHostScreen = ({ route, navigation }) => {
           </View>
         )}
       </View>
+      <CustomAlertGeneral
+        visibility={showAlertNoResult}
+        titolo="Recensioni"
+        testo= {messageAlert}
+        hideNegativeBtn={true}
+        buttonName="Ok"
+        onOkPress={()=>{
+          setNoResultVisibility(true);
+          setShowAlertNoResult(false);  
+      }} />
     </View>
   );
 }

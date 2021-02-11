@@ -10,6 +10,7 @@ import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as PrenotazioneModel from "../firebase/datamodel/PrenotazioneModel"
 import * as AlloggioModel from "../firebase/datamodel/AlloggioModel"
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 //Style
 const styles = StyleSheet.create({
@@ -42,6 +43,8 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
 
       const {user,isHost} = route.params; 
       const [list, setList] = useState([]);
+      const [noResultVisibility, setNoResultVisibility] = useState(true);
+      const [showAlertNoResult, setShowAlertNoResult] = useState(false);
       const isFocused = useIsFocused();
 
       useFocusEffect(
@@ -53,8 +56,9 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
               let docs = await PrenotazioneModel.getPrenotazioniAttualiHostQuery(user.userIdRef, dataOdierna); //NOTA: per guest usare 'user.userId'
               var itemList = [];
               var count = 1;
-              if(docs.length==0){
+              if(docs.length == 0){
                 setList(itemList);
+                setShowAlertNoResult(true);
               }
               else{
               for(const doc of docs){
@@ -84,6 +88,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                     
                 }
                 setList(itemList);
+                setNoResultVisibility(false);
               }                        
             } else {
               var dataOdierna = new Date(); 
@@ -92,6 +97,7 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
               var count = 1;
               if(docs.length==0){
                 setList(itemList);
+                setShowAlertNoResult(true);
               }
               else{
               for(const doc of docs){
@@ -121,9 +127,12 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                     
                 }
                 setList(itemList);
+                setNoResultVisibility(false);
             }
+           }
           }
-        }
+          if(!noResultVisibility)  //resetta lo stato relativo ai risultati da mostrare
+            setNoResultVisibility(true);
           getData();
           return () => {
             // Do something when the screen is unfocused
@@ -136,6 +145,8 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
         <View style={styles.maincontainer}>
           <HeaderBar title="Prenotazioni" navigator={navigation} /> 
           <View style={styles.container}>
+            {!noResultVisibility && (
+              <View style={styles.container}>
                 <CustomListViewGeneralPrenotazione
                     nav = {navigation}
                     itemList={list}
@@ -151,8 +162,34 @@ const VisualizzaPrenotazioni = ({route, navigation}) => {
                         }
                       }
                     />
+                </View>
               </View>
+            )}
           </View>
+          <CustomAlertGeneral
+              visibility={showAlertNoResult}
+              titolo="Prenotazioni"
+              testo= "Nessuna prenotazione da mostrare! Desidera visualizzare lo storico delle prenotazioni?"
+              annullaBtnName="Home"
+              onAnnullaBtn={()=>{
+                setShowAlertNoResult(false);
+                if(isHost){
+                  navigation.reset({
+                      index: 0,
+                      routes: [{ name: 'HomeHost',  params: { userId: user.userId }}],
+                  }); //resetta lo stack quando si ritorna nella Home
+                }else{
+                  navigation.reset({
+                      index: 0,
+                      routes: [{ name: 'HomeGuest',  params: { userId: user.userId }}],
+                  }); //resetta lo stack quando si ritorna nella Home
+                }
+              }}
+              buttonName="Storico"
+              onOkPress={()=>{ 
+                setShowAlertNoResult(false);
+                navigation.navigate("StoricoPrenotazioni", {user:user,isHost:isHost});
+              }} />
       </View>      
     );
 }
