@@ -4,6 +4,7 @@ import { DrawerActions } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {firebase} from "../firebase/config"
 import * as NotificationModel from "../firebase/datamodel/NotificationModel"
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 var showBackButton = false;
 
@@ -176,6 +177,9 @@ const CustomHeaderBar = (props) => {
     if(userId !== "unknown user")
       checkNotification();
 
+    //Verifica se tale component viene usato in una schermata di inserimento
+    const insertPage = props.insertPage || false;
+    const [showAlertBackButton, setShowAlertBackButton] = useState(false);
 
     return(
         <View style={[styles.headerContainer, styles.headerHeight]}>
@@ -183,7 +187,13 @@ const CustomHeaderBar = (props) => {
             <View style={styles.headerContent}>
                 {
                   showBackButton && (
-                    <TouchableOpacity style={styles.backButton} onPress={() => props.navigator.goBack()}>
+                    <TouchableOpacity style={styles.backButton} onPress={() =>{
+                      if(!insertPage){
+                        props.navigator.goBack();
+                      }else{
+                        setShowAlertBackButton(true);
+                      }
+                    } }>
                       <Icon name="chevron-left" color={"white"} size={32} />
                     </TouchableOpacity>
                   )
@@ -196,6 +206,28 @@ const CustomHeaderBar = (props) => {
                 </TouchableOpacity>
                 <Text style={styles.headertitle}>{headertitle}</Text>
             </View>
+            <CustomAlertGeneral
+                  visibility={showAlertBackButton}
+                  titolo="Attenzione!"
+                  testo= "Tutti i valori inseriti fino a questo momento non saranno salvati. Sei sicuro di voler tornare indietro?"
+                  annullaBtnName="Annulla"
+                  onAnnullaBtn={()=>{
+                    setShowAlertBackButton(false);
+                  }}
+                  buttonName="Sì"
+                  onOkPress={()=>{ 
+                    if(props.isHost){
+                      props.navigator.reset({
+                          index: 0,
+                          routes: [{ name: 'HomeHost',  params: { userId: userId }}],
+                      }); //resetta lo stack quando si ritorna nella Home
+                    }else{
+                      props.navigator.reset({
+                          index: 0,
+                          routes: [{ name: 'HomeGuest',  params: { userId: userId }}],
+                      }); //resetta lo stack quando si ritorna nella Home
+                    }
+                  }} />
         </View>
     );
 }

@@ -178,14 +178,22 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 					setCleanServiceList(itemList);
 				}
 			}
+			BackHandler.addEventListener("hardwareBackPress", backAction);
 			getStruttureData();
 			getCleanServiceData();
 			return () => {
 				// Do something when the screen is unfocused
 				// Useful for cleanup functions
+				BackHandler.removeEventListener("hardwareBackPress", backAction);
 			};
 		}, [isFocused])
 	);
+
+	//Intercetto della pressione del tasto back per avvisare utente di annullamento dell'operazione
+    const backAction = () => {
+		setShowAlertBackButton(true);
+        return true;
+    };
 
 	//Caricamento dei dati relativi ad un alloggio non appena viene scelta una struttura
 	const onChangeStrutturaDropDown = (value) => {
@@ -278,7 +286,7 @@ const Inserisci_prenotazione = ({ route, navigation }) => {
 
 	return (
 		<View style={styles.maincontainer}>
-			<HeaderBar title="Nuova prenotazione" navigator={navigation} />
+			<HeaderBar title="Nuova prenotazione" navigator={navigation} insertPage={true} isHost={user.isHost} />
 			<KeyboardAwareScrollView
 				resetScrollToCoords={{ x: 0, y: 0 }}
 				style={styles.bodyScrollcontainer}

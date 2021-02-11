@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet, Alert, BackHandler } from 'react-native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as RecensioneModel from "../firebase/datamodel/RecensioneModel"
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
 
 
 const InserisciRecensioneScreen = ({ route, navigation }) => {
-    const { userId, prenotazione } = route.params;
+    const { user, prenotazione } = route.params;
     const strutturaId = prenotazione.strutturaRef;
     const alloggioId = prenotazione.alloggioRef;
     const prenotazioneId = prenotazione.id;
@@ -80,6 +81,26 @@ const InserisciRecensioneScreen = ({ route, navigation }) => {
     var feedbackPositiveRef = useRef(null);
     var feedbackNegativeRef = useRef(null);
     const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { regular: { fontFamily: 'MontserrantSemiBold', fontWeight: 'normal' } }, colors: { myOwnColor: '#303a52', primary: '#0692d4', text: '#303a52' } }
+
+    const isFocused = useIsFocused();
+
+    //Intercetto della pressione del tasto back per avvisare utente di annullamento dell'operazione
+    const backAction = () => {
+		setShowAlertBackButton(true);
+        return true;
+    };
+
+    useFocusEffect(
+		useCallback(() => {
+			// Do something when the screen is focused
+			BackHandler.addEventListener("hardwareBackPress", backAction);
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
+				BackHandler.removeEventListener("hardwareBackPress", backAction);
+			};
+		}, [isFocused])
+	);
 
     //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
     const validateFormField = () => {
@@ -115,7 +136,7 @@ const InserisciRecensioneScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.maincontainer}>
-            <HeaderBar title="Nuova recensione" navigator={navigation} />
+            <HeaderBar title="Nuova recensione" navigator={navigation} insertPage={true} isHost={user.isHost} />
             <ScrollView style={styles.bodyScrollcontainer}>
                 <View style={styles.scrollContent}>
                     <View style={styles.textInputContainer}>
@@ -185,7 +206,7 @@ const InserisciRecensioneScreen = ({ route, navigation }) => {
                                         var dataSoggiorno = monthNames[dataInizio.getMonth()] + " " + dataInizio.getFullYear();
 
                                         //Attendi finche' non viene creata una nuova recensione
-                                        await RecensioneModel.createRecensioneDocument(strutturaId, alloggioId, prenotazioneId, userId, dataRecensione, dataSoggiorno, punteggio, feedbackNegative, feedbackPositive);
+                                        await RecensioneModel.createRecensioneDocument(strutturaId, alloggioId, prenotazioneId, user.userId, dataRecensione, dataSoggiorno, punteggio, feedbackNegative, feedbackPositive);
 
                                         //Resetta i campi e stati
                                         resetState();
@@ -232,7 +253,17 @@ const InserisciRecensioneScreen = ({ route, navigation }) => {
                 onOkPress={() => {
                     //Resetta i campi
                     resetState();
-                    navigation.goBack();
+                    if(user.isHost){
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'HomeHost',  params: { userId: user.userId }}],
+                        }); //resetta lo stack quando si ritorna nella Home
+                      }else{
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'HomeGuest',  params: { userId: user.userId }}],
+                        }); //resetta lo stack quando si ritorna nella Home
+                      }
                 }} />
         </View>
     );

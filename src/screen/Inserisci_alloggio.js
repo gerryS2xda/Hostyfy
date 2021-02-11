@@ -251,6 +251,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                 numMaxPersone: alloggioState.numMaxPersone, piano: alloggioState.piano, descrizione: alloggioState.descrizione,
                 pathvideo: alloggioState.pathvideo, isAlloggioStateUpdate: true});
         }
+        BackHandler.addEventListener("hardwareBackPress", this.backAction);
     }  
     
     componentDidUpdate() {    
@@ -261,6 +262,11 @@ export default class InserisciAlloggioScreen extends React.Component {
                 numMaxPersone: alloggioState.numMaxPersone, piano: alloggioState.piano, descrizione: alloggioState.descrizione,
                 pathvideo: alloggioState.pathvideo, isAlloggioStateUpdate: true});
         }
+    }
+
+    //Invocato quando la componente sta per essere rimossa (mediante navigation.reset())
+    componentWillUnmount() {
+       BackHandler.removeEventListener("hardwareBackPress", this.backAction);
     }
 
     render() {
@@ -284,7 +290,7 @@ export default class InserisciAlloggioScreen extends React.Component {
                         </Modal>
                     )
                 }
-                <HeaderBar title="Nuovo alloggio" navigator={this.props.navigation} />
+                <HeaderBar title="Nuovo alloggio" navigator={this.props.navigation} insertPage={true} isHost={user.isHost} />
                 <ScrollView
                     style={styles.secondScroll}
                     contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
@@ -492,7 +498,10 @@ export default class InserisciAlloggioScreen extends React.Component {
                     this.setState({nomeAlloggio: "", numCamere: "", 
                         numMaxPersone: "", piano: "", descrizione: "", pathvideo: "", showAlertBackButton: false});
                     this.state.scrollRef.current.scrollTo({ x: 0});
-                    this.props.navigation.goBack();
+                    this.props.navigation.reset({
+						index: 0,
+						routes: [{ name: 'HomeHost', params: { userId: user.userIdRef } }],
+					}); //resetta lo stack quando si ritorna nella Home
                   }} />
             </View >
         );

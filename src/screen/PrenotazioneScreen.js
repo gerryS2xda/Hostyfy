@@ -99,7 +99,7 @@ const PrenotazioneScreen = ({ route, navigation }) => {
                         <View style={styles.buttonContainer}>
                             <CustomButton nome="Aggiungi recensione" styleBtn={{ width: "100%", borderRadius: 20}} onPress={() => {
                                 var prenotazioneObj = { id: prenotazioneId, ...prenotazione };
-                                navigation.navigate('InserisciRecensione', { userId: user.userId, prenotazione: prenotazioneObj });
+                                navigation.navigate('InserisciRecensione', { user: user, prenotazione: prenotazioneObj });
                             }} />
                         </View>
                     )}

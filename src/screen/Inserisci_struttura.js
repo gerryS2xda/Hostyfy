@@ -261,6 +261,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                 descrizione: struttState.descrizione, isStrutturaStateUpdate: true
             });
         }
+        BackHandler.addEventListener("hardwareBackPress", this.backAction);
     }
 
     componentDidUpdate() {
@@ -274,6 +275,11 @@ export default class InserisciStrutturaScreen extends React.Component {
                 descrizione: struttState.descrizione, isStrutturaStateUpdate: true
             });
         }
+    }
+
+    //Invocato quando la componente sta per essere rimossa (quando si invoca navigation.reset())
+    componentWillUnmount() {
+       BackHandler.removeEventListener("hardwareBackPress", this.backAction);
     }
     
     render() {
@@ -296,7 +302,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                         </Modal>
                     )
                 }
-                <HeaderBar title="Nuova struttura" navigator={this.props.navigation} />
+                <HeaderBar title="Nuova struttura" navigator={this.props.navigation} insertPage={true} isHost={user.isHost} />
                 <ScrollView
                     style={styles.secondScroll}
                     contentContainerStyle={{ flexGrow: 1, justifyContent: "center" }}
@@ -564,7 +570,10 @@ export default class InserisciStrutturaScreen extends React.Component {
                         denominazione: "", via: "", citta: "", cap: "", provincia: "", regione: "", nazione: "", 
                             tipologia: "", numeroAlloggi: "", descrizione: "", showAlertBackButton: false});
                     this.state.scrollRef.current.scrollTo({ x: 0})
-                    this.props.navigation.goBack();
+                    this.props.navigation.reset({
+						index: 0,
+						routes: [{ name: 'HomeHost', params: { userId: user.userIdRef } }],
+					}); //resetta lo stack quando si ritorna nella Home
                   }} />
             </View >
         );

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { View,ScrollView, StyleSheet, Alert, BackHandler} from 'react-native';
+import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel"; 
@@ -70,6 +71,25 @@ export default InserisciCleanService = ({route, navigation}) =>{
     const [showAlertErrorField, setShowAlertErrorField] = useState(false);
     const [showAlertBackButton, setShowAlertBackButton] = useState(false);
     const [messageAlert, setMessageAlert] = useState("");
+    const isFocused = useIsFocused();
+
+    //Intercetto della pressione del tasto back per avvisare utente di annullamento dell'operazione
+    const backAction = () => {
+		setShowAlertBackButton(true);
+        return true;
+    };
+
+    useFocusEffect(
+		useCallback(() => {
+			// Do something when the screen is focused
+			BackHandler.addEventListener("hardwareBackPress", backAction);
+			return () => {
+				// Do something when the screen is unfocused
+				// Useful for cleanup functions
+				BackHandler.removeEventListener("hardwareBackPress", backAction);
+			};
+		}, [isFocused])
+	);
 
     //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
     const validateFormField = ()=>{
@@ -106,7 +126,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
     
     return (
             <View style={styles.maincontainer}>
-                <HeaderBar title="Nuova ditta di pulizie" navigator={navigation} />
+                <HeaderBar title="Nuova ditta di pulizie" navigator={navigation} insertPage={true} isHost={user.isHost} />
                 <ScrollView 
                     style={styles.bodyScrollcontainer}
                     contentContainerStyle={styles.container}>
@@ -205,7 +225,10 @@ export default InserisciCleanService = ({route, navigation}) =>{
                   onOkPress={()=>{ 
                     //Resetta i campi
                     resetState();
-                    navigation.navigate('ModificaCleanService', {user: user, id: id});
+                    navigation.reset({
+						index: 0,
+						routes: [{ name: 'HomeHost', params: { userId: user.userIdRef } }],
+					}); //resetta lo stack quando si ritorna nella Home
                   }} />
             </View>
         )
