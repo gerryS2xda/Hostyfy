@@ -9,6 +9,8 @@ const CustomAlertTextInput = (props) => {
     const textInputRef = useRef(null); 
     const textInputSecondRef = useRef(null);
     const [dateInput, setDateInput] = useState("");
+    const keyboardTypeFirstInput = props.keyboardTypeFirstInput || "default";
+    const keyboardTypeSecondInput = props.keyboardTypeSecondInput || "default";
     const isSecondTextInputVisibile = false || props.showSecondTxtInput;
     const isDatePickerInputVisibile = false || props.showDatePickerTxtInput;
 
@@ -26,6 +28,7 @@ const CustomAlertTextInput = (props) => {
                         ref={textInputRef}
                         placeholder={props.placeholder}
                         onChangeText={(text) => props.setTextData(text)}
+                        keyboardType={keyboardTypeFirstInput}
                     />
                     </View>
                     {isDatePickerInputVisibile && (
@@ -46,6 +49,7 @@ const CustomAlertTextInput = (props) => {
                             placeholder={props.placeholderSecondInput}
                             onChangeText={(text) => props.setSecondTextData(text)}
                             secureTextEntry={true}
+                            keyboardType={keyboardTypeSecondInput}
                         />
                         </View>
                     )}

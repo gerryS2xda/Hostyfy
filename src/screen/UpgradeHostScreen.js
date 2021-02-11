@@ -59,6 +59,7 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                                 buttonName="Procedi"
                                 placeholder = "E-mail"
                                 setTextData={setEmailWebAlloggiati}
+                                keyboardTypeFirstInput="email-address"
                                 showSecondTxtInput={true}
                                 placeholderSecondInput="Password"
                                 setSecondTextData={setPasswordWebAlloggiati}
@@ -95,6 +96,7 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                                 buttonName="Conferma"
                                 placeholder = "Numero carta"
                                 setTextData={setNumeroCartaValue}
+                                keyboardTypeFirstInput="numeric"
                                 showDatePickerTxtInput={true}
                                 placeholderDateInput="Data scadenza"
                                 dateValue={valueDataScadenza}
@@ -102,6 +104,7 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                                 showSecondTxtInput={true}
                                 placeholderSecondInput="CCV"
                                 setSecondTextData={setCCVValue}
+                                keyboardTypeSecondInput="numeric"
                                 onOkPress={()=>{
                                     setThirdDialogVisible(false);
                                     setShowUpgradeAlert(true);

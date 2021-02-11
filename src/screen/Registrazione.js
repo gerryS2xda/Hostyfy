@@ -161,22 +161,27 @@ const Registrazione = (props) => {
                 style={styles.input}
                 placeholder='Nome'
                 onChangeText={(nome) => setNome(nome)}
+                value={nome}
               />
               <TextInput
                 style={styles.input}
                 placeholder='Cognome'
                 onChangeText={(cognome) => setCognome(cognome)}
+                value={cognome}
               />
               <TextInput
                 style={styles.input}
                 placeholder='Email'
                 onChangeText={(email) => setEmail(email)}
+                keyboardType="email-address"
+                value={email}
               />
               <TextInput
                 style={styles.input}
                 placeholder='Password'
                 onChangeText={(password) => setPassword(password)}
                 secureTextEntry={true}
+                value={password}
               />
 
               <TextInput
@@ -184,6 +189,7 @@ const Registrazione = (props) => {
                 placeholder='Conferma Password'
                 onChangeText={(confermaPassword) => setConfermaPassword(confermaPassword)}
                 secureTextEntry={true}
+                value={confermaPassword}
               />
 
               <View style={styles.buttonCustomizzato}>
@@ -208,8 +214,10 @@ const Registrazione = (props) => {
                         });
 
                       }).catch(function (error) {
-                        if (!errore) setErrore(true);
-                        resetState();
+                        if (!errore){
+                          resetState();
+                          setErrore(true);
+                        } 
                       });
                     }
                   }

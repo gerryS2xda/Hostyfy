@@ -383,7 +383,9 @@ const Modifica_profilo = ({ route, navigation }) => {
                   editable={IsEditable}
                   value={email}
                   onChangeText={(email) => setEmail(email)}
-                  theme={theme} />
+                  theme={theme}
+                  keyboardType="email-address"
+                  />
 
                 <TextInput
                   mode='outlined'

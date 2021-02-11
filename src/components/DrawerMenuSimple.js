@@ -47,32 +47,38 @@ const Drawer = createDrawerNavigator();
 var db = firebase.firestore();
 
 const DrawerMenuSimple = ({navigation}) =>{
-
-    //NOTA: il valore di currentUser e' null alla prima lettura di questa pagina da parte di "App.js", viene settata ogni volta che si apre il drawer menu
-    var userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "unknown user";
+      
     const [user, setUser] = useState({});
     
     useEffect(() => {
-        const getUserAccount = async ()=>{
-            if(userId !== "unknown user"){
-                var guestDoc = await GuestModel.getGuestDocument(userId);
-                var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
-                if(guestDoc.isHost){ //verifica se guest e' anche un host
-                    var hostDoc = await HostModel.getHostDocument(userId);
-                    setUser({...guestDoc, ...creditcardDoc, ...hostDoc});
+        //NOTA: questa soluzione permette l'invocazione di useEffect ogni volta che si apre e chiude il drawer menu
+        //Tuttavia, comporta un numero elevato di lettura 
+        const unsubscribe = navigation.addListener('state', () => {
+            // do something
+            const getUserAccount = async ()=>{
+                //NOTA: il valore di currentUser e' null alla prima lettura di questa pagina da parte di "App.js", viene settata ogni volta che si apre il drawer menu
+                var userId = firebase.auth().currentUser ? firebase.auth().currentUser.uid : "unknown user"; 
+                if(userId !== "unknown user"){
+                    var guestDoc = await GuestModel.getGuestDocument(userId);
+                    var creditcardDoc = await GuestModel.getGuestCreditCardDocument(userId);
+                    if(guestDoc.isHost){ //verifica se guest e' anche un host
+                        var hostDoc = await HostModel.getHostDocument(userId);
+                        setUser({...guestDoc, ...creditcardDoc, ...hostDoc});
+                    }else{
+                        setUser({...guestDoc, ...creditcardDoc});
+                    }
                 }else{
-                    setUser({...guestDoc, ...creditcardDoc});
+                    return Promise.reject("UserID is 'unknown', please wait for login");
                 }
-            }else{
-                return Promise.reject("UserID is 'unknown', please wait for login");
             }
-        }
-
-        getUserAccount().catch(function (err) { console.log("ERROR in DrawerMenuSimple: " + err); });
-      }, [userId]);
     
+            getUserAccount().catch(function (err) { console.log("ERROR in DrawerMenuSimple: " + err); });
+        });
+        return unsubscribe;
+      }, [navigation]); //la soluzione precedente si basava sul fatto che useEffect veniva invocato ogni volta che il contenuto di 'userId' subiva modifiche 
+
     return( 
-        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userId={userId} userProps={user} />}>
+        <Drawer.Navigator drawerContent={(props) => <DrawerContentCustom {...props} userId={user.userId} userProps={user} />}>
             <Drawer.Screen name="WelcomePage" component={WelcomeScreen} options={{title: 'Welcome', swipeEnabled: false}} />
             <Drawer.Screen name="Home" component={LoginScreen} options={{
                 title: 'Home', 
@@ -127,6 +133,7 @@ function DrawerContentCustom(props){
     //<Icon>
     const colorIcon = "black";
     const sizeIcon = 24;
+    
     //gestione dello switch Guest<>Host
     const [isHost, setIsHost] = useState(userLogged.isHost);
     const toggleSwitchGuestHost = () => {
@@ -143,6 +150,10 @@ function DrawerContentCustom(props){
             }); //resetta lo stack quando si ritorna nella Home
         }
     };
+    if(!userLogged.isHost && isHost){ //se l'utente loggato non è host, setta isHost a false
+        setIsHost(false);
+    }
+
     const [isUpgradePay, setIsUpgradePay] = useState(true); 
 
     if(!isHost){

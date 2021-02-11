@@ -158,6 +158,8 @@ const Login = (props) => {
               style={styles.input}
               placeholder='Email'
               onChangeText={(email) => setEmail(email)}
+              value={email}
+              keyboardType="email-address"
             />
 
             <TextInput
@@ -165,6 +167,7 @@ const Login = (props) => {
               placeholder='Password'
               onChangeText={(password) => setPassword(password)}
               secureTextEntry={true}
+              value={password}
             />
 
             <CustomButton
@@ -184,8 +187,10 @@ const Login = (props) => {
                   });
                 }).catch(function (err) {
                   console.log("ERROR in Login.js:" + err);
-                  if (!errore) setErrore(true);
-                  resetState();
+                  if (!errore){
+                    resetState();
+                    setErrore(true);
+                  }
                 });
 
               }} />
