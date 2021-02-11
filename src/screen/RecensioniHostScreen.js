@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   fieldSet: {
-    height: "35%",
+    height: 270,
     //paddingHorizontal: 10,
     alignItems: 'center',
     borderColor: '#e4eded',
