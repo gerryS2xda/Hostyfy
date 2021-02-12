@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Text, View, Image, ScrollView, StyleSheet, Alert, Dimensions } from 'react-native';
+import { Text, View, Image, ScrollView, StyleSheet, Alert, Dimensions, Modal, ActivityIndicator } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
+import {firebase} from "../firebase/config"
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as StrutturaModel from "../firebase/datamodel/StrutturaModel";
@@ -11,6 +12,9 @@ import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'expo-image-picker';
+
+//Firebase
+var storageRef = firebase.storage().ref(); // create a storage reference from our storage service
 
 const styles = StyleSheet.create({
     maincontainer: {
@@ -212,9 +216,10 @@ const ModificaStruttura = ({ route, navigation }) => {
     //Dichiarazione variabili e init dello stato
     const { user, strutturaId } = route.params;
     const [IsEditable, setIsEditable] = useState(false);
-    const [carouselItems, setCarouselItems] = useState([]);
+    const [carouselItems, setCarouselItems] = useState([]);  //contenitore delle foto da mostrare nello slideshow
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
+    const [strutturaDoc, setStrutturaDoc] = useState({});
     const [denominazione, setDenominazione] = useState("");
     const [via, setVia] = useState("");
     const [citta, setCitta] = useState("");
@@ -229,17 +234,35 @@ const ModificaStruttura = ({ route, navigation }) => {
     const [showAlertNoFeature, setShowAlertNoFeature] = useState(false);
     const [message, setMessage] = useState("");
     const [showAlert, setShowAlert] = useState(false);
+    const [showAlertNoAction, setShowAlertNoAction] = useState(false); //usato per indicare che NON deve fare niente se preme Ok
+    const [modalLoadingVisibility, setModalLoadingVisibility] = useState(false);
+    const [photoToUpload, setPhotoToUpload] = useState([]); //array di object [{index: x, uri: y},...]
     const scrollRef = useRef();
+    const scrollRefVerticalScrollView = useRef();
+
+    //Resetta lo stato
+    const resetState = () =>{
+        if (IsEditable) 
+            setIsEditable(false);
+        if(photoToUpload>0)
+            setPhotoToUpload([]);
+        if(modalLoadingVisibility)
+            setModalLoadingVisibility(false);
+        //Resetta lo scroll all'inizio
+        scrollRefVerticalScrollView.current.scrollTo({y: 0});
+    }
 
     //Caricamento dei dati non appena inizia il rendering dell'applicazione
     useFocusEffect(
         useCallback(() => {
             // Do something when the screen is focused
-            if (IsEditable) {
-                setIsEditable(false);
-            }
+            resetState();
 
             async function getStrutturaData() {
+
+                if(!modalLoadingVisibility){
+                    setModalLoadingVisibility(true);
+                }
 
                 //Attendi finche' non ottieni dati della struttura dal DB
                 var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
@@ -272,6 +295,10 @@ const ModificaStruttura = ({ route, navigation }) => {
                 setNumAlloggi(strutturaDoc.numAlloggi);
                 setDescrizione(strutturaDoc.descrizione);
                 setCarouselItems(fotoList);
+               
+                if(!modalLoadingVisibility){
+                    setModalLoadingVisibility(false);
+                }
             }
             getStrutturaData();
             return () => {
@@ -281,12 +308,55 @@ const ModificaStruttura = ({ route, navigation }) => {
         }, [isFocused])
     );
 
+    //funzione per caricare video di benvenuto per l'alloggio
+    const selectImageToUpload = async (index) =>{  //index: indica che è stata selezionata per la modifica 
+        //verifica se sono stati concessi i permessi per accedere alla galleria
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+            setMessage("Sono necessari i permessi di accesso alla fotocamera e galleria per poter inserire contenuti multimediali!");
+            setShowAlert(true);
+            return;
+        }
+
+        //Seleziona il video da caricare
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, //accetta solo immagini
+            allowsEditing: false,
+            allowsMultipleSelection: false, //funziona solo su web
+            aspect: [4, 3],
+            quality: 1,
+        });
+      
+        if (result.cancelled) {
+            setMessage("Si è verificato un problema durante il caricamento dell'immagine. Riprova di nuovo.");
+            setShowAlert(true);
+        }else{
+            photoToUpload.push({index: index, uri: result.uri});
+            setPhotoToUpload(photoToUpload);
+        }
+    }
+    
     return (
         <View style={styles.maincontainer}>
+            {
+                modalLoadingVisibility && (
+                    <Modal
+                        transparent={true}
+                        visible={modalLoadingVisibility}>
+                        <View style={{ flex: 1, backgroundColor: "#000000aa", justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
+                                <Text style={styles.progressHeader}>Loading...</Text>
+                                <ActivityIndicator size="large" color="#0692d4" />
+                            </View>
+                        </View>
+                    </Modal>
+                )
+            }
             <HeaderBar title={"Modifica struttura"} navigator={navigation} />
             <ScrollView
                 style={styles.bodyScrollcontainer}
-                contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
+                contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
+                ref={scrollRefVerticalScrollView}>
 
                 <ScrollView
                     pagingEnabled={true}
@@ -305,8 +375,30 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     dataSource={carouselItems}
                                     arrowSize={17}
                                     height={300}
-                                    onPress={() =>{
+                                    onPress={(selectedImage) =>{
+                                        if(!IsEditable){
+                                            setMessage("Premi il pulsante \"Modifica\" per cambiare o aggiungere una foto. Infine, premi \"Applica\" per salvare le modifiche.");
+                                            setShowAlertNoAction(true);
+                                        }else{
+                                            async function onPressSelectedImage(index){
+                                                //Seleziona la foto da caricare nel DB
+                                                selectImageToUpload(index);    
+                                            }
+                                            onPressSelectedImage(selectedImage.index);
+                                        }
+
+                                        
+                                        
+                                        /*
+                                        console.log(x);
+                                        for(var i = 0; i<carouselItems.length; i++){
+                                            if(x.index == i){
+                                                carouselItems[i] = { url: require("../../assets/imagenotfound.png")};      
+                                            }
+                                        }
+                                        setCarouselItems(carouselItems);
                                         setShowAlertNoFeature(true);
+                                        */
                                     }}
                                     caption="Clicca per modificare le foto"
                                 />
@@ -447,10 +539,35 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     nome={IsEditable ? 'Applica' : "Modifica"}
                                     onPress={() => {
                                         IsEditable ? setIsEditable(false) : setIsEditable(true);
+                                        scrollRefVerticalScrollView.current.scrollTo({y: 0});
                                         async function updateStruttura() {
                                             if (IsEditable) {
+                                                if(!modalLoadingVisibility){
+                                                    setModalLoadingVisibility(true);
+                                                }
+
+                                                //Verifica che se vi sono foto da cambiare -> sostituisci le nuove foto
+                                                if(photoToUpload.length > 0){
+                                                    //Attendi finche' non ottieni dati della struttura dal DB
+                                                    var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
+                                                    var fotoArray = Object.values(strutturaDoc.fotoList); //restituisce gli URL delle foto in un array JS
+                                                    for(var i = 0; i < photoToUpload.length; i++){
+                                                        var photoPath = "struttura/" + strutturaId + "/" + strutturaDoc.denominazione + "/" + photoToUpload[i].index;
+                                                        var photoURL = await uploadMediaAndGetDownloadURL(photoToUpload[i].uri, photoPath);
+                                                        fotoArray[photoToUpload[i].index] = photoURL;
+                                                    }
+
+                                                    //Attendi completamento dell'aggiornamento del campo foto di quella struttura
+                                                    await StrutturaModel.updateFotoField(strutturaId, Object.assign({}, fotoArray));
+                                                }
+                                                
+                                                //Attendi il completamento della modifica i dati relativi alla struttura
                                                 var indirizzo = { via: via, citta: citta, cap: cap, provincia: provincia, regione: regione, nazione: nazione };
                                                 await StrutturaModel.updateStrutturaDocument(strutturaId, denominazione, descrizione, indirizzo, "", numAlloggi, tipologia);
+                                                
+                                                if(!modalLoadingVisibility){
+                                                    setModalLoadingVisibility(false);
+                                                }
                                                 setMessage("Le modifiche sono state apportate correttamente!");
                                                 setShowAlert(true);
                                             }
@@ -499,9 +616,65 @@ const ModificaStruttura = ({ route, navigation }) => {
                     setShowAlert(false); 
                     navigation.navigate("LeMieStrutture", {user: user});
                   }} />
+            <CustomAlertGeneral
+                visibility={showAlertNoAction}
+                titolo="Modifica struttura"
+                testo= {message}
+                hideNegativeBtn={true}
+                buttonName="Ok"
+                onOkPress={()=>{ 
+                    setShowAlertNoAction(false);  
+                }} />
         </View>
     );
 
 }
 
 export default ModificaStruttura;
+
+//Function for upload a multimedia content and obtain a download URL
+async function uploadMediaAndGetDownloadURL(uri, pathMedia){
+    var downloadURL = "";
+    const response = await fetch(uri);
+    const blob = await response.blob(); 
+    var ref = storageRef.child(pathMedia);
+
+    // Upload file and metadata to the object
+    var uploadTask= ref.put(blob);
+
+    // Listen for state changes, errors, and completion of the upload.
+    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+        (snapshot)=> {
+            switch (snapshot.state) {
+                case firebase.storage.TaskState.RUNNING: // or 'paused'
+                    break;
+                case firebase.storage.TaskState.SUCCESS: 
+                    break;
+                case firebase.storage.TaskState.ERROR: 
+                console.log("Si è verificato un problema durante il caricamento dell'immagine o video. Si prega di riprovare o controllare lo stato della connessione.");
+                break;
+            }
+        }, (error)=> {
+        switch (error.code) {
+        case 'storage/unauthorized': 
+            console.log("User doesn't have permission to access the object");
+            break;
+        case 'storage/canceled':
+            console.log("User canceled the upload");
+            break;
+        case 'storage/unknown':
+            console.log("Unknown error occurred, inspect error.serverResponse");
+            break;
+        }
+    });
+
+    try {
+        await uploadTask;  //attendi completamento di upload Task
+        // Upload completed successfully, now we can get the download URL
+        downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+        console.log('File available at', downloadURL);
+      } catch (e) {
+        console.log("UploadImageError: " + e);
+    }
+    return downloadURL; 
+}

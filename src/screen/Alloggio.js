@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import {Text, View, Image,ScrollView, Alert, StyleSheet, TextInput, Dimensions} from 'react-native';
+import {Text, View, Image,ScrollView, Alert, StyleSheet, TextInput, Dimensions, Modal, ActivityIndicator} from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import Carousel from 'react-native-snap-carousel';
 import HeaderBar from '../components/CustomHeaderBar';
@@ -149,7 +149,6 @@ const styles = StyleSheet.create({
 const AlloggioScreen = ({route, navigation}) =>{
 
     const {user, strutturaId, alloggioId} = route.params;
-    const [IsEditable, setIsEditable] = useState(false);
     const [carouselItems, setCarouselItems] = useState([]);
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
@@ -158,17 +157,29 @@ const AlloggioScreen = ({route, navigation}) =>{
     const [numMaxPersone, setNumMaxPersone] = useState("");
     const [piano, setPiano] = useState("");
     const [descrizione, setDescrizione] = useState("");
+    const [modalLoadingVisibility, setModalLoadingVisibility] = useState(false);
     const scrollRef = useRef();
+    const scrollRefVerticalScrollView = useRef();
+
+    //Resetta lo stato
+    const resetState = () =>{
+        if(modalLoadingVisibility)
+            setModalLoadingVisibility(false);
+        //Resetta lo scroll all'inizio
+        scrollRefVerticalScrollView.current.scrollTo({y: 0});
+    }
    
-        //Caricamento dei dati non appena inizia il rendering dell'applicazione
-        useFocusEffect(
-            useCallback(() => {
+    //Caricamento dei dati non appena inizia il rendering dell'applicazione
+    useFocusEffect(
+        useCallback(() => {
             // Do something when the screen is focused
-            if(IsEditable){
-                setIsEditable(false);
-            }
+            resetState();
     
             async function getAlloggioData(){
+               
+                if(!modalLoadingVisibility){
+                    setModalLoadingVisibility(true);
+                }
                
                 //Attendi finche' non ottieni dati dell'alloggio dal DB
                 var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
@@ -189,8 +200,11 @@ const AlloggioScreen = ({route, navigation}) =>{
                 setNumMaxPersone(alloggioDoc.numMaxPersone);
                 setPiano(alloggioDoc.piano);
                 setDescrizione(alloggioDoc.descrizione);
-               
                 setCarouselItems(fotoList);
+                
+                if(!modalLoadingVisibility){
+                    setModalLoadingVisibility(false);
+                }
             }
             getAlloggioData();
             return () => {
@@ -199,14 +213,29 @@ const AlloggioScreen = ({route, navigation}) =>{
             };
             }, [isFocused])
         );
-
+        
        
         return (
             <View style={styles.maincontainer}>
+                {
+                    modalLoadingVisibility && (
+                        <Modal
+                            transparent={true}
+                            visible={modalLoadingVisibility}>
+                            <View style={{ flex: 1, backgroundColor: "#000000aa", justifyContent: "center", alignItems: "center" }}>
+                                <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
+                                    <Text style={styles.progressHeader}>Loading...</Text>
+                                    <ActivityIndicator size="large" color="#0692d4" />
+                                </View>
+                            </View>
+                        </Modal>
+                    )
+                }
             <HeaderBar title={"Alloggio"} navigator={navigation} />
             <ScrollView
                 style={styles.bodyScrollcontainer}
-                contentContainerStyle={{ justifyContent: "center", alignItems: "flex-start"}}>
+                contentContainerStyle={{ justifyContent: "center", alignItems: "flex-start"}}
+                ref={scrollRefVerticalScrollView}>
 
                 <ScrollView
                     pagingEnabled={true}

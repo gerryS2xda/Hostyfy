@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import { Text, View, Image, ScrollView, StyleSheet, Alert, Dimensions } from 'react-native';
+import { Text, View, Image, ScrollView, StyleSheet, Alert, Dimensions, Modal, ActivityIndicator } from 'react-native';
 import { useIsFocused, useFocusEffect } from '@react-navigation/native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
@@ -174,9 +174,7 @@ const StrutturaScreen = ({ route, navigation }) => {
     //campi 
     const { user, strutturaId } = route.params;
 
-    const [IsEditable, setIsEditable] = useState(false);
     const [carouselItems, setCarouselItems] = useState([]);
-
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
 
@@ -184,10 +182,8 @@ const StrutturaScreen = ({ route, navigation }) => {
     const [via, setVia] = useState("");
     const [citta, setCitta] = useState("");
     const [provincia, setProvincia] = useState("");
-
     const [cap, setCap] = useState("");
     const [nazione, setNazione] = useState("");
-
     const [tipologia, setTipologia] = useState("");
     const [numAlloggi, setNumAlloggi] = useState("");
     const [descrizione, setDescrizione] = useState("");
@@ -195,18 +191,28 @@ const StrutturaScreen = ({ route, navigation }) => {
     const [showAlertNextFeature, setShowAlertNextFeature] = useState(false);
 
     const scrollRef = useRef();
+    const scrollRefVerticalScrollView = useRef();
+    const [modalLoadingVisibility, setModalLoadingVisibility] = useState(false);
 
-
+    //Resetta lo stato
+    const resetState = () =>{
+        if(modalLoadingVisibility)
+            setModalLoadingVisibility(false);
+        //Resetta lo scroll all'inizio
+        scrollRefVerticalScrollView.current.scrollTo({y: 0});
+    }
 
     //Caricamento dei dati non appena inizia il rendering dell'applicazione
     useFocusEffect(
         useCallback(() => {
             // Do something when the screen is focused
-            if (IsEditable) {
-                setIsEditable(false);
-            }
+            resetState();
 
             async function getStrutturaData() {
+
+                if(!modalLoadingVisibility){
+                    setModalLoadingVisibility(true);
+                }
 
                 //Attendi finche' non ottieni dati della struttura dal DB
                 var strutturaDoc = await StrutturaModel.getStrutturaDocumentById(strutturaId);
@@ -238,6 +244,10 @@ const StrutturaScreen = ({ route, navigation }) => {
                 setNumAlloggi(strutturaDoc.numAlloggi);
                 setDescrizione(strutturaDoc.descrizione);
                 setCarouselItems(fotoList);
+
+                if(!modalLoadingVisibility){
+                    setModalLoadingVisibility(false);
+                }
             }
             getStrutturaData();
             return () => {
@@ -249,10 +259,25 @@ const StrutturaScreen = ({ route, navigation }) => {
 
     return (
         <View style={styles.maincontainer}>
+            {
+                modalLoadingVisibility && (
+                    <Modal
+                        transparent={true}
+                        visible={modalLoadingVisibility}>
+                        <View style={{ flex: 1, backgroundColor: "#000000aa", justifyContent: "center", alignItems: "center" }}>
+                            <View style={{ backgroundColor: "white", padding: 10, borderRadius: 5, width: "80%", alignItems: "center" }}>
+                                <Text style={styles.progressHeader}>Loading...</Text>
+                                <ActivityIndicator size="large" color="#0692d4" />
+                            </View>
+                        </View>
+                    </Modal>
+                )
+            }
             <HeaderBar title={"Struttura"} navigator={navigation} />
             <ScrollView
                 style={styles.bodyScrollcontainer}
-                contentContainerStyle={{ justifyContent: "center", alignItems: "flex-start"}}>
+                contentContainerStyle={{ justifyContent: "center", alignItems: "flex-start"}}
+                ref={scrollRefVerticalScrollView}>
 
                 <ScrollView
                     pagingEnabled={true}

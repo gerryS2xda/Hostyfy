@@ -228,18 +228,34 @@ const ModificaAlloggio = ({ route, navigation }) => {
     const [message, setMessage] = useState("");
     const [showAlert, setShowAlert] = useState(false);
     const [modalUploadVisibility, setModalUploadVisibility] = useState(false);
+    const [showAlertNoAction, setShowAlertNoAction] = useState(false); //usato per indicare che NON deve fare niente se preme Ok
+    const [photoToUpload, setPhotoToUpload] = useState([]); //array di object [{index: x, uri: y},...]
     const scrollRef = useRef();
+    const scrollRefVerticalScrollView = useRef();
 
+    //Resetta lo stato
+    const resetState = () =>{
+        if (IsEditable) 
+            setIsEditable(false);
+        if(photoToUpload>0)
+            setPhotoToUpload([]);
+        if(modalUploadVisibility)
+            setModalUploadVisibility(false);
+        //Resetta lo scroll all'inizio
+        scrollRefVerticalScrollView.current.scrollTo({y: 0});
+    }
 
     //Caricamento dei dati non appena inizia il rendering dell'applicazione
     useFocusEffect(
         useCallback(() => {
             // Do something when the screen is focused
-            if (IsEditable) {
-                setIsEditable(false);
-            }
+            resetState();
 
             async function getAlloggioData() {
+
+                if(!modalUploadVisibility){
+                    setModalUploadVisibility(true);
+                }
 
                 //Attendi finche' non ottieni dati dell'alloggio dal DB
                 var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
@@ -260,8 +276,11 @@ const ModificaAlloggio = ({ route, navigation }) => {
                 setNumMaxPersone(alloggioDoc.numMaxPersone);
                 setPiano(alloggioDoc.piano);
                 setDescrizione(alloggioDoc.descrizione);
-
                 setCarouselItems(fotoList);
+
+                if(!modalUploadVisibility){
+                    setModalUploadVisibility(false);
+                }
             }
             getAlloggioData();
             return () => {
@@ -298,6 +317,33 @@ const ModificaAlloggio = ({ route, navigation }) => {
         }
     }
 
+    //funzione per caricare video di benvenuto per l'alloggio
+    const selectImageToUpload = async (index) =>{  //index: indica che è stata selezionata per la modifica 
+        //verifica se sono stati concessi i permessi per accedere alla galleria
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+            setMessage("Sono necessari i permessi di accesso alla fotocamera e galleria per poter inserire contenuti multimediali!");
+            setShowAlert(true);
+            return;
+        }
+
+        //Seleziona il video da caricare
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images, //accetta solo immagini
+            allowsEditing: false,
+            allowsMultipleSelection: false, //funziona solo su web
+            aspect: [4, 3],
+            quality: 1,
+        });
+      
+        if (result.cancelled) {
+            setMessage("Si è verificato un problema durante il caricamento dell'immagine. Riprova di nuovo.");
+            setShowAlert(true);
+        }else{
+            photoToUpload.push({index: index, uri: result.uri});
+            setPhotoToUpload(photoToUpload);
+        }
+    }
 
 
     return (
@@ -319,7 +365,8 @@ const ModificaAlloggio = ({ route, navigation }) => {
             <HeaderBar title={"Modifica alloggio"} navigator={navigation} />
             <ScrollView
                 style={styles.bodyScrollcontainer}
-                contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}>
+                contentContainerStyle={{ justifyContent: "center", alignItems: "center" }}
+                ref={scrollRefVerticalScrollView}>
 
                 <ScrollView
                     pagingEnabled={true}
@@ -338,7 +385,18 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     dataSource={carouselItems}
                                     arrowSize={17}
                                     height={300}
-                                    onPress={() => setShowAlertNoFeature(true)}
+                                    onPress={(selectedImage) =>{
+                                        if(!IsEditable){
+                                            setMessage("Premi il pulsante \"Modifica\" per cambiare o aggiungere una foto. Infine, premi \"Applica\" per salvare le modifiche.");
+                                            setShowAlertNoAction(true);
+                                        }else{
+                                            async function onPressSelectedImage(index){
+                                                //Seleziona la foto da caricare nel DB
+                                                selectImageToUpload(index);    
+                                            }
+                                            onPressSelectedImage(selectedImage.index);
+                                        }
+                                    } }
                                     caption="Clicca per modificare le foto"
                                 />
 
@@ -418,20 +476,39 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     nome={IsEditable ? 'Applica' : "Modifica"}  
                                     onPress={()=> { 
                                         IsEditable ? setIsEditable(false) : setIsEditable(true);
+                                        scrollRefVerticalScrollView.current.scrollTo({y: 0});
                                         async function updateAlloggio(){
                                             if(IsEditable){
                                                 if(!modalUploadVisibility){
                                                     setModalUploadVisibility(true);
                                                 }
                                                 
-                                                await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione);
-
+                                                //Verifica che se il video è stato modificato -> sostituisci il video attuale con quello nuovo
                                                 var videoURL = "";
                                                 if(pathVideoURI !== ""){
                                                     var pathVideo = "struttura/"+strutturaId+"/alloggi/" + nomeAlloggio + "/video/welcomevideo";
                                                     videoURL = await uploadMediaAndGetDownloadURL(pathVideoURI, pathVideo);
                                                     await AlloggioModel.updateVideoField(strutturaId, alloggioId, videoURL);
                                                 }
+
+                                                //Verifica che se vi sono foto da cambiare -> sostituisci le nuove foto
+                                                if(photoToUpload.length > 0){
+                                                    //Attendi finche' non ottieni dati dell'alloggio dal DB
+                                                    var alloggioDoc = await AlloggioModel.getAlloggioByStrutturaRef(strutturaId, alloggioId);
+                                                    var fotoArray = Object.values(alloggioDoc.fotoList); //restituisce gli URL delle foto in un array JS
+                                                    for(var i = 0; i < photoToUpload.length; i++){
+                                                        var photoPath = "struttura/" + strutturaId + "/" + alloggioDoc.nomeAlloggio + "/" + photoToUpload[i].index;
+                                                        var photoURL = await uploadMediaAndGetDownloadURL(photoToUpload[i].uri, photoPath);
+                                                        fotoArray[photoToUpload[i].index] = photoURL;
+                                                    }
+
+                                                    //Attendi completamento dell'aggiornamento del campo foto di quell'alloggio
+                                                    await AlloggioModel.updateFotoField(strutturaId, alloggioId, Object.assign({}, fotoArray));
+                                                }
+
+                                                //Attendi il completamento della modifica i dati relativi all'alloggio
+                                                await AlloggioModel.updateAlloggioDocument(strutturaId, alloggioId, nomeAlloggio, numCamere, numMaxPersone, piano, descrizione);
+
                                                 if(!modalUploadVisibility){
                                                     setModalUploadVisibility(false);
                                                 }
@@ -483,6 +560,15 @@ const ModificaAlloggio = ({ route, navigation }) => {
                     setShowAlert(false); 
                     navigation.navigate("VisualizzaAlloggi", { user: user, strutturaId: strutturaId });
                   }} />
+            <CustomAlertGeneral
+                visibility={showAlertNoAction}
+                titolo="Modifica alloggio"
+                testo= {message}
+                hideNegativeBtn={true}
+                buttonName="Ok"
+                onOkPress={()=>{ 
+                    setShowAlertNoAction(false);  
+                }} />
         </View>
     );
 
