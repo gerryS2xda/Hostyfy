@@ -219,7 +219,6 @@ const ModificaStruttura = ({ route, navigation }) => {
     const [carouselItems, setCarouselItems] = useState([]);  //contenitore delle foto da mostrare nello slideshow
     const carouselRef = useRef(null);
     const isFocused = useIsFocused();
-    const [strutturaDoc, setStrutturaDoc] = useState({});
     const [denominazione, setDenominazione] = useState("");
     const [via, setVia] = useState("");
     const [citta, setCitta] = useState("");
@@ -335,6 +334,48 @@ const ModificaStruttura = ({ route, navigation }) => {
             setPhotoToUpload(photoToUpload);
         }
     }
+
+    //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+	const validateFormField = () => {
+		var flag = true; //tutti i campi sono compilati
+		var message = "Attenzione!! Uno dei campi obbligatori è vuoto. Si prega di compilare il campo ";
+		if (denominazione === "") {
+			message += "\"Nome\"";
+			flag = false;
+		} else if (via === "") {
+			message += "\"Via\"";
+			flag = false;
+		} else if (citta === "") {
+			message += "\"Città\"";
+			flag = false;
+		} else if (provincia === "") {
+			message += "\"Provincia\"";
+			flag = false;
+		} else if (cap === "") {
+			message += "\"CAP\"";
+			flag = false;
+        } else if (regione === "") {
+			message += "\"Regione\"";
+			flag = false;
+		} else if (nazione === "") {
+			message += "\"Nazione\"";
+			flag = false;
+		} else if (tipologia === "") {
+			message += "\"Tipologia\"";
+			flag = false;
+		} else if (numAlloggi === "") {
+			message += "\"Numero Alloggi\"";
+			flag = false;
+		} else if (descrizione === "") {
+			message += "\"Descrizione\"";
+			flag = false;
+		}
+		if (!flag) {
+			setMessage(message);
+			setShowAlertNoAction(true);
+		}
+		return flag;
+	}
     
     return (
         <View style={styles.maincontainer}>
@@ -386,19 +427,6 @@ const ModificaStruttura = ({ route, navigation }) => {
                                             }
                                             onPressSelectedImage(selectedImage.index);
                                         }
-
-                                        
-                                        
-                                        /*
-                                        console.log(x);
-                                        for(var i = 0; i<carouselItems.length; i++){
-                                            if(x.index == i){
-                                                carouselItems[i] = { url: require("../../assets/imagenotfound.png")};      
-                                            }
-                                        }
-                                        setCarouselItems(carouselItems);
-                                        setShowAlertNoFeature(true);
-                                        */
                                     }}
                                     caption="Clicca per modificare le foto"
                                 />
@@ -538,8 +566,14 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     styleBtn={{ width: "100%" }}
                                     nome={IsEditable ? 'Applica' : "Modifica"}
                                     onPress={() => {
+                                        //Verifica che tutti i campi siano riempiti
+                                        if (!validateFormField()) {
+                                            return;
+                                        }
+
                                         IsEditable ? setIsEditable(false) : setIsEditable(true);
                                         scrollRefVerticalScrollView.current.scrollTo({y: 0});
+
                                         async function updateStruttura() {
                                             if (IsEditable) {
                                                 if(!modalLoadingVisibility){

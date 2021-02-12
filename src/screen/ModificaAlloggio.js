@@ -345,6 +345,29 @@ const ModificaAlloggio = ({ route, navigation }) => {
         }
     }
 
+    //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+	const validateFormField = () => {
+		var flag = true; //tutti i campi sono compilati
+		var message = "Attenzione!! Uno dei campi obbligatori è vuoto. Si prega di compilare il campo ";
+		if (nomeAlloggio === "") {
+			message += "\"Nome alloggio\"";
+			flag = false;
+		} else if (numCamere === "") {
+			message += "\"Numero camere\"";
+			flag = false;
+		} else if (piano === "") {
+			message += "\"Piano\"";
+			flag = false;
+		} else if (descrizione === "") {
+			message += "\"Descrizione\"";
+			flag = false;
+		}
+		if (!flag) {
+			setMessage(message);
+			setShowAlertNoAction(true);
+		}
+		return flag;
+	}
 
     return (
         <View style={styles.maincontainer}>
@@ -474,7 +497,12 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                 <CustomButton
                                     styleBtn={{width: "100%"}} 
                                     nome={IsEditable ? 'Applica' : "Modifica"}  
-                                    onPress={()=> { 
+                                    onPress={()=> {
+                                        //Verifica che tutti i campi siano riempiti
+                                        if (!validateFormField()) {
+                                            return;
+                                        }
+
                                         IsEditable ? setIsEditable(false) : setIsEditable(true);
                                         scrollRefVerticalScrollView.current.scrollTo({y: 0});
                                         async function updateAlloggio(){
