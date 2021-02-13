@@ -1,9 +1,20 @@
 # Hostyfy - L'ospitabilità intelligente made in Italy
 
+<p align="center" width="100%">
+  <img align="left" src="./assets/disa.jpg" height="80" />
+  <img src="./assets/unisaLogo.png" height="80" />
+  <img src="./assets/appChallenge.png" height="80" />
+  <img align="right" src="./assets/dipartInfLogo.png" height="80" />
+</p>
+
+<p align="center">
+  <img src="./assets/hostyfyLogo.png" height="160" />
+</p>
+
 Progetto universitario per il corso "Enterprise Mobile Application Development" tenuto presso il Dipartimento di Informatica dell'Università degli Studi di Salerno.
 
 ## Scopo del progetto
-Lo scopo del progetto è quello di realizzare un software gestionale 4.0 che permette la gestione di strutture ricettive alberghiere ed extra alberghiere quali hotel, B&B, casa vacanze, etc. Il suo obiettivo è quello di facilitare la collaborazione tra host e guest, ovvero gli utenti a cui sarà destinato questo strumento. Le principali funzionalità che dovrà supportare sono la gestione utente, inserimento e gestione di una struttura, prenotazione di alloggi, check-in & check-out automatizzato e servizi premium per gli host.
+Lo scopo del progetto è quello di realizzare un software gestionale 4.0 che permette la gestione di strutture ricettive alberghiere ed extra alberghiere quali hotel, B&B, casa vacanze, etc. Il suo obiettivo è quello di facilitare la collaborazione tra host e guest, ovvero gli utenti a cui sarà destinato questo strumento. 
 
 ## Features
   - Booking Engine (prenotazione diretta tradizionale)
@@ -25,7 +36,9 @@ Lo scopo del progetto è quello di realizzare un software gestionale 4.0 che per
  - Premium services for Host
 
 ## Tecnologie utilizzate
-
+<p align="center">
+  <img src="./assets/tecnologieUtilizzate.png" height="160" />
+</p>
 
 ## Documentazione associata
  - Requirement Analysis Document (RAD) 
