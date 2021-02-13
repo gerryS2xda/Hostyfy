@@ -445,7 +445,9 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     editable={IsEditable}
                                     value={numCamere}
                                     onChangeText={(numCamere) => { setNumCamere(numCamere) }}
-                                    theme={theme} />
+                                    theme={theme}
+                                    keyboardType="numeric"
+                                />
 
                                 <TextInput
                                     mode='outlined'
@@ -498,15 +500,8 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                     styleBtn={{width: "100%"}} 
                                     nome={IsEditable ? 'Applica' : "Modifica"}  
                                     onPress={()=> {
-                                        //Verifica che tutti i campi siano riempiti
-                                        if (!validateFormField()) {
-                                            return;
-                                        }
-
-                                        IsEditable ? setIsEditable(false) : setIsEditable(true);
-                                        scrollRefVerticalScrollView.current.scrollTo({y: 0});
                                         async function updateAlloggio(){
-                                            if(IsEditable){
+                                            
                                                 if(!modalUploadVisibility){
                                                     setModalUploadVisibility(true);
                                                 }
@@ -541,10 +536,19 @@ const ModificaAlloggio = ({ route, navigation }) => {
                                                     setModalUploadVisibility(false);
                                                 }
                                                 setMessage("Le modifiche sono state apportate correttamente!");
-                                                setShowAlert(true);
-                                            } 
+                                                setShowAlert(true); 
+                                                IsEditable ? setIsEditable(false) : setIsEditable(true);
                                         }
-                                        updateAlloggio();
+                                        if(IsEditable){
+                                            //Verifica che tutti i campi siano riempiti
+                                            if (!validateFormField()) {
+                                                return;
+                                            }
+                                            updateAlloggio();
+                                        }else{
+                                            IsEditable ? setIsEditable(false) : setIsEditable(true);
+                                            scrollRefVerticalScrollView.current.scrollTo({y: 0});
+                                        }
                                     }
                                     }  />
                             </View>

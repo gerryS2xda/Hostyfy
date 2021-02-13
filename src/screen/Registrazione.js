@@ -202,7 +202,7 @@ const Registrazione = (props) => {
                         const userId = firebase.auth().currentUser.uid;
                         
                         await GuestModel.createGuestDocumentForRegistration(userId, cognome, nome, email);
-                        await GuestModel.createCreditCardDocumentGuest(userId, 0, 0, "", new Date());
+                        await GuestModel.createCreditCardDocumentGuest(userId, "", "", "", "");
                         
                         //resetta i campi di login resettando lo stato
                          resetState();

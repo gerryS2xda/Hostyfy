@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
-import Dialog from "react-native-dialog";
 import CustomAlertTextInput from "../components/CustomAlertTextInput";
 import CustomAlertGeneral from "../components/CustomAlertGeneral"
 import CustomButton from "../components/CustomButton";
@@ -16,15 +15,56 @@ const UpgradeHostScreen = ({route, navigation}) =>{
     const [isVisibleSecondDialog, setSecondDialogVisible] = useState(false);
     const [isVisibleThirdDialog, setThirdDialogVisible] = useState(false);
     const [showUpgradeAlert, setShowUpgradeAlert] = useState(false);
-    const [emailWebAlloggiati, setEmailWebAlloggiati] = useState('');
-    const [passwordWebAlloggiati, setPasswordWebAlloggiati] = useState('');
+    const [emailWebAlloggiati, setEmailWebAlloggiati] = useState("");
+    const [passwordWebAlloggiati, setPasswordWebAlloggiati] = useState("");
     var prezzoUpgrade = "80";
-    const [valueNumCarta, setNumeroCartaValue] = useState('');
-    const [valueDataScadenza, setDataScadenzaValue] = useState('');
-    const [valueCCVScadenza, setCCVValue] = useState('');
+    const [valueNumCarta, setNumeroCartaValue] = useState("");
+    const [valueDataScadenza, setDataScadenzaValue] = useState("");
+    const [valueCCV, setCCVValue] = useState("");
+    const [messageAlert, setMessageAlert] = useState("");
+    const [showAlertGeneral, setShowAlertGeneral] = useState(false);
 
-    if(valueDataScadenza !== ""){ //resetta campo per date text input nel CustomAlertTextInput
-        setDataScadenzaValue("");
+    const resetState = () =>{
+        if(emailWebAlloggiati !== "")
+            setEmailWebAlloggiati("");
+        if(passwordWebAlloggiati)
+            setPasswordWebAlloggiati("");    
+        if(valueDataScadenza !== "") //resetta campo per date text input nel CustomAlertTextInput
+            setDataScadenzaValue("");
+        if(valueNumCarta !== "")
+            setNumeroCartaValue("");    
+        if(valueCCV)
+            setCCVValue("");
+    }
+
+    //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+    const validateFormField = (isCreditCardRequired)=>{
+
+        var flag = true; //tutti i campi sono compilati
+        var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+        if(isCreditCardRequired){
+            if(valueNumCarta === ""){
+                message += "\"Numero carta\"";
+                flag = false;
+            }else if(valueDataScadenza === ""){
+                message += "\"Data scadenza\"";
+                flag = false;
+            }else if(valueCCV === ""){
+                message += "\"CCV\"";
+                flag = false;
+            }
+        }else if(emailWebAlloggiati === ""){
+            message += "\"E-mail\"";
+            flag = false;
+        }else if(passwordWebAlloggiati === ""){
+            message += "\"Password\"";
+            flag = false;
+        }
+        if(!flag){
+            setMessageAlert(message);
+            setShowAlertGeneral(true);
+        }
+        return flag;
     }
 
     return(
@@ -46,94 +86,111 @@ const UpgradeHostScreen = ({route, navigation}) =>{
                         <CustomButton 
                             nome="Effettua upgrade" 
                             styleBtn={{width: "90%"}} 
-                            onPress={()=>{ setFirstDialogVisible(true); }} 
+                            onPress={()=>{ 
+                                resetState(); //resetta lo stato prima di iniziare la procedura
+                                setFirstDialogVisible(true); 
+                            }} 
                         />    
                     </View>
-                    {
-                        isVisibleFirstDialog && (
-                            <CustomAlertTextInput
-                                visibility={isVisibleFirstDialog}
-                                setVisibility={setFirstDialogVisible}
-                                titolo="Upgrade Host"
-                                testo="Inserire le proprie credenziale per continuare il processo"
-                                buttonName="Procedi"
-                                placeholder = "E-mail"
-                                setTextData={setEmailWebAlloggiati}
-                                keyboardTypeFirstInput="email-address"
-                                showSecondTxtInput={true}
-                                placeholderSecondInput="Password"
-                                setSecondTextData={setPasswordWebAlloggiati}
-                                onOkPress={()=>{
-                                    setFirstDialogVisible(false);
-                                    setSecondDialogVisible(true);
-                                }} />
-                        )
-                    }
-                    {
-                        isVisibleSecondDialog && (
-                            <CustomAlertGeneral
-                                visibility={isVisibleSecondDialog}
-                                titolo="Upgrade Host"
-                                testo= {"Il costo per effettuare l'upgrade è " + prezzoUpgrade + "€"}
-                                annullaBtnName="Annulla"
-                                onAnnullaBtn={()=>{
-                                    setSecondDialogVisible(false);
-                                }}
-                                buttonName="Paga"
-                                onOkPress={()=>{
-                                    setSecondDialogVisible(false);
-                                    setThirdDialogVisible(true);
-                                }} />
-                        )
-                    }
-                    {
-                        isVisibleThirdDialog && (
-                            <CustomAlertTextInput
-                                visibility={isVisibleThirdDialog}
-                                setVisibility={setThirdDialogVisible}
-                                titolo="Upgrade Host"
-                                testo="Inserire le informazioni della propria carta di credito per terminare il processo"
-                                buttonName="Conferma"
-                                placeholder = "Numero carta"
-                                setTextData={setNumeroCartaValue}
-                                keyboardTypeFirstInput="numeric"
-                                showDatePickerTxtInput={true}
-                                placeholderDateInput="Data scadenza"
-                                dateValue={valueDataScadenza}
-                                setDateInput={setDataScadenzaValue}
-                                showSecondTxtInput={true}
-                                placeholderSecondInput="CCV"
-                                setSecondTextData={setCCVValue}
-                                keyboardTypeSecondInput="numeric"
-                                onOkPress={()=>{
-                                    setThirdDialogVisible(false);
-                                    setShowUpgradeAlert(true);
-                                }} />
-                        )
-                    }
-                    {
-                        showUpgradeAlert && (
-                            <CustomAlertGeneral
-                                visibility={showUpgradeAlert}
-                                titolo="Upgrade Host"
-                                testo= {"Esito dell'operazione positivo! Congratulazioni, ora sei un host!"}
-                                hideNegativeBtn={true}
-                                buttonName="Ok"
-                                onOkPress={()=>{
-                                    async function upgradeHost(){
-                                        await GuestModel.updateisHost(user.userId, true);
-                                        await HostModel.createHostDocument(user.userId, emailWebAlloggiati, passwordWebAlloggiati);
-                                        navigation.reset({
-                                            index: 0,
-                                            routes: [{ name: 'HomeHost',  params: { userId: user.userId }}],
-                                        }); //resetta lo stack quando si ritorna nella Home
-                                    }
-                                    upgradeHost();
-                                }} />
-                        )
-                    }
                 </View>
             </ScrollView>
+            <CustomAlertTextInput
+                visibility={isVisibleFirstDialog}
+                setVisibility={setFirstDialogVisible}
+                titolo="Upgrade Host"
+                testo="Inserire le proprie credenziale per continuare il processo"
+                buttonName="Procedi"
+                placeholder = "E-mail"
+                setTextData={setEmailWebAlloggiati}
+                keyboardTypeFirstInput="email-address"
+                showDatePickerTxtInput={false}
+                showSecondTxtInput={true}
+                placeholderSecondInput="Password"
+                setSecondTextData={setPasswordWebAlloggiati}
+                keyboardTypeSecondInput="default"
+                secureTextEntrySecondInput={true}
+                onOkPress={()=>{
+                    if(!validateFormField(false)){
+                        return;
+                    }
+
+                    setFirstDialogVisible(false);
+                    setSecondDialogVisible(true);
+                }} 
+            />
+            <CustomAlertGeneral
+                visibility={isVisibleSecondDialog}
+                titolo="Upgrade Host"
+                testo= {"Il costo per effettuare l'upgrade è " + prezzoUpgrade + "€"}
+                annullaBtnName="Annulla"
+                onAnnullaBtn={()=>{
+                    setSecondDialogVisible(false);
+                }}
+                buttonName="Paga"
+                onOkPress={()=>{
+                    if(user.numeroCarta === "" || user.numeroCarta == 0){
+                        setSecondDialogVisible(false);
+                        setThirdDialogVisible(true);
+                    }else{
+                        setShowUpgradeAlert(true);
+                    }
+                }} 
+            />
+            <CustomAlertTextInput
+                visibility={isVisibleThirdDialog}
+                setVisibility={setThirdDialogVisible}
+                titolo="Upgrade Host"
+                testo="Non sono presenti informazioni relative alla carta di credito. Inserire le informazioni della propria carta di credito per terminare il processo"
+                buttonName="Conferma"
+                placeholder = "Numero carta"
+                setTextData={setNumeroCartaValue}
+                keyboardTypeFirstInput="numeric"
+                maxLengthFirstInput={16}
+                showDatePickerTxtInput={true}
+                placeholderDateInput="Data scadenza"
+                dateValue={valueDataScadenza}
+                setDateInput={setDataScadenzaValue}
+                showSecondTxtInput={true}
+                placeholderSecondInput="CCV"
+                setSecondTextData={setCCVValue}
+                keyboardTypeSecondInput="numeric"
+                maxLengthSecondInput={3}
+                onOkPress={()=>{
+                    if(!validateFormField(true)){
+                        return;
+                    }
+
+                    setThirdDialogVisible(false);
+                    setShowUpgradeAlert(true);
+                }} 
+            />
+            <CustomAlertGeneral
+                visibility={showUpgradeAlert}
+                titolo="Upgrade Host"
+                testo= {"Esito dell'operazione positivo! Congratulazioni, ora sei un host!"}
+                hideNegativeBtn={true}
+                buttonName="Ok"
+                onOkPress={()=>{
+                    async function upgradeHost(){
+                        await GuestModel.updateisHost(user.userId, true);
+                        await HostModel.createHostDocument(user.userId, emailWebAlloggiati, passwordWebAlloggiati);
+                        navigation.reset({
+                            index: 0,
+                            routes: [{ name: 'HomeHost',  params: { userId: user.userId }}],
+                        }); //resetta lo stack quando si ritorna nella Home
+                    }
+                    upgradeHost();
+                }} 
+            />
+            <CustomAlertGeneral
+                visibility={showAlertGeneral}
+                titolo="Upgrade Host"
+                testo= {messageAlert}
+                hideNegativeBtn={true}
+                buttonName="Ok"
+                onOkPress={()=>{
+				    setShowAlertGeneral(false);  
+            }} />
         </View>
     );
 }

@@ -483,7 +483,9 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     editable={IsEditable}
                                     value={cap}
                                     onChangeText={(cap) => setCap(cap)}
-                                    theme={theme} />
+                                    theme={theme}
+                                    maxLength={5}
+                                />
 
                                 <TextInput
                                     mode='outlined'
@@ -566,16 +568,8 @@ const ModificaStruttura = ({ route, navigation }) => {
                                     styleBtn={{ width: "100%" }}
                                     nome={IsEditable ? 'Applica' : "Modifica"}
                                     onPress={() => {
-                                        //Verifica che tutti i campi siano riempiti
-                                        if (!validateFormField()) {
-                                            return;
-                                        }
 
-                                        IsEditable ? setIsEditable(false) : setIsEditable(true);
-                                        scrollRefVerticalScrollView.current.scrollTo({y: 0});
-
-                                        async function updateStruttura() {
-                                            if (IsEditable) {
+                                            async function updateStruttura() {
                                                 if(!modalLoadingVisibility){
                                                     setModalLoadingVisibility(true);
                                                 }
@@ -604,9 +598,18 @@ const ModificaStruttura = ({ route, navigation }) => {
                                                 }
                                                 setMessage("Le modifiche sono state apportate correttamente!");
                                                 setShowAlert(true);
+                                                IsEditable ? setIsEditable(false) : setIsEditable(true);
                                             }
+                                        if (IsEditable) {
+                                            //Verifica che tutti i campi siano riempiti
+                                            if (!validateFormField()) {
+                                                return;
+                                            }
+                                            updateStruttura();
+                                        }else{
+                                            IsEditable ? setIsEditable(false) : setIsEditable(true);
+                                            scrollRefVerticalScrollView.current.scrollTo({y: 0});
                                         }
-                                        updateStruttura();
                                     }}
                                 />
                             </View>

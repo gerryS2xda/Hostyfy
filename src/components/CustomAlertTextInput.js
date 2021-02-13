@@ -13,6 +13,10 @@ const CustomAlertTextInput = (props) => {
     const keyboardTypeSecondInput = props.keyboardTypeSecondInput || "default";
     const isSecondTextInputVisibile = false || props.showSecondTxtInput;
     const isDatePickerInputVisibile = false || props.showDatePickerTxtInput;
+    const secureTextEntryFirstInput = false || props.secureTextEntryFirstInput;
+    const secureTextEntrySecondInput = false || props.secureTextEntrySecondInput;
+    const maxLengthFirstInput = props.maxLengthFirstInput || 200;
+    const maxLengthSecondInput = props.maxLengthSecondInput || 200;
 
     return(
         <Modal
@@ -27,15 +31,19 @@ const CustomAlertTextInput = (props) => {
                         style={styles.input}
                         ref={textInputRef}
                         placeholder={props.placeholder}
-                        onChangeText={(text) => props.setTextData(text)}
+                        onChangeText={(text) =>{
+                            props.setTextData(text)
+                        } }
                         keyboardType={keyboardTypeFirstInput}
+                        secureTextEntry={secureTextEntryFirstInput}
+                        maxLength={maxLengthFirstInput}
                     />
                     </View>
                     {isDatePickerInputVisibile && (
                         <View style = {styles.textInputContainer}>
                         <DatePickerInputField
                             styleField={{ width: "82%" }}
-                            date={dateInput.toString()}
+                            date={(dateInput === "") ? "" : (new Date(dateInput).toDateString("it-IT"))}
                             setDate={setDateInput}
                             placeholder={props.placeholderDateInput}
                         />
@@ -48,8 +56,9 @@ const CustomAlertTextInput = (props) => {
                             ref={textInputSecondRef}
                             placeholder={props.placeholderSecondInput}
                             onChangeText={(text) => props.setSecondTextData(text)}
-                            secureTextEntry={true}
+                            secureTextEntry={secureTextEntrySecondInput}
                             keyboardType={keyboardTypeSecondInput}
+                            maxLength={maxLengthSecondInput}
                         />
                         </View>
                     )}
@@ -64,6 +73,7 @@ const CustomAlertTextInput = (props) => {
                                         textInputSecondRef.current.clear();
                                     }
                                     if(isDatePickerInputVisibile){
+                                        setDateInput("");
                                         props.setDateInput("");
                                     }
                                 }

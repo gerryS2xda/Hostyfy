@@ -6,9 +6,9 @@ import DatePickerInputField from "../components/DatePickerInputField";
 import * as GuestModel from "../firebase/datamodel/GuestModel"
 import { firebase } from '../firebase/config';
 import CustomAlert from '../components/CustomAlert'
-import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
+import CustomAlertGeneral from "../components/CustomAlertGeneral"
 
 const styles = StyleSheet.create({
 
@@ -157,21 +157,20 @@ const theme = { ...DefaultTheme, roundness: 30, myOwnProperty: true, fonts: { re
 
 
 const Modifica_profilo = ({ route, navigation }) => {
-  //Ottieni info utente attualmente connesso
-
   
-  const scrollRef = useRef();
-
+  //Ottieni info utente attualmente connesso  
   const { user } = route.params;
-  const [IsEditable, setEditable] = useState(false);
 
-  console.log(user);
+  const scrollRef = useRef();
+  const [IsEditable, setEditable] = useState(false);
+  const [showAlertErrorField, setShowAlertErrorField] = useState(false);
+  const [messageAlert, setMessageAlert] = useState("");
 
   //Dati anagrafici
   const [nome, setNome] = useState(user.nome);
   const [cognome, setCognome] = useState(user.cognome);
   const [cf, setCodiceFiscale] = useState(user.cf);
-  const [dateNasc, setDateNascita] = useState((new Date(user.dataNascita.seconds*1000)).toLocaleString("it-IT").split(",")[0]);
+  const [dateNasc, setDateNascita] = useState((user.dataNascita === "") ? "" : (new Date(user.dataNascita.seconds*1000)).toLocaleString("it-IT").split(",")[0]);
   const [luogoNasc, setLuogoNascita] = useState(user.luogoNascita);
   const [nazionalita, setNazionalita] = useState(user.nazionalita);
 
@@ -180,14 +179,14 @@ const Modifica_profilo = ({ route, navigation }) => {
   const [confermaPassword, setConfermaPassword] = useState("");
   const [newpassword, setNewPassword] = useState("");
   const [email, setEmail] = useState(user.email);
-  const [numCel, setNumeroCellulare] = useState(user.numCell);
-  const [numTel, setNumeroTelefono] = useState(user.numTel);
+  const [numCel, setNumeroCellulare] = useState((user.numCell == 0) ? "" : ""+user.numCell);
+  const [numTel, setNumeroTelefono] = useState((user.numTel == 0) ? "" : ""+user.numTel);
 
   //Riferimenti ai textInput
   var nuovaPasswordRef = useRef("");
   var confermaPasswordRef = useRef("");
 
-  const [updateErrorSuccess, setUpdateErrorSuccess] = useState(false);
+  const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateErrorFailed, setUpdateErrorFailed] = useState(false);
 
   //Residenza
@@ -195,15 +194,65 @@ const Modifica_profilo = ({ route, navigation }) => {
   const [citta, setCitta] = useState(user.indirizzo.citta);
   const [provincia, setProvincia] = useState(user.indirizzo.provincia);
   const [regione, setRegione] = useState(user.indirizzo.regione);
-  const [cap, setCAP] = useState(user.indirizzo.cap);
+  const [cap, setCAP] = useState((user.indirizzo.cap == 0) ? "" : ""+user.indirizzo.cap);
 
   //Dati relativi al pagamento
-  const [numCarta, setNumeroCarta] = useState(user.numeroCarta);
-  const [ccv, setCCV] = useState(user.ccv);
-  const [dateScadenza, setDateScadenza] = useState(user.dataScadenza);
+  const [numCarta, setNumeroCarta] = useState((user.numeroCarta == 0) ? "" : ""+user.numeroCarta) 
+  const [ccv, setCCV] = useState((user.ccv == 0) ? "" : ""+user.cvv);
+  const [dateScadenza, setDateScadenza] = useState((user.dataScadenza === "") ? "" : (new Date(user.dataScadenza.seconds*1000)).toLocaleString("it-IT").split(",")[0])
   const [intestatario, setIntestatario] = useState(user.intestatario);
 
-  
+  //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+	const validateFormField = () => {
+		var flag = true; //tutti i campi sono compilati
+		var message = "Attenzione!! Uno dei campi obbligatori non è compilato. Il campo non compilato è ";
+		if (nome === "") {
+			message += "\"Nome\"";
+			flag = false;
+		} else if (cognome === "") {
+			message += "\"Cognome\"";
+			flag = false;
+		} else if (cf === "") {
+			message += "\"Codice Fiscale\"";
+			flag = false;
+		} else if (dateNasc === "") {
+			message += "\"Data di nascita\"";
+			flag = false;
+		} else if (luogoNasc === "") {
+			message += "\"Luogo di Nascita\"";
+			flag = false;
+		} else if (nazionalita === "") {
+			message += "\"Nazionalità\"";
+			flag = false;
+		} else if (email === "") {
+			message += "\"E-mail\"";
+			flag = false;
+		} else if (numCel === "") {
+			message += "\"Cellulare\"";
+			flag = false;
+		} else if (via === "") {
+			message += "\"Via\"";
+			flag = false;
+		} else if (citta === "") {
+			message += "\"Città\"";
+			flag = false;
+		} else if (provincia === "") {
+			message += "\"Provincia\"";
+			flag = false;
+		} else if (regione === "") {
+			message += "\"Regione\"";
+			flag = false;
+		} else if (cap === "") {
+			message += "\"CAP\"";
+			flag = false;
+		} 
+		if (!flag) {
+			setMessageAlert(message);
+			setShowAlertErrorField(true);
+		}
+		return flag;
+	}
+
 
   return (
 
@@ -214,15 +263,6 @@ const Modifica_profilo = ({ route, navigation }) => {
         setStato={setPassCompare}
         titolo="Password non coincidenti"
         testo="Le password inserite non coindono, riprova con l'inserimento"
-        buttonName="Ok"
-        pagina="ModificaProfilo"
-        navigator={navigation}></CustomAlert>)}
-
-      {updateErrorSuccess && (<CustomAlert
-        stato={updateErrorSuccess}
-        setStato={setUpdateErrorSuccess}
-        titolo="Modifica completata"
-        testo="I dati sono stati modificati con successo!"
         buttonName="Ok"
         pagina="ModificaProfilo"
         navigator={navigation}></CustomAlert>)}
@@ -289,12 +329,13 @@ const Modifica_profilo = ({ route, navigation }) => {
                   style={styles.singleTextInput}
                   onChangeText={(cf) => setCodiceFiscale(cf)}
                   theme={theme}
+                  maxLength={16}
                 />
 
                 <DatePickerInputField
                   styleContainer={styles.singleTextInput}
                   styleField={{ width: "82%" }}
-                  date={dateNasc.toString()}
+                  date={(dateNasc === "") ? "" : (new Date(dateNasc)).toDateString("it-IT")}
                   setDate={setDateNascita}
                   placeholder={"Data di nascita"}
                   disabled={!IsEditable}
@@ -329,12 +370,10 @@ const Modifica_profilo = ({ route, navigation }) => {
               <View style={styles.ButtonContainer}>
                 <CustomButton
                   styleBtn={{ width: "100%", marginRight: "15%" }}
-                  nome={IsEditable == true ? 'Applica modifiche' : 'Modifica dati'}
+                  nome={IsEditable ? 'Applica modifiche' : 'Modifica dati'}
                   onPress={() => {
-                    async function onPressEditProfile() {
-                      if (!IsEditable) {
-                        setEditable(previousState => !previousState)
-                      } else if (newpassword !== confermaPassword) {
+                    async function onPressEditProfile() {                      
+                      if (newpassword !== confermaPassword) {
                         if (!passCompare) setPassCompare(true);
                       } else {
 
@@ -345,18 +384,22 @@ const Modifica_profilo = ({ route, navigation }) => {
                         var userLogin = firebase.auth().currentUser;
 
                         if (newpassword !== "") { //se la nuova password è stata inserita ed è soddisfatto il test di conferma
-                          userLogin.updatePassword(newpassword).then(function () {
-
-                            if (!updateErrorSuccess) setUpdateErrorSuccess(true);
-                            setEditable(previousState => !previousState)
-                          })
-                            .catch(function (error) {
+                          await userLogin.updatePassword(newpassword).catch(function (error) {
                               if (!updateErrorFailed) console.log(error)
                             })
                         }
+                        setUpdateSuccess(true);
+                        IsEditable ? setEditable(false) : setEditable(true);
                       }
                     }
-                    onPressEditProfile();
+                    if(IsEditable){
+                      if(!validateFormField()){
+                        return;
+                      }
+                      onPressEditProfile();
+                    }else{
+                      IsEditable ? setEditable(false) : setEditable(true);
+                    }
                   }} />
               </View>
               <View style={styles.ButtonContainer}>
@@ -377,7 +420,7 @@ const Modifica_profilo = ({ route, navigation }) => {
               <View style={styles.viewCampi}>
                 <TextInput
                   mode='outlined'
-                  label='Email'
+                  label='E-mail'
                   disabledInputStyle={{ color: "black" }}
                   style={styles.singleTextInput}
                   editable={IsEditable}
@@ -512,6 +555,7 @@ const Modifica_profilo = ({ route, navigation }) => {
                   onChangeText={(cap) => setCAP(cap)}
                   theme={theme}
                   keyboardType={'numeric'}
+                  maxLength={5}
                 />
               </View>
             </View>
@@ -548,12 +592,14 @@ const Modifica_profilo = ({ route, navigation }) => {
                   value={numCarta}
                   onChangeText={(numCarta) => setNumeroCarta(numCarta)}
                   theme={theme}
-                  keyboardType={'numeric'} />
+                  keyboardType={'numeric'} 
+                  maxLength={16}
+                />
 
                 <DatePickerInputField
                   styleContainer={{ marginBottom: "3%" }}
                   styleField={{ width: "82%" }}
-                  date={dateScadenza.toString()}
+                  date={(dateScadenza === "") ? "" : (new Date(dateScadenza).toDateString("it-IT"))}
                   setDate={setDateScadenza}
                   placeholder={"Data scadenza"}
                   disabled={!IsEditable}
@@ -567,6 +613,7 @@ const Modifica_profilo = ({ route, navigation }) => {
                   value={ccv}
                   style={styles.singleTextInput}
                   onChangeText={(ccv) => setCCV(ccv)}
+                  maxLength={3}
                   theme={theme}
                 />
 
@@ -594,6 +641,25 @@ const Modifica_profilo = ({ route, navigation }) => {
           </View>
         </ScrollView>
       </ScrollView>
+      <CustomAlertGeneral
+        visibility={showAlertErrorField}
+        titolo="Modifica profilo"
+        testo= {messageAlert}
+        hideNegativeBtn={true}
+        buttonName="Ok"
+        onOkPress={()=>{
+				  setShowAlertErrorField(false);  
+        }} />
+      <CustomAlertGeneral
+        visibility={updateSuccess}
+        titolo="Modifica profilo"
+        testo= "I dati sono stati modificati con successo!"
+        hideNegativeBtn={true}
+        buttonName="Ok"
+        onOkPress={()=>{
+				  setUpdateSuccess(false);
+          navigation.goBack();  
+        }} />
     </View>
   );
 }

@@ -12,7 +12,7 @@ export async function createCleanServiceDocument(email, numeroTelefono, ditta, d
         email: email, 
         numeroTel: numeroTelefono, 
         ditta: ditta, 
-        dataAssunzione: dataAssunzione,
+        dataAssunzione: new Date(dataAssunzione),
         hostID: hostID
     })
     .then(function() {
@@ -30,7 +30,7 @@ export async function updateCleanServiceDocument(id, email, numeroTelefono, ditt
         email: email, 
         numeroTel: numeroTelefono, 
         ditta: ditta, 
-        dataAssunzione: dataAssunzione,
+        dataAssunzione: new Date(dataAssunzione),
         hostID: hostID
     })
     .then(function() {

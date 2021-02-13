@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { View, ScrollView, StyleSheet } from 'react-native';
 import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
+import DatePickerInputField from "../components/DatePickerInputField"
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel";
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import { TextInput } from 'react-native-paper';
@@ -16,9 +17,7 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   bodyScrollcontainer: {
-   
     width: "100%",
-   
   },
   scrollContent: {
     flex:1,
@@ -31,7 +30,6 @@ const styles = StyleSheet.create({
     marginTop: "20%",
   },
   topContainer: {
-    
     paddingTop: "5%",
     width: "100%",
     paddingHorizontal: "5%",
@@ -69,19 +67,18 @@ export default ModificaCleanService = ({ route, navigation }) => {
   const [IsEditable, setIsEditable] = useState(false);
   const [message, setMessage] = useState("");
   const [showAlert, setShowAlert] = useState(false);
-  const [data, setData] = useState("");
-
+  const [showAlertNoAction, setShowAlertNoAction] = useState(false); //usato per indicare che NON deve fare niente se preme Ok
+  const [dataAssunzione, setDataAssunzione] = useState("");
 
   useFocusEffect(
     React.useCallback(() => {
       // Do something when the screen is focused
       async function getData() {
         let cleanService = await CleanServiceModel.getCleanServiceById(id);
-        console.log(cleanService);
         setDitta(cleanService.ditta);
         setEmail(cleanService.email);
         setTelefono(cleanService.numeroTel);
-        setData((new Date(cleanService.dataAssunzione.seconds * 1000)).toLocaleString("it-IT").split(",")[0]);
+        setDataAssunzione((new Date(cleanService.dataAssunzione.seconds * 1000)).toLocaleString("it-IT").split(",")[0]);
       }
       getData();
       return () => {
@@ -90,6 +87,30 @@ export default ModificaCleanService = ({ route, navigation }) => {
       };
     }, [isFocused])
   );
+
+  //funzione per verificare che tutti i campi siano stati inseriti (controllo generale)
+	const validateFormField = () => {
+		var flag = true; //tutti i campi sono compilati
+		var message = "Attenzione!! Uno dei campi obbligatori è vuoto. Si prega di compilare il campo ";
+		if (ditta === "") {
+			message += "\"Ditta\"";
+			flag = false;
+		} else if (email === "") {
+			message += "\"Email\"";
+			flag = false;
+		} else if (telefono === "") {
+			message += "\"Telefono\"";
+			flag = false;
+		} else if (dataAssunzione === "") {
+			message += "\"Data assunzione\"";
+			flag = false;
+		}
+		if (!flag) {
+			setMessage(message);
+			setShowAlertNoAction(true);
+		}
+		return flag;
+	}
 
   return (
     <View style={styles.maincontainer}>
@@ -101,7 +122,7 @@ export default ModificaCleanService = ({ route, navigation }) => {
           <View style={styles.topContainer}>
             <TextInput
               mode='outlined'
-              label='Dittà'
+              label='Ditta'
               disabledInputStyle={{ color: "#303a52" }}
               style={styles.singleField}
               editable={IsEditable}
@@ -135,16 +156,13 @@ export default ModificaCleanService = ({ route, navigation }) => {
               placeholder='Telefono'
             />
 
-            <TextInput
-              mode='outlined'
-              label='Data Assunzione'
-              disabledInputStyle={{ color: "#303a52" }}
-              style={styles.singleField}
-              editable={IsEditable}
-              value={data}
-              onChangeText={(testo) => setData(testo)}
-              theme={theme}
-              placeholder='Data Assunzione'
+            <DatePickerInputField
+                  styleContainer={{ borderColor: '#303a52', borderRadius: 25, marginTop: 14 }}
+                  styleField={{ width: "85%" }}
+                  date={(dataAssunzione === "") ? "" : (new Date(dataAssunzione).toDateString("it-IT"))}
+                  setDate={setDataAssunzione}
+                  placeholder={"Data assunzione"}
+                  disabled={!IsEditable} 
             />
           </View>
           <View style={styles.bottomButtonContainer}>
@@ -152,15 +170,21 @@ export default ModificaCleanService = ({ route, navigation }) => {
               styleBtn={{ marginTop: 10, width: "100%" }} 
               nome= {IsEditable ? 'Applica' : "Modifica"}
               onPress={() => {
-                IsEditable ? setIsEditable(false) : setIsEditable(true);
                 async function updateCleanService() {
-                  if (IsEditable) {
-                      await CleanServiceModel.updateCleanServiceDocument(id, email, telefono, ditta, new Date(), user.userIdRef);
-                      setMessage("Le modifiche sono state apportate correttamente!");
-                      setShowAlert(true);
-                  }
+                  await CleanServiceModel.updateCleanServiceDocument(id, email, telefono, ditta, dataAssunzione, user.userIdRef);
+                  setMessage("Le modifiche sono state apportate correttamente!");
+                  setShowAlert(true);
+                  IsEditable ? setIsEditable(false) : setIsEditable(true);
                 }
-                updateCleanService();
+                if (IsEditable) {
+                  //Verifica che tutti i campi siano riempiti
+                  if (!validateFormField()) {
+                    return;
+                  }
+                  updateCleanService();
+                }else{
+                  IsEditable ? setIsEditable(false) : setIsEditable(true);
+                }
               }
             } />
           </View>
@@ -176,6 +200,15 @@ export default ModificaCleanService = ({ route, navigation }) => {
           setShowAlert(false); 
           navigation.goBack();
         }} />
+      <CustomAlertGeneral
+        visibility={showAlertNoAction}
+        titolo="Modifica ditta pulizie"
+        testo= {message}
+        hideNegativeBtn={true}
+        buttonName="Ok"
+        onOkPress={()=>{ 
+          setShowAlertNoAction(false);  
+      }} />
     </View>
   )
 }

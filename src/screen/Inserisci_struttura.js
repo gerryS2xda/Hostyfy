@@ -377,6 +377,7 @@ export default class InserisciStrutturaScreen extends React.Component {
                                         onChangeText={(testo) => this.setState({ cap: testo })}
                                         theme={this.state.theme}
                                         ref={input => { this.cap = input }}
+                                        maxLength={5}
                                     />
                                     <TextInput
                                         mode='outlined'

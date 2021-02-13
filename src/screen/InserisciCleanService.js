@@ -5,6 +5,7 @@ import HeaderBar from '../components/CustomHeaderBar';
 import CustomButton from '../components/CustomButton';
 import * as CleanServiceModel from "../firebase/datamodel/CleanServiceModel"; 
 import CustomAlertGeneral from "../components/CustomAlertGeneral";
+import DatePickerInputField from "../components/DatePickerInputField"
 import { TextInput } from 'react-native-paper';
 import { DefaultTheme } from '@react-navigation/native';
 
@@ -65,7 +66,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
     const [ditta,setDitta] = useState("");
     const [email,setEmail] = useState("");
     const [telefono,setTelefono] = useState("");
-    const [data, setData] = useState("");
+    const [dataAssunzione, setDataAssunzione] = useState("");
     const [disableInsertCSButton, setInsertCSButtonStatus] = useState(false); //per prevenire doppio click che comporta doppio inserimento
     const [showAlertInsert, setShowAlertInsert] = useState(false);
     const [showAlertErrorField, setShowAlertErrorField] = useState(false);
@@ -105,7 +106,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
         }else if(telefono === ""){
             message += "\"Telefono\"";
             flag = false;
-        }else if(data === ""){
+        }else if(dataAssunzione === ""){
             message += "\"Data assunzione\"";
             flag = false;
         }
@@ -121,7 +122,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
 		setDitta("");
         setEmail("");
         setTelefono("");
-        setData("");
+        setDataAssunzione("");
 	}
     
     return (
@@ -162,14 +163,12 @@ export default InserisciCleanService = ({route, navigation}) =>{
                                 placeholder='Telefono'
                             />
 
-                            <TextInput
-                                mode='outlined'
-                                label='Data Assunzione'
-                                style={styles.singleField}
-                                value={data}
-                                onChangeText={(testo) => setData(testo)}
-                                theme={theme}
-                                placeholder='Data Assunzione'
+                            <DatePickerInputField
+                                styleContainer={{ borderColor: '#303a52', borderRadius: 25, marginTop: 14 }}
+                                styleField={{ width: "85%" }}
+                                date={(dataAssunzione === "") ? "" : (new Date(dataAssunzione).toDateString("it-IT"))}
+                                setDate={setDataAssunzione}
+                                placeholder={"Data assunzione"}
                             />
                         </View>
                         <View style={styles.bottomButtonContainer}>
@@ -181,7 +180,7 @@ export default InserisciCleanService = ({route, navigation}) =>{
                                     if(validateFormField()){
                                         setInsertCSButtonStatus(true);
                                         async function onPressAggiungiCS(){
-                                            await CleanServiceModel.createCleanServiceDocument(email,telefono,ditta, new Date(), user.userIdRef);
+                                            await CleanServiceModel.createCleanServiceDocument(email,telefono,ditta, dataAssunzione, user.userIdRef);
                                             resetState();
 
                                             setInsertCSButtonStatus(false);
