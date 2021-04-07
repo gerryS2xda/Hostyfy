@@ -1,4 +1,4 @@
-# Hostyfy - L'ospitabilità intelligente made in Italy
+# Hostyfy - L'ospitalità intelligente made in Italy
 
 <p align="center" width="100%">
   <img align="left" src="./assets/disa.jpg" height="80" />
